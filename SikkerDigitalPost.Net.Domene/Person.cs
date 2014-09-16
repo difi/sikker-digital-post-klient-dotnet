@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SikkerDigitalPost.Net.Domene
+﻿namespace SikkerDigitalPost.Net.Domene
 {
-    class Person
+    public class Person
     {
-        public int Id { get; set; }
-        public string PostkasseAdresse { get; set; }
+        public string Personidentifikator { get; set; }
+        public string Postkasseadresse { get; set; }
+
+        public Person(string personIdentifikator, string postkasseadresse)
+        {
+            Personidentifikator = personIdentifikator;
+            Postkasseadresse = postkasseadresse;
+        }
     }
 }
