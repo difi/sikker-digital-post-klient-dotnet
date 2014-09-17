@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KlientKonfigurasjon.cs" />
+    <Compile Include="KlientKonfigurasjon.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
   </ItemGroup>
