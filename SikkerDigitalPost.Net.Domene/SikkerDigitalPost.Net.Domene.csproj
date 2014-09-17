@@ -41,12 +41,12 @@
   <ItemGroup>
     <Compile Include="Entiteter\Dokument.cs" />
     <Compile Include="Entiteter\Dokumentpakke.cs" />
+    <Compile Include="Entiteter\Enums.cs" />
     <Compile Include="Entiteter\IAsiceVedlegg.cs" />
     <Compile Include="Entiteter\Mottaker.cs" />
     <Compile Include="Nøkkelpar.cs" />
     <Compile Include="Entiteter\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sertifikat.cs" />
     <Compile Include="Entiteter\TekniskAvsender.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
