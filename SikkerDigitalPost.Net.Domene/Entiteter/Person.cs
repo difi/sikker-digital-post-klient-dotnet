@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene
+﻿namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class Person
     {

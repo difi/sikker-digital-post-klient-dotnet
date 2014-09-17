@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SikkerDigitalPost.Net.Domene
+namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class Dokumentpakke
     {

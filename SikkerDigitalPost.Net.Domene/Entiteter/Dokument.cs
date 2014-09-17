@@ -1,31 +1,18 @@
-﻿using System;
-using System.IO;
-using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using System.IO;
 
-namespace SikkerDigitalPost.Net.Domene
+namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
-    public class Dokument : IAsiceAttachable
+    public class Dokument : IAsiceVedlegg
     {
-        private readonly string _dokumentsti;
-
         public string Filnavn { get; private set; }
         public byte[] Bytes { get; private set; }
         public string MimeType { get; private set; }
         public string Tittel { get; private set; }
         
-        public Dokument(string tittel, string dokumentsti)
+        public Dokument(string tittel, string dokumentsti) //IOStream, Bytearray
         {
             Tittel = tittel;
-            _dokumentsti = dokumentsti;
-
-            try
-            {
-                this.Bytes = File.ReadAllBytes(dokumentsti);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Kunne ikke lese fra fil", e);
-            }
+            Bytes = File.ReadAllBytes(dokumentsti);
         }
     }
 }
