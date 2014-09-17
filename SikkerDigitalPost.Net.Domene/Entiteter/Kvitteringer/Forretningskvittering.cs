@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
 {
-    class Forretningskvittering
+    public abstract class Forretningskvittering
     {
+        public EbmsApplikasjonsKvittering EbmsApplikasjonsKvittering { get; set; }
     }
 }

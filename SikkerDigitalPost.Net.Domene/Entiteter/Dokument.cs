@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter
 {

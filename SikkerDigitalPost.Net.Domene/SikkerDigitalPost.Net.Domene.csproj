@@ -39,10 +39,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entiteter\Behandlingsansvarlig.cs" />
+    <Compile Include="Entiteter\DigitalPost.cs" />
     <Compile Include="Entiteter\Dokument.cs" />
     <Compile Include="Entiteter\Dokumentpakke.cs" />
-    <Compile Include="Entiteter\Enums.cs" />
-    <Compile Include="Entiteter\IAsiceVedlegg.cs" />
+    <Compile Include="Entiteter\EbmsAktør.cs" />
+    <Compile Include="Entiteter\EbmsMelding.cs" />
+    <Compile Include="Entiteter\EpostVarsel.cs" />
+    <Compile Include="Entiteter\Kvitteringer\EbmsApplikasjonsKvittering.cs" />
+    <Compile Include="Entiteter\EbmsUtgåendeMelding.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretningskvittering.cs" />
+    <Compile Include="Entiteter\Interface\IPMode.cs" />
+    <Compile Include="Entiteter\Referanse.cs" />
+    <Compile Include="Entiteter\StandardForretningsDokument.cs" />
+    <Compile Include="Entiteter\SmsVarsel.cs" />
+    <Compile Include="Enums\Handling.cs" />
+    <Compile Include="Enums\Sikkerhetsnivå.cs" />
+    <Compile Include="Entiteter\Abstrakt\Varsel.cs" />
+    <Compile Include="Enums\Prioritet.cs" />
+    <Compile Include="Entiteter\Forsendelse.cs" />
+    <Compile Include="Entiteter\Interface\IAsiceVedlegg.cs" />
     <Compile Include="Entiteter\Mottaker.cs" />
     <Compile Include="Nøkkelpar.cs" />
     <Compile Include="Entiteter\Person.cs" />
