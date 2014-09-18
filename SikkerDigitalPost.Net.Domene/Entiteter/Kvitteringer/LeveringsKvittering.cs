@@ -5,7 +5,5 @@
         public LeveringsKvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
         {
         }
-
-
     }
 }
