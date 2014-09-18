@@ -5,10 +5,10 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class Dokument : IAsiceVedlegg
     {
+        public string Tittel { get; private set; }
         public string Filnavn { get; private set; }
         public byte[] Bytes { get; private set; }
         public string MimeType { get; private set; }
-        public string Tittel { get; private set; }
 
         private Dokument(string tittel)
         {
