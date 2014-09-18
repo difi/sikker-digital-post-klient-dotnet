@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SikkerDigitalPost.Net.Domene;
-using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.Klient
 {
@@ -19,7 +13,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, KlientKonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
         {
             
             
@@ -38,7 +32,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
         /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
         /// </summary>
-        /// <param name="kvitteringForespørsel"></param>
+        /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
         /// <remarks>
         /// <list type="table">
@@ -47,7 +41,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public ForretningsKvittering HentKvittering(KvitteringForespørsel kvitteringForespørsel)
+        public ForretningsKvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             return null;
         }
@@ -57,7 +51,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
         /// spesifikk forsendelse. 
         /// </summary>
-        /// <param name="kvitteringForespørsel"></param>
+        /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
         /// <returns></returns>
         /// <remarks>
@@ -67,25 +61,25 @@ namespace SikkerDigitalPost.Net.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public ForretningsKvittering HentKvitteringOgBekreftForrige(KvitteringForespørsel kvitteringForespørsel, ForretningsKvittering forrigeKvittering)
+        public ForretningsKvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
         {
             return null;
         }
 
         /// <summary>
-        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(KvitteringForespørsel)"/>.
+        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
         /// <list type="bullet">
         /// <listheader><description><para>Dette legger opp til følgende arbeidsflyt</para></description></listheader>
-        /// <item><description><para><see cref="HentKvittering(KvitteringForespørsel)"/></para></description></item>
+        /// <item><description><para><see cref="HentKvittering(Kvitteringsforespørsel)"/></para></description></item>
         /// <item><description><para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para></description></item>
         /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
         /// </list>
         /// </summary>
         /// <param name="forrigeKvittering"></param>
         /// <remarks>
-        /// <see cref="HentKvittering(KvitteringForespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
+        /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public void Bekreft(ForretningsKvittering forrigeKvittering)
+        public void Bekreft(Forretningskvittering forrigeKvittering)
         {
             
         }

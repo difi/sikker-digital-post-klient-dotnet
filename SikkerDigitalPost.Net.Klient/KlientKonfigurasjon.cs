@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SikkerDigitalPost.Net.Klient
 {
-    public class KlientKonfigurasjon
+    public class Klientkonfigurasjon
     {
         public Uri MeldingsformidlerRoot { get; set; }
 
@@ -33,7 +29,7 @@ namespace SikkerDigitalPost.Net.Klient
 
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
-        public KlientKonfigurasjon()
+        public Klientkonfigurasjon()
         {
             this.MeldingsformidlerRoot = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
             this.MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
@@ -53,8 +49,10 @@ namespace SikkerDigitalPost.Net.Klient
             if (value == null)
                 return @default;
 
-            if (typeof(T) is IConvertible)
-                return (T)Convert.ChangeType(value, typeof(T));
+            if (typeof (T) is IConvertible)
+            {
+                return (T)Convert.ChangeType(value, typeof(T));                
+            }
             else
             {
                 return (T)Activator.CreateInstance(typeof(T), new object[] { value });
