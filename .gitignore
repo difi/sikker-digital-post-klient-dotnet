@@ -1,20 +1,6 @@
-Skip to content
- This repository
-Explore
-Gist
-Blog
-Help
-Aleksander Sjåfjell asjafjell
- 
-31  Unwatch 
-  Star 0
- Fork 0bekk/Bekk.Forside PRIVATE
- branch: master  Bekk.Forside / .gitignore
-Frode Tobias Bjerkefrodetbj 6 days ago updated gitignore with npm-debug lgo
-1 contributor
-133 lines (104 sloc)  1.644 kb RawBlameHistory   
 packages/
 specific
+SikkerDigitalPost.Net.KlientDemoStandalone/*
 ####################
 */node_modules/
 */bower_components/
