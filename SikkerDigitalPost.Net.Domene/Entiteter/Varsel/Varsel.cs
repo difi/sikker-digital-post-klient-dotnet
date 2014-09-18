@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Abstrakt
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
 {
     public abstract class Varsel
     {

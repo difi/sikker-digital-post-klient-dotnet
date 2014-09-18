@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
-    class Forsendelse
+    public class Forsendelse
     {
         public DigitalPost DigitalPost { get; set; }
         public Dokumentpakke Dokumentpakke { get; set; }

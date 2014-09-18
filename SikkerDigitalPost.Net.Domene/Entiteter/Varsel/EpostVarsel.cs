@@ -1,6 +1,4 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter.Abstrakt;
-
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
 {
     public class EpostVarsel : Varsel
     {
