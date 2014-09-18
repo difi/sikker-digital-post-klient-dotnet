@@ -31,14 +31,14 @@ namespace SikkerDigitalPost.Net.Klient
 
         public Klientkonfigurasjon()
         {
-            this.MeldingsformidlerRoot = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
-            this.MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
-            this.ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
-            this.ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
+            MeldingsformidlerRoot = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
+            MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
+            ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
+            ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
 
-            this.SocketTimeoutInMillis = SetFromAppConfig<double>("SDP:SocketTimeoutInMillis", TimeSpan.FromSeconds(30).TotalMilliseconds);
-            this.ConnectTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
-            this.ConnectionRequestTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectionRequestTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
+            SocketTimeoutInMillis = SetFromAppConfig<double>("SDP:SocketTimeoutInMillis", TimeSpan.FromSeconds(30).TotalMilliseconds);
+            ConnectTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
+            ConnectionRequestTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectionRequestTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
         }
 
         private T SetFromAppConfig<T>(string key, T @default)
@@ -49,7 +49,7 @@ namespace SikkerDigitalPost.Net.Klient
             if (value == null)
                 return @default;
 
-            if (typeof (T) is IConvertible)
+            if (typeof (IConvertible).IsAssignableFrom(typeof(T)))
             {
                 return (T)Convert.ChangeType(value, typeof(T));                
             }

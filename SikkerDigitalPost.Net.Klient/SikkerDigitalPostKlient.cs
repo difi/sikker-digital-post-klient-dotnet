@@ -41,7 +41,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public ForretningsKvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             return null;
         }
@@ -61,7 +61,7 @@ namespace SikkerDigitalPost.Net.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public ForretningsKvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public Forretningskvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
         {
             return null;
         }
