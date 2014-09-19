@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+
 namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class Dokumentpakke
@@ -24,6 +25,5 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
         {
             Vedlegg.AddRange(dokumenter.ToList());
         }
-
     }
 }

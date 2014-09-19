@@ -39,10 +39,9 @@ namespace SikkerDigitalPost.Net.Tests
             _testDataMappe = Path.GetDirectoryName(Path.GetDirectoryName(context.TestDir));
             _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
             VedleggsFiler = Directory.GetFiles(_vedleggsMappe);
-            _hoveddokument = Directory.Get
+           
 
         }
-
 
         [TestInitialize]
         public void TestInitialize()
@@ -59,9 +58,7 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            
             var folder = new FileInfo(_testDataMappe).FullName;
-
             var exists = File.Exists(_testDataMappe + Path.PathSeparator + VedleggsFiler[0]);
         }
         
