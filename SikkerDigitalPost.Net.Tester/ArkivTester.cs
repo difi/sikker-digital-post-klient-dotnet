@@ -28,18 +28,7 @@ namespace SikkerDigitalPost.Net.Tests
         private static string _manifestFil = "manifest.xml";
         private static string _signaturFil = "signatur.xml";
 
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance;}
-            set{ testContextInstance = value;}
-        }
-        
+       public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
@@ -53,18 +42,6 @@ namespace SikkerDigitalPost.Net.Tests
             _hoveddokument = Directory.GetFiles(_hoveddokumentMappe)[0];
             _signaturFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(_signaturFil));
             _manifestFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(_manifestFil));
-        }
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-           
         }
 
         [TestMethod]
@@ -132,7 +109,6 @@ namespace SikkerDigitalPost.Net.Tests
                 }
             }
         }
-
 
         private Dokument GenererHoveddokument()
         {
