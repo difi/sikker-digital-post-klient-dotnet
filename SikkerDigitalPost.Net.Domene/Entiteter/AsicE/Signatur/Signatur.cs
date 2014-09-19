@@ -1,4 +1,5 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+﻿using System.IO;
+using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
 {
@@ -10,8 +11,13 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
         {
             _bytes = bytes;
         }
+
+        public Signatur(string filnavn)
+        {
+            _bytes = File.ReadAllBytes(filnavn);
+        }
         
-        public string Filnavn {
+        public string Filsti {
             get { return "META-INF/signatures.xml"; } 
         }
         
@@ -19,7 +25,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
             get { return _bytes; }
         }
         
-        public string MimeType {
+        public string Innholdstype {
             get { return "application/xml"; }
         }
     }

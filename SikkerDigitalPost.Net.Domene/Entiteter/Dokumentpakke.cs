@@ -16,12 +16,12 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
             Hoveddokument = hoveddokument;
         }
 
-        public void LeggTil(IEnumerable<Dokument> dokumenter)
+        public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
         {
             Vedlegg.AddRange(dokumenter);
         }
 
-        public void LeggTil(params Dokument[] dokumenter)
+        public void LeggTilVedlegg(params Dokument[] dokumenter)
         {
             Vedlegg.AddRange(dokumenter.ToList());
         }

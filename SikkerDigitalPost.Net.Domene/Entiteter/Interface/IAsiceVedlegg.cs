@@ -2,8 +2,8 @@
 {
     public interface IAsiceVedlegg
     {
-        string Filnavn { get; }
+        string Filsti { get; }
         byte[] Bytes { get; }
-        string MimeType { get; }
+        string Innholdstype { get; }
     }
 }

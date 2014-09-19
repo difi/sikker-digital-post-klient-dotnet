@@ -1,49 +1,46 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    class Arkiv
+    public class Arkiv
     {
-        private readonly Dokument _manifest;
-        private readonly Dokument _signatur;
+        public readonly Manifest Manifest;
+        public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
 
-        public Arkiv(Dokumentpakke dokumentpakke, Dokument signatur, Dokument manifest)
+        public Arkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
         {
-            _signatur = signatur;
-            _manifest = manifest;
+            Signatur = signatur;
+            Manifest = manifest;
             _dokumentpakke = dokumentpakke;
         }
 
-        public ZipArchive LagArkiv()
+        public MemoryStream LagArkiv()
         {
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
-                LeggFilTilArkiv(archive, _manifest.Filnavn, _manifest.Bytes);
-                LeggFilTilArkiv(archive, String.Format("META-INF/{0}",_signatur.Filnavn), _signatur.Bytes);
+                LeggFilTilArkiv(archive, Manifest.Filsti, Manifest.Bytes);
+                LeggFilTilArkiv(archive, Signatur.Filsti, Signatur.Bytes);
                 
                 foreach (var dokument in _dokumentpakke.Vedlegg)
-                    LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);                    
-                
-                return archive;
+                    LeggFilTilArkiv(archive, dokument.Filsti, dokument.Bytes);                    
+
             }
+
+            return new MemoryStream(stream.ToArray());
         }
 
         private static void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
         {
-            LeggFilTilArkiv(archive, filename, new MemoryStream(data));
-        }
-
-        private static void LeggFilTilArkiv(ZipArchive archive, string filename, Stream stream)
-        {
             var entry = archive.CreateEntry(filename, CompressionLevel.Optimal);
             using (Stream s = entry.Open())
             {
-                stream.CopyTo(s);
+                s.Write(data, 0, data.Length);
                 s.Close();
             }
         }

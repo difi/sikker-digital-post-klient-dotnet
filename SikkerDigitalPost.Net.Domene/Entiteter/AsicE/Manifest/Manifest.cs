@@ -1,4 +1,5 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+﻿using System.IO;
+using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
@@ -11,13 +12,18 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             _bytes = bytes;
         }
 
-        public string Filnavn {
+        public Manifest(string filnavn)
+        {
+            _bytes = File.ReadAllBytes(filnavn);
+        }
+
+        public string Filsti {
             get { return "manifest.xml"; }
         }
         public byte[] Bytes {
             get { return _bytes; }
         }
-        public string MimeType {
+        public string Innholdstype {
             get { return "application/xml"; }
         }
         
