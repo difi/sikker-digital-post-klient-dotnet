@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entiteter\AsicE\Manifest\Manifest.cs" />
+    <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\DigitalPost.cs" />
     <Compile Include="Entiteter\Dokument.cs" />
@@ -72,9 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entiteter\TekniskAvsender.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entiteter\AsicE\Signatur\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

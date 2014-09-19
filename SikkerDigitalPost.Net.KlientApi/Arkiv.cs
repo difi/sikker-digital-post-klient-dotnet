@@ -5,20 +5,20 @@ using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    class Zip
+    class Arkiv
     {
         private readonly Dokument _manifest;
         private readonly Dokument _signatur;
         private readonly Dokumentpakke _dokumentpakke;
 
-        public Zip(Dokumentpakke dokumentpakke, Dokument signatur, Dokument manifest)
+        public Arkiv(Dokumentpakke dokumentpakke, Dokument signatur, Dokument manifest)
         {
             _signatur = signatur;
             _manifest = manifest;
             _dokumentpakke = dokumentpakke;
         }
 
-        public ZipArchive CreateZip()
+        public ZipArchive LagArkiv()
         {
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
@@ -27,9 +27,7 @@ namespace SikkerDigitalPost.Net.KlientApi
                 LeggFilTilArkiv(archive, String.Format("META-INF/{0}",_signatur.Filnavn), _signatur.Bytes);
                 
                 foreach (var dokument in _dokumentpakke.Vedlegg)
-                {
                     LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);                    
-                }
                 
                 return archive;
             }
@@ -49,10 +47,5 @@ namespace SikkerDigitalPost.Net.KlientApi
                 s.Close();
             }
         }
-
-        
-        
-
-
     }
 }
