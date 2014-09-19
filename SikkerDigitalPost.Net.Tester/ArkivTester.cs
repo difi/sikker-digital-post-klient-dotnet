@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -9,11 +13,13 @@ namespace SikkerDigitalPost.Net.Tests
     [TestClass]
     public class ArkivTester
     {
-        private static string _testDataMappe;
+        private static string _testDataMappe = "testdata";
+
         private static string _vedleggsMappe = "vedlegg";
-        private static string _hoveddokumentMapp = "hoveddokument";
-        private static readonly string _hoveddokument = "Hoveddokument.docx";
-        private static string[] VedleggsFiler;
+        private static string _hoveddokumentMappe = "hoveddokument";
+
+        private static string _hoveddokument;
+        private static string[] _vedleggsFiler;
 
         private TestContext testContextInstance;
 
@@ -26,21 +32,18 @@ namespace SikkerDigitalPost.Net.Tests
             get { return testContextInstance;}
             set{ testContextInstance = value;}
         }
-
-
-        public ArkivTester()
-        {
-           
-        }
+        
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            _testDataMappe = Path.GetDirectoryName(Path.GetDirectoryName(context.TestDir));
-            _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
-            VedleggsFiler = Directory.GetFiles(_vedleggsMappe);
-           
+            _testDataMappe = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)),_testDataMappe);
 
+           _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
+           _hoveddokumentMappe = Path.Combine(_testDataMappe, _hoveddokumentMappe);
+            
+            _vedleggsFiler = Directory.GetFiles(_vedleggsMappe);
+            _hoveddokument = Directory.GetFiles(_hoveddokumentMappe)[0];
         }
 
         [TestInitialize]
@@ -56,10 +59,15 @@ namespace SikkerDigitalPost.Net.Tests
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            var folder = new FileInfo(_testDataMappe).FullName;
-            var exists = File.Exists(_testDataMappe + Path.PathSeparator + VedleggsFiler[0]);
+            var hoveddokument = new Dokument(Path.GetFileName(_hoveddokument),_hoveddokument);
+            var vedlegg = new List<Dokument>(_vedleggsFiler.Select(v => new Dokument(Path.GetFileName(v),v)));
+
+            var dokumentpakke = new Dokumentpakke(hoveddokument);
+            dokumentpakke.LeggTil(vedlegg);
+
+            Assert.AreEqual(vedlegg.Count, dokumentpakke.Vedlegg.Count);
         }
         
     }
