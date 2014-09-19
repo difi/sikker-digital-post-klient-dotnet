@@ -17,7 +17,9 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
         public byte[] Bytes {
             get { return _bytes; }
         }
-        public string MimeType { get; private set; }
+        public string MimeType {
+            get { return "application/xml"; }
+        }
         
        
     }

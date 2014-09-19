@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Zip.cs" />
+    <Compile Include="Arkiv.cs" />
     <Compile Include="KlientKonfigurasjon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -54,9 +54,7 @@
       <Name>SikkerDigitalPost.Net.Domene</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dokumentpakke\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

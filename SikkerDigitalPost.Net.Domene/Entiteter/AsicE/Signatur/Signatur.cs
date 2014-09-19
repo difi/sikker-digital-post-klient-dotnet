@@ -4,11 +4,11 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
 {
     public class Signatur : IAsiceVedlegg
     {
-        private readonly byte[] _xmlBytes;
+        private readonly byte[] _bytes;
 
-        public Signatur(byte[] xmlBytes)
+        public Signatur(byte[] bytes)
         {
-            _xmlBytes = xmlBytes;
+            _bytes = bytes;
         }
         
         public string Filnavn {
@@ -16,7 +16,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
         }
         
         public byte[] Bytes {
-            get { return _xmlBytes; }
+            get { return _bytes; }
         }
         
         public string MimeType {

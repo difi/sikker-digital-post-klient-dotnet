@@ -51,6 +51,18 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ArkivTester.cs" />
+    <Compile Include="test.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Net.Domene.csproj">
+      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
+      <Name>SikkerDigitalPost.Net.Domene</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SikkerDigitalPost.Net.KlientApi\SikkerDigitalPost.Net.KlientApi.csproj">
+      <Project>{d516de44-9afd-495d-b4c7-cce751ca0369}</Project>
+      <Name>SikkerDigitalPost.Net.KlientApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

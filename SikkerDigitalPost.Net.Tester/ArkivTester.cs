@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SikkerDigitalPost.Net.Tests
@@ -11,12 +9,11 @@ namespace SikkerDigitalPost.Net.Tests
     [TestClass]
     public class ArkivTester
     {
-        public ArkivTester()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+        private static string _testDataMappe;
+        private static string _vedleggsMappe = "vedlegg";
+        private static string _hoveddokumentMapp = "hoveddokument";
+        private static readonly string _hoveddokument = "Hoveddokument.docx";
+        private static string[] VedleggsFiler;
 
         private TestContext testContextInstance;
 
@@ -26,44 +23,47 @@ namespace SikkerDigitalPost.Net.Tests
         ///</summary>
         public TestContext TestContext
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            get { return testContextInstance;}
+            set{ testContextInstance = value;}
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+
+        public ArkivTester()
+        {
+           
+        }
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            _testDataMappe = Path.GetDirectoryName(Path.GetDirectoryName(context.TestDir));
+            _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
+            VedleggsFiler = Directory.GetFiles(_vedleggsMappe);
+            _hoveddokument = Directory.Get
+
+        }
+
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+           
+        }
 
         [TestMethod]
         public void TestMethod1()
         {
-            //
-            // TODO: Add test logic here
-            //
+            
+            var folder = new FileInfo(_testDataMappe).FullName;
+
+            var exists = File.Exists(_testDataMappe + Path.PathSeparator + VedleggsFiler[0]);
         }
+        
     }
 }
