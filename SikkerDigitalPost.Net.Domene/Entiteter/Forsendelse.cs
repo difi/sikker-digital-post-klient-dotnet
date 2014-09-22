@@ -15,7 +15,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
         public Dokumentpakke Dokumentpakke { get; set; }
 
         /// <summary>
-        /// Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller vøre den offentlige virksomheten som er ansvarlig for brevet som skal sendes.
+        /// Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.
         /// </summary>
         public Behandlingsansvarlig Behandlingsansvarlig { get; set; }
 
