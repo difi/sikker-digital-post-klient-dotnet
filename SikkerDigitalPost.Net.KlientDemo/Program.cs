@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.KlientDemo
@@ -11,7 +8,8 @@ namespace SikkerDigitalPost.Net.KlientDemo
     {
         static void Main(string[] args)
         {
-
+            var dok = new Dokument("tiot", "", "");
+            
             var f = new Forsendelse();
             f.MpcId = "22";
 

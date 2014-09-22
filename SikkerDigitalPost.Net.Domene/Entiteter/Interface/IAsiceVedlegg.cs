@@ -4,6 +4,6 @@
     {
         string Filnavn { get; }
         byte[] Bytes { get; }
-        string MimeType { get; }
+        string Innholdstype { get; }
     }
 }

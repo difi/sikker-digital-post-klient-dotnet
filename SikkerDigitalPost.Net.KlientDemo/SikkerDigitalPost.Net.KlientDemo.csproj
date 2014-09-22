@@ -32,12 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SikkerDigitalPost.Net.Domene">
-      <HintPath>..\packages\SikkerDigitalPostKlientbibliotek.0.1\lib\net45\SikkerDigitalPost.Net.Domene.dll</HintPath>
-    </Reference>
-    <Reference Include="SikkerDigitalPost.Net.KlientApi">
-      <HintPath>..\packages\SikkerDigitalPostKlientbibliotek.0.1\lib\net45\SikkerDigitalPost.Net.KlientApi.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,7 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Net.Domene.csproj">
+      <Project>{C7666E57-D563-40A5-AE3C-B36E29824E87}</Project>
+      <Name>SikkerDigitalPost.Net.Domene</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

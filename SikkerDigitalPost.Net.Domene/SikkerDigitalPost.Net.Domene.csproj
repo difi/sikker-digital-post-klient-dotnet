@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entiteter\AsicE\Manifest\Manifest.cs" />
+    <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\DigitalPost.cs" />
     <Compile Include="Entiteter\Dokument.cs" />
