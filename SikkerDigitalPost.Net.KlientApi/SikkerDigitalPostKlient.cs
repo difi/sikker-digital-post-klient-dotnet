@@ -1,5 +1,9 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using System.Security.Cryptography.X509Certificates;
+using SikkerDigitalPost.Net.Domene;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
+using SikkerDigitalPost.Net.Domene.Enums;
 
 namespace SikkerDigitalPost.Net.Klient
 {
@@ -16,7 +20,6 @@ namespace SikkerDigitalPost.Net.Klient
         /// </remarks>
         public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
         {
-            
             
         }
 

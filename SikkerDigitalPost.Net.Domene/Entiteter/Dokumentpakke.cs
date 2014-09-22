@@ -8,18 +8,25 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
         public Dokument Hoveddokument { get; private set; }
         public List<Dokument> Vedlegg { get; private set; }
 
-
         public Dokumentpakke(Dokument hoveddokument)
         {
             Vedlegg = new List<Dokument>();
             Hoveddokument = hoveddokument;
         }
 
+        /// <summary>
+        /// Legger til vedlegg til allerede eksisterende vedlegg.
+        /// </summary>
+        /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
         {
             Vedlegg.AddRange(dokumenter);
         }
 
+        /// <summary>
+        /// Legger til vedlegg til allerede eksisterende vedlegg.
+        /// </summary>
+        /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(params Dokument[] dokumenter)
         {
             Vedlegg.AddRange(dokumenter.ToList());

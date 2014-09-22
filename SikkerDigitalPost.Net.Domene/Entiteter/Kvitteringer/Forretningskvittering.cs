@@ -10,10 +10,14 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
         {
             EbmsApplikasjonskvittering = applikasjonskvittering;
         }
-
-        public DateTime Tidspunkt()
+        
+        public DateTime Tidspunkt
         {
-            throw new NotImplementedException("Denne metoden skal hente applikasjonskvitteringens standardbusinessdokument sin kvittering. Se AapningsKvittering.java, linje 30");
+            get
+            { 
+                throw new NotImplementedException("Denne metoden skal hente applikasjonskvitteringens standardbusinessdokument sin kvittering. Se AapningsKvittering.java, linje 30");
+            }
+            set{}
         }
     }
 }

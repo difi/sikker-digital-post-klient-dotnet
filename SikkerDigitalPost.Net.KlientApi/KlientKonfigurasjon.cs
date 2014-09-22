@@ -28,6 +28,9 @@ namespace SikkerDigitalPost.Net.Klient
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
         public Klientkonfigurasjon()
