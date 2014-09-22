@@ -1,4 +1,5 @@
-﻿using SikkerDigitalPost.Net.Domene.Enums;
+﻿using SikkerDigitalPost.Net.Domene.Entiteter.Ebms;
+using SikkerDigitalPost.Net.Domene.Enums;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
 {

@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DigitalPostProdusent.cs" />
+    <Compile Include="Forsendelseskilde.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -48,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\kontaktregisteret-klient\kontaktinfo-dotNet-sample\KontaktregisteretGateway\KontaktregisteretGateway.csproj">
+      <Project>{a1b43303-f113-412f-9f47-a703c54356f6}</Project>
+      <Name>KontaktregisteretGateway</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Net.Domene.csproj">
       <Project>{C7666E57-D563-40A5-AE3C-B36E29824E87}</Project>
       <Name>SikkerDigitalPost.Net.Domene</Name>

@@ -48,7 +48,7 @@
     <Compile Include="Entiteter\Ebms\EbmsAktør.cs" />
     <Compile Include="Entiteter\Ebms\EbmsMelding.cs" />
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
-    <Compile Include="Entiteter\Kvitteringer\EbmsApplikasjonsKvittering.cs" />
+    <Compile Include="Entiteter\Ebms\EbmsApplikasjonsKvittering.cs" />
     <Compile Include="Entiteter\Ebms\EbmsUtgåendeMelding.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretningskvittering.cs" />
     <Compile Include="Entiteter\Interface\PMode.cs" />

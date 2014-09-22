@@ -5,6 +5,18 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class DigitalPost
     {
+        /// <param name="mottaker">Mottaker av digital post.</param>
+        /// <param name="ikkeSensitivTittel">Ikke-sensitiv tittel på brevet. Denne tittelen vil være synlig under transport av meldingen, og kan vises i mottakerens postkasse.</param>
+        /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4</param>
+        /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
+        public DigitalPost(Mottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
+        {
+            Mottaker = mottaker;
+            IkkeSensitivTittel = ikkeSensitivTittel;
+            Sikkerhetsnivå = sikkerhetsnivå;
+            Åpningskvittering = åpningskvittering;
+        }
+
         /// <summary>
         /// Mottaker av digital post.
         /// </summary>
@@ -15,7 +27,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
         /// 
         /// Standardverdi er nå.
         /// </summary>
-        public DateTime Virkningsdato { get; set; }
+        public DateTime Virkningsdato = DateTime.Now;
         
         /// <summary>
         /// Ønskes kvittering når brevet blir åpnet av mottaker?
