@@ -19,20 +19,20 @@ namespace SikkerDigitalPost.Net.KlientApi
             _dokumentpakke = dokumentpakke;
         }
 
-        public MemoryStream LagArkiv()
+        public byte[] LagArkiv()
         {
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
-                LeggFilTilArkiv(archive, Manifest.Filsti, Manifest.Bytes);
-                LeggFilTilArkiv(archive, Signatur.Filsti, Signatur.Bytes);
+                LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
+                LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
                 
                 foreach (var dokument in _dokumentpakke.Vedlegg)
-                    LeggFilTilArkiv(archive, dokument.Filsti, dokument.Bytes);                    
+                    LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);                    
 
             }
 
-            return new MemoryStream(stream.ToArray());
+            return stream.ToArray();
         }
 
         private static void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)

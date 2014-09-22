@@ -17,7 +17,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             _bytes = File.ReadAllBytes(filnavn);
         }
 
-        public string Filsti {
+        public string Filnavn {
             get { return "manifest.xml"; }
         }
         public byte[] Bytes {

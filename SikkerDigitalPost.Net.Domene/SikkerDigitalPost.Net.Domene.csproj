@@ -43,7 +43,7 @@
     <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\DigitalPost.cs" />
-    <Compile Include="Entiteter\FiksDokument.cs" />
+    <Compile Include="Entiteter\Dokument.cs" />
     <Compile Include="Entiteter\Dokumentpakke.cs" />
     <Compile Include="Entiteter\Ebms\EbmsAktør.cs" />
     <Compile Include="Entiteter\Ebms\EbmsMelding.cs" />

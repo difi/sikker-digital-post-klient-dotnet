@@ -2,7 +2,7 @@
 {
     public interface IAsiceVedlegg
     {
-        string Filsti { get; }
+        string Filnavn { get; }
         byte[] Bytes { get; }
         string Innholdstype { get; }
     }

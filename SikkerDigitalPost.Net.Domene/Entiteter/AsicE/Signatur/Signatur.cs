@@ -17,7 +17,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
             _bytes = File.ReadAllBytes(filnavn);
         }
         
-        public string Filsti {
+        public string Filnavn {
             get { return "META-INF/signatures.xml"; } 
         }
         
