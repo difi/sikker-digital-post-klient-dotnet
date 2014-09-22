@@ -129,7 +129,6 @@ namespace SikkerDigitalPost.Net.Tests
             var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
             dokumentpakke.LeggTilVedlegg(GenererVedlegg());
             return dokumentpakke;
-
         }
     }
 }
