@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Klient;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {

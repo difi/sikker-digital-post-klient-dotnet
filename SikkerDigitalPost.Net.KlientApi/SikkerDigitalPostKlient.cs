@@ -1,14 +1,9 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene;
-using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
-using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Net.Domene.Enums;
-using SikkerDigitalPost.Net.KlientApi;
 
-namespace SikkerDigitalPost.Net.Klient
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class SikkerDigitalPostKlient
     {
@@ -56,9 +51,9 @@ namespace SikkerDigitalPost.Net.Klient
             //Finn sertifikat -CHECK (forsendelse skal inneholde disse)
 
             //Lag zip med dokumentpakke, manifest og signatur - Bruk Arkiv
-            var arkiv = new Arkiv(forsendelse.Dokumentpakke, new Signatur(), new Manifest());
-            //encrypt filpakke
+            //var arkiv = new Arkiv(forsendelse.Dokumentpakke, new Signatur(), new Manifest());
 
+            //encrypt filpakke
             //Lag request
         }
 

@@ -9,9 +9,9 @@ namespace SikkerDigitalPost.Net.KlientApi
 {
     
     /// <summary>
-    /// Ekstremt forenklet håndtering av _status på sending av digital post.
+    /// Ekstremt forenklet håndtering av status på sending av digital post.
     /// I en reell sender vil dette være en nøkkelkomponent som håndterer alt rundt resultatet av sending av digital post.
-    /// Dette vil typisk inkludere oppdatering av _status i database/fagsystem, automatisk feilhåndtering, rapportering til
+    /// Dette vil typisk inkludere oppdatering av status i database/fagsystem, automatisk feilhåndtering, rapportering til
     /// manuell feilhåndtering og så videre.
     /// Se mulig tilstandsdiagram (http://begrep.difi.no/SikkerDigitalPost/forretningslag/avsender_tilstanddiagram) for forsendelser.
     /// </summary>

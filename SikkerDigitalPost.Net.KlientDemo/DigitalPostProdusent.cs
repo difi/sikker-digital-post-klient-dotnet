@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Klient;
 using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.KlientDemo
