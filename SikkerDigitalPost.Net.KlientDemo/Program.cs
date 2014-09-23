@@ -9,11 +9,7 @@ namespace SikkerDigitalPost.Net.KlientDemo
     {
         static void Main(string[] args)
         {
-            var f = new Forsendelse();
-            f.MpcId = "22";
-            
-            Console.WriteLine(f.MpcId);
-            Console.ReadKey();
+           
 
         }
     }

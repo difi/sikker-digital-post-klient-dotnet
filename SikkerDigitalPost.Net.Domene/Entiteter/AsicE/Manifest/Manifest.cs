@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+﻿using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
