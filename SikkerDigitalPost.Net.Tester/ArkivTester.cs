@@ -58,7 +58,7 @@ namespace SikkerDigitalPost.Net.Tests
         public void LagArkivOgVerifiserDokumentInnhold()
         {
             var dokumentpakke = GenererDokumentpakke();
-            var arkiv = new Arkiv(dokumentpakke, new Signatur(_signaturFil), new Manifest(_manifestFil));
+            var arkiv = new Arkiv(dokumentpakke, new Signatur(_signaturFil), new Manifest(new Mottaker(), ));
 
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
 
