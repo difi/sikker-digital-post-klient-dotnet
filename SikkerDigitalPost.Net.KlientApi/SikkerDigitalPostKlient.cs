@@ -8,7 +8,10 @@ using SikkerDigitalPost.Net.Domene.Enums;
 namespace SikkerDigitalPost.Net.Klient
 {
     public class SikkerDigitalPostKlient
-    {        
+    {
+        private readonly TekniskAvsender _tekniskAvsender;
+        private readonly Klientkonfigurasjon _konfigurasjon;
+
         /// <param name="tekniskAvsender">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
@@ -18,9 +21,27 @@ namespace SikkerDigitalPost.Net.Klient
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender) : this (tekniskAvsender,new Klientkonfigurasjon())
         {
             
+        }
+
+        /// <param name="tekniskAvsender">
+        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
+        /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
+        /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
+        /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
+        /// </param>
+        /// <param name="konfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
+        /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
+        /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
+        /// <remarks>
+        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
+        /// </remarks>
+        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
+        {
+            _tekniskAvsender = tekniskAvsender;
+            _konfigurasjon = konfigurasjon;
         }
 
         /// <summary>

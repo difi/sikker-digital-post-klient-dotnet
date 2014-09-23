@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Configuration;
-using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Klient;
 
-namespace SikkerDigitalPost.Net.Klient
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class Klientkonfigurasjon
     {
@@ -29,8 +29,12 @@ namespace SikkerDigitalPost.Net.Klient
             }
         }
 
-      public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
+        public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
+        /// <summary>
+        /// Klientkonfigurasjon som brukes ved oppsett av <see cref="SikkerDigitalPostKlient"/>.  Brukes for å sette parametere
+        /// som proxy, timeout og URI til meldingsformidler.
+        /// </summary>
         public Klientkonfigurasjon()
         {
             MeldingsformidlerRoot = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
@@ -51,9 +55,9 @@ namespace SikkerDigitalPost.Net.Klient
             if (value == null)
                 return @default;
 
-            if (typeof (IConvertible).IsAssignableFrom(typeof(T)))
+            if (typeof(IConvertible).IsAssignableFrom(typeof(T)))
             {
-                return (T)Convert.ChangeType(value, typeof(T));                
+                return (T)Convert.ChangeType(value, typeof(T));
             }
             else
             {
