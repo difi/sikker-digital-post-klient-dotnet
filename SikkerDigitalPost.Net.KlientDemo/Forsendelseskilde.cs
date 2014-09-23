@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using KontaktregisteretGateway.Difi;
-using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Exceptions;
+using Person = KontaktregisteretGateway.Difi.Person;
 
 namespace SikkerDigitalPost.Net.KlientDemo
 {
@@ -33,14 +33,24 @@ namespace SikkerDigitalPost.Net.KlientDemo
 
         private Mottaker HentMottaker(string personidentifikator)
         {
-            HentPersonerForespoersel personforespørsel = new HentPersonerForespoersel();
+            var personforespørsel = new HentPersonerForespoersel();
+            var personrequest = new HentPersonerRequest(personforespørsel);
             personforespørsel.informasjonsbehov = new[] {informasjonsbehov.Sertifikat, informasjonsbehov.SikkerDigitalPost};
             personforespørsel.personidentifikator = new[] {personidentifikator};
 
-            //HentPersonerResponse personRespons = _kontaktinfoPort.HentPersoner(personforespørsel);
+            HentPersonerResponse personRespons = _kontaktinfoPort.HentPersoner(personrequest);
 
-            return null;
+            if (personRespons.HentPersonerRespons.Length > 0)
+            {
+                throw new PersonNotFoundException("Fant ikke person med id" + personidentifikator);
+            }
 
+            Person person = personRespons.HentPersonerRespons[0];
+            var postkasseadresse = person.SikkerDigitalPostAdresse.postkasseadresse;
+            var sertifikat = new X509Certificate2(person.X509Sertifikat);
+            var orgnummerPostkasse = person.SikkerDigitalPostAdresse.postkasseleverandoerAdresse;
+
+            return new Mottaker(personidentifikator,postkasseadresse, new X509Certificate2(sertifikat),orgnummerPostkasse);
         }
 
     }

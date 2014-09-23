@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using SikkerDigitalPost.Net.Domene;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.Klient
 {
@@ -28,10 +29,7 @@ namespace SikkerDigitalPost.Net.Klient
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
+      public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
         public Klientkonfigurasjon()
         {
