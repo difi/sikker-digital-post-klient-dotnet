@@ -1,4 +1,5 @@
 ﻿using System;
+using SikkerDigitalPost.Net.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
 {
@@ -11,13 +12,18 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
             EbmsApplikasjonskvittering = applikasjonskvittering;
         }
         
-        public DateTime Tidspunkt
+        public string KonversasjonsId
         {
-            get
-            { 
-                throw new NotImplementedException("Denne metoden skal hente applikasjonskvitteringens standardbusinessdokument sin kvittering. Se AapningsKvittering.java, linje 30");
-            }
-            set{}
+            get { return EbmsApplikasjonskvittering.StandardForretningsDokument.KonversasjonsId; }
+            set { }
+        }
+
+        public abstract override string ToString();
+
+        public DateTime Tidspunkt()
+        {
+            DateTime tidspunkt = EbmsApplikasjonskvittering.StandardForretningsDokument.Kvittering.Tidspunkt();
+            return tidspunkt;
         }
     }
 }

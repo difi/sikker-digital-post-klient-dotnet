@@ -8,6 +8,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
         public Dokument Hoveddokument { get; private set; }
         public List<Dokument> Vedlegg { get; private set; }
 
+        /// <param name="hoveddokument">Dokumentpakkens hoveddokument</param>
         public Dokumentpakke(Dokument hoveddokument)
         {
             Vedlegg = new List<Dokument>();

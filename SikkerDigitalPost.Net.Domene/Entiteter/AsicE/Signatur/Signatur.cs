@@ -7,6 +7,10 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
     {
         private readonly byte[] _bytes;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bytes"></param>
         public Signatur(byte[] bytes)
         {
             _bytes = bytes;

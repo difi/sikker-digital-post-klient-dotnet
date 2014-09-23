@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using SikkerDigitalPost.Net.Domene.Entiteter.Ebms;
 using SikkerDigitalPost.Net.Domene.Enums;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
 {
     public class EbmsApplikasjonskvittering : EbmsUtgåendeMelding
     {
