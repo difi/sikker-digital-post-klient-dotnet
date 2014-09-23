@@ -8,5 +8,10 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
         public Åpningskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
         {
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0} {konversasjonsId={1}}", GetType(), KonversasjonsId);
+        }
     }
 }
