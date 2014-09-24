@@ -1,16 +1,18 @@
-﻿using System.IO;
+﻿using System.ComponentModel.Design;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using SikkerDigitalPost.Net.Domene.Extensions;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
     public class ManifestBygger
     {
         private readonly Manifest _manifest;
-        private XmlDocument _manifestdokument;
-        private static readonly XNamespace NS_xmlns = "http://begrep.difi.no/sdp/schema_v10";
-        private static readonly XNamespace NS_xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
-        private static readonly XNamespace NS_xsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
+        private XmlDocument doc;
+        private static readonly string NS_xmlns = "http://begrep.difi.no/sdp/schema_v10";
+        private static readonly string NS_xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
+        private static readonly string NS_xsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
 
         public ManifestBygger(Manifest manifest)
         {
@@ -19,63 +21,82 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 
         public byte[] Bygg()
         {
-            _manifestdokument = new XmlDocument();
-            _manifestdokument.PreserveWhitespace = true;
+            doc = new XmlDocument {PreserveWhitespace = true};
+            doc.AppendChild(doc.CreateElement("manifest", NS_xmlns));
+            doc.DocumentElement.SetAttribute("xmlns:xsi", NS_xmlnsxsi);
+            doc.DocumentElement.SetAttribute("schemaLocation", NS_xmlnsxsi, NS_xsiSchemaLocation);
 
-            var mgr = Namespace();
+            doc.DocumentElement.AppendChild(Mottaker());
+            doc.DocumentElement.AppendChild(Avsender());
+            doc.DocumentElement.AppendChild(Dokument(_manifest.Forsendelse.Dokumentpakke.Hoveddokument, "hoveddokument"));
 
-            var rotelement = RotElement();
-            _manifestdokument.AppendChild(rotelement);
-
-            var mottaker = Mottaker();
-            rotelement.AppendChild(mottaker);
-            
+            foreach (var vedlegg in _manifest.Forsendelse.Dokumentpakke.Vedlegg)
+            {
+                doc.DocumentElement.AppendChild(Dokument(vedlegg, "vedlegg"));
+            }
             SkrivTilFilTest();
-
+            
             return null;
         }
 
         private void SkrivTilFilTest()
         {
-            XmlWriter writer = new XmlTextWriter(new StreamWriter(@"Z:\Development\Digipost\XmlManifest.xml"));
-            _manifestdokument.WriteTo(writer);
-        }
-
-
-        private XmlNamespaceManager Namespace()
-        {
-            var mgr = new XmlNamespaceManager(_manifestdokument.NameTable);
-            mgr.AddNamespace("xmlns", NS_xmlns.NamespaceName);
-            mgr.AddNamespace("xmlns:xsi", NS_xmlnsxsi.NamespaceName);
-            mgr.AddNamespace("xsi:schemasocation", NS_xsiSchemaLocation.NamespaceName);
-            return mgr;
-        }
-
-        private XmlElement RotElement()
-        {
-            var root = _manifestdokument.CreateElement("manifest", NS_xmlns.NamespaceName);
-            root.SetAttribute("xmlns:xsi", NS_xmlns.NamespaceName);
-            root.SetAttribute("xsi:schemalocation", NS_xmlns.NamespaceName);
-            return root;
+            doc.Save(@"Z:\Development\Digipost\XmlManifest.xml");
         }
         
         private XmlElement Mottaker()
         {
-            var mottaker = _manifestdokument.CreateElement("mottaker");
-            mottaker.AppendChild(Person());
+            var mottaker = doc.CreateElement("mottaker", NS_xmlns);
+
+            XmlElement person = doc.CreateElement("person", NS_xmlns);
+            {
+                var personidentifikator = person.AppendChildElement("personidentifikator", NS_xmlns, doc);
+                personidentifikator.InnerText = _manifest.Mottaker.Personidentifikator;
+
+                var postkasseadresse = person.AppendChildElement("postkasseadresse", NS_xmlns, doc);
+                postkasseadresse.InnerText = _manifest.Mottaker.Postkasseadresse;
+            }
+            
+            mottaker.AppendChild(person);
             return mottaker;
         }
 
-        private XmlElement Person()
+        private XmlElement Avsender()
         {
-            var person = _manifestdokument.CreateElement("person");
-            //person.AppendChild(Personidentifikator());
-            return person;
+            var avsender = doc.CreateElement("avsender", NS_xmlns);
+            {
+                var organisasjon = avsender.AppendChildElement("organisasjon", NS_xmlns, doc);
+                organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
+                organisasjon.InnerText = _manifest.Avsender.Organisasjonsnummer.Iso6523();
+
+                var avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NS_xmlns, doc);
+                avsenderidentifikator.InnerText = _manifest.Avsender.Avsenderidentifikator;
+
+                var fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NS_xmlns, doc);
+                fakturaReferanse.InnerText = _manifest.Avsender.Fakturareferanse;
+            }
+            
+            return avsender;
         }
 
-        private XmlNode Personidentifikator()
+        private XmlElement Dokument(Dokument dokument, string elementnavn)
         {
-            return null; // throw new System.NotImplementedException();
+            var dokumentXml = doc.CreateElement(elementnavn, NS_xmlns);
+            dokumentXml.SetAttribute("href", dokument.Filnavn);
+            dokumentXml.SetAttribute("mime", dokument.Innholdstype);
+            {
+                var tittel = dokumentXml.AppendChildElement("tittel", NS_xmlns, doc);
+                tittel.SetAttribute("lang", HentSpråkkode(dokument));
+                tittel.InnerText = dokument.Tittel;
+            }
+            return dokumentXml;
+        }
+
+        private string HentSpråkkode(Dokument dokument)
+        {
+            return dokument.HarStandardSpråk
+                ? _manifest.Forsendelse.Språkkode
+                : dokument.Språkkode;
         }
     }
 }

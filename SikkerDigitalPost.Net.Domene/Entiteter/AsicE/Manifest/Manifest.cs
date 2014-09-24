@@ -4,16 +4,18 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
     public class Manifest : IAsiceVedlegg
     {
-        public Manifest(Mottaker mottaker, TekniskAvsender avsender, Dokumentpakke dokumentpakke)
+        public Manifest(Mottaker mottaker, Behandlingsansvarlig avsender, Forsendelse forsendelse)
         {
             Avsender = avsender;
-            Dokumentpakke = dokumentpakke;
+            Forsendelse = forsendelse;
             Mottaker = mottaker;
+            var bygger = new ManifestBygger(this);
+            bygger.Bygg();
         }
 
-        public TekniskAvsender Avsender { get; private set; }
+        public Behandlingsansvarlig Avsender { get; private set; }
 
-        public Dokumentpakke Dokumentpakke { get; private set; }
+        public Forsendelse Forsendelse { get; set; }
 
         public Mottaker Mottaker { get; private set; }
 

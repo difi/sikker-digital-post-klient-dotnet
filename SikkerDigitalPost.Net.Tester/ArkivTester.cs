@@ -4,7 +4,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
@@ -38,7 +40,7 @@ namespace SikkerDigitalPost.Net.Tests
             _vedleggsFiler = Directory.GetFiles(_vedleggsMappe);
             _hoveddokument = Directory.GetFiles(_hoveddokumentMappe)[0];
             _signaturFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(_signaturFil));
-            _manifestFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(_manifestFil));
+           
         }
 
         [TestMethod]
@@ -58,7 +60,12 @@ namespace SikkerDigitalPost.Net.Tests
         public void LagArkivOgVerifiserDokumentInnhold()
         {
             var dokumentpakke = GenererDokumentpakke();
-            var arkiv = new Arkiv(dokumentpakke, new Signatur(_signaturFil), new Manifest(new Mottaker(), ));
+            var m = new Mottaker("0706663222","Gata2",new X509Certificate2(),"9908:4432442223");
+            var ta = new Behandlingsansvarlig(new Organisasjonsnummer("9987:332345224"));
+            var manifest = new Manifest(m, ta, dokumentpakke);
+
+
+            var arkiv = new Arkiv(dokumentpakke, new Signatur(_signaturFil), manifest);
 
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
 
