@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Design;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using SikkerDigitalPost.Net.Domene.Extensions;
@@ -8,11 +9,12 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
     public class ManifestBygger
     {
+        private const string NsXmlns = "http://begrep.difi.no/sdp/schema_v10";
+        private const string NsXmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
+        private const string NsXsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
+
         private readonly Manifest _manifest;
-        private XmlDocument doc;
-        private static readonly string NS_xmlns = "http://begrep.difi.no/sdp/schema_v10";
-        private static readonly string NS_xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
-        private static readonly string NS_xsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
+        private XmlDocument _manifestXml;
 
         public ManifestBygger(Manifest manifest)
         {
@@ -21,39 +23,34 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 
         public byte[] Bygg()
         {
-            doc = new XmlDocument {PreserveWhitespace = true};
-            doc.AppendChild(doc.CreateElement("manifest", NS_xmlns));
-            doc.DocumentElement.SetAttribute("xmlns:xsi", NS_xmlnsxsi);
-            doc.DocumentElement.SetAttribute("schemaLocation", NS_xmlnsxsi, NS_xsiSchemaLocation);
+            // Opprett rotnode med navnerom.
+            _manifestXml = new XmlDocument {PreserveWhitespace = true};
+            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", NsXmlns));
+            _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", NsXmlnsxsi);
+            _manifestXml.DocumentElement.SetAttribute("schemaLocation", NsXmlnsxsi, NsXsiSchemaLocation);
 
-            doc.DocumentElement.AppendChild(Mottaker());
-            doc.DocumentElement.AppendChild(Avsender());
-            doc.DocumentElement.AppendChild(Dokument(_manifest.Forsendelse.Dokumentpakke.Hoveddokument, "hoveddokument"));
+            _manifestXml.DocumentElement.AppendChild(Mottaker());
+            _manifestXml.DocumentElement.AppendChild(Avsender());
+            _manifestXml.DocumentElement.AppendChild(Dokument(_manifest.Forsendelse.Dokumentpakke.Hoveddokument, "hoveddokument"));
 
             foreach (var vedlegg in _manifest.Forsendelse.Dokumentpakke.Vedlegg)
             {
-                doc.DocumentElement.AppendChild(Dokument(vedlegg, "vedlegg"));
+                _manifestXml.DocumentElement.AppendChild(Dokument(vedlegg, "vedlegg"));
             }
-            SkrivTilFilTest();
             
-            return null;
-        }
-
-        private void SkrivTilFilTest()
-        {
-            doc.Save(@"Z:\Development\Digipost\XmlManifest.xml");
+            return Encoding.Default.GetBytes(_manifestXml.OuterXml);
         }
         
         private XmlElement Mottaker()
         {
-            var mottaker = doc.CreateElement("mottaker", NS_xmlns);
+            var mottaker = _manifestXml.CreateElement("mottaker", NsXmlns);
 
-            XmlElement person = doc.CreateElement("person", NS_xmlns);
+            XmlElement person = _manifestXml.CreateElement("person", NsXmlns);
             {
-                var personidentifikator = person.AppendChildElement("personidentifikator", NS_xmlns, doc);
+                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", NsXmlns, _manifestXml);
                 personidentifikator.InnerText = _manifest.Mottaker.Personidentifikator;
 
-                var postkasseadresse = person.AppendChildElement("postkasseadresse", NS_xmlns, doc);
+                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", NsXmlns, _manifestXml);
                 postkasseadresse.InnerText = _manifest.Mottaker.Postkasseadresse;
             }
             
@@ -63,16 +60,16 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 
         private XmlElement Avsender()
         {
-            var avsender = doc.CreateElement("avsender", NS_xmlns);
+            XmlElement avsender = _manifestXml.CreateElement("avsender", NsXmlns);
             {
-                var organisasjon = avsender.AppendChildElement("organisasjon", NS_xmlns, doc);
+                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", NsXmlns, _manifestXml);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = _manifest.Avsender.Organisasjonsnummer.Iso6523();
 
-                var avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NS_xmlns, doc);
+                XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NsXmlns, _manifestXml);
                 avsenderidentifikator.InnerText = _manifest.Avsender.Avsenderidentifikator;
 
-                var fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NS_xmlns, doc);
+                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NsXmlns, _manifestXml);
                 fakturaReferanse.InnerText = _manifest.Avsender.Fakturareferanse;
             }
             
@@ -81,11 +78,11 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 
         private XmlElement Dokument(Dokument dokument, string elementnavn)
         {
-            var dokumentXml = doc.CreateElement(elementnavn, NS_xmlns);
+            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, NsXmlns);
             dokumentXml.SetAttribute("href", dokument.Filnavn);
             dokumentXml.SetAttribute("mime", dokument.Innholdstype);
             {
-                var tittel = dokumentXml.AppendChildElement("tittel", NS_xmlns, doc);
+                XmlElement tittel = dokumentXml.AppendChildElement("tittel", NsXmlns, _manifestXml);
                 tittel.SetAttribute("lang", HentSpråkkode(dokument));
                 tittel.InnerText = dokument.Tittel;
             }

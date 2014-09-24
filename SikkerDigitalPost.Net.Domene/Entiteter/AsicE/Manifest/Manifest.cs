@@ -10,7 +10,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             Forsendelse = forsendelse;
             Mottaker = mottaker;
             var bygger = new ManifestBygger(this);
-            bygger.Bygg();
+            Bytes = bygger.Bygg();
         }
 
         public Behandlingsansvarlig Avsender { get; private set; }
