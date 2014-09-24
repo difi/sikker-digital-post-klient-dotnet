@@ -33,6 +33,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +47,14 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
+    <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
+    <Compile Include="Xml\IQualifyingPropertiesReference.cs" />
+    <Compile Include="Xml\QualifyingPropertiesObject.cs" />
+    <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />
+    <Compile Include="Xml\SecurityTokenReferenceClause.cs" />
+    <Compile Include="Xml\Sha256Reference.cs" />
+    <Compile Include="Xml\SignedXmlWithId.cs" />
+    <Compile Include="Xml\XmlExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Net.Domene.csproj">
