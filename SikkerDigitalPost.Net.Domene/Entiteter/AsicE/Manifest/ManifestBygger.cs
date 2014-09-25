@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
             
-            return Encoding.Default.GetBytes(_manifestXml.OuterXml);
+            return Encoding.UTF8.GetBytes(_manifestXml.OuterXml);
         }
 
         public void SkrivXmlTilFil(string filsti)
@@ -93,17 +93,10 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             dokumentXml.SetAttribute("mime", dokument.Innholdstype);
             {
                 XmlElement tittel = dokumentXml.AppendChildElement("tittel", NsXmlns, _manifestXml);
-                tittel.SetAttribute("lang", HentSpråkkode(dokument));
+                tittel.SetAttribute("lang", dokument.Språkkode ?? _manifest.Forsendelse.Språkkode);
                 tittel.InnerText = innholdstekst;
             }
             return dokumentXml;
-        }
-
-        private string HentSpråkkode(Dokument dokument)
-        {
-            return dokument.HarStandardSpråk
-                ? _manifest.Forsendelse.Språkkode
-                : dokument.Språkkode;
         }
     }
 }
