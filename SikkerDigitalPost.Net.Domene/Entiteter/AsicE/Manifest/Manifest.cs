@@ -1,32 +1,45 @@
-﻿using System.IO;
+﻿using System;
+using System.Text;
+using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
     public class Manifest : IAsiceVedlegg
     {
-        private readonly byte[] _bytes;
-        
-        public Manifest(byte[] bytes)
+        public Manifest(Mottaker mottaker, Behandlingsansvarlig avsender, Forsendelse forsendelse)
         {
-            _bytes = bytes;
+            Avsender = avsender;
+            Forsendelse = forsendelse;
+            Mottaker = mottaker;
+            var bygger = new ManifestBygger(this);
+            Bytes = bygger.Bygg();
         }
 
-        public Manifest(string filnavn)
+        public Behandlingsansvarlig Avsender { get; private set; }
+
+        public Forsendelse Forsendelse { get; set; }
+
+        public Mottaker Mottaker { get; private set; }
+
+        public byte[] Bytes { get; private set; }
+
+        public XmlDocument Xml()
         {
-            _bytes = File.ReadAllBytes(filnavn);
+            var doc = new XmlDocument();
+            var xml = Encoding.UTF8.GetString(Bytes);
+            doc.LoadXml(xml);
+            return doc;
         }
 
         public string Filnavn {
             get { return "manifest.xml"; }
         }
-        public byte[] Bytes {
-            get { return _bytes; }
-        }
+
         public string Innholdstype {
             get { return "application/xml"; }
         }
-        
-       
+
+
     }
 }
