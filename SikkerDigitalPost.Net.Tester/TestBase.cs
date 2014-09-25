@@ -12,12 +12,13 @@ namespace SikkerDigitalPost.Net.Tests
     [TestClass]
     public class TestBase
     {
-        private static string _testDataMappe = "testdata";
-        private static string _vedleggsMappe = "vedlegg";
-        private static string _hoveddokumentMappe = "hoveddokument";
-
         private static string _hoveddokument;
-        public static string[] Vedleggsstier;
+        
+        protected static string[] Vedleggsstier;
+        protected static string TestDataMappe = "testdata";
+        protected static string VedleggsMappe = "vedlegg";
+        protected static string HoveddokumentMappe = "hoveddokument";
+
         protected static Dokument Hoveddokument;
         protected static IEnumerable<Dokument> Vedlegg;
 
@@ -38,17 +39,14 @@ namespace SikkerDigitalPost.Net.Tests
 
         public static void Initialiser()
         {
-            _testDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: _testDataMappe);
+            TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
 
-            _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
-            _hoveddokumentMappe = Path.Combine(_testDataMappe, _hoveddokumentMappe);
+            VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
+            HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
 
-            Vedleggsstier = Directory.GetFiles(_vedleggsMappe);
-            _hoveddokument = Directory.GetFiles(_hoveddokumentMappe)[0];
-            SignaturFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(SignaturFil));
-
-            Hoveddokument = GenererHoveddokument();
-            Vedlegg = GenererVedlegg();
+            Vedleggsstier = Directory.GetFiles(VedleggsMappe);
+            _hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
+            SignaturFil = Directory.GetFiles(TestDataMappe).Single(f => f.Contains(SignaturFil));
 
             OrgNrAvsender = new Organisasjonsnummer("984661185");
             Behandlingsansvarlig = new Behandlingsansvarlig(OrgNrAvsender);
@@ -58,33 +56,28 @@ namespace SikkerDigitalPost.Net.Tests
 
             DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel");
 
-            Dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", _hoveddokument, "text/docx"));
-            Dokumentpakke.LeggTilVedlegg(Vedlegg);
-
+            Dokumentpakke = GenererDokumentpakke();
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
-
             Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
         }
 
-        static Dokument GenererHoveddokument()
+        private static Dokument GenererHoveddokument()
         {
             return new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
         }
 
-        static IEnumerable<Dokument> GenererVedlegg()
+        private static IEnumerable<Dokument> GenererVedlegg()
         {
             return new List<Dokument>(
                     Vedleggsstier.Select(
                         v => new Dokument(Path.GetFileNameWithoutExtension(v), v, "text/" + Path.GetExtension(_hoveddokument))));
         }
 
-        protected Dokumentpakke GenererDokumentpakke()
+        private static Dokumentpakke GenererDokumentpakke()
         {
             var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
             dokumentpakke.LeggTilVedlegg(GenererVedlegg());
             return dokumentpakke;
         }
-
-
     }
 }

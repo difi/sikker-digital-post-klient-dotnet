@@ -25,23 +25,33 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
         {
             // Opprett rotnode med navnerom.
             _manifestXml = new XmlDocument {PreserveWhitespace = true};
+            var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", NsXmlns));
             _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", NsXmlnsxsi);
             _manifestXml.DocumentElement.SetAttribute("schemaLocation", NsXmlnsxsi, NsXsiSchemaLocation);
+            _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
+            
 
-            _manifestXml.DocumentElement.AppendChild(Mottaker());
-            _manifestXml.DocumentElement.AppendChild(Avsender());
-            _manifestXml.DocumentElement.AppendChild(Dokument(_manifest.Forsendelse.Dokumentpakke.Hoveddokument, "hoveddokument"));
+            _manifestXml.DocumentElement.AppendChild(MottakerNode());
+            _manifestXml.DocumentElement.AppendChild(AvsenderNode());
+
+            var hoveddokument = _manifest.Forsendelse.Dokumentpakke.Hoveddokument;
+            _manifestXml.DocumentElement.AppendChild(DokumentNode(hoveddokument, "hoveddokument", hoveddokument.Tittel));
 
             foreach (var vedlegg in _manifest.Forsendelse.Dokumentpakke.Vedlegg)
             {
-                _manifestXml.DocumentElement.AppendChild(Dokument(vedlegg, "vedlegg"));
+                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
             
             return Encoding.Default.GetBytes(_manifestXml.OuterXml);
         }
+
+        public void SkrivXmlTilFil(string filsti)
+        {
+            _manifestXml.Save(filsti);
+        }
         
-        private XmlElement Mottaker()
+        private XmlElement MottakerNode()
         {
             var mottaker = _manifestXml.CreateElement("mottaker", NsXmlns);
 
@@ -58,7 +68,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             return mottaker;
         }
 
-        private XmlElement Avsender()
+        private XmlElement AvsenderNode()
         {
             XmlElement avsender = _manifestXml.CreateElement("avsender", NsXmlns);
             {
@@ -76,7 +86,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             return avsender;
         }
 
-        private XmlElement Dokument(Dokument dokument, string elementnavn)
+        private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
         {
             XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, NsXmlns);
             dokumentXml.SetAttribute("href", dokument.Filnavn);
@@ -84,7 +94,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             {
                 XmlElement tittel = dokumentXml.AppendChildElement("tittel", NsXmlns, _manifestXml);
                 tittel.SetAttribute("lang", HentSpråkkode(dokument));
-                tittel.InnerText = dokument.Tittel;
+                tittel.InnerText = innholdstekst;
             }
             return dokumentXml;
         }

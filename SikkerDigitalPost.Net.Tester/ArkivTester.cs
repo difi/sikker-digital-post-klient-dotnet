@@ -22,11 +22,8 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            var dokumentpakke = new Dokumentpakke(Hoveddokument);
-            dokumentpakke.LeggTilVedlegg(Vedlegg);
-
-            Assert.AreEqual(Vedleggsstier.Length, dokumentpakke.Vedlegg.Count);
-            Assert.IsNotNull(dokumentpakke.Hoveddokument);
+            Assert.AreEqual(Vedleggsstier.Length, Dokumentpakke.Vedlegg.Count);
+            Assert.IsNotNull(Dokumentpakke.Hoveddokument);
         }
 
         [TestMethod]
