@@ -9,20 +9,25 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
     {
         public Sha256Reference()
         {
-            DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
+            SetDigest();
         }
 
         public Sha256Reference(Stream stream): base(stream)
         {
-            DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
+            SetDigest();
         }
 
         public Sha256Reference(string uri): base(uri)
         {
-            DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
+            SetDigest();
         }
 
         public Sha256Reference(byte[] bytes): base(new MemoryStream(bytes))
+        {
+           SetDigest();
+        }
+
+        private void SetDigest()
         {
             DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
         }
