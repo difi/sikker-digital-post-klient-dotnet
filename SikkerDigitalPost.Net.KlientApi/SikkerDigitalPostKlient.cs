@@ -1,7 +1,7 @@
 ﻿using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
 
-namespace SikkerDigitalPost.Net.Klient
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class SikkerDigitalPostKlient
     {        

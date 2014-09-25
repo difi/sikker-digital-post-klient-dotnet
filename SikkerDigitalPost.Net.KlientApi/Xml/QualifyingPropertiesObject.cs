@@ -6,11 +6,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Net.Klient.Xml
+namespace SikkerDigitalPost.Net.KlientApi.Xml
 {
     internal class QualifyingPropertiesObject : DataObject
     {
-        private static readonly string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffZ";
+        private const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffZ";
 
         public X509Certificate2 Certificate { get; private set; }
 
@@ -27,24 +27,23 @@ namespace SikkerDigitalPost.Net.Klient.Xml
         /// <param name="context">The element where the signature will be placed. Used for extracting namespaces.</param>
         public QualifyingPropertiesObject(X509Certificate2 certificate, string target, IQualifyingPropertiesReference[] references, XmlElement context)
         {
-            this.Certificate = certificate;
-            this.Target = target;
-            this.References = references;
-
-            this.Data = CreateNodes(context);
+            Certificate = certificate;
+            Target = target;
+            References = references;
+            Data = CreateNodes(context);
         }
 
         private XmlNodeList CreateNodes(XmlElement context)
         {
-            var doc = new XmlDocument(context.OwnerDocument.NameTable);
-            doc.PreserveWhitespace = true;
+            var doc = new XmlDocument(context.OwnerDocument.NameTable) {PreserveWhitespace = true};
 
             var root = doc.CreateElement("QualifyingProperties", "http://uri.etsi.org/01903/v1.3.2#");
             root.SetAttribute("Target", this.Target);
 
-            // The SignedXml class will calculate the signature before the data object is added to the main xml document. Because of this, the owner documents namespaces will not be 
-            // proprigated when the SignedProperties element is concationalized. 
-            // This method copies in the namespaces to prevent this.
+            /* The SignedXml class will calculate the signature before the data object is added to the main xml document. Because of this, the owner documents namespaces will not be 
+             * propagated when the SignedProperties element is concatenated. 
+             * This method copies in the namespaces to prevent this.
+             */
             while (context != null)
             {
                 if (context.Prefix != null && !root.Attributes.OfType<XmlAttribute>().Any(a => a.Value == context.NamespaceURI && a.LocalName == context.Prefix))
@@ -70,7 +69,7 @@ namespace SikkerDigitalPost.Net.Klient.Xml
             signedProperties.SetAttribute("Id", "SignedProperties");
 
             var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", "http://uri.etsi.org/01903/v1.3.2#");
-            var signingTime = signedSignatureProperties.AppendChild("SigningTime", "http://uri.etsi.org/01903/v1.3.2#", DateTime.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
+            signedSignatureProperties.AppendChild("SigningTime", "http://uri.etsi.org/01903/v1.3.2#", DateTime.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
             var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", "http://uri.etsi.org/01903/v1.3.2#");
 
             var cert = signingCertificate.AppendChild("Cert", "http://uri.etsi.org/01903/v1.3.2#");

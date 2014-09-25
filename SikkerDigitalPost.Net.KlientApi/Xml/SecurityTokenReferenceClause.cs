@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Net.Klient.Xml
+namespace SikkerDigitalPost.Net.KlientApi.Xml
 {
     internal class SecurityTokenReferenceClause : KeyInfoClause
     {
@@ -9,15 +9,12 @@ namespace SikkerDigitalPost.Net.Klient.Xml
 
         public SecurityTokenReferenceClause(string uri)
         {
-            this.Uri = uri;
+            Uri = uri;
         }
 
-        public override System.Xml.XmlElement GetXml()
+        public override XmlElement GetXml()
         {
-            return this.GetXml(new XmlDocument()
-            {
-                PreserveWhitespace = true
-            });
+            return GetXml(new XmlDocument() { PreserveWhitespace = true });
         }
 
         private XmlElement GetXml(XmlDocument xmlDocument)
@@ -30,7 +27,7 @@ namespace SikkerDigitalPost.Net.Klient.Xml
             return element1;
         }
 
-        public override void LoadXml(System.Xml.XmlElement element)
+        public override void LoadXml(XmlElement element)
         {            
         }
     }

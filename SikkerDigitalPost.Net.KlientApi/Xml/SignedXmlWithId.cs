@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Net.Klient.Xml
+namespace SikkerDigitalPost.Net.KlientApi.Xml
 {
     /// <summary>
     /// Enhances the core SignedXml provider with namespace agnostic query for Id elements.
@@ -11,15 +11,13 @@ namespace SikkerDigitalPost.Net.Klient.Xml
     /// <remarks>
     /// From: http://stackoverflow.com/questions/5099156/malformed-reference-element-when-adding-a-reference-based-on-an-id-attribute-w
     /// </remarks>
-    internal class SignedXmlWithAgnosticId : SignedXml
+    internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
-        public SignedXmlWithAgnosticId(XmlDocument xml)
-            : base(xml)
+        public SignedXmlWithAgnosticId(XmlDocument xml): base(xml)
         {
         }
 
-        public SignedXmlWithAgnosticId(XmlElement xmlElement)
-            : base(xmlElement)
+        public SignedXmlWithAgnosticId(XmlElement xmlElement): base(xmlElement)
         {
         }
 
@@ -27,10 +25,9 @@ namespace SikkerDigitalPost.Net.Klient.Xml
         /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
         /// </summary>
         /// <param name="xml">The document containing the references to be signed.</param>
-        /// <param name="certificate">The certificate containing the private key used for sigining.</param>
+        /// <param name="certificate">The certificate containing the private key used for signing.</param>
         /// <param name="inclusiveNamespacesPrefixList">An optional list of namespaces to be set as the canonicalization namespace prefix list.</param>
-        public SignedXmlWithAgnosticId(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-            : base(xml)
+        public SignedXmlWithAgnosticId(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null): base(xml)
         {
             Initialize(certificate, inclusiveNamespacesPrefixList);
         }
@@ -47,9 +44,9 @@ namespace SikkerDigitalPost.Net.Klient.Xml
             Initialize(certificate, inclusiveNamespacesPrefixList);
         }
 
-        protected virtual void Initialize(X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
+        private void Initialize(X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
         {
-            string signatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+            const string signatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
             // Adds signature method to crypto api
             if (CryptoConfig.CreateFromName(signatureMethod) == null)
@@ -73,9 +70,9 @@ namespace SikkerDigitalPost.Net.Klient.Xml
             // Check to se if id element is within the signatures object node. This is used by ESIs Xml Advanced Electronic Signatures (Xades)
             if (idElem == null)
             {
-                if (this.Signature != null && this.Signature.ObjectList != null)
+                if (Signature != null && Signature.ObjectList != null)
                 {
-                    foreach (DataObject dataObject in this.Signature.ObjectList)
+                    foreach (DataObject dataObject in Signature.ObjectList)
                     {
                         if (dataObject.Data != null && dataObject.Data.Count > 0)
                         {
@@ -95,7 +92,7 @@ namespace SikkerDigitalPost.Net.Klient.Xml
             return idElem;
         }
 
-        protected virtual XmlElement FindIdElement(XmlNode node, string idValue)
+        private XmlElement FindIdElement(XmlNode node, string idValue)
         {
             XmlElement result = null;
             foreach (string s in new[] { "Id", "ID", "id" })

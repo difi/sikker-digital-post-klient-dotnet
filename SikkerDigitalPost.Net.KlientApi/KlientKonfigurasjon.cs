@@ -2,7 +2,7 @@
 using System.Configuration;
 using SikkerDigitalPost.Net.Domene;
 
-namespace SikkerDigitalPost.Net.Klient
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class Klientkonfigurasjon
     {
