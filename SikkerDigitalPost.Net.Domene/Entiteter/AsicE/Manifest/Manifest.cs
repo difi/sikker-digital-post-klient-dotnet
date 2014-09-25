@@ -1,4 +1,7 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+﻿using System;
+using System.Text;
+using System.Xml;
+using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
@@ -20,6 +23,14 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
         public Mottaker Mottaker { get; private set; }
 
         public byte[] Bytes { get; private set; }
+
+        public XmlDocument Xml()
+        {
+            var doc = new XmlDocument();
+            var xml = Encoding.UTF8.GetString(Bytes);
+            doc.LoadXml(xml);
+            return doc;
+        }
 
         public string Filnavn {
             get { return "manifest.xml"; }

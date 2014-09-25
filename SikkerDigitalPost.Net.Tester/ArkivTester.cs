@@ -1,80 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.Tests
 {
     [TestClass]
-    public class ArkivTester
+    public class ArkivTester : TestBase
     {
-        private static string _testDataMappe = "testdata";
-
-        private static string _vedleggsMappe = "vedlegg";
-        private static string _hoveddokumentMappe = "hoveddokument";
-
-        private static string _hoveddokument;
-        private static string[] _vedleggsFiler;
-        private static string _manifestFil = "manifest.xml";
-        private static string _signaturFil = "signatur.xml";
-
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            _testDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: _testDataMappe);
-
-            _vedleggsMappe = Path.Combine(_testDataMappe, _vedleggsMappe);
-            _hoveddokumentMappe = Path.Combine(_testDataMappe, _hoveddokumentMappe);
-
-            _vedleggsFiler = Directory.GetFiles(_vedleggsMappe);
-            _hoveddokument = Directory.GetFiles(_hoveddokumentMappe)[0];
-            _signaturFil = Directory.GetFiles(_testDataMappe).Single(f => f.Contains(_signaturFil));
-           
+              Initialiser();
         }
 
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            var hoveddokument = GenererHoveddokument();
-            var vedlegg = GenererVedlegg();
+            var dokumentpakke = new Dokumentpakke(Hoveddokument);
+            dokumentpakke.LeggTilVedlegg(Vedlegg);
 
-            var dokumentpakke = new Dokumentpakke(hoveddokument);
-            dokumentpakke.LeggTilVedlegg(vedlegg);
-
-            Assert.AreEqual(vedlegg.Count, dokumentpakke.Vedlegg.Count);
+            Assert.AreEqual(Vedleggsstier.Length, dokumentpakke.Vedlegg.Count);
             Assert.IsNotNull(dokumentpakke.Hoveddokument);
         }
 
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
-            var dokumentpakke = GenererDokumentpakke();
-            var m = new Mottaker("0706663222","Gata2",new X509Certificate2(),"9908:4432442223");
-            var ta = new Behandlingsansvarlig(new Organisasjonsnummer("9987:332345224"));
-            var manifest = new Manifest(m, ta, dokumentpakke);
-
-
-            var arkiv = new Arkiv(dokumentpakke, new Signatur(_signaturFil), manifest);
+            var arkiv = new Arkiv(Dokumentpakke, new Signatur(SignaturFil), Manifest);
+            
 
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
 
             //Åpne zip og generer sjekksum for å verifisere innhold
             using (var zip = new ZipArchive(arkivstrøm, ZipArchiveMode.Read))
             {
-                
                 //Alle vedlegg
-                foreach (var filsti in _vedleggsFiler)
+                foreach (var filsti in Vedleggsstier)
                 {
                     byte[] sjekksum1;
                     byte[] sjekksum2;
@@ -88,7 +55,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, _signaturFil, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, SignaturFil, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -97,7 +64,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, _manifestFil, Path.GetFileName(arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Manifest.Bytes, Path.GetFileName(arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }
@@ -105,9 +72,14 @@ namespace SikkerDigitalPost.Net.Tests
 
         private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
         {
+            GenererSjekksum(zip, File.ReadAllBytes(filstiPåDisk), entryNavnIArkiv, out hash1, out hash2);
+        }
+
+        private void GenererSjekksum(ZipArchive zip, byte[] fil, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
+        {
             using (var md5 = MD5.Create())
             {
-                using (var stream = File.OpenRead(filstiPåDisk))
+                using (var stream = new MemoryStream(fil))
                 {
                     hash1 = md5.ComputeHash(stream);
                 }
@@ -119,23 +91,5 @@ namespace SikkerDigitalPost.Net.Tests
             }
         }
 
-        private Dokument GenererHoveddokument()
-        {
-            return new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
-        }
-
-        private List<Dokument> GenererVedlegg()
-        {
-            return new List<Dokument>(
-                    _vedleggsFiler.Select(
-                        v => new Dokument(Path.GetFileNameWithoutExtension(v), v, "text/" + Path.GetExtension(_hoveddokument))));
-        }
-
-        private Dokumentpakke GenererDokumentpakke()
-        {
-            var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
-            dokumentpakke.LeggTilVedlegg(GenererVedlegg());
-            return dokumentpakke;
-        }
     }
 }
