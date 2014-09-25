@@ -43,7 +43,8 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
             var signatur = new Signatur(certificate);
             var manifestbygger = new ManifestBygger(manifest);
-            var signaturbygger = new SignaturBygger(signatur);
+            var signaturbygger = new SignaturBygger(signatur, forsendelse);
+            signaturbygger.Bygg();
 
             //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
             //sikkerDigitalPostKlient.Send(forsendelse);

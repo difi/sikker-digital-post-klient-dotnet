@@ -70,7 +70,7 @@ namespace SikkerDigitalPost.Net.Tests
             Sertifikat = store.Certificates[0];
             store.Close();
             Signatur = new Signatur(Sertifikat);
-            var signaturbygger = new SignaturBygger(Signatur);
+            var signaturbygger = new SignaturBygger(Signatur, Forsendelse);
             signaturbygger.Bygg();
         }
 
