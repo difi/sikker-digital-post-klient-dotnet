@@ -1,34 +1,24 @@
 ﻿using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
 {
     public class Signatur : IAsiceVedlegg
     {
-        private readonly byte[] _bytes;
+        public readonly X509Certificate2 Sertifikat;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bytes"></param>
-        public Signatur(byte[] bytes)
+        public Signatur(X509Certificate2 sertifikat)
         {
-            _bytes = bytes;
+            Sertifikat = sertifikat;
         }
 
-        public Signatur(string filnavn)
-        {
-            _bytes = File.ReadAllBytes(filnavn);
-        }
-        
         public string Filnavn {
             get { return "META-INF/signatures.xml"; } 
         }
-        
-        public byte[] Bytes {
-            get { return _bytes; }
-        }
-        
+
+        public byte[] Bytes { get; set; }
+
         public string Innholdstype {
             get { return "application/xml"; }
         }

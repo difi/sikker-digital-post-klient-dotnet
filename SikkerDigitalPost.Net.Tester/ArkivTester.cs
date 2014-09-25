@@ -29,7 +29,7 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
-            var arkiv = new Arkiv(Dokumentpakke, new Signatur(SignaturFil), Manifest);
+            var arkiv = new Arkiv(Dokumentpakke, Signatur, Manifest);
             
 
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
@@ -52,7 +52,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, SignaturFil, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Signatur.Bytes, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 

@@ -12,8 +12,6 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             Avsender = avsender;
             Forsendelse = forsendelse;
             Mottaker = mottaker;
-            var bygger = new ManifestBygger(this);
-            Bytes = bygger.Bygg();
         }
 
         public Behandlingsansvarlig Avsender { get; private set; }
@@ -22,7 +20,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 
         public Mottaker Mottaker { get; private set; }
 
-        public byte[] Bytes { get; private set; }
+        public byte[] Bytes { get; set; }
 
         public XmlDocument Xml()
         {

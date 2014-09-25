@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.KlientDemo
@@ -12,6 +13,11 @@ namespace SikkerDigitalPost.Net.KlientDemo
         static void Main(string[] args)
         {
             var nøkkelpar = new Nøkkelpar();
+
+            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+            var certificate = store.Certificates[0];
+            store.Close();
             
             //Avsender
             var orgNrAvsender = new Organisasjonsnummer("984661185");
@@ -35,9 +41,13 @@ namespace SikkerDigitalPost.Net.KlientDemo
             //Forsendelse og sdp-klient
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
             var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
+            var signatur = new Signatur(certificate);
+            var manifestbygger = new ManifestBygger(manifest);
+            var signaturbygger = new SignaturBygger(signatur);
+
             //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
             //sikkerDigitalPostKlient.Send(forsendelse);
-            
+
         }
     }
 }

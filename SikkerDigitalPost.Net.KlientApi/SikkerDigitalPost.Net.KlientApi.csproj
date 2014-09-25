@@ -48,7 +48,9 @@
     <Compile Include="KlientKonfigurasjon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ManifestBygger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignaturBygger.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
     <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
     <Compile Include="Xml\IQualifyingPropertiesReference.cs" />

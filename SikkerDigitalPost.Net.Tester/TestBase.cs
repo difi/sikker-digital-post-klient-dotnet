@@ -6,6 +6,8 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -22,8 +24,6 @@ namespace SikkerDigitalPost.Net.Tests
         protected static Dokument Hoveddokument;
         protected static IEnumerable<Dokument> Vedlegg;
 
-        protected static string SignaturFil = "signatur.xml";
-
         protected static Organisasjonsnummer OrgNrAvsender;
         protected static Behandlingsansvarlig Behandlingsansvarlig;
 
@@ -36,6 +36,9 @@ namespace SikkerDigitalPost.Net.Tests
         protected static Forsendelse Forsendelse;
 
         protected static Manifest Manifest;
+        
+        protected static Signatur Signatur;
+        protected static X509Certificate2 Sertifikat;
 
         public static void Initialiser()
         {
@@ -46,7 +49,6 @@ namespace SikkerDigitalPost.Net.Tests
 
             Vedleggsstier = Directory.GetFiles(VedleggsMappe);
             _hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
-            SignaturFil = Directory.GetFiles(TestDataMappe).Single(f => f.Contains(SignaturFil));
 
             OrgNrAvsender = new Organisasjonsnummer("984661185");
             Behandlingsansvarlig = new Behandlingsansvarlig(OrgNrAvsender);
@@ -58,7 +60,18 @@ namespace SikkerDigitalPost.Net.Tests
 
             Dokumentpakke = GenererDokumentpakke();
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
+            
             Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
+            var manifestbygger = new ManifestBygger(Manifest);
+            manifestbygger.Bygg();
+
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+            Sertifikat = store.Certificates[0];
+            store.Close();
+            Signatur = new Signatur(Sertifikat);
+            var signaturbygger = new SignaturBygger(Signatur);
+            signaturbygger.Bygg();
         }
 
         private static Dokument GenererHoveddokument()

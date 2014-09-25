@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.Design;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using System.Xml;
-using System.Xml.Linq;
+using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Extensions;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class ManifestBygger
     {
@@ -21,7 +20,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             _manifest = manifest;
         }
 
-        public byte[] Bygg()
+        public void Bygg()
         {
             // Opprett rotnode med navnerom.
             _manifestXml = new XmlDocument {PreserveWhitespace = true};
@@ -42,8 +41,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
             {
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
-            
-            return Encoding.UTF8.GetBytes(_manifestXml.OuterXml);
+            _manifest.Bytes = Encoding.UTF8.GetBytes(_manifestXml.OuterXml);
         }
 
         public void SkrivXmlTilFil(string filsti)
