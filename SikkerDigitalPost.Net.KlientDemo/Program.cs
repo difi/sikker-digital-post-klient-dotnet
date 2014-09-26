@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.KlientDemo
@@ -28,15 +29,17 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
             var vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
 
-            //Dokumentpakke
+            //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedleggsgris",vedlegg,"text/docx","EN"));
-
-            //Forsendelse og sdp-klient
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
+
             var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
+            var signatur = new Signatur(@"Z:\Development\Digipost\Xpost.asice\META-INF\signatures.xml");
+            
             //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
             //sikkerDigitalPostKlient.Send(forsendelse);
+
             
         }
     }

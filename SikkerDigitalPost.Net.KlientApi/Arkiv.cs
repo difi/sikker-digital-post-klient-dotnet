@@ -1,5 +1,8 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
+using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
@@ -11,6 +14,7 @@ namespace SikkerDigitalPost.Net.KlientApi
         public readonly Manifest Manifest;
         public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
+        private byte[] _bytes;
 
         public Arkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
         {
@@ -21,6 +25,9 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         public byte[] LagArkiv()
         {
+            if (_bytes != null)
+                return _bytes;
+            
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
@@ -32,7 +39,7 @@ namespace SikkerDigitalPost.Net.KlientApi
 
             }
 
-            return stream.ToArray();
+            return _bytes = stream.ToArray();
         }
 
         private static void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
@@ -43,6 +50,24 @@ namespace SikkerDigitalPost.Net.KlientApi
                 s.Write(data, 0, data.Length);
                 s.Close();
             }
+        }
+
+        public byte[] Krypter(X509Certificate2 sertifikat)
+        {
+            var contentInfo = new ContentInfo(_bytes);
+            var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
+            var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
+            var recipient = new CmsRecipient(sertifikat);
+            envelopedCms.Encrypt(recipient);
+            return envelopedCms.Encode();
+        }
+
+        public static byte[] Dekrypter(byte[] kryptertData)
+        {
+            var envelopedCms = new EnvelopedCms();
+            envelopedCms.Decode(kryptertData);
+            envelopedCms.Decrypt(envelopedCms.RecipientInfos[0]);
+            return envelopedCms.ContentInfo.Content;
         }
     }
 }
