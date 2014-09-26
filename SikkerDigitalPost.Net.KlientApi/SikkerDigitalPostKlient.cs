@@ -45,7 +45,7 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, dokumenter mm), enten digitalt eller fyisk.</param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, Vedlegg mm), enten digitalt eller fyisk.</param>
         public void Send(Forsendelse forsendelse)
         {
             //Finn sertifikat -CHECK (forsendelse skal inneholde disse)

@@ -30,7 +30,7 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
-            var arkiv = new Arkiv(Dokumentpakke, new Signatur(SignaturFil), Manifest);
+            var arkiv = new Arkiv(Dokumentpakke, Signatur, Manifest);
             
 
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
@@ -53,7 +53,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, SignaturFil, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Signatur.Bytes, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -71,16 +71,10 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void LagKryptertArkivVerifiserInnholdValiderer()
         {
-            //Følgende avsnitt skal bort / erstattes så snart f_generersignatur er merget inn i master.
-            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-            var sertifikat = store.Certificates[0];
-            store.Close();
-
-            var arkiv = new Arkiv(Dokumentpakke, new Signatur(@"Z:\Development\Digipost\Xpost.asice\META-INF\signatures.xml"), Manifest);
+            var arkiv = new Arkiv(Dokumentpakke, Signatur, Manifest);
             var originalData = arkiv.LagArkiv();
 
-            var krypterteData = arkiv.Krypter(sertifikat);
+            var krypterteData = arkiv.Krypter(Sertifikat);
             var dekrypterteData = Arkiv.Dekrypter(krypterteData); 
 
             Assert.AreEqual(originalData.ToString(), dekrypterteData.ToString());

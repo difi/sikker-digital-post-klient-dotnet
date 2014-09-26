@@ -8,16 +8,16 @@
         public Organisasjonsnummer Organisasjonsnummer { get; set; }
 
         /// <summary>
-        /// Avsenders nøkkelpar: Signert virksomhetssertifikat og tilhørende privatnøkkel.
+        /// Avsenders Sertifikatbutikk: Signert virksomhetssertifikat og tilhørende privatnøkkel.
         /// </summary>
-        public Nøkkelpar Nøkkelpar { get; set; }
+        public Sertifikatbutikk Sertifikatbutikk { get; set; }
 
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
-        /// <param name="nøkkelpar">Avsenders nøkkelpar: Signert virksomhetssertifikat og tilhørende privatnøkkel.</param>
-        public TekniskAvsender(Organisasjonsnummer organisasjonsnummer, Nøkkelpar nøkkelpar)
+        /// <param name="sertifikatbutikk">Avsenders Sertifikatbutikk: Signert virksomhetssertifikat og tilhørende privatnøkkel.</param>
+        public TekniskAvsender(Organisasjonsnummer organisasjonsnummer, Sertifikatbutikk sertifikatbutikk)
         {
             Organisasjonsnummer = organisasjonsnummer;
-            Nøkkelpar = nøkkelpar;
+            Sertifikatbutikk = sertifikatbutikk;
         }
     }
 }

@@ -12,7 +12,12 @@ namespace SikkerDigitalPost.Net.KlientDemo
     {
         static void Main(string[] args)
         {
-            var nøkkelpar = new Nøkkelpar();
+            var sertifikatbutikk = new Sertifikatbutikk();
+
+            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+            var certificate = store.Certificates[0];
+            store.Close();
             
             //Avsender
             var orgNrAvsender = new Organisasjonsnummer("984661185");
@@ -35,12 +40,14 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
 
             var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
-            var signatur = new Signatur(@"Z:\Development\Digipost\Xpost.asice\META-INF\signatures.xml");
-            
+
+            var signatur = new Signatur(certificate);
+            var manifestbygger = new ManifestBygger(manifest);
+            var signaturbygger = new SignaturBygger(signatur, forsendelse);
+            signaturbygger.Bygg();
+
             //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
             //sikkerDigitalPostKlient.Send(forsendelse);
-
-            
         }
     }
 }

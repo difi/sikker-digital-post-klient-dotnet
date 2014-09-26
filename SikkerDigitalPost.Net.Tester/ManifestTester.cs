@@ -1,12 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml;
-using System.Xml.Schema;
-using System.Xml.XPath;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -20,7 +15,7 @@ namespace SikkerDigitalPost.Net.Tests
         }
 
         [TestMethod]
-        public void ValidereManifestMotXmlValiderer()
+        public void ValidereManifestMotXsdValiderer()
         {
             var settings = new XmlReaderSettings();
             settings.Schemas.Add("http://begrep.difi.no/sdp/schema_v10", ManifestXsdPath());

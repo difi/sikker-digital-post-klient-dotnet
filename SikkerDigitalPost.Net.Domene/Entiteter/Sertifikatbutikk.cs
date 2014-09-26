@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SikkerDigitalPost.Net.Domene
+namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
-    public class Nøkkelpar
+    public class Sertifikatbutikk
     {
         public X509Certificate2 Sertifikat(StoreName storeName, string thumbprint)
         {
