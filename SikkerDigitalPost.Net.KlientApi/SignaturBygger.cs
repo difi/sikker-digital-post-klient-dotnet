@@ -19,7 +19,7 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         private readonly Signatur _signatur;
         private readonly Forsendelse _forsendelse;
-        private XmlDocument _signaturXml;
+        private XmlDocument _signaturDokumentXml;
 
         public SignaturBygger(Signatur signatur, Forsendelse forsendelse)
         {
@@ -29,41 +29,47 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         public void Bygg()
         {
-            _signaturXml = OpprettXmlDocument();
+            _signaturDokumentXml = OpprettXmlDokument();
 
-            var signedXml = OpprettSignedXml(_signaturXml, _signatur);
+            var signaturnode = Signaturnode(_signaturDokumentXml, _signatur);
 
-            var referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg);
-            OpprettReferanser(signedXml, referanser);
-            
-            signedXml.AddObject(new QualifyingPropertiesObject(_signatur.Sertifikat, "#Signature", 
-                referanser
-                    .Select(r => new QualifyingPropertiesReference { Filename = r.Filnavn, Mimetype = r.Innholdstype })
-                    .ToArray(), _signaturXml.DocumentElement)
-                );
+            IEnumerable<Dokument> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg);
+            OpprettReferanser(signaturnode, referanser);
+           
+            var keyInfoX509Data = new KeyInfoX509Data(_signatur.Sertifikat, X509IncludeOption.WholeChain);
+            signaturnode.KeyInfo.AddClause(keyInfoX509Data);
+            signaturnode.ComputeSignature();
 
-            var signedPropertiesReference = new Sha256Reference("#SignedProperties");
-            signedPropertiesReference.Type = "http://uri.etsi.org/01903#SignedProperties";
-            signedPropertiesReference.AddTransform(new XmlDsigC14NTransform(false));
-            signedXml.AddReference(signedPropertiesReference);
+            _signaturDokumentXml.DocumentElement.AppendChild(_signaturDokumentXml.ImportNode(signaturnode.GetXml(), true));
 
-            KeyInfoX509Data keyInfoX509Data = new KeyInfoX509Data(_signatur.Sertifikat, X509IncludeOption.WholeChain);
-            signedXml.KeyInfo.AddClause(keyInfoX509Data);
-
-            signedXml.ComputeSignature();
-
-            _signaturXml.DocumentElement.AppendChild(_signaturXml.ImportNode(signedXml.GetXml(), true));
-
-            _signaturXml.Save(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Signatur.xml");
-            _signatur.Bytes = Encoding.UTF8.GetBytes(_signaturXml.OuterXml);
+            _signaturDokumentXml.Save(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Signatur.xml");
+            _signatur.Bytes = Encoding.UTF8.GetBytes(_signaturDokumentXml.OuterXml);
         }
 
-        private void OpprettReferanser(SignedXml signedXml, IEnumerable<Dokument> referanser)
+        private static Sha256Reference SignedPropertiesReferanse()
+        {
+            var signedPropertiesReference = new Sha256Reference("#SignedProperties")
+            {
+                Type = "http://uri.etsi.org/01903#SignedProperties"
+            };
+            signedPropertiesReference.AddTransform(new XmlDsigC14NTransform(false));
+            return signedPropertiesReference;
+        }
+
+        private void OpprettReferanser(SignedXml signaturnode, IEnumerable<Dokument> referanser)
         {
             foreach (var item in referanser)
             {
-                signedXml.AddReference(HentReferanse(item));
+                signaturnode.AddReference(Sha256Referanse(item));
             }
+            
+            signaturnode.AddObject(new QualifyingPropertiesObject(_signatur.Sertifikat, "#Signature",
+               referanser
+                   .Select(r => new QualifyingPropertiesReference { Filename = r.Filnavn, Mimetype = r.Innholdstype })
+                   .ToArray(), _signaturDokumentXml.DocumentElement)
+               );
+
+            signaturnode.AddReference(SignedPropertiesReferanse());
         }
 
         private static IEnumerable<Dokument> Referanser(Dokument hoveddokument, IEnumerable<Dokument> vedlegg)
@@ -74,7 +80,7 @@ namespace SikkerDigitalPost.Net.KlientApi
             return referanser;
         }
 
-        private SignedXml OpprettSignedXml(XmlDocument signaturXml, Signatur signatur)
+        private static SignedXml Signaturnode(XmlDocument signaturXml, Signatur signatur)
         {
             SignedXml signedXml = new SignedXmlWithAgnosticId(signaturXml, signatur.Sertifikat);
             signedXml.SignedInfo.CanonicalizationMethod = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
@@ -82,7 +88,7 @@ namespace SikkerDigitalPost.Net.KlientApi
             return signedXml;
         }
 
-        private XmlDocument OpprettXmlDocument()
+        private XmlDocument OpprettXmlDokument()
         {
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
@@ -91,7 +97,7 @@ namespace SikkerDigitalPost.Net.KlientApi
             return signaturXml;
         }
 
-        private Sha256Reference HentReferanse(IAsiceVedlegg dokument)
+        private Sha256Reference Sha256Referanse(IAsiceVedlegg dokument)
         {
             return new Sha256Reference(dokument.Bytes)
             {
