@@ -36,18 +36,7 @@ namespace SikkerDigitalPost.Net.KlientDemo
 
             var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
             var signatur = new Signatur(@"Z:\Development\Digipost\Xpost.asice\META-INF\signatures.xml");
-
-            // Arkiv
-            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-            var sertifikat = store.Certificates[0];
-            store.Close();
-
-            var arkiv = new Arkiv(dokumentpakke, signatur, manifest);
-            arkiv.LagArkiv();
-            var encyptedZipData = arkiv.Krypter(sertifikat);
             
-
             //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
             //sikkerDigitalPostKlient.Send(forsendelse);
 

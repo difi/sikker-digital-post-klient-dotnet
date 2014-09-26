@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
@@ -67,6 +68,24 @@ namespace SikkerDigitalPost.Net.Tests
             }
         }
 
+        [TestMethod]
+        public void LagKryptertArkivVerifiserInnholdValiderer()
+        {
+            //Følgende avsnitt skal bort / erstattes så snart f_generersignatur er merget inn i master.
+            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+            var sertifikat = store.Certificates[0];
+            store.Close();
+
+            var arkiv = new Arkiv(Dokumentpakke, new Signatur(@"Z:\Development\Digipost\Xpost.asice\META-INF\signatures.xml"), Manifest);
+            var originalData = arkiv.LagArkiv();
+
+            var krypterteData = arkiv.Krypter(sertifikat);
+            var dekrypterteData = Arkiv.Dekrypter(krypterteData); 
+
+            Assert.AreEqual(originalData.ToString(), dekrypterteData.ToString());
+        }
+        
         private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
         {
             GenererSjekksum(zip, File.ReadAllBytes(filstiPåDisk), entryNavnIArkiv, out hash1, out hash2);

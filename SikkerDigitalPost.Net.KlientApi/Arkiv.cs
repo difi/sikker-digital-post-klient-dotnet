@@ -61,5 +61,13 @@ namespace SikkerDigitalPost.Net.KlientApi
             envelopedCms.Encrypt(recipient);
             return envelopedCms.Encode();
         }
+
+        public static byte[] Dekrypter(byte[] kryptertData)
+        {
+            var envelopedCms = new EnvelopedCms();
+            envelopedCms.Decode(kryptertData);
+            envelopedCms.Decrypt(envelopedCms.RecipientInfos[0]);
+            return envelopedCms.ContentInfo.Content;
+        }
     }
 }
