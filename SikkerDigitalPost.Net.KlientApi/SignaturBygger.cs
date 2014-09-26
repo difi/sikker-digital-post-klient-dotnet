@@ -16,6 +16,8 @@ namespace SikkerDigitalPost.Net.KlientApi
     public class SignaturBygger
     {
         private const string NsXmlns = "http://uri.etsi.org/2918/v1.2.1#";
+        private const string NsXmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
+        private const string NsXsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
 
         private readonly Signatur _signatur;
         private readonly Forsendelse _forsendelse;
@@ -35,7 +37,7 @@ namespace SikkerDigitalPost.Net.KlientApi
 
             IEnumerable<Dokument> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg);
             OpprettReferanser(signaturnode, referanser);
-           
+
             var keyInfoX509Data = new KeyInfoX509Data(_signatur.Sertifikat, X509IncludeOption.WholeChain);
             signaturnode.KeyInfo.AddClause(keyInfoX509Data);
             signaturnode.ComputeSignature();
@@ -62,7 +64,7 @@ namespace SikkerDigitalPost.Net.KlientApi
             {
                 signaturnode.AddReference(Sha256Referanse(item));
             }
-            
+
             signaturnode.AddObject(new QualifyingPropertiesObject(_signatur.Sertifikat, "#Signature",
                referanser
                    .Select(r => new QualifyingPropertiesReference { Filename = r.Filnavn, Mimetype = r.Innholdstype })
@@ -93,6 +95,8 @@ namespace SikkerDigitalPost.Net.KlientApi
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             signaturXml.AppendChild(signaturXml.CreateElement("XAdESSignatures", NsXmlns));
+            signaturXml.DocumentElement.SetAttribute("xmlns:xsi", NsXmlnsxsi);
+            signaturXml.DocumentElement.SetAttribute("schemaLocation", NsXmlnsxsi, NsXsiSchemaLocation);
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;
         }

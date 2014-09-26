@@ -55,6 +55,7 @@
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArkivTester.cs" />
+    <Compile Include="SignaturTester.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
