@@ -12,7 +12,7 @@ namespace SikkerDigitalPost.Net.KlientDemo
     {
         static void Main(string[] args)
         {
-            var nøkkelpar = new Nøkkelpar();
+            var nøkkelpar = new Sertifikatbutikk();
 
             X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
             store.Open(OpenFlags.ReadOnly);

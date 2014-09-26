@@ -68,7 +68,7 @@
     <Compile Include="Entiteter\Interface\IAsiceVedlegg.cs" />
     <Compile Include="Entiteter\Mottaker.cs" />
     <Compile Include="Enums\Varslingskanal.cs" />
-    <Compile Include="Entiteter\Nøkkelpar.cs" />
+    <Compile Include="Entiteter\Sertifikatbutikk.cs" />
     <Compile Include="Entiteter\Person.cs" />
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />

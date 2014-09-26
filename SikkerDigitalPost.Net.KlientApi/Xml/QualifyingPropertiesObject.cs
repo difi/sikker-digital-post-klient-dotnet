@@ -46,9 +46,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
              */
             while (context != null)
             {
-                if (context.Prefix != null && !root.Attributes.OfType<XmlAttribute>().Any(a => a.Value == context.NamespaceURI && a.LocalName == context.Prefix))
+              /*  if (context.Prefix != null && !root.Attributes.OfType<XmlAttribute>().Any(a => a.Value == context.NamespaceURI && a.LocalName == context.Prefix))
                     root.SetAttribute("xmlns:" + context.Prefix, context.NamespaceURI);
-
+                */
                 foreach (XmlAttribute item in context.Attributes)
                 {
                     if (item.Prefix == "xmlns")
