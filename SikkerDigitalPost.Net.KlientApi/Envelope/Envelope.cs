@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
@@ -9,7 +10,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
 
         public Arkiv arkiv { get; set; }
         
-        private XmlDocument _envelopeXml;
+        private XmlElement _envelopeXml;
         
         public Envelope()
         {
@@ -19,12 +20,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         private XmlDocument EnvelopeDokument()
         {
             var xmlDokument = new XmlDocument();
+            var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
+            xmlDokument.AppendChild(xmlDokument.CreateElement("manifest", NsXlmnsEnv));
+            xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
             return xmlDokument;
         }
 
         private XmlElement HeaderElement()
         {
-            //var header = new Header(_envelopeXml.CreateElement("header", "namespace", "..."));
+            var header = new Header(_envelopeXml);
             //_envelopeXml.DocumentElement.AppendChild(header.Element);
             return null;
         }
