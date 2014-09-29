@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Xml;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope
+namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     class Security
     {
+        private readonly XmlDocument _dokument;
+
+        public Security(XmlDocument dokument)
+        {
+            _dokument = dokument;
+        }
+
+        public XmlElement Xml()
+        {
+            return null;
+        }
     }
 }

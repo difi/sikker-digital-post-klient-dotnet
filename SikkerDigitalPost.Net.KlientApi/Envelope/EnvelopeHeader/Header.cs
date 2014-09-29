@@ -4,9 +4,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     public class Header
     {
-        private readonly XmlElement _dokument;
+        private readonly XmlDocument _dokument;
 
-        public Header(XmlElement dokument)
+        public Header(XmlDocument dokument)
         {
             _dokument = dokument;
         }
@@ -18,7 +18,8 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         public XmlElement SecurityElement()
         {
-            return null;
+            var securityElement = new Security(_dokument);
+            return securityElement.Xml();
         }
 
         public XmlElement MessagingElement()
