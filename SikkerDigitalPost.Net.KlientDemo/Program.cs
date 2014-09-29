@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene;
+﻿using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
