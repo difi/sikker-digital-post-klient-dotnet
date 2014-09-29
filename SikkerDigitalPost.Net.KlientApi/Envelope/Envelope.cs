@@ -10,13 +10,13 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         
         public Arkiv arkiv { get; set; }
         
-        private XmlDocument _envelopeXml;
+        private readonly XmlDocument _envelopeXml;
         
         public Envelope()
         {
             _envelopeXml = EnvelopeDokument();
         }
-
+        
         private XmlDocument EnvelopeDokument()
         {
             var xmlDokument = new XmlDocument();
@@ -37,6 +37,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         {
             var body = new BodyElement(_envelopeXml);
             return body.Xml();
+        }
+
+        private void SkrivTilFil(string filsti)
+        {
+            _envelopeXml.Save(filsti);
         }
     }
 }
