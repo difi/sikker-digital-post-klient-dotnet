@@ -3,13 +3,13 @@
 Dette er en .NET-klient for sending av sikker digital post for det offentlige. Formålet for klienten er å forenkle integrasjonen 
 som må utføres av avsendervirksomheter. For mer informasjon om sikker digital post, se [her](http://begrep.difi.no/SikkerDigitalPost/).
 
-**Klienten er under utvikling, og vil per dags dato ikke kunne brukes til å sende digital post.**
+**NB: Klienten er under utvikling, og vil per dags dato ikke kunne brukes til å sende digital post.**
 
 #Getting started
 
 ##NuGet-pakke
 
-Klienten er tilgjengelig som en NuGet-pakke. Denne vil oppdateres jevnlig etter hvert som ny funksjonalitet legges til på klienten. 
+Klienten er tilgjengelig som en NuGet-pakke. Denne vil oppdateres jevnlig etter hvert som ny funksjonalitet legges til.
 
 For å installere NuGet-pakken, gjør følgende:
 
