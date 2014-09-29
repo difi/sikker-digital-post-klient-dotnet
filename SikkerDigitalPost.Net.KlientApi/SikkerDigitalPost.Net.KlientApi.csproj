@@ -44,6 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arkiv.cs" />
+    <Compile Include="Envelope\EnvelopeBody\Body.cs" />
+    <Compile Include="Envelope\EnvelopeBody\DigitalPost.cs" />
+    <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocument.cs" />
+    <Compile Include="Envelope\Envelope.cs" />
+    <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocumentHeader.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Header.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Messaging.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Security.cs" />
     <Compile Include="KlientKonfigurasjon.cs">
       <SubType>Code</SubType>
     </Compile>
