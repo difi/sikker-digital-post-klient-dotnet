@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arkiv.cs" />
-    <Compile Include="Envelope\EnvelopeBody\Body.cs" />
+    <Compile Include="Envelope\EnvelopeBody\BodyElement.cs" />
     <Compile Include="Envelope\EnvelopeBody\DigitalPost.cs" />
     <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocument.cs" />
     <Compile Include="Envelope\Envelope.cs" />

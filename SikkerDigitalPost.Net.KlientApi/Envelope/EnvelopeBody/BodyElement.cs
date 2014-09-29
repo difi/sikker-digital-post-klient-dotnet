@@ -4,16 +4,22 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 {
     public class BodyElement
     {
-        private XmlElement _bodyElement;
+        private XmlDocument _dokument;
 
-        public BodyElement()
+        private const string NsWsu = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+        private const string NsId = "";
+
+        public BodyElement(XmlDocument dokument)
         {
-            
+            _dokument = dokument;
         }
 
-        public void Xml(ref XmlElement bodyElement)
+        public XmlElement Xml()
         {
-            _bodyElement = bodyElement;
+            var bodyElement = _dokument.CreateElement("env", "body", _dokument.NamespaceURI);
+            bodyElement.SetAttribute("xmlns:wsu", NsWsu);
+
+            return bodyElement;
         }
     }
 }
