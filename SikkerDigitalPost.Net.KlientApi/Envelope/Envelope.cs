@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
 
@@ -8,14 +9,16 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
     {
         private const string NsXmlnsEnv = "http://www.w3.org/2003/05/soap-envelope";
         private bool isCreated = false;
+        private readonly Forsendelse _forsendelse;
         
         public Arkiv arkiv { get; set; }
         
         private readonly XmlDocument _envelopeXml;
          
         
-        public Envelope()
+        public Envelope(Forsendelse forsendelse)
         {
+            _forsendelse = forsendelse;
             _envelopeXml = EnvelopeDokument();
         }
 
@@ -47,7 +50,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
 
         private XmlElement BodyElement()
         {
-            var body = new BodyElement(_envelopeXml);
+            var body = new BodyElement(_envelopeXml, _forsendelse);
             return body.Xml();
         }
 

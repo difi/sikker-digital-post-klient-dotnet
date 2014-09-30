@@ -44,8 +44,12 @@ namespace SikkerDigitalPost.Net.KlientApi
 
             _signaturDokumentXml.DocumentElement.AppendChild(_signaturDokumentXml.ImportNode(signaturnode.GetXml(), true));
 
-            _signaturDokumentXml.Save(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Signatur.xml");
             _signatur.Bytes = Encoding.UTF8.GetBytes(_signaturDokumentXml.OuterXml);
+        }
+
+        public void SkrivXmlTilFil(string filsti)
+        {
+            _signaturDokumentXml.Save(filsti);
         }
 
         private static Sha256Reference SignedPropertiesReferanse()

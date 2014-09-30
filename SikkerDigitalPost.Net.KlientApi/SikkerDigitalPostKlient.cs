@@ -58,8 +58,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             signaturbygger.Bygg();
             var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             
-            Envelope envelope = new Envelope();
-            envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
+            Envelope envelope = new Envelope(forsendelse);
+            //envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
+            envelope.SkrivTilFil(@"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
             
 
             //encrypt filpakke mottagersertifikat.
