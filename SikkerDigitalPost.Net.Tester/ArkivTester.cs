@@ -31,8 +31,6 @@ namespace SikkerDigitalPost.Net.Tests
         public void LagArkivOgVerifiserDokumentInnhold()
         {
             var arkiv = new Arkiv(Dokumentpakke, Signatur, Manifest);
-            
-
             var arkivstrøm = new MemoryStream(arkiv.LagArkiv());
 
             //Åpne zip og generer sjekksum for å verifisere innhold

@@ -1,4 +1,5 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using System.Security.Cryptography.X509Certificates;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
@@ -46,14 +47,21 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, Vedlegg mm), enten digitalt eller fyisk.</param>
+        /// <param name="mottaker"></param>
+        /// <param name="mottagerSertifikat"></param>
+        /// <param name="tekniskAvsenderSertifikat"></param>
         public void Send(Forsendelse forsendelse)
         {
-            //Finn sertifikat -CHECK (forsendelse skal inneholde disse)
-
-            //Lag zip med dokumentpakke, manifest og signatur - Bruk Arkiv
-            //var arkiv = new Arkiv(forsendelse.Dokumentpakke, new Signatur(), new Manifest());
-
-            //encrypt filpakke
+            var mottaker = forsendelse.DigitalPost.Mottaker;
+            var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
+            var signatur = new Signatur(mottaker.Sertifikat);
+            var manifestbygger = new ManifestBygger(manifest);
+            manifestbygger.Bygg();
+            var signaturbygger = new SignaturBygger(signatur, forsendelse);
+            signaturbygger.Bygg();
+            var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
+            
+            //encrypt filpakke mottagersertifikat.
             //Lag request
         }
 

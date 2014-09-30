@@ -1,9 +1,7 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene;
 using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.KlientApi;
 
 namespace SikkerDigitalPost.Net.KlientDemo
@@ -12,20 +10,45 @@ namespace SikkerDigitalPost.Net.KlientDemo
     {
         static void Main(string[] args)
         {
-            var sertifikatbutikk = new Sertifikatbutikk();
+            /*
+             * Følgende sertifikater må brukes for å kunne sende digital post
+             * 
+             * - Mottagersertifikat brukes for å kryptere og signere dokumentpakke som skal til mottagerens postkasse.
+             * - TekniskAvsenderSertifikat brukes for sikker kommunikasjon med meldingsformidler.
+             */
+            X509Certificate2 mottagerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
+            X509Certificate2 tekniskAvsenderSertifikat;  //Dette sertifikatet brukes i kommunikasjon mot meldingsformidler. --> all signering (oppslag)
+            
+            /*
+             * Nåværende versjon av KlientAPI kan ikke sende meldinger, men kan lage hele meldingen som skal sendes. For å gjøre 
+             * dette, setter vi sertifikatene til et tilfeldig fra maskinen
+             */
 
             X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
             store.Open(OpenFlags.ReadOnly);
-            var certificate = store.Certificates[0];
+            var tilfeldigSertifikat = store.Certificates[0];
             store.Close();
-            
+
+            mottagerSertifikat = tilfeldigSertifikat;
+            tekniskAvsenderSertifikat = tilfeldigSertifikat;
+
+            /*
+             * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
+             * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. Derfor er alle organisasjonsnummer
+             * identiske. 
+             */
+
+            var organisasjonsnummerPosten = "984661185";
+            var organisasjonsnummerTekniskAvsender = organisasjonsnummerPosten;
+            var organisasjonsnummerMottagerPostkasse = organisasjonsnummerPosten;
+            var organisasjonsnummerBehandlingsansvarlig = organisasjonsnummerPosten;
+
             //Avsender
-            var orgNrAvsender = new Organisasjonsnummer("984661185");
-            var behandlingsansvarlig = new Behandlingsansvarlig(orgNrAvsender);
+            var behandlingsansvarlig = new Behandlingsansvarlig(organisasjonsnummerBehandlingsansvarlig);
+            var tekniskAvsender = new TekniskAvsender(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
             
             //Mottaker
-            var orgNrMottaker = new Organisasjonsnummer("984661185");
-            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", new X509Certificate2(), orgNrMottaker.Iso6523());
+            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
@@ -39,15 +62,10 @@ namespace SikkerDigitalPost.Net.KlientDemo
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedleggsgris",vedlegg,"text/docx","EN"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
 
-            var manifest = new Manifest(mottaker, behandlingsansvarlig, forsendelse);
-
-            var signatur = new Signatur(certificate);
-            var manifestbygger = new ManifestBygger(manifest);
-            var signaturbygger = new SignaturBygger(signatur, forsendelse);
-            signaturbygger.Bygg();
-
-            //var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(behandlingsansvarlig);
-            //sikkerDigitalPostKlient.Send(forsendelse);
+            //Send
+            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
+            
+            sikkerDigitalPostKlient.Send(forsendelse);
         }
     }
 }

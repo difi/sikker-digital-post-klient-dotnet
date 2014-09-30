@@ -42,9 +42,21 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
             }
         }
 
+        /// <summary>
+        /// Lager et nytt instans av behandlingsansvarlig.
+        /// </summary>
+        /// <param name="organisasjonsnummer">Organisasjonsnummeret til den behandlingsansvarlige.</param>
         public Behandlingsansvarlig(Organisasjonsnummer organisasjonsnummer)
         {
             Organisasjonsnummer = organisasjonsnummer;
+        }
+
+        /// <summary>
+        /// Lager et nytt instans av behandlingsansvarlig.
+        /// </summary>
+        /// <param name="organisasjonsnummer">Organisasjonsnummeret til den behandlingsansvarlige.</param>
+        public Behandlingsansvarlig(string organisasjonsnummer) : this(new Organisasjonsnummer(organisasjonsnummer))
+        {
         }
     }
 }

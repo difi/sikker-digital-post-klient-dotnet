@@ -1,4 +1,7 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+
+namespace SikkerDigitalPost.Net.Domene.Entiteter
 {
     public class TekniskAvsender
     {
@@ -8,16 +11,21 @@
         public Organisasjonsnummer Organisasjonsnummer { get; set; }
 
         /// <summary>
-        /// Avsenders Sertifikatbutikk: Signert virksomhetssertifikat og tilhørende privatnøkkel.
+        /// Avsenders sertifikat: Virksomhetssertifikat.
         /// </summary>
-        public Sertifikatbutikk Sertifikatbutikk { get; set; }
+        public X509Certificate2 Sertifikat { get; set; }
 
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
-        /// <param name="sertifikatbutikk">Avsenders Sertifikatbutikk: Signert virksomhetssertifikat og tilhørende privatnøkkel.</param>
-        public TekniskAvsender(Organisasjonsnummer organisasjonsnummer, Sertifikatbutikk sertifikatbutikk)
+        /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>
+        public TekniskAvsender(Organisasjonsnummer organisasjonsnummer, X509Certificate2 sertifikat)
         {
             Organisasjonsnummer = organisasjonsnummer;
-            Sertifikatbutikk = sertifikatbutikk;
+            Sertifikat = sertifikat;
+        }
+
+        public TekniskAvsender(String organisasjonsnummer, X509Certificate2 sertifikat): 
+            this(new Organisasjonsnummer(organisasjonsnummer), sertifikat )
+        {
         }
     }
 }
