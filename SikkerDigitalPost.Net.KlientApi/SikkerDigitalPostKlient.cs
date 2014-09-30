@@ -50,13 +50,11 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// <param name="mottaker"></param>
         /// <param name="mottagerSertifikat"></param>
         /// <param name="tekniskAvsenderSertifikat"></param>
-        public void Send(Forsendelse forsendelse, Mottaker mottaker, X509Certificate2 mottagerSertifikat, X509Certificate2 tekniskAvsenderSertifikat)
+        public void Send(Forsendelse forsendelse)
         {
-            ///SE AT RIKTIGE SERTIFIKAT BRUKES HER!
-
-
+            var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
-            var signatur = new Signatur(mottagerSertifikat);
+            var signatur = new Signatur(mottaker.Sertifikat);
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
             var signaturbygger = new SignaturBygger(signatur, forsendelse);

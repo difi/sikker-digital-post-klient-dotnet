@@ -65,7 +65,7 @@ namespace SikkerDigitalPost.Net.KlientDemo
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
             
-            sikkerDigitalPostKlient.Send(forsendelse,mottaker,mottagerSertifikat, tekniskAvsenderSertifikat);
+            sikkerDigitalPostKlient.Send(forsendelse);
         }
     }
 }
