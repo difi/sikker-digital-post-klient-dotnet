@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Dynamic;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter
 {

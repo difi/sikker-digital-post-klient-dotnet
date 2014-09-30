@@ -46,15 +46,13 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, Vedlegg mm), enten digitalt eller fyisk.</param>
-        /// <param name="mottaker"></param>
-        /// <param name="mottagerSertifikat"></param>
-        /// <param name="tekniskAvsenderSertifikat"></param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
         public void Send(Forsendelse forsendelse)
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
             var signatur = new Signatur(mottaker.Sertifikat);
+
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
