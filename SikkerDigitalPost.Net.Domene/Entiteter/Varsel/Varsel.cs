@@ -7,7 +7,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
         /// <summary>
         /// Avsenderstyrt varslingstekst som skal inngå i varselet.
         /// </summary>
-        protected string Varslingstekst;
+        public readonly string Varslingstekst;
 
 
         protected IEnumerable<int> VarselEtterDager = new List<int>();

@@ -74,11 +74,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
                 documentIdentificationElement.AppendChild(typeVersion);
 
                 XmlElement instanceIdentifier = XmlDocument.CreateElement("ns3", "InstanceIdentifier", Navnerom.Ns3);
-                instanceIdentifier.InnerText = "Instance identifier"; // Guid RegEx [a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}
+                instanceIdentifier.InnerText = "HER_SKAL_INSTANCEIDENTIFIER_INN"; // Guid RegEx [a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}
                 documentIdentificationElement.AppendChild(instanceIdentifier);
 
                 XmlElement type = XmlDocument.CreateElement("ns3", "Type", Navnerom.Ns3);
-                type.InnerText = "Placeholder"; // "digitalPost" eller "kvittering"
+                type.InnerText = "IKKE FERDIG:DIGIPOST_ELLER_KVITTERING"; // "digitalPost" eller "kvittering"
                 documentIdentificationElement.AppendChild(type);
 
                 XmlElement creationDateAndTime = XmlDocument.CreateElement("ns3", "CreationDateAndTime", Navnerom.Ns3);
