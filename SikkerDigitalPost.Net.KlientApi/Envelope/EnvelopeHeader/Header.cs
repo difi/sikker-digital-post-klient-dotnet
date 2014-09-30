@@ -2,29 +2,29 @@
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
-    public class Header
+    public class Header : XmlPart
     {
-        private readonly XmlDocument _dokument;
-
-        public Header(XmlDocument dokument)
+        public Header(XmlDocument dokument) : base(dokument)
         {
-            _dokument = dokument;
         }
 
-        public XmlElement Xml()
+        public override XmlElement Xml()
         {
-            return _dokument.CreateElement("Header");
+            var header = XmlDocument.CreateElement("Header");
+            header.AppendChild(SecurityElement());
+            return header;
         }
 
         public XmlElement SecurityElement()
         {
-            var securityElement = new Security(_dokument);
+            var securityElement = new Security(XmlDocument);
             return securityElement.Xml();
         }
 
         public XmlElement MessagingElement()
         {
-            return null;
+            var messaging = new Messaging(XmlDocument);
+            return messaging.Xml();
         }
     }
 }
