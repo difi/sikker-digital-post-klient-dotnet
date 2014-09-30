@@ -4,7 +4,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
     public class SikkerDigitalPostKlient
     {
@@ -58,6 +58,10 @@ namespace SikkerDigitalPost.Net.KlientApi
             signaturbygger.Bygg();
             var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             
+            Envelope envelope = new Envelope();
+            envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
+            
+
             //encrypt filpakke mottagersertifikat.
             //Lag request
         }
