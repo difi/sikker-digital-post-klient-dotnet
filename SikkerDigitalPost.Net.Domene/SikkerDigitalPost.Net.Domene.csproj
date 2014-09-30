@@ -57,7 +57,6 @@
     <Compile Include="Entiteter\Kvitteringer\LeveringsKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\VarslingFeiletKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Åpningskvittering.cs" />
-    <Compile Include="Entiteter\Referanse.cs" />
     <Compile Include="Entiteter\StandardForretningsDokument.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
     <Compile Include="Enums\Handling.cs" />

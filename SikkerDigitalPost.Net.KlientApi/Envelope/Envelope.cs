@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
