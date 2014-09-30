@@ -13,7 +13,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         public XmlElement Xml()
         {
-            return null;
+            return _dokument.CreateElement("Header");
         }
 
         public XmlElement SecurityElement()

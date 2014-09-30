@@ -7,21 +7,34 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
     public class Envelope
     {
         private const string NsXmlnsEnv = "http://www.w3.org/2003/05/soap-envelope";
+        private bool isCreated = false;
         
         public Arkiv arkiv { get; set; }
         
         private readonly XmlDocument _envelopeXml;
+         
         
         public Envelope()
         {
             _envelopeXml = EnvelopeDokument();
         }
-        
+
+        public XmlDocument Xml()
+        {
+            if (isCreated) return _envelopeXml;
+
+            _envelopeXml.DocumentElement.AppendChild(HeaderElement());
+            _envelopeXml.DocumentElement.AppendChild(BodyElement());
+
+            return _envelopeXml;
+        }
+
         private XmlDocument EnvelopeDokument()
         {
             var xmlDokument = new XmlDocument();
             var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            xmlDokument.AppendChild(xmlDokument.CreateElement("manifest", NsXmlnsEnv));
+            var baseNode = xmlDokument.CreateElement("env", "Envelope", NsXmlnsEnv);
+            xmlDokument.AppendChild(baseNode);
             xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
             return xmlDokument;
         }
@@ -29,8 +42,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         private XmlElement HeaderElement()
         {
             var header = new Header(_envelopeXml);
-            //_envelopeXml.DocumentElement.AppendChild(header.Element);
-            return null;
+            return header.Xml();
         }
 
         private XmlElement BodyElement()
@@ -39,8 +51,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             return body.Xml();
         }
 
-        private void SkrivTilFil(string filsti)
+        public void SkrivTilFil(string filsti)
         {
+            if (!isCreated)
+                Xml();
+            
             _envelopeXml.Save(filsti);
         }
     }
