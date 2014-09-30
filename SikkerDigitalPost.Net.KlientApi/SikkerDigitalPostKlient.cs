@@ -62,7 +62,6 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             Envelope envelope = new Envelope();
             envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
             
-
             //encrypt filpakke mottagersertifikat.
             //Lag request
         }

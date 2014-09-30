@@ -4,6 +4,8 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 {
     public class DigitalPost
     {
+        private const string Ns9 = "http://begrep.difi.no/sdp/schema_v10";
+
         private readonly XmlDocument _dokument;
 
         public DigitalPost(XmlDocument dokument)
@@ -13,7 +15,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         public XmlElement Xml()
         {
-            var digitalPostElement = _dokument.CreateElement("ns9", "digitalPost", _dokument.NamespaceURI);
+            var digitalPostElement = _dokument.CreateElement("ns9", "digitalPost", Ns9);
 
 
 
