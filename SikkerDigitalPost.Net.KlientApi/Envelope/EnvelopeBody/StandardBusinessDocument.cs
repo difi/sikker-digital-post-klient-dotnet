@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Xml;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.Body
 {
-    public class StandardBusinessDocument
+    public class StandardBusinessDocument : XmlPart
     {
-        private const string Ns3 = "http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader";
-        private const string Ns5 = "http://www.w3.org/2000/09/xmldsig#";
-        private const string Ns9 = "http://begrep.difi.no/sdp/schema_v10";
+        private readonly DateTime _creationDateAndtime;
         
-        private XmlDocument _dokument;
-        
-        public StandardBusinessDocument(XmlDocument dokument)
+        public StandardBusinessDocument(XmlDocument dokument, Forsendelse forsendelse) : base(dokument,forsendelse)
         {
-            _dokument = dokument;
+            _creationDateAndtime = DateTime.UtcNow;
         }
 
-        public XmlElement Xml()
+        public override XmlElement Xml()
         {
-            var sbdElement = _dokument.CreateElement("ns3", "StandardBusinessDocument", Ns3);
-            sbdElement.SetAttribute("xmlns:ns3", Ns3);
-            sbdElement.SetAttribute("xmlns:ns5", Ns5);
-            sbdElement.SetAttribute("xmlns:ns9", Ns9);
+            var sbdElement = XmlDocument.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
+            sbdElement.SetAttribute("xmlns:ns3", Navnerom.Ns3);
+            sbdElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
+            sbdElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
 
-            var sbdHeader = new StandardBusinessDocumentHeader(_dokument);
+            var sbdHeader = new StandardBusinessDocumentHeader(XmlDocument, Forsendelse, _creationDateAndtime);
             sbdElement.AppendChild(sbdHeader.Xml());
 
-            var digitalPost = new DigitalPost(_dokument);
+            var digitalPost = new DigitalPostElement(XmlDocument, Forsendelse);
+
             sbdElement.AppendChild(digitalPost.Xml());
 
             return sbdElement;

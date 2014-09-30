@@ -1,10 +1,11 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Net.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     public class Messaging : XmlPart
     {
-        public Messaging(XmlDocument xmlDocument) : base(xmlDocument)
+        public Messaging(XmlDocument xmlDocument, Forsendelse forsendelse) : base(xmlDocument, forsendelse)
         {
         }
 

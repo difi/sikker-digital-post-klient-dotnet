@@ -44,8 +44,8 @@ namespace SikkerDigitalPost.Net.KlientDemo
 
             //Avsender
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(organisasjonsnummerBehandlingsansvarlig));
-            var tekniskAvsender = new TekniskAvsender(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
-            
+            var tekniskAvsender = new Databehandler(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
+
             //Mottaker
             var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
 

@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter
                 if (value.Length <= 100)
                     _avsenderidentifikator = value;
                 else
-                    throw new ArgumentException("Fakturareferanse kan ikke være lengre enn 100 tegn, følgende streng er ikke: " + value);
+                    throw new ArgumentException("Avsenderidentifikator kan ikke være lengre enn 100 tegn, følgende streng er ikke: " + value);
                     
             }
         }

@@ -8,10 +8,10 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
     public class SikkerDigitalPostKlient
     {
-        private readonly TekniskAvsender _tekniskAvsender;
+        private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _konfigurasjon;
 
-        /// <param name="tekniskAvsender">
+        /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
@@ -20,12 +20,12 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender) : this (tekniskAvsender,new Klientkonfigurasjon())
+        public SikkerDigitalPostKlient(Databehandler databehandler) : this (databehandler,new Klientkonfigurasjon())
         {
             
         }
 
-        /// <param name="tekniskAvsender">
+        /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
@@ -37,9 +37,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon konfigurasjon)
         {
-            _tekniskAvsender = tekniskAvsender;
+            _databehandler = databehandler;
             _konfigurasjon = konfigurasjon;
         }
 
@@ -51,6 +51,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
+
             var signatur = new Signatur(mottaker.Sertifikat);
 
             var manifestbygger = new ManifestBygger(manifest);
@@ -59,8 +60,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             signaturbygger.Bygg();
             var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             
-            Envelope envelope = new Envelope();
+            Envelope envelope = new Envelope(forsendelse);
             envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
+            //envelope.SkrivTilFil(@"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
             
             //encrypt filpakke mottagersertifikat.
             //Lag request
