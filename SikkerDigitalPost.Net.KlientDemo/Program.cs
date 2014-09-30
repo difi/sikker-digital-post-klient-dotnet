@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene;
+﻿using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.KlientApi;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.KlientDemo
 {
@@ -44,8 +43,8 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var organisasjonsnummerBehandlingsansvarlig = organisasjonsnummerPosten;
 
             //Avsender
-            var behandlingsansvarlig = new Behandlingsansvarlig(organisasjonsnummerBehandlingsansvarlig);
-            var tekniskAvsender = new TekniskAvsender(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
+            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(organisasjonsnummerBehandlingsansvarlig));
+            var tekniskAvsender = new TekniskAvsender(new Organisasjonsnummer(organisasjonsnummerTekniskAvsender), new Sertifikatbutikk());
             
             //Mottaker
             var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
