@@ -1,5 +1,27 @@
-﻿<?xml version="1.2" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
   <Header />
-  <body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" />
+  <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="">
+    <ns3:StandardBusinessDocument xmlns:ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="http://begrep.difi.no/sdp/schema_v10">
+      <ns3:StandardBusinessDocumentHeader>
+        <ns3:StandarBusinessDocumentHeader>1.0</ns3:StandarBusinessDocumentHeader>
+        <ns3:Sender>
+          <ns3:Identifier Authority="iso6523-actorid-upis">
+          </ns3:Identifier>
+        </ns3:Sender>
+        <ns3:Receiver>
+          <ns3:Identifier Authority="iso6523-actorid-upis">
+          </ns3:Identifier>
+        </ns3:Receiver>
+        <ns3:DocumentIdentification>
+          <ns3:Standard>urn:no:difi:sdp:1.0</ns3:Standard>
+          <ns3:typeVersion>1.0</ns3:typeVersion>
+          <ns3:InstanceIdentifier>
+          </ns3:InstanceIdentifier>
+        </ns3:DocumentIdentification>
+        <ns3:BusinessScopeElement />
+      </ns3:StandardBusinessDocumentHeader>
+      <ns9:digitalPost />
+    </ns3:StandardBusinessDocument>
+  </env:body>
 </env:Envelope>
