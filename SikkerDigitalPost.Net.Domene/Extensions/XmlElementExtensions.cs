@@ -4,9 +4,16 @@ namespace SikkerDigitalPost.Net.Domene.Extensions
 {
     public static class XmlElementExtensions
     {
-        public static XmlElement AppendChildElement(this XmlElement parent, string childname, string nameSpace, XmlDocument document)
+        public static XmlElement AppendChildElement(this XmlElement parent, string childname, string namespaceUri, XmlDocument document)
         {
-            var child = document.CreateElement(childname, nameSpace);
+            var child = document.CreateElement(childname, namespaceUri);
+            parent.AppendChild(child);
+            return child;
+        }
+
+        public static XmlElement AppendChildElement(this XmlElement parent, string childname, string prefix, string namespaceUri, XmlDocument document)
+        {
+            var child = document.CreateElement(prefix, childname, namespaceUri);
             parent.AppendChild(child);
             return child;
         }

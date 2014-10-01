@@ -1,10 +1,56 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
-  <Header>
-    <wsse:Security xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-      <wsse:BinarySecurityToken wsu:id="ID_SKAL_SETTES_INN_HER" />
+  <env:Header>
+    <wsse:Security xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" env:mustUnderstand="true" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:BinarySecurityToken wsu:id="ID_SKAL_SETTES_INN_HER" EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3">THE_BINARY_SECURITY_TOKEN</wsse:BinarySecurityToken>
+      <wsu:Timestamp wsu:Id="WSU_TIMESTAMP_ID">
+        <wsu:Created>TIMESTAMP_CREATED</wsu:Created>
+        <wsu:Expires>TIMESTAMP_EXPIRES</wsu:Expires>
+      </wsu:Timestamp>
+      <ds:Signature Id="SIGNATUR-ID" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+          <ds:CanocalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+            <ec:InclusiveNamespaces PrefixList="env" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </ds:CanocalizationMethod>
+          <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+          <ds:Reference URI="BODY_URI">
+            <ds:Transforms>
+              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </ds:Transform>
+            </ds:Transforms>
+          </ds:Reference>
+          <ds:Reference URI="TIMESTAMP_URI">
+            <ds:Transforms>
+              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                <ec:InclusiveNamespaces PrefixList="wsse env" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </ds:Transform>
+            </ds:Transforms>
+          </ds:Reference>
+          <ds:Reference URI="EB_MESSAGE_URI">
+            <ds:Transforms>
+              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </ds:Transform>
+            </ds:Transforms>
+          </ds:Reference>
+          <ds:Reference URI="PARTINFO_URI">
+            <ds:Transforms>
+              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </ds:Transform>
+            </ds:Transforms>
+          </ds:Reference>
+          <ds:SignatureValue>SIGNATUR_VERDI</ds:SignatureValue>
+          <ds:KeyInfo Id="KEY_INFO_ID">
+            <wsse:SecurityTokenReference Id="WSU_ID">
+              <wsse:Reference URI="URI_REFERENCE" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" />
+            </wsse:SecurityTokenReference>
+          </ds:KeyInfo>
+        </ds:SignedInfo>
+      </ds:Signature>
     </wsse:Security>
-  </Header>
+  </env:Header>
   <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="">
     <ns3:StandardBusinessDocument xmlns:ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="http://begrep.difi.no/sdp/schema_v10">
       <ns3:StandardBusinessDocumentHeader>
@@ -20,12 +66,12 @@
           <ns3:typeVersion>1.0</ns3:typeVersion>
           <ns3:InstanceIdentifier>Instance identifier</ns3:InstanceIdentifier>
           <ns3:Type>Placeholder</ns3:Type>
-          <ns3:CreationDateAndTime>2014-09-30T11:14:35Z</ns3:CreationDateAndTime>
+          <ns3:CreationDateAndTime>2014-10-01T11:08:42Z</ns3:CreationDateAndTime>
         </ns3:DocumentIdentification>
         <ns3:BusinessScopeElement>
           <ns3:Scope>
             <ns3:Type>ConversationId</ns3:Type>
-            <ns3:InstanceIdentifier>70af1ca6-b75d-43a9-874a-61e40f03a192</ns3:InstanceIdentifier>
+            <ns3:InstanceIdentifier>7907e580-70d1-4731-ab81-9a13684932aa</ns3:InstanceIdentifier>
             <ns3:Identifier>urn:no:difi:sdp:1.0</ns3:Identifier>
           </ns3:Scope>
         </ns3:BusinessScopeElement>
