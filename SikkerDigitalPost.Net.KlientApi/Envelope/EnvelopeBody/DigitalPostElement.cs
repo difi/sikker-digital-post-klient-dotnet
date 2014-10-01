@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
@@ -9,8 +11,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
     public class DigitalPostElement : XmlPart
     {
 
-        public DigitalPostElement(XmlDocument dokument, Forsendelse forsendelse) : base(dokument, forsendelse)
+        private readonly SHA256Managed _managedSha256;
+
+        public DigitalPostElement(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(dokument, forsendelse, arkiv, databehandler)
         {
+            _managedSha256 = new SHA256Managed();
         }
 
         public override XmlElement Xml()
@@ -28,7 +33,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private SignedXml Signature()
         {
-            SignedXml signedXml = new SignedXmlWithAgnosticId(XmlDocument, Forsendelse.Dokumentpakke.Signatur.Sertifikat);
+            SignedXml signedXml = new SignedXmlWithAgnosticId(XmlDocument, Databehandler.Sertifikat);
             
             var reference = new Sha256Reference("");
             reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
@@ -38,7 +43,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
             //signedXml.SignedInfo.CanonicalizationMethod = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
             //signedXml.Signature.Id = "Signature";
 
-            var keyInfoX509Data = new KeyInfoX509Data(Forsendelse.Dokumentpakke.Signatur.Sertifikat, X509IncludeOption.WholeChain);
+            var keyInfoX509Data = new KeyInfoX509Data(Databehandler.Sertifikat, X509IncludeOption.WholeChain);
             signedXml.KeyInfo.AddClause(keyInfoX509Data);
 
             signedXml.ComputeSignature();
@@ -146,7 +151,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
                 dokumentpakkefingeravtrykk.AppendChild(digestMethod);
 
                 XmlElement digestValue = XmlDocument.CreateElement("ns5", "DigestValue", Navnerom.Ns5);
-                digestValue.InnerText = "HER_SKAL_HASH_AV_DOKUMENTPAKKE_KOMME!";
+                digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(Arkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
                 dokumentpakkefingeravtrykk.AppendChild(digestValue);
             }
             return dokumentpakkefingeravtrykk;

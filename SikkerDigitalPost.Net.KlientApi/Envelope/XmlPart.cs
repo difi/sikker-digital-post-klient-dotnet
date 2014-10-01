@@ -7,11 +7,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
     {
         protected readonly XmlDocument XmlDocument;
         protected readonly Forsendelse Forsendelse;
+        protected readonly Arkiv Arkiv;
+        protected readonly Databehandler Databehandler;
 
-        protected XmlPart(XmlDocument xmlDocument, Forsendelse forsendelse)
+        protected XmlPart(XmlDocument xmlDocument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler)
         {
             XmlDocument = xmlDocument;
             Forsendelse = forsendelse;
+            Arkiv = arkiv;
+            Databehandler = databehandler;
         }
 
         public abstract XmlElement Xml();

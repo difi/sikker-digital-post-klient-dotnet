@@ -7,7 +7,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
     public class BodyElement : XmlPart
     {
-        public BodyElement(XmlDocument dokument, Forsendelse forsendelse) : base(dokument, forsendelse)
+        public BodyElement(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(dokument, forsendelse, arkiv, databehandler)
         {
             
         }
@@ -18,7 +18,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
             bodyElement.SetAttribute("xmlns:wsu", Navnerom.NsWsu);
             bodyElement.SetAttribute("id", Navnerom.NsWsu, Navnerom.NsWsuId);
 
-            var sbdElement = new StandardBusinessDocument(XmlDocument, Forsendelse);
+            var sbdElement = new StandardBusinessDocument(XmlDocument, Forsendelse, Arkiv, Databehandler);
             bodyElement.AppendChild(sbdElement.Xml());
             
             return bodyElement;

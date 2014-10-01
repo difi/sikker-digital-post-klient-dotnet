@@ -11,14 +11,17 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         private bool isCreated = false;
 
         private readonly Forsendelse _forsendelse;
-        public Arkiv arkiv { get; set; }        
+        private readonly Arkiv _arkiv;
+        private readonly Databehandler _databehandler;
         
         private readonly XmlDocument _envelopeXml;
-         
         
-        public Envelope(Forsendelse forsendelse)
+        
+        public Envelope(Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler)
         {
             _forsendelse = forsendelse;
+            _arkiv = arkiv;
+            _databehandler = databehandler;
             _envelopeXml = EnvelopeDokument();
         }
 
@@ -44,13 +47,13 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
 
         private XmlElement HeaderElement()
         {
-            var header = new Header(_envelopeXml, _forsendelse);
+            var header = new Header(_envelopeXml, _forsendelse, _arkiv, _databehandler);
             return header.Xml();
         }
 
         private XmlElement BodyElement()
         {
-            var body = new BodyElement(_envelopeXml, _forsendelse);
+            var body = new BodyElement(_envelopeXml, _forsendelse, _arkiv, _databehandler);
             return body.Xml();
         }
 

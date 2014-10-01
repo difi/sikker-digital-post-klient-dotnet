@@ -8,7 +8,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
     {
        private readonly DateTime _creationDateAndtime;
 
-        public StandardBusinessDocumentHeader(XmlDocument dokument, Forsendelse forsendelse, DateTime creationDateAndtime) : base(dokument, forsendelse)
+        public StandardBusinessDocumentHeader(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler, DateTime creationDateAndtime) : base(dokument, forsendelse, arkiv, databehandler)
         {
             _creationDateAndtime = creationDateAndtime;
         }

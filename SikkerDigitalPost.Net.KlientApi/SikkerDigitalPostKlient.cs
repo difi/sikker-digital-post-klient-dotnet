@@ -51,16 +51,16 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
-
             var signatur = new Signatur(mottaker.Sertifikat);
 
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
             signaturbygger.Bygg();
-            var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             
-            Envelope envelope = new Envelope(forsendelse);
+            var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
+            arkiv.LagArkiv();
+            Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
             //envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
             envelope.SkrivTilFil(@"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
             
