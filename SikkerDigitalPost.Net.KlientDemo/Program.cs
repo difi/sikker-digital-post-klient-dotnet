@@ -53,8 +53,11 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
             //Dokumenter
-            var hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
-            var vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            //var hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
+            //var vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+
+            var hoveddokument = @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.docx";
+            var vedlegg = @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\VedleggsGris.docx";
 
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));
