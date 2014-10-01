@@ -7,48 +7,6 @@
         <wsu:Created>TIMESTAMP_CREATED</wsu:Created>
         <wsu:Expires>TIMESTAMP_EXPIRES</wsu:Expires>
       </wsu:Timestamp>
-      <ds:Signature Id="SIGNATUR-ID" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <ds:SignedInfo>
-          <ds:CanocalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-            <ec:InclusiveNamespaces PrefixList="env" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
-          </ds:CanocalizationMethod>
-          <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
-          <ds:Reference URI="BODY_URI">
-            <ds:Transforms>
-              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
-              </ds:Transform>
-            </ds:Transforms>
-          </ds:Reference>
-          <ds:Reference URI="TIMESTAMP_URI">
-            <ds:Transforms>
-              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-                <ec:InclusiveNamespaces PrefixList="wsse env" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
-              </ds:Transform>
-            </ds:Transforms>
-          </ds:Reference>
-          <ds:Reference URI="EB_MESSAGE_URI">
-            <ds:Transforms>
-              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
-              </ds:Transform>
-            </ds:Transforms>
-          </ds:Reference>
-          <ds:Reference URI="PARTINFO_URI">
-            <ds:Transforms>
-              <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-                <ec:InclusiveNamespaces PrefixList="" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" />
-              </ds:Transform>
-            </ds:Transforms>
-          </ds:Reference>
-          <ds:SignatureValue>SIGNATUR_VERDI</ds:SignatureValue>
-          <ds:KeyInfo Id="KEY_INFO_ID">
-            <wsse:SecurityTokenReference Id="WSU_ID">
-              <wsse:Reference URI="URI_REFERENCE" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" />
-            </wsse:SecurityTokenReference>
-          </ds:KeyInfo>
-        </ds:SignedInfo>
-      </ds:Signature>
     </wsse:Security>
   </env:Header>
   <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="">
@@ -64,14 +22,14 @@
         <ns3:DocumentIdentification>
           <ns3:Standard>urn:no:difi:sdp:1.0</ns3:Standard>
           <ns3:typeVersion>1.0</ns3:typeVersion>
-          <ns3:InstanceIdentifier>Instance identifier</ns3:InstanceIdentifier>
-          <ns3:Type>Placeholder</ns3:Type>
-          <ns3:CreationDateAndTime>2014-10-01T11:08:42Z</ns3:CreationDateAndTime>
+          <ns3:InstanceIdentifier>HER_SKAL_INSTANCEIDENTIFIER_INN</ns3:InstanceIdentifier>
+          <ns3:Type>IKKE FERDIG:DIGIPOST_ELLER_KVITTERING</ns3:Type>
+          <ns3:CreationDateAndTime>2014-10-01T12:50:41Z</ns3:CreationDateAndTime>
         </ns3:DocumentIdentification>
         <ns3:BusinessScopeElement>
           <ns3:Scope>
             <ns3:Type>ConversationId</ns3:Type>
-            <ns3:InstanceIdentifier>7907e580-70d1-4731-ab81-9a13684932aa</ns3:InstanceIdentifier>
+            <ns3:InstanceIdentifier>a5ec16d3-7c70-4e1d-bbda-530d9a0b9961</ns3:InstanceIdentifier>
             <ns3:Identifier>urn:no:difi:sdp:1.0</ns3:Identifier>
           </ns3:Scope>
         </ns3:BusinessScopeElement>
@@ -90,7 +48,12 @@
           <ns9:aapningskvittering>False</ns9:aapningskvittering>
           <ns9:sikkerhetsnivaa>Nivå4</ns9:sikkerhetsnivaa>
           <ns9:ikkeSensitivTittel>Ikke-sensitiv tittel</ns9:ikkeSensitivTittel>
+          <ns9:varsler />
         </ns9:digitalPostInfo>
+        <ns9:dokumentfingerpakkeavtrykk>
+          <ns5:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <ns5:DigestValue>HER_SKAL_HASH_AV_DOKUMENTPAKKE_KOMME!</ns5:DigestValue>
+        </ns9:dokumentfingerpakkeavtrykk>
       </ns9:digitalPost>
     </ns3:StandardBusinessDocument>
   </env:body>
