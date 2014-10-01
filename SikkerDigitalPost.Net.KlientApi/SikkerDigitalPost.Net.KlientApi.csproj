@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arkiv.cs" />
+    <Compile Include="AsicEArkiv.cs" />
     <Compile Include="Envelope\EnvelopeBody\BodyElement.cs" />
     <Compile Include="Envelope\EnvelopeBody\DigitalPostElement.cs" />
     <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocument.cs" />

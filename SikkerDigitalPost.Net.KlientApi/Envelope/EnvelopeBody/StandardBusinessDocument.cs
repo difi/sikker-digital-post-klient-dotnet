@@ -9,7 +9,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.Body
     {
         private readonly DateTime _creationDateAndtime;
         
-        public StandardBusinessDocument(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(dokument,forsendelse, arkiv, databehandler)
+        public StandardBusinessDocument(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) : base(dokument,forsendelse, asicEArkiv, databehandler)
         {
             _creationDateAndtime = DateTime.UtcNow;
         }
@@ -21,10 +21,10 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.Body
             sbdElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
             sbdElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
 
-            var sbdHeader = new StandardBusinessDocumentHeader(XmlDocument, Forsendelse, Arkiv, Databehandler, _creationDateAndtime);
+            var sbdHeader = new StandardBusinessDocumentHeader(XmlDocument, Forsendelse, AsicEArkiv, Databehandler, _creationDateAndtime);
             sbdElement.AppendChild(sbdHeader.Xml());
 
-            var digitalPost = new DigitalPostElement(XmlDocument, Forsendelse, Arkiv, Databehandler);
+            var digitalPost = new DigitalPostElement(XmlDocument, Forsendelse, AsicEArkiv, Databehandler);
 
             sbdElement.AppendChild(digitalPost.Xml());
 

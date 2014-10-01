@@ -9,21 +9,21 @@ using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    public class Arkiv
+    public class AsicEArkiv
     {
         public readonly Manifest Manifest;
         public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
         private byte[] _bytes;
 
-        public Arkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
+        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
         {
             Signatur = signatur;
             Manifest = manifest;
             _dokumentpakke = dokumentpakke;
         }
 
-        public byte[] LagArkiv()
+        public byte[] LagAsicE()
         {
             if (_bytes != null)
                 return _bytes;

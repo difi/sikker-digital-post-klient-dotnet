@@ -13,7 +13,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private readonly SHA256Managed _managedSha256;
 
-        public DigitalPostElement(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(dokument, forsendelse, arkiv, databehandler)
+        public DigitalPostElement(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) : base(dokument, forsendelse, asicEArkiv, databehandler)
         {
             _managedSha256 = new SHA256Managed();
         }
@@ -151,7 +151,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
                 dokumentpakkefingeravtrykk.AppendChild(digestMethod);
 
                 XmlElement digestValue = XmlDocument.CreateElement("ns5", "DigestValue", Navnerom.Ns5);
-                digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(Arkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
+                digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(AsicEArkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
                 dokumentpakkefingeravtrykk.AppendChild(digestValue);
             }
             return dokumentpakkefingeravtrykk;

@@ -5,7 +5,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     public class Header : XmlPart
     {
-        public Header(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(dokument, forsendelse, arkiv, databehandler)
+        public Header(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) : base(dokument, forsendelse, asicEArkiv, databehandler)
         {
         }
 
@@ -19,13 +19,13 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         public XmlElement SecurityElement()
         {
-            var securityElement = new Security(XmlDocument,Forsendelse, Arkiv, Databehandler);
+            var securityElement = new Security(XmlDocument,Forsendelse, AsicEArkiv, Databehandler);
             return securityElement.Xml();
         }
 
         public XmlElement MessagingElement()
         {
-            var messaging = new Messaging(XmlDocument, Forsendelse, Arkiv, Databehandler);
+            var messaging = new Messaging(XmlDocument, Forsendelse, AsicEArkiv, Databehandler);
             return messaging.Xml();
         }
     }

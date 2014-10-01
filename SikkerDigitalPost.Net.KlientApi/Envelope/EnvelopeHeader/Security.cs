@@ -18,8 +18,8 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         private XmlElement _securityElement;
 
-        public Security(XmlDocument dokument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler)
-            : base(dokument, forsendelse, arkiv, databehandler)
+        public Security(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler)
+            : base(dokument, forsendelse, asicEArkiv, databehandler)
         {
         }
 

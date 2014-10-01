@@ -5,7 +5,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     public class Messaging : XmlPart
     {
-        public Messaging(XmlDocument xmlDocument, Forsendelse forsendelse, Arkiv arkiv, Databehandler databehandler) : base(xmlDocument, forsendelse, arkiv, databehandler)
+        public Messaging(XmlDocument xmlDocument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) : base(xmlDocument, forsendelse, asicEArkiv, databehandler)
         {
         }
 
