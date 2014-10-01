@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
         }
 
         public override void LoadXml(XmlElement element)
-        {            
+        {
         }
     }
 }
