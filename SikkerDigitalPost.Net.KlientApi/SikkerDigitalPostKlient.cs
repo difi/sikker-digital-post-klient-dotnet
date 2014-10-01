@@ -58,12 +58,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
             signaturbygger.Bygg();
             
+
             var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             arkiv.LagArkiv();
             Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
-            //envelope.SkrivTilFil(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml");
-            envelope.SkrivTilFil(@"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
-            
+
+            envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")
+                ? @"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml"
+                : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
+
             //encrypt filpakke mottagersertifikat.
             //Lag request
         }

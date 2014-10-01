@@ -67,7 +67,7 @@
     <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />
     <Compile Include="Xml\SecurityTokenReferenceClause.cs" />
     <Compile Include="Xml\Sha256Reference.cs" />
-    <Compile Include="Xml\SignedXmlWithId.cs" />
+    <Compile Include="Xml\SignedXmlWithAgnosticId.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Net.Domene.csproj">

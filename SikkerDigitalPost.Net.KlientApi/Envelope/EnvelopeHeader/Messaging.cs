@@ -11,6 +11,8 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         public override XmlElement Xml()
         {
+            //XmlElement messaging = XmlDocument.CreateElement("eb", "Messaging", Navnerom.eb)
+
             return null;
         }
 

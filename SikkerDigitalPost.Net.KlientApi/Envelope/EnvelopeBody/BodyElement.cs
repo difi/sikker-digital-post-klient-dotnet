@@ -14,9 +14,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         public override XmlElement Xml()
         {
-            var bodyElement = XmlDocument.CreateElement("env", "body", Navnerom.NsXmlnsEnv);
-            bodyElement.SetAttribute("xmlns:wsu", Navnerom.NsWsu);
-            bodyElement.SetAttribute("id", Navnerom.NsWsu, Navnerom.NsWsuId);
+            var bodyElement = XmlDocument.CreateElement("env", "body", Navnerom.XmlnsEnv);
+            bodyElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
+            bodyElement.SetAttribute("id", Navnerom.wsu, Navnerom.WsuId);
 
             var sbdElement = new StandardBusinessDocument(XmlDocument, Forsendelse, Arkiv, Databehandler);
             bodyElement.AppendChild(sbdElement.Xml());
