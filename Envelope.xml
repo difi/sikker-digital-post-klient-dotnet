@@ -8,8 +8,41 @@
         <wsu:Expires>TIMESTAMP_EXPIRES</wsu:Expires>
       </wsu:Timestamp>
     </wsse:Security>
+    <eb:Messaging xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/">
+      <ns6:UserMessage ns2="http://schemas.xmlsoap.org/soap/envelope/" ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" ns4="http://schemas.xmlsoap.org/soap/envelope/" ns5="http://www.w3.org/2000/09/xmldsig#" ns6="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" ns8="http://www.w3.org/1999/xlink" ns9="http://begrep.difi.no/sdp/schema_v10" ns10="http://uri.etsi.org/2918/v1.2.1#" ns11="http://uri.etsi.org/01903/v1.3.2#" mpc="" wsu:Id="EN_ELLER_ANNEN_GUID" xmlns:ns6="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/">
+        <ns6:MessageInfo>
+          <ns6:TimeStamp>2014-10-02T07:30:39.894Z</ns6:TimeStamp>
+          <ns6:MessageId>HER SKAL DET STÅ SBDH.INSTANCEIDENTIFIER</ns6:MessageId>
+        </ns6:MessageInfo>
+        <ns6:PartyInfo>
+          <ns6:From>
+            <ns6:PartyId type="urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908">9908:984661185</ns6:PartyId>
+            <ns6:Role>urn:sdp:avsender</ns6:Role>
+          </ns6:From>
+          <ns6:To>
+            <ns6:PartyId type="urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908">9908:984661185</ns6:PartyId>
+            <ns6:Role>urn:sdp:meldingsformidler</ns6:Role>
+          </ns6:To>
+        </ns6:PartyInfo>
+        <ns6:CollaborationInfo>
+          <ns6:AgreementRef>http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse</ns6:AgreementRef>
+          <ns6:Service>SDP</ns6:Service>
+          <ns6:Action>FormidleDigitalPost</ns6:Action>
+          <ns6:ConversationId>ca8c74d6-1403-4a6b-8440-631e4c43d69c</ns6:ConversationId>
+        </ns6:CollaborationInfo>
+        <ns6:PayloadInfo>
+          <ns6:partInfo href="HER SKAL BODY ID INN" />
+          <ns6:partInfo href="cid:sdp:asic">
+            <ns6:PartProperties>
+              <ns6:Property name="MimeType">application/octet-stream</ns6:Property>
+              <ns6:Property name="Content">sdp:Dokumentpakke</ns6:Property>
+            </ns6:PartProperties>
+          </ns6:partInfo>
+        </ns6:PayloadInfo>
+      </ns6:UserMessage>
+    </eb:Messaging>
   </env:Header>
-  <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="">
+  <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="HER_SKAL_EN_GUID_INN?">
     <ns3:StandardBusinessDocument xmlns:ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="http://begrep.difi.no/sdp/schema_v10">
       <ns3:StandardBusinessDocumentHeader>
         <ns3:HeaderVersion>1.0</ns3:HeaderVersion>
@@ -24,17 +57,39 @@
           <ns3:typeVersion>1.0</ns3:typeVersion>
           <ns3:InstanceIdentifier>HER_SKAL_INSTANCEIDENTIFIER_INN</ns3:InstanceIdentifier>
           <ns3:Type>IKKE FERDIG:DIGIPOST_ELLER_KVITTERING</ns3:Type>
-          <ns3:CreationDateAndTime>2014-10-01T12:50:41Z</ns3:CreationDateAndTime>
+          <ns3:CreationDateAndTime>2014-10-02T07:30:39Z</ns3:CreationDateAndTime>
         </ns3:DocumentIdentification>
         <ns3:BusinessScopeElement>
           <ns3:Scope>
             <ns3:Type>ConversationId</ns3:Type>
-            <ns3:InstanceIdentifier>a5ec16d3-7c70-4e1d-bbda-530d9a0b9961</ns3:InstanceIdentifier>
+            <ns3:InstanceIdentifier>ca8c74d6-1403-4a6b-8440-631e4c43d69c</ns3:InstanceIdentifier>
             <ns3:Identifier>urn:no:difi:sdp:1.0</ns3:Identifier>
           </ns3:Scope>
         </ns3:BusinessScopeElement>
       </ns3:StandardBusinessDocumentHeader>
       <ns9:digitalPost>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+          <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+            <Reference URI="">
+              <Transforms>
+                <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                  <InclusiveNamespaces PrefixList="difi" xmlns="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </Transform>
+              </Transforms>
+              <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+              <DigestValue>B08lx0ZONxPLLhcfs6sIpeOWBYsMXLjyxy5EtUdQK58=</DigestValue>
+            </Reference>
+          </SignedInfo>
+          <SignatureValue>Glz70lgrmO5M1vSUUIk8APLFM0SE+OeWy8LM3ezHmghrRD/ZeFDbbemmnMljBkyvEFBqF4KOIHzwMtpA5z8NNhNnTFRRhRiUmRrHR2zLCm4DR72BveYZNateLEJNxrvkMjN3JyzcY+GyGlir9bTJuAJtoYBhRjavjJyOJfoz6Ls=</SignatureValue>
+          <KeyInfo>
+            <X509Data>
+              <X509Certificate>MIIB0TCCATqgAwIBAgIQOsRGt/XybZ5DjlGQAmYRezANBgkqhkiG9w0BAQUFADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMTQwNjI2MDkyNjAyWhcNMTkwNjI2MDAwMDAwWjAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMRVzqJTGS3odVnTX78dvgyx/WOTkAYiifTnxoRQKxKwm0MfUIl7VgeQbQvhW5J76UgIIiPgnLtdgXx+zM9sh+uDFYqF+5X2OQ+wZRl1PircyChGqnb+TRd1/bbDqQSFF0iGXdh1vFucVvvjZtgC3AH2eH0+qGtiwKR4yzax4aFvAgMBAAGjJDAiMAsGA1UdDwQEAwIEsDATBgNVHSUEDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQUFAAOBgQCz0G+xu4i4aGIj8KCUBweKQGbCYq3WLz9G44jAH0IpAFkgHVkLSMxcHJYeG9nYSpDaiuH789qxaT80qxzZhOY2cYV5ZBWMizgQt/rSombRT0owdxPfbhL4n6pNBS62IEacLR+CfbYhTtVz0awi293R+tYuMlO3vRGidMRZaXc2bw==</X509Certificate>
+            </X509Data>
+          </KeyInfo>
+        </Signature>
         <ns9:avsender>
           <ns9:organisasjon authority="iso6523-actorid-upis">9908:984661185</ns9:organisasjon>
         </ns9:avsender>
@@ -52,7 +107,7 @@
         </ns9:digitalPostInfo>
         <ns9:dokumentfingerpakkeavtrykk>
           <ns5:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-          <ns5:DigestValue>HER_SKAL_HASH_AV_DOKUMENTPAKKE_KOMME!</ns5:DigestValue>
+          <ns5:DigestValue>DPfY/U5Guma/S6VJts59PJYHg2atV6gzowa8AY37yVg=</ns5:DigestValue>
         </ns9:dokumentfingerpakkeavtrykk>
       </ns9:digitalPost>
     </ns3:StandardBusinessDocument>

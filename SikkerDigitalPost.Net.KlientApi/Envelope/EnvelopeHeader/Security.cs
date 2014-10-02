@@ -25,7 +25,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         public override XmlElement Xml()
         {
-            _securityElement = XmlDocument.CreateElement("wsse", "Security", Navnerom.wsse);
+            _securityElement = XmlEnvelope.CreateElement("wsse", "Security", Navnerom.wsse);
             _securityElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
             _securityElement.SetAttribute("mustUnderstand", Navnerom.XmlnsEnv, "true");
             _securityElement.AppendChild(BinarySecurityToken());
@@ -35,7 +35,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         private XmlElement BinarySecurityToken()
         {
-            var binarySecurityToken = XmlDocument.CreateElement("wsse", "BinarySecurityToken", Navnerom.wsse);
+            var binarySecurityToken = XmlEnvelope.CreateElement("wsse", "BinarySecurityToken", Navnerom.wsse);
             binarySecurityToken.SetAttribute("id", Navnerom.wsu, "ID_SKAL_SETTES_INN_HER");
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
@@ -46,12 +46,12 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         private XmlElement Timestamp()
         {
-            XmlElement timestamp = XmlDocument.CreateElement("wsu", "Timestamp", Navnerom.wsu);
+            XmlElement timestamp = XmlEnvelope.CreateElement("wsu", "Timestamp", Navnerom.wsu);
             {
-                var created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, XmlDocument);
+                var created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, XmlEnvelope);
                 created.InnerText = "TIMESTAMP_CREATED";
 
-                var expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.wsu, XmlDocument);
+                var expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.wsu, XmlEnvelope);
                 expires.InnerText = "TIMESTAMP_EXPIRES";
             }
 
@@ -65,7 +65,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
             var messagingId = Guid.NewGuid();
             var bodyId = Guid.NewGuid();
 
-            var signed = new SignedXmlWithAgnosticId(XmlDocument, Forsendelse.DigitalPost.Mottaker.Sertifikat, "env");
+            var signed = new SignedXmlWithAgnosticId(XmlEnvelope, Forsendelse.DigitalPost.Mottaker.Sertifikat, "env");
 
             {
                 var bodyReference = new Sha256Reference("#id-" + bodyId);                               //Body
@@ -96,24 +96,24 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + bstId));
             signed.ComputeSignature();
 
-            _securityElement.AppendChild(XmlDocument.ImportNode(signed.GetXml(), true));
+            _securityElement.AppendChild(XmlEnvelope.ImportNode(signed.GetXml(), true));
         }
 
         //private XmlElement SignedInfo()
         //{
-        //    XmlElement signedInfo = XmlDocument.CreateElement("ds", "SignedInfo", Navnerom.ds);
+        //    XmlElement signedInfo = XmlEnvelope.CreateElement("ds", "SignedInfo", Navnerom.ds);
         //    {
         //        //Kanokaliseringsmetode
-        //        XmlElement canocalizationMethod = XmlDocument.CreateElement("ds", "CanocalizationMethod", Navnerom.ds);
+        //        XmlElement canocalizationMethod = XmlEnvelope.CreateElement("ds", "CanocalizationMethod", Navnerom.ds);
         //        canocalizationMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/10/xml-exc-c14n#");
         //        {
-        //            XmlElement inclusiveNamespaces = canocalizationMethod.AppendChildElement("InclusiveNamespaces", "ec", Navnerom.ec, XmlDocument);
+        //            XmlElement inclusiveNamespaces = canocalizationMethod.AppendChildElement("InclusiveNamespaces", "ec", Navnerom.ec, XmlEnvelope);
         //            inclusiveNamespaces.SetAttribute("PrefixList", "env");
         //        }
         //        signedInfo.AppendChild(canocalizationMethod);
 
         //        //Signaturmetode
-        //        XmlElement signatureMethod = XmlDocument.CreateElement("ds", "SignatureMethod", Navnerom.ds);
+        //        XmlElement signatureMethod = XmlEnvelope.CreateElement("ds", "SignatureMethod", Navnerom.ds);
         //        signatureMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256");
         //        signedInfo.AppendChild(signatureMethod);
 
@@ -124,7 +124,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
         //        }
 
         //        //Signaturverdi
-        //        XmlElement signatureValue = signedInfo.AppendChildElement("SignatureValue", "ds", Navnerom.ds, XmlDocument);
+        //        XmlElement signatureValue = signedInfo.AppendChildElement("SignatureValue", "ds", Navnerom.ds, XmlEnvelope);
         //        signatureValue.InnerText = "SIGNATUR_VERDI";
 
         //        //KeyInfo
@@ -153,15 +153,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         //private XmlElement SignedInfoReference(string uri, string digestValue, params string[] prefixList)
         //{
-        //    XmlElement reference = XmlDocument.CreateElement("ds", "Reference", Navnerom.ds);
+        //    XmlElement reference = XmlEnvelope.CreateElement("ds", "Reference", Navnerom.ds);
         //    reference.SetAttribute("URI", uri);
         //    {
-        //        XmlElement transforms = XmlDocument.CreateElement("ds", "Transforms", Navnerom.ds);
+        //        XmlElement transforms = XmlEnvelope.CreateElement("ds", "Transforms", Navnerom.ds);
         //        {
-        //            XmlElement transform = transforms.AppendChildElement("Transform", "ds", Navnerom.ds, XmlDocument);
+        //            XmlElement transform = transforms.AppendChildElement("Transform", "ds", Navnerom.ds, XmlEnvelope);
         //            transform.SetAttribute("Algorithm", "http://www.w3.org/2001/10/xml-exc-c14n#");
         //            {
-        //                XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", Navnerom.ec, XmlDocument);
+        //                XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", Navnerom.ec, XmlEnvelope);
         //                inclusiveNamespaces.SetAttribute("PrefixList", String.Join(" ", prefixList));
         //            }
         //        }
@@ -173,13 +173,13 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
         private XmlElement KeyInfo()
         {
-            XmlElement keyInfo = XmlDocument.CreateElement("ds", "KeyInfo", Navnerom.ds);
+            XmlElement keyInfo = XmlEnvelope.CreateElement("ds", "KeyInfo", Navnerom.ds);
             keyInfo.SetAttribute("Id", "KEY_INFO_ID");
             {
-                XmlElement securityTokenReference = keyInfo.AppendChildElement("SecurityTokenReference", "wsse", Navnerom.wsse, XmlDocument);
+                XmlElement securityTokenReference = keyInfo.AppendChildElement("SecurityTokenReference", "wsse", Navnerom.wsse, XmlEnvelope);
                 securityTokenReference.SetAttribute("wsu:Id", "WSU_ID");
                 {
-                    XmlElement reference = securityTokenReference.AppendChildElement("Reference", "wsse", Navnerom.wsse, XmlDocument);
+                    XmlElement reference = securityTokenReference.AppendChildElement("Reference", "wsse", Navnerom.wsse, XmlEnvelope);
                     reference.SetAttribute("URI", "URI_REFERENCE");
                     reference.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
                 }

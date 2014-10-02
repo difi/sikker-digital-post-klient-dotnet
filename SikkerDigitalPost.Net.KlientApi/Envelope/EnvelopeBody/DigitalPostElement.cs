@@ -20,20 +20,20 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         public override XmlElement Xml()
         {
-            XmlElement digitalPostElement = XmlDocument.CreateElement("ns9", "digitalPost", Navnerom.Ns9);
+            XmlElement digitalPostElement = XmlEnvelope.CreateElement("ns9", "digitalPost", Navnerom.Ns9);
             {
                 digitalPostElement.AppendChild(AvsenderElement());
                 digitalPostElement.AppendChild(MottakerElement());
                 digitalPostElement.AppendChild(DigitalPostInfoElement());
                 digitalPostElement.AppendChild(DokumentfingerpakkeavtrykkElement());
-                digitalPostElement.PrependChild(XmlDocument.ImportNode(Signature().GetXml(), true));
+                digitalPostElement.PrependChild(XmlEnvelope.ImportNode(Signature().GetXml(), true));
             }
             return digitalPostElement;
         }
 
         private SignedXml Signature()
         {
-            SignedXml signedXml = new SignedXmlWithAgnosticId(XmlDocument, Databehandler.Sertifikat);
+            SignedXml signedXml = new SignedXmlWithAgnosticId(XmlEnvelope, Databehandler.Sertifikat);
             
             var reference = new Sha256Reference("");
             reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
@@ -53,9 +53,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private XmlElement AvsenderElement()
         {
-            XmlElement avsender = XmlDocument.CreateElement("ns9", "avsender", Navnerom.Ns9);
+            XmlElement avsender = XmlEnvelope.CreateElement("ns9", "avsender", Navnerom.Ns9);
             {
-                XmlElement organisasjon = XmlDocument.CreateElement("ns9", "organisasjon", Navnerom.Ns9);
+                XmlElement organisasjon = XmlEnvelope.CreateElement("ns9", "organisasjon", Navnerom.Ns9);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
                 avsender.AppendChild(organisasjon);
@@ -65,15 +65,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private XmlElement MottakerElement()
         {
-            XmlElement mottaker = XmlDocument.CreateElement("ns9", "mottaker", Navnerom.Ns9);
+            XmlElement mottaker = XmlEnvelope.CreateElement("ns9", "mottaker", Navnerom.Ns9);
             {
-                XmlElement person = XmlDocument.CreateElement("ns9", "person", Navnerom.Ns9);
+                XmlElement person = XmlEnvelope.CreateElement("ns9", "person", Navnerom.Ns9);
                 {
-                    XmlElement personidentifikator = XmlDocument.CreateElement("ns9", "personidentifikator", Navnerom.Ns9);
+                    XmlElement personidentifikator = XmlEnvelope.CreateElement("ns9", "personidentifikator", Navnerom.Ns9);
                     personidentifikator.InnerText = Forsendelse.DigitalPost.Mottaker.Personidentifikator;
                     person.AppendChild(personidentifikator);
 
-                    XmlElement postkasseadresse = XmlDocument.CreateElement("ns9", "postkasseadresse", Navnerom.Ns9);
+                    XmlElement postkasseadresse = XmlEnvelope.CreateElement("ns9", "postkasseadresse", Navnerom.Ns9);
                     postkasseadresse.InnerText = Forsendelse.DigitalPost.Mottaker.Postkasseadresse;
                     person.AppendChild(postkasseadresse);
                 }
@@ -84,35 +84,35 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private XmlElement DigitalPostInfoElement()
         {
-            XmlElement digitalPostInfo = XmlDocument.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
+            XmlElement digitalPostInfo = XmlEnvelope.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
             {
-                XmlElement aapningskvittering = XmlDocument.CreateElement("ns9", "aapningskvittering", Navnerom.Ns9);
+                XmlElement aapningskvittering = XmlEnvelope.CreateElement("ns9", "aapningskvittering", Navnerom.Ns9);
                 aapningskvittering.InnerText = Forsendelse.DigitalPost.Åpningskvittering.ToString();
                 digitalPostInfo.AppendChild(aapningskvittering);
 
-                XmlElement sikkerhetsnivaa = XmlDocument.CreateElement("ns9", "sikkerhetsnivaa", Navnerom.Ns9);
+                XmlElement sikkerhetsnivaa = XmlEnvelope.CreateElement("ns9", "sikkerhetsnivaa", Navnerom.Ns9);
                 sikkerhetsnivaa.InnerText = Forsendelse.DigitalPost.Sikkerhetsnivå.ToString();
                 digitalPostInfo.AppendChild(sikkerhetsnivaa);
 
-                XmlElement ikkeSensitivTittel = XmlDocument.CreateElement("ns9", "ikkeSensitivTittel", Navnerom.Ns9);
+                XmlElement ikkeSensitivTittel = XmlEnvelope.CreateElement("ns9", "ikkeSensitivTittel", Navnerom.Ns9);
                 ikkeSensitivTittel.InnerText = Forsendelse.DigitalPost.IkkeSensitivTittel;
                 digitalPostInfo.AppendChild(ikkeSensitivTittel);
 
-                XmlElement varsler = XmlDocument.CreateElement("ns9", "varsler", Navnerom.Ns9);
+                XmlElement varsler = XmlEnvelope.CreateElement("ns9", "varsler", Navnerom.Ns9);
                 {
                     if (Forsendelse.DigitalPost.EpostVarsel != null)
                     {
-                        XmlElement epostVarsel = XmlDocument.CreateElement("ns9", "epostVarsel", Navnerom.Ns9);
+                        XmlElement epostVarsel = XmlEnvelope.CreateElement("ns9", "epostVarsel", Navnerom.Ns9);
                         {
-                            XmlElement epostadresse = XmlDocument.CreateElement("ns9", "epostadresse", Navnerom.Ns9);
+                            XmlElement epostadresse = XmlEnvelope.CreateElement("ns9", "epostadresse", Navnerom.Ns9);
                             epostadresse.InnerText = Forsendelse.DigitalPost.EpostVarsel.Epostadresse;
                             epostVarsel.AppendChild(epostadresse);
 
-                            XmlElement varseltekst = XmlDocument.CreateElement("ns9", "varseltekst", Navnerom.Ns9);
+                            XmlElement varseltekst = XmlEnvelope.CreateElement("ns9", "varseltekst", Navnerom.Ns9);
                             varseltekst.InnerText = Forsendelse.DigitalPost.EpostVarsel.Varslingstekst;
                             epostVarsel.AppendChild(varseltekst);
 
-                            XmlElement repetisjoner = XmlDocument.CreateElement("ns9", "repetisjoner", Navnerom.Ns9);
+                            XmlElement repetisjoner = XmlEnvelope.CreateElement("ns9", "repetisjoner", Navnerom.Ns9);
                             //
                             epostVarsel.AppendChild(repetisjoner);
                         }
@@ -120,17 +120,17 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
                     }
                     if (Forsendelse.DigitalPost.SmsVarsel != null)
                     {
-                        XmlElement smsVarsel = XmlDocument.CreateElement("ns9", "smsVarsel", Navnerom.Ns9);
+                        XmlElement smsVarsel = XmlEnvelope.CreateElement("ns9", "smsVarsel", Navnerom.Ns9);
                         {
-                            XmlElement mobiltelefonnummer = XmlDocument.CreateElement("ns9", "mobiltelefonnummer", Navnerom.Ns9);
+                            XmlElement mobiltelefonnummer = XmlEnvelope.CreateElement("ns9", "mobiltelefonnummer", Navnerom.Ns9);
                             mobiltelefonnummer.InnerText = Forsendelse.DigitalPost.SmsVarsel.Mobilnummer;
                             smsVarsel.AppendChild(mobiltelefonnummer);
 
-                            XmlElement varseltekst = XmlDocument.CreateElement("ns9", "varseltekst", Navnerom.Ns9);
+                            XmlElement varseltekst = XmlEnvelope.CreateElement("ns9", "varseltekst", Navnerom.Ns9);
                             varseltekst.InnerText = Forsendelse.DigitalPost.SmsVarsel.Varslingstekst;
                             smsVarsel.AppendChild(varseltekst);
 
-                            XmlElement repetisjoner = XmlDocument.CreateElement("ns9", "repetisjoner", Navnerom.Ns9);
+                            XmlElement repetisjoner = XmlEnvelope.CreateElement("ns9", "repetisjoner", Navnerom.Ns9);
                             //
                             smsVarsel.AppendChild(repetisjoner);
                         }
@@ -144,13 +144,13 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private XmlElement DokumentfingerpakkeavtrykkElement()
         {
-            XmlElement dokumentpakkefingeravtrykk = XmlDocument.CreateElement("ns9", "dokumentfingerpakkeavtrykk", Navnerom.Ns9);
+            XmlElement dokumentpakkefingeravtrykk = XmlEnvelope.CreateElement("ns9", "dokumentfingerpakkeavtrykk", Navnerom.Ns9);
             {
-                XmlElement digestMethod = XmlDocument.CreateElement("ns5", "DigestMethod", Navnerom.Ns5);
+                XmlElement digestMethod = XmlEnvelope.CreateElement("ns5", "DigestMethod", Navnerom.Ns5);
                 digestMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/04/xmlenc#sha256");
                 dokumentpakkefingeravtrykk.AppendChild(digestMethod);
 
-                XmlElement digestValue = XmlDocument.CreateElement("ns5", "DigestValue", Navnerom.Ns5);
+                XmlElement digestValue = XmlEnvelope.CreateElement("ns5", "DigestValue", Navnerom.Ns5);
                 digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(AsicEArkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
                 dokumentpakkefingeravtrykk.AppendChild(digestValue);
             }

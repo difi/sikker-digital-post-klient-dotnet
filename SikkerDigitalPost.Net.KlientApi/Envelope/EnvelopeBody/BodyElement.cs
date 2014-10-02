@@ -14,11 +14,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         public override XmlElement Xml()
         {
-            var bodyElement = XmlDocument.CreateElement("env", "body", Navnerom.XmlnsEnv);
+            var bodyElement = XmlEnvelope.CreateElement("env", "body", Navnerom.XmlnsEnv);
             bodyElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            bodyElement.SetAttribute("id", Navnerom.wsu, Navnerom.WsuId);
+            bodyElement.SetAttribute("id", Navnerom.wsu, "HER_SKAL_EN_GUID_INN?");
 
-            var sbdElement = new StandardBusinessDocument(XmlDocument, Forsendelse, AsicEArkiv, Databehandler);
+            var sbdElement = new StandardBusinessDocument(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler);
             bodyElement.AppendChild(sbdElement.Xml());
             
             return bodyElement;

@@ -16,15 +16,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.Body
 
         public override XmlElement Xml()
         {
-            var sbdElement = XmlDocument.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
+            var sbdElement = XmlEnvelope.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
             sbdElement.SetAttribute("xmlns:ns3", Navnerom.Ns3);
             sbdElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
             sbdElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
 
-            var sbdHeader = new StandardBusinessDocumentHeader(XmlDocument, Forsendelse, AsicEArkiv, Databehandler, _creationDateAndtime);
+            var sbdHeader = new StandardBusinessDocumentHeader(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler, _creationDateAndtime);
             sbdElement.AppendChild(sbdHeader.Xml());
 
-            var digitalPost = new DigitalPostElement(XmlDocument, Forsendelse, AsicEArkiv, Databehandler);
+            var digitalPost = new DigitalPostElement(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler);
 
             sbdElement.AppendChild(digitalPost.Xml());
 
