@@ -81,23 +81,27 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
             XmlElement digitalPostInfo = XmlEnvelope.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
             {
                 XmlElement aapningskvittering = digitalPostInfo.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, XmlEnvelope);
-                aapningskvittering.InnerText = Forsendelse.DigitalPost.Åpningskvittering.ToString();
+                aapningskvittering.InnerText = Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();
 
                 XmlElement sikkerhetsnivaa = digitalPostInfo.AppendChildElement("sikkerhetsnivaa", "ns9", Navnerom.Ns9, XmlEnvelope);
-                sikkerhetsnivaa.InnerText = Forsendelse.DigitalPost.Sikkerhetsnivå.ToString();
+                sikkerhetsnivaa.InnerText = ((int)Forsendelse.DigitalPost.Sikkerhetsnivå).ToString();
 
                 XmlElement ikkeSensitivTittel = digitalPostInfo.AppendChildElement("ikkeSensitivTittel", "ns9", Navnerom.Ns9, XmlEnvelope);
+                ikkeSensitivTittel.SetAttribute("lang", Forsendelse.Språkkode.ToLower());
                 ikkeSensitivTittel.InnerText = Forsendelse.DigitalPost.IkkeSensitivTittel;
 
-                XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, XmlEnvelope);
+                if (Forsendelse.DigitalPost.SmsVarsel != null || Forsendelse.DigitalPost.EpostVarsel != null)
                 {
-                    if (Forsendelse.DigitalPost.EpostVarsel != null)
+                    XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, XmlEnvelope);
                     {
-                        varsler.AppendChild(EpostVarselElement());
-                    }
-                    if (Forsendelse.DigitalPost.SmsVarsel != null)
-                    {
-                        varsler.AppendChild(SmsVarselElement());
+                        if (Forsendelse.DigitalPost.EpostVarsel != null)
+                        {
+                            varsler.AppendChild(EpostVarselElement());
+                        }
+                        if (Forsendelse.DigitalPost.SmsVarsel != null)
+                        {
+                            varsler.AppendChild(SmsVarselElement());
+                        }
                     }
                 }
             }
@@ -106,30 +110,42 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
         private XmlElement EpostVarselElement()
         {
-            return VarselElement("epostVarsel", "epostadresse", Forsendelse.DigitalPost.EpostVarsel.Varslingstekst);
+            var epostVarsel = Forsendelse.DigitalPost.EpostVarsel;
+            return VarselElement(epostVarsel, "epostVarsel", "epostadresse", epostVarsel.Epostadresse, epostVarsel.Varslingstekst);
         }
 
         private XmlElement SmsVarselElement()
         {
-            return VarselElement("smsVarsel", "mobiltelefonnummer", Forsendelse.DigitalPost.SmsVarsel.Varslingstekst);
+            var smsVarsel = Forsendelse.DigitalPost.SmsVarsel;
+            return VarselElement(smsVarsel, "smsVarsel", "mobiltelefonnummer", smsVarsel.Mobilnummer, smsVarsel.Varslingstekst);
         }
 
-        private XmlElement VarselElement(string varselType, string kontakttype, string varslingstekst)
+        private XmlElement VarselElement(Varsel varselObjekt, string varselType, string kontakttype, string kontaktinfo, string varslingstekst)
         {
             XmlElement varsel = XmlEnvelope.CreateElement("ns9", varselType, Navnerom.Ns9);
             {
                 XmlElement kontakt = varsel.AppendChildElement(kontakttype, "ns9", Navnerom.Ns9, XmlEnvelope);
-                kontakt.InnerText = Forsendelse.DigitalPost.SmsVarsel.Mobilnummer;
-
-                XmlElement varseltekst = varsel.AppendChildElement("varseltekst", "ns9", Navnerom.Ns9, XmlEnvelope);
+                kontakt.InnerText = kontaktinfo;
+                
+                XmlElement varseltekst = varsel.AppendChildElement("varslingsTekst", "ns9", Navnerom.Ns9, XmlEnvelope);
+                varseltekst.SetAttribute("lang", Forsendelse.Språkkode.ToLower());
                 varseltekst.InnerText = varslingstekst;
+
+                XmlElement repetisjoner = varsel.AppendChildElement("repetisjoner", "ns9", Navnerom.Ns9, XmlEnvelope);
+                {
+                    foreach (var v in varselObjekt.VarselEtterDager)
+                    {
+                        var dagerEtter = repetisjoner.AppendChildElement("dagerEtter", "ns9", Navnerom.Ns9, XmlEnvelope);
+                        dagerEtter.InnerText = v.ToString();
+                    }
+                }
             }
             return varsel;
         }
 
         private XmlElement DokumentfingerpakkeavtrykkElement()
         {
-            XmlElement dokumentpakkefingeravtrykk = XmlEnvelope.CreateElement("ns9", "dokumentfingerpakkeavtrykk", Navnerom.Ns9);
+            XmlElement dokumentpakkefingeravtrykk = XmlEnvelope.CreateElement("ns9", "dokumentpakkefingeravtrykk", Navnerom.Ns9);
             {
                 XmlElement digestMethod = dokumentpakkefingeravtrykk.AppendChildElement("DigestMethod", "ns5", Navnerom.Ns5, XmlEnvelope);
                 digestMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/04/xmlenc#sha256");

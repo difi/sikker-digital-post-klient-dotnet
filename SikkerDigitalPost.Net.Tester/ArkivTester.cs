@@ -30,8 +30,8 @@ namespace SikkerDigitalPost.Net.Tests
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
-            var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            var arkivstrøm = new MemoryStream(arkiv.Bytes());
+            
+            var arkivstrøm = new MemoryStream(Arkiv.Bytes());
 
             //Åpne zip og generer sjekksum for å verifisere innhold
             using (var zip = new ZipArchive(arkivstrøm, ZipArchiveMode.Read))
@@ -51,7 +51,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Signatur.Bytes, arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Signatur.Bytes, Arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -60,7 +60,7 @@ namespace SikkerDigitalPost.Net.Tests
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Manifest.Bytes, Path.GetFileName(arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Manifest.Bytes, Path.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }

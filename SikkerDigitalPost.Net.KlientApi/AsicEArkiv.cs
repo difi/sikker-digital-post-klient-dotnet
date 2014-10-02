@@ -54,7 +54,7 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         public byte[] Krypter(X509Certificate2 sertifikat)
         {
-            var contentInfo = new ContentInfo(_bytes);
+            var contentInfo = new ContentInfo(Bytes());
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
             var recipient = new CmsRecipient(sertifikat);

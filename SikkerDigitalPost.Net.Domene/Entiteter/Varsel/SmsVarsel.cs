@@ -1,4 +1,7 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
 {
 
     /// <summary>
@@ -23,9 +26,16 @@
 
         /// <param name="mobilnummer">Mobiltelefonnummer varselet skal sendes til.</param>
         /// <param name="varslingstekst">Avsenderstyrt varslingstekst som skal inngå i varselet.</param>
-        public SmsVarsel(string mobilnummer,string varslingstekst) : base(varslingstekst)
+        public SmsVarsel(string mobilnummer,string varslingstekst, IEnumerable<int> varselEtterDager) : base(varslingstekst,varselEtterDager)
         {
             Mobilnummer = mobilnummer;
         }
+
+        public SmsVarsel(string mobilnummer, string varslingstekst, params int[] varselEtterDager)
+            : this(mobilnummer, varslingstekst, varselEtterDager.ToList())
+        {
+            
+        }
+
     }
 }

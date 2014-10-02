@@ -2,10 +2,10 @@
 <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
   <env:Header>
     <wsse:Security xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" env:mustUnderstand="true" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-      <wsse:BinarySecurityTokenElement wsu:id="X509-15ff3c3b-87ff-4389-87b5-7c015182f946" EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3">MIIB0TCCATqgAwIBAgIQOsRGt/XybZ5DjlGQAmYRezANBgkqhkiG9w0BAQUFADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMTQwNjI2MDkyNjAyWhcNMTkwNjI2MDAwMDAwWjAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMRVzqJTGS3odVnTX78dvgyx/WOTkAYiifTnxoRQKxKwm0MfUIl7VgeQbQvhW5J76UgIIiPgnLtdgXx+zM9sh+uDFYqF+5X2OQ+wZRl1PircyChGqnb+TRd1/bbDqQSFF0iGXdh1vFucVvvjZtgC3AH2eH0+qGtiwKR4yzax4aFvAgMBAAGjJDAiMAsGA1UdDwQEAwIEsDATBgNVHSUEDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQUFAAOBgQCz0G+xu4i4aGIj8KCUBweKQGbCYq3WLz9G44jAH0IpAFkgHVkLSMxcHJYeG9nYSpDaiuH789qxaT80qxzZhOY2cYV5ZBWMizgQt/rSombRT0owdxPfbhL4n6pNBS62IEacLR+CfbYhTtVz0awi293R+tYuMlO3vRGidMRZaXc2bw==</wsse:BinarySecurityTokenElement>
-      <wsu:TimestampElement wsu:Id="TS-9ca05d1c-f167-4605-8bde-d81b16ca21c8">
-        <wsu:Created>2014-10-02T11:05:56.226Z</wsu:Created>
-        <wsu:Expires>2014-10-02T11:10:56.227Z</wsu:Expires>
+      <wsse:BinarySecurityTokenElement wsu:id="X509-38ab7092-02b8-43e2-a8f0-6551cc56ec32" EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3">MIIB0TCCATqgAwIBAgIQOsRGt/XybZ5DjlGQAmYRezANBgkqhkiG9w0BAQUFADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMTQwNjI2MDkyNjAyWhcNMTkwNjI2MDAwMDAwWjAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMRVzqJTGS3odVnTX78dvgyx/WOTkAYiifTnxoRQKxKwm0MfUIl7VgeQbQvhW5J76UgIIiPgnLtdgXx+zM9sh+uDFYqF+5X2OQ+wZRl1PircyChGqnb+TRd1/bbDqQSFF0iGXdh1vFucVvvjZtgC3AH2eH0+qGtiwKR4yzax4aFvAgMBAAGjJDAiMAsGA1UdDwQEAwIEsDATBgNVHSUEDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQUFAAOBgQCz0G+xu4i4aGIj8KCUBweKQGbCYq3WLz9G44jAH0IpAFkgHVkLSMxcHJYeG9nYSpDaiuH789qxaT80qxzZhOY2cYV5ZBWMizgQt/rSombRT0owdxPfbhL4n6pNBS62IEacLR+CfbYhTtVz0awi293R+tYuMlO3vRGidMRZaXc2bw==</wsse:BinarySecurityTokenElement>
+      <wsu:TimestampElement wsu:Id="TS-2e4970bd-5ddf-447f-bd04-440d1c2d1002">
+        <wsu:Created>2014-10-02T11:48:17.458Z</wsu:Created>
+        <wsu:Expires>2014-10-02T11:53:17.458Z</wsu:Expires>
       </wsu:TimestampElement>
       <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
         <SignedInfo>
@@ -13,50 +13,50 @@
             <InclusiveNamespaces PrefixList="env" xmlns="http://www.w3.org/2001/10/xml-exc-c14n#" />
           </CanonicalizationMethod>
           <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
-          <Reference URI="#id-23e85d20-e280-432d-86e4-0f0a0004c6e1">
+          <Reference URI="#id-14072e05-02ca-4d02-a435-48eab3152c70">
             <Transforms>
               <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue>u3dGi/FC0gOdB0BbaGiHCZrUdtaSoa9GxdTLgWu1Y3s=</DigestValue>
+            <DigestValue>6W++5iZGStb4xK4i+fTvAsHFsI5tSuj6EJoDp/78Jh0=</DigestValue>
           </Reference>
-          <Reference URI="#TS-9ca05d1c-f167-4605-8bde-d81b16ca21c8">
+          <Reference URI="#TS-2e4970bd-5ddf-447f-bd04-440d1c2d1002">
             <Transforms>
               <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
                 <InclusiveNamespaces PrefixList="wsse env" xmlns="http://www.w3.org/2001/10/xml-exc-c14n#" />
               </Transform>
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue>bvLTuxqHgp4OhhDKcMQ9kBwTocx5t+HSKCqd8+RQ3GE=</DigestValue>
+            <DigestValue>B5ec/bpsmbScfEXCYntxphol6P6dx2sU4dczXNi72Q8=</DigestValue>
           </Reference>
-          <Reference URI="#id-0954f793-5a48-4491-943c-0c7627554ed7">
+          <Reference URI="#id-52c7e7cd-c436-4190-96da-8b68d4786c14">
             <Transforms>
               <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue>vLcuz1fsNLrAn1ru8B5b/wEssgFei0yZYtRmu4+Hjuo=</DigestValue>
+            <DigestValue>2UOmTaDZmxLfD/EwxmxsDxfp0W32+6uY7q3swiL2Ugk=</DigestValue>
           </Reference>
-          <Reference URI="cid:ccd7c898-98da-467e-9d78-9397d96a097b@meldingsformidler.sdp.difi.no">
+          <Reference URI="cid:78e2a855-530d-4283-9c95-6968bf101af7@meldingsformidler.sdp.difi.no">
             <Transforms>
               <Transform Algorithm="http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue>ytSXXyWia/G4+TEE2a1lxD3MwyS4/j0E0Csu15Ttwj8=</DigestValue>
+            <DigestValue>GGrTOsqoGiCjQ8WXZ3nAoSQ9sH7dl4LwtO6ZWEVV86w=</DigestValue>
           </Reference>
         </SignedInfo>
-        <SignatureValue>wTZSgqFX9Dp7zjwPBCb0y5tIhbbIdFxxxPQvCsKb1sgjB8z69bqOtEe6BW2rkZgptlM4SxYf8dHP6qOd9H42NxGYCI2Z+nzQr2f9wykj1ttK/k75AxBawtrgdtIj7v7zGHPuBHv0SNtFNstWx2L63YEygMLiiLQUQhXwgjAKVXw=</SignatureValue>
+        <SignatureValue>dX3GWwx7G/NM+jX6FSzvrG/odEZweIVePbeFZiGmUTKPBxpkZCPHKWXFQyCWe8yVKb7PCBwYkjkpY36eMxNnQBkLgdhNefN9vwpVxiO9KvZoGoFvzm5TENmAqm9Pp4SuguW9u1XNBYvcpn5YVTHADoxcIH27iI9NoN1NaSC3L/Q=</SignatureValue>
         <KeyInfo>
           <SecurityTokenReference xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-            <Reference URI="#X509-58e5135a-0840-40db-b4f2-55e06cb50590" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" />
+            <Reference URI="#X509-6a5c9982-1414-469f-b72a-52099aecb5af" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" />
           </SecurityTokenReference>
         </KeyInfo>
       </Signature>
     </wsse:Security>
-    <eb:Messaging xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" env:MustUnderstand="true" wsu:Id="id-0954f793-5a48-4491-943c-0c7627554ed7" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/">
+    <eb:Messaging xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" env:MustUnderstand="true" wsu:Id="id-52c7e7cd-c436-4190-96da-8b68d4786c14" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/">
       <ns6:UserMessageElement xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:ns4="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns8="http://www.w3.org/1999/xlink" xmlns:ns9="http://begrep.difi.no/sdp/schema_v10" xmlns:ns10="http://uri.etsi.org/2918/v1.2.1#" xmlns:ns11="http://uri.etsi.org/01903/v1.3.2#" mpc="" xmlns:ns6="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/">
         <ns6:MessageInfoElement>
-          <ns6:TimeStamp>2014-10-02T11:05:56.227Z</ns6:TimeStamp>
-          <ns6:MessageId>1d12e6e8-5026-4775-9a24-3e3c130cabbc</ns6:MessageId>
+          <ns6:TimeStamp>2014-10-02T11:48:17.459Z</ns6:TimeStamp>
+          <ns6:MessageId>80d2c812-5091-4bdc-97a9-0791eec64eb3</ns6:MessageId>
         </ns6:MessageInfoElement>
         <ns6:PartyInfoElement>
           <ns6:From>
@@ -72,11 +72,11 @@
           <ns6:AgreementRef>http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse</ns6:AgreementRef>
           <ns6:Service>SDP</ns6:Service>
           <ns6:Action>FormidleDigitalPost</ns6:Action>
-          <ns6:ConversationId>bc80eed8-2fc3-4b91-a94f-8af997fb1974</ns6:ConversationId>
+          <ns6:ConversationId>1c3849e7-82ab-467a-9f01-3e78d029bfa7</ns6:ConversationId>
         </ns6:CollaborationInfoElement>
         <ns6:PayloadInfoElement>
-          <ns6:partInfo href="id-23e85d20-e280-432d-86e4-0f0a0004c6e1" />
-          <ns6:partInfo href="cid:ccd7c898-98da-467e-9d78-9397d96a097b@meldingsformidler.sdp.difi.no">
+          <ns6:partInfo href="id-14072e05-02ca-4d02-a435-48eab3152c70" />
+          <ns6:partInfo href="cid:78e2a855-530d-4283-9c95-6968bf101af7@meldingsformidler.sdp.difi.no">
             <ns6:PartProperties>
               <ns6:Property name="MimeType">application/octet-stream</ns6:Property>
               <ns6:Property name="Content">sdp:Dokumentpakke</ns6:Property>
@@ -86,7 +86,7 @@
       </ns6:UserMessageElement>
     </eb:Messaging>
   </env:Header>
-  <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="id-23e85d20-e280-432d-86e4-0f0a0004c6e1">
+  <env:body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:id="id-14072e05-02ca-4d02-a435-48eab3152c70">
     <ns3:StandardBusinessDocument xmlns:ns3="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="http://begrep.difi.no/sdp/schema_v10">
       <ns3:StandardBusinessDocumentHeader>
         <ns3:HeaderVersion>1.0</ns3:HeaderVersion>
@@ -99,14 +99,14 @@
         <ns3:DocumentIdentification>
           <ns3:Standard>urn:no:difi:sdp:1.0</ns3:Standard>
           <ns3:typeVersion>1.0</ns3:typeVersion>
-          <ns3:InstanceIdentifier>1d12e6e8-5026-4775-9a24-3e3c130cabbc</ns3:InstanceIdentifier>
+          <ns3:InstanceIdentifier>80d2c812-5091-4bdc-97a9-0791eec64eb3</ns3:InstanceIdentifier>
           <ns3:Type>digitalPost</ns3:Type>
-          <ns3:CreationDateAndTime>2014-10-02T11:05:56.228Z</ns3:CreationDateAndTime>
+          <ns3:CreationDateAndTime>2014-10-02T11:48:17.460Z</ns3:CreationDateAndTime>
         </ns3:DocumentIdentification>
         <ns3:BusinessScopeElement>
           <ns3:Scope>
             <ns3:Type>ConversationId</ns3:Type>
-            <ns3:InstanceIdentifier>bc80eed8-2fc3-4b91-a94f-8af997fb1974</ns3:InstanceIdentifier>
+            <ns3:InstanceIdentifier>1c3849e7-82ab-467a-9f01-3e78d029bfa7</ns3:InstanceIdentifier>
             <ns3:Identifier>urn:no:difi:sdp:1.0</ns3:Identifier>
           </ns3:Scope>
         </ns3:BusinessScopeElement>
@@ -124,10 +124,10 @@
                 </Transform>
               </Transforms>
               <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-              <DigestValue>iPPMpFAwQOw2nLoikSxOiIY3DDTnFbiWotj6qYQeg9k=</DigestValue>
+              <DigestValue>v8YRtHXiRBcL01PQGKzJPpHRqwCuQCwAnDMYnGsFlk0=</DigestValue>
             </Reference>
           </SignedInfo>
-          <SignatureValue>AmzLx/0OBz/BQ+xg08YollonT456riWyOTdx/Fns0wuCRslFgaUnM5qfbGIVqAKNJDMoaP9ayDCgKOhB+XjKKSorV2je6qHu0adXAivUA1A9Y/5toMdWkKgsE1qWb1QFxkFiP9Ysl3kFhqfMvPLJcrWBeGBX/4oeku3xfZ40ctM=</SignatureValue>
+          <SignatureValue>l9xaJSLIIcpaItomPQZOzbFtMe828JgCFXv21oVEYQ+EDcBi7+6p1Zvl3BZOIzv71RS2wHUnzlZgoBTVPVNqX2Uss4Z3GXma+ZHZuBc5DkMQp/vSwVDlHIsyO9JrB/adGHvQdF44DBAUhEf+mGrLoZCFD0kMVLrIs3Y//UmHSZY=</SignatureValue>
           <KeyInfo>
             <X509Data>
               <X509Certificate>MIIB0TCCATqgAwIBAgIQOsRGt/XybZ5DjlGQAmYRezANBgkqhkiG9w0BAQUFADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMTQwNjI2MDkyNjAyWhcNMTkwNjI2MDAwMDAwWjAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMRVzqJTGS3odVnTX78dvgyx/WOTkAYiifTnxoRQKxKwm0MfUIl7VgeQbQvhW5J76UgIIiPgnLtdgXx+zM9sh+uDFYqF+5X2OQ+wZRl1PircyChGqnb+TRd1/bbDqQSFF0iGXdh1vFucVvvjZtgC3AH2eH0+qGtiwKR4yzax4aFvAgMBAAGjJDAiMAsGA1UdDwQEAwIEsDATBgNVHSUEDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQUFAAOBgQCz0G+xu4i4aGIj8KCUBweKQGbCYq3WLz9G44jAH0IpAFkgHVkLSMxcHJYeG9nYSpDaiuH789qxaT80qxzZhOY2cYV5ZBWMizgQt/rSombRT0owdxPfbhL4n6pNBS62IEacLR+CfbYhTtVz0awi293R+tYuMlO3vRGidMRZaXc2bw==</X509Certificate>
@@ -151,7 +151,7 @@
         </ns9:digitalPostInfo>
         <ns9:dokumentfingerpakkeavtrykk>
           <ns5:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-          <ns5:DigestValue>JCDwC3OuTD4Tr6Vpwb0GFb37WL1AhLXKeQYD1AjxdO8=</ns5:DigestValue>
+          <ns5:DigestValue>zRTcoik/gsSxO1wb2cg8V8qibzqo9geZSUi4lVqov5c=</ns5:DigestValue>
         </ns9:dokumentfingerpakkeavtrykk>
       </ns9:digitalPost>
     </ns3:StandardBusinessDocument>

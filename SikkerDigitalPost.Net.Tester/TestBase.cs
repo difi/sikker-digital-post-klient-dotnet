@@ -7,7 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Net.KlientApi;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -40,6 +42,10 @@ namespace SikkerDigitalPost.Net.Tests
         protected static Signatur Signatur;
         protected static X509Certificate2 Sertifikat;
 
+        protected static Databehandler Databehandler;
+        protected static AsicEArkiv Arkiv;
+        protected static Envelope Envelope;
+
         public static void Initialiser()
         {
             TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
@@ -49,29 +55,36 @@ namespace SikkerDigitalPost.Net.Tests
 
             Vedleggsstier = Directory.GetFiles(VedleggsMappe);
             _hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
+            
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+            Sertifikat = store.Certificates[0];
+            store.Close();
 
             OrgNrAvsender = new Organisasjonsnummer("984661185");
             Behandlingsansvarlig = new Behandlingsansvarlig(OrgNrAvsender);
 
             OrgNrMottaker = new Organisasjonsnummer("984661185");
-            Mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", new X509Certificate2(), OrgNrMottaker.Iso6523());
+            Mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", Sertifikat, OrgNrMottaker.Iso6523());
 
             DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel");
-
+            DigitalPost.EpostVarsel = new EpostVarsel("epost@sjafjell.no", "Dette er et epostvarsel. En trojansk ... hest.", 0, 7);
+            DigitalPost.SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel. En trojansk ... telefon..", 3, 14);
+            
             Dokumentpakke = GenererDokumentpakke();
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
-            
+
             Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
             var manifestbygger = new ManifestBygger(Manifest);
             manifestbygger.Bygg();
 
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-            Sertifikat = store.Certificates[0];
-            store.Close();
             Signatur = new Signatur(Sertifikat);
             var signaturbygger = new SignaturBygger(Signatur, Forsendelse);
             signaturbygger.Bygg();
+
+            Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
+            Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
+            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler);
         }
 
         private static Dokument GenererHoveddokument()

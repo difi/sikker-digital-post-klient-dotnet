@@ -1,6 +1,6 @@
-﻿using System.Xml;
+﻿using System.Text;
+using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
@@ -14,6 +14,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
         private readonly AsicEArkiv _asicEArkiv;
         private readonly Databehandler _databehandler;
         private Header _header;
+        private byte[] _bytes;
 
         public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler)
         {
@@ -21,6 +22,11 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             _asicEArkiv = asicEArkiv;
             _databehandler = databehandler;
             _envelopeXml = XmlEnvelope();
+        }
+
+        public byte[] Bytes()
+        {
+            return _bytes ?? (_bytes = Encoding.UTF8.GetBytes(Xml().OuterXml));
         }
 
         public XmlDocument Xml()
