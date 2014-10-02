@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Net.KlientApi
             _dokumentpakke = dokumentpakke;
         }
 
-        public byte[] LagAsicE()
+        public byte[] Bytes()
         {
             if (_bytes != null)
                 return _bytes;

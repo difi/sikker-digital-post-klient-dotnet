@@ -2,7 +2,7 @@
 {
     public static class Navnerom
     {
-       public const string XmlnsEnv = "http://www.w3.org/2003/05/soap-envelope";
+       public const string env = "http://www.w3.org/2003/05/soap-envelope";
 
        public const string Ns2 = "http://schemas.xmlsoap.org/soap/envelope/";
        public const string Ns3 = "http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader";

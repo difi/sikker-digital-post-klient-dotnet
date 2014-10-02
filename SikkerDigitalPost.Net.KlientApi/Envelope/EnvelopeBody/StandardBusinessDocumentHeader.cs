@@ -1,114 +1,104 @@
 ﻿using System.Xml;
 ﻿using System;
 ﻿using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Extensions;
+using SikkerDigitalPost.Net.KlientApi.Utilities;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 {
     public class StandardBusinessDocumentHeader : XmlPart
     {
-       private readonly DateTime _creationDateAndtime;
+        private readonly DateTime _creationDateAndtime;
+        private const string _sdpVersion = "urn:no:difi:sdp:1.0";
 
-        public StandardBusinessDocumentHeader(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, DateTime creationDateAndtime) : base(dokument, forsendelse, asicEArkiv, databehandler)
+        public StandardBusinessDocumentHeader(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, DateTime creationDateAndtime)
+            : base(dokument, forsendelse, asicEArkiv, databehandler)
         {
             _creationDateAndtime = creationDateAndtime;
         }
 
         public override XmlElement Xml()
         {
-            XmlElement sbdHeaderElement = SbdHeaderElement();
-            {
-                sbdHeaderElement.AppendChild(SenderElement());
-                sbdHeaderElement.AppendChild(ReceiverElement());
-                sbdHeaderElement.AppendChild(DocumentIdentificationElement());
-                sbdHeaderElement.AppendChild(BusinessScopeElement());
-            }
-            return sbdHeaderElement;
+            XmlElement standardBusinessDocumentHeaderElement = StandardBusinessDocumentHeaderElement();
+            standardBusinessDocumentHeaderElement.AppendChild(SenderElement());
+            standardBusinessDocumentHeaderElement.AppendChild(ReceiverElement());
+            standardBusinessDocumentHeaderElement.AppendChild(DocumentIdentificationElement());
+            standardBusinessDocumentHeaderElement.AppendChild(BusinessScopeElement());
+
+            return standardBusinessDocumentHeaderElement;
         }
 
-        private XmlElement SbdHeaderElement()
+        private XmlElement StandardBusinessDocumentHeaderElement()
         {
-            XmlElement sbdHeaderElement = XmlEnvelope.CreateElement("ns3", "StandardBusinessDocumentHeader", Navnerom.Ns3);
+            XmlElement standardBusinessDocumentHeader = XmlEnvelope.CreateElement("ns3", "StandardBusinessDocumentHeader", Navnerom.Ns3);
             {
-                XmlElement headerVersion = XmlEnvelope.CreateElement("ns3", "HeaderVersion", Navnerom.Ns3);
+                XmlElement headerVersion = standardBusinessDocumentHeader.AppendChildElement("HeaderVersion", "ns3", Navnerom.Ns3, XmlEnvelope);
                 headerVersion.InnerText = "1.0";
-                sbdHeaderElement.AppendChild(headerVersion);
             }
-            return sbdHeaderElement;
-
+            return standardBusinessDocumentHeader;
         }
 
         private XmlElement SenderElement()
         {
-            XmlElement senderElement = XmlEnvelope.CreateElement("ns3", "Sender", Navnerom.Ns3);
+            XmlElement sender = XmlEnvelope.CreateElement("ns3", "Sender", Navnerom.Ns3);
             {
-                XmlElement identifier = XmlEnvelope.CreateElement("ns3", "Identifier", Navnerom.Ns3);
+                XmlElement identifier = sender.AppendChildElement("Identifier", "ns3", Navnerom.Ns3, XmlEnvelope);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
                 identifier.InnerText = Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
-                senderElement.AppendChild(identifier);
             }
-            return senderElement;
+            return sender;
         }
 
         private XmlElement ReceiverElement()
         {
-            XmlElement receiverElement = XmlEnvelope.CreateElement("ns3", "Receiver", Navnerom.Ns3);
+            XmlElement receiver = XmlEnvelope.CreateElement("ns3", "Receiver", Navnerom.Ns3);
             {
-                XmlElement identifier = XmlEnvelope.CreateElement("ns3", "Identifier", Navnerom.Ns3);
+                XmlElement identifier = receiver.AppendChildElement("Identifier", "ns3", Navnerom.Ns3, XmlEnvelope);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
                 identifier.InnerText = Forsendelse.DigitalPost.Mottaker.OrganisasjonsnummerPostkasse.Iso6523();
-                receiverElement.AppendChild(identifier);
             }
-            return receiverElement;            
+            return receiver;
         }
 
         private XmlElement DocumentIdentificationElement()
         {
-            XmlElement documentIdentificationElement = XmlEnvelope.CreateElement("ns3", "DocumentIdentification", Navnerom.Ns3);
+            XmlElement documentIdentification = XmlEnvelope.CreateElement("ns3", "DocumentIdentification", Navnerom.Ns3);
             {
-                XmlElement standard = XmlEnvelope.CreateElement("ns3", "Standard", Navnerom.Ns3);
-                standard.InnerText = "urn:no:difi:sdp:1.0";
-                documentIdentificationElement.AppendChild(standard);
+                XmlElement standard = documentIdentification.AppendChildElement("Standard", "ns3", Navnerom.Ns3, XmlEnvelope);
+                standard.InnerText = _sdpVersion;
 
-                XmlElement typeVersion = XmlEnvelope.CreateElement("ns3", "typeVersion", Navnerom.Ns3);
+                XmlElement typeVersion = documentIdentification.AppendChildElement("typeVersion", "ns3", Navnerom.Ns3, XmlEnvelope);
                 typeVersion.InnerText = "1.0";
-                documentIdentificationElement.AppendChild(typeVersion);
 
-                XmlElement instanceIdentifier = XmlEnvelope.CreateElement("ns3", "InstanceIdentifier", Navnerom.Ns3);
-                instanceIdentifier.InnerText = "HER_SKAL_INSTANCEIDENTIFIER_INN"; // Guid RegEx [a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}
-                documentIdentificationElement.AppendChild(instanceIdentifier);
+                XmlElement instanceIdentifier = documentIdentification.AppendChildElement("InstanceIdentifier", "ns3", Navnerom.Ns3, XmlEnvelope);
+                instanceIdentifier.InnerText = GuidUtility.StandardBusinessDocumentHeaderId;
 
-                XmlElement type = XmlEnvelope.CreateElement("ns3", "Type", Navnerom.Ns3);
-                type.InnerText = "IKKE FERDIG:DIGIPOST_ELLER_KVITTERING"; // "digitalPost" eller "kvittering"
-                documentIdentificationElement.AppendChild(type);
+                XmlElement type = documentIdentification.AppendChildElement("Type", "ns3", Navnerom.Ns3, XmlEnvelope);
+                type.InnerText = "digitalPost";
 
-                XmlElement creationDateAndTime = XmlEnvelope.CreateElement("ns3", "CreationDateAndTime", Navnerom.Ns3);
-                creationDateAndTime.InnerText = _creationDateAndtime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-                documentIdentificationElement.AppendChild(creationDateAndTime);
+                XmlElement creationDateAndTime = documentIdentification.AppendChildElement("CreationDateAndTime", "ns3", Navnerom.Ns3, XmlEnvelope);
+                creationDateAndTime.InnerText = _creationDateAndtime.ToString(DateUtility.DateFormat);
             }
-            return documentIdentificationElement;
+            return documentIdentification;
         }
 
         private XmlElement BusinessScopeElement()
         {
-            XmlElement businessScopeElement = XmlEnvelope.CreateElement("ns3", "BusinessScopeElement", Navnerom.Ns3);
+            XmlElement businessScope = XmlEnvelope.CreateElement("ns3", "BusinessScopeElement", Navnerom.Ns3);
             {
-                XmlElement scope = XmlEnvelope.CreateElement("ns3", "Scope", Navnerom.Ns3);
+                XmlElement scope = businessScope.AppendChildElement("Scope", "ns3", Navnerom.Ns3, XmlEnvelope);
                 {
-                    XmlElement type = XmlEnvelope.CreateElement("ns3", "Type", Navnerom.Ns3);
+                    XmlElement type = scope.AppendChildElement("Type", "ns3", Navnerom.Ns3, XmlEnvelope);
                     type.InnerText = "ConversationId";
-                    scope.AppendChild(type);
 
-                    XmlElement instanceIdentifier = XmlEnvelope.CreateElement("ns3", "InstanceIdentifier", Navnerom.Ns3);
+                    XmlElement instanceIdentifier = scope.AppendChildElement("InstanceIdentifier", "ns3", Navnerom.Ns3, XmlEnvelope);
                     instanceIdentifier.InnerText = Forsendelse.KonversasjonsId;
-                    scope.AppendChild(instanceIdentifier);
 
-                    XmlElement identifier = XmlEnvelope.CreateElement("ns3", "Identifier", Navnerom.Ns3);
-                    identifier.InnerText = "urn:no:difi:sdp:1.0";
-                    scope.AppendChild(identifier);
+                    XmlElement identifier = scope.AppendChildElement("Identifier", "ns3", Navnerom.Ns3, XmlEnvelope);
+                    identifier.InnerText = _sdpVersion;
                 }
-                businessScopeElement.AppendChild(scope);
             }
-            return businessScopeElement;
+            return businessScope;
         }
     }
 }

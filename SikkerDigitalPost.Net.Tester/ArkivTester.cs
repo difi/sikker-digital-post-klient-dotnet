@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Net.Tests
         public void LagArkivOgVerifiserDokumentInnhold()
         {
             var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            var arkivstrøm = new MemoryStream(arkiv.LagAsicE());
+            var arkivstrøm = new MemoryStream(arkiv.Bytes());
 
             //Åpne zip og generer sjekksum for å verifisere innhold
             using (var zip = new ZipArchive(arkivstrøm, ZipArchiveMode.Read))
@@ -70,7 +70,7 @@ namespace SikkerDigitalPost.Net.Tests
         public void LagKryptertArkivVerifiserInnholdValiderer()
         {
             var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            var originalData = arkiv.LagAsicE();
+            var originalData = arkiv.Bytes();
 
             var krypterteData = arkiv.Krypter(Sertifikat);
             var dekrypterteData = AsicEArkiv.Dekrypter(krypterteData); 

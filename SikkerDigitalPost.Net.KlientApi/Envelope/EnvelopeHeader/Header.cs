@@ -5,28 +5,36 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
     public class Header : XmlPart
     {
-        public Header(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) : base(dokument, forsendelse, asicEArkiv, databehandler)
+        private Security _security;
+
+        public Header(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) :
+            base(dokument, forsendelse, asicEArkiv, databehandler)
         {
         }
 
         public override XmlElement Xml()
         {
-            var header = XmlEnvelope.CreateElement("env","Header",Navnerom.XmlnsEnv);
+            var header = XmlEnvelope.CreateElement("env","Header",Navnerom.env);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;
         }
 
-        public XmlElement SecurityElement()
+        private XmlElement SecurityElement()
         {
-            var securityElement = new Security(XmlEnvelope,Forsendelse, AsicEArkiv, Databehandler);
-            return securityElement.Xml();
+            _security = new Security(XmlEnvelope,Forsendelse, AsicEArkiv, Databehandler);
+            return _security.Xml();
         }
 
-        public XmlElement MessagingElement()
+        private XmlElement MessagingElement()
         {
             var messaging = new Messaging(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler);
             return messaging.Xml();
+        }
+
+        public void AddSignatureElement()
+        {
+            _security.AddSignatureElement();
         }
     }
 }
