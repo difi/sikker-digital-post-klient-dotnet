@@ -2,15 +2,15 @@
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Extensions;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
     public class ManifestBygger
     {
-        private const string NsXmlns = "http://begrep.difi.no/sdp/schema_v10";
-        private const string NsXmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
-        private const string NsXsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
+        private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
 
         private readonly Manifest _manifest;
         private XmlDocument _manifestXml;
@@ -25,9 +25,9 @@ namespace SikkerDigitalPost.Net.KlientApi
             // Opprett rotnode med navnerom.
             _manifestXml = new XmlDocument {PreserveWhitespace = true};
             var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", NsXmlns));
-            _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", NsXmlnsxsi);
-            _manifestXml.DocumentElement.SetAttribute("schemaLocation", NsXmlnsxsi, NsXsiSchemaLocation);
+            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
+            _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
+            _manifestXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
             
 
@@ -51,14 +51,14 @@ namespace SikkerDigitalPost.Net.KlientApi
         
         private XmlElement MottakerNode()
         {
-            var mottaker = _manifestXml.CreateElement("mottaker", NsXmlns);
+            var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);
 
-            XmlElement person = _manifestXml.CreateElement("person", NsXmlns);
+            XmlElement person = _manifestXml.CreateElement("person", Navnerom.Ns9);
             {
-                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", NsXmlns, _manifestXml);
+                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", Navnerom.Ns9, _manifestXml);
                 personidentifikator.InnerText = _manifest.Mottaker.Personidentifikator;
 
-                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", NsXmlns, _manifestXml);
+                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", Navnerom.Ns9, _manifestXml);
                 postkasseadresse.InnerText = _manifest.Mottaker.Postkasseadresse;
             }
             
@@ -68,16 +68,16 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         private XmlElement AvsenderNode()
         {
-            XmlElement avsender = _manifestXml.CreateElement("avsender", NsXmlns);
+            XmlElement avsender = _manifestXml.CreateElement("avsender", Navnerom.Ns9);
             {
-                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", NsXmlns, _manifestXml);
+                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", Navnerom.Ns9, _manifestXml);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = _manifest.Avsender.Organisasjonsnummer.Iso6523();
 
-                XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NsXmlns, _manifestXml);
+                XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.Ns9, _manifestXml);
                 avsenderidentifikator.InnerText = _manifest.Avsender.Avsenderidentifikator;
 
-                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NsXmlns, _manifestXml);
+                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
                 fakturaReferanse.InnerText = _manifest.Avsender.Fakturareferanse;
             }
             
@@ -86,11 +86,11 @@ namespace SikkerDigitalPost.Net.KlientApi
 
         private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
         {
-            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, NsXmlns);
+            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.Ns9);
             dokumentXml.SetAttribute("href", dokument.Filnavn);
             dokumentXml.SetAttribute("mime", dokument.Innholdstype);
             {
-                XmlElement tittel = dokumentXml.AppendChildElement("tittel", NsXmlns, _manifestXml);
+                XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.Ns9, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? _manifest.Forsendelse.Språkkode);
                 tittel.InnerText = innholdstekst;
             }

@@ -42,10 +42,10 @@
   <ItemGroup>
     <Compile Include="Entiteter\AsicE\Manifest\Manifest.cs" />
     <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
-    <Compile Include="Entiteter\Behandlingsansvarlig.cs" />
-    <Compile Include="Entiteter\DigitalPost.cs" />
-    <Compile Include="Entiteter\Dokument.cs" />
-    <Compile Include="Entiteter\Dokumentpakke.cs" />
+    <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
+    <Compile Include="Entiteter\Post\DigitalPost.cs" />
+    <Compile Include="Entiteter\Post\Dokument.cs" />
+    <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
     <Compile Include="Entiteter\Ebms\EbmsAktør.cs" />
     <Compile Include="Entiteter\Ebms\EbmsMelding.cs" />
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
@@ -57,24 +57,23 @@
     <Compile Include="Entiteter\Kvitteringer\LeveringsKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\VarslingFeiletKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Åpningskvittering.cs" />
-    <Compile Include="Entiteter\Referanse.cs" />
-    <Compile Include="Entiteter\StandardForretningsDokument.cs" />
+    <Compile Include="Entiteter\Post\StandardForretningsDokument.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
     <Compile Include="Enums\Handling.cs" />
     <Compile Include="Enums\Sikkerhetsnivå.cs" />
     <Compile Include="Entiteter\Varsel\Varsel.cs" />
     <Compile Include="Enums\Prioritet.cs" />
-    <Compile Include="Entiteter\Forsendelse.cs" />
+    <Compile Include="Entiteter\Post\Forsendelse.cs" />
     <Compile Include="Entiteter\Interface\IAsiceVedlegg.cs" />
-    <Compile Include="Entiteter\Mottaker.cs" />
+    <Compile Include="Entiteter\Aktører\Mottaker.cs" />
     <Compile Include="Enums\Varslingskanal.cs" />
-    <Compile Include="Entiteter\Sertifikatbutikk.cs" />
-    <Compile Include="Entiteter\Person.cs" />
+    <Compile Include="Entiteter\Aktører\Person.cs" />
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entiteter\TekniskAvsender.cs" />
+    <Compile Include="Entiteter\Aktører\Databehandler.cs" />
+    <Compile Include="Sha256Reference.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

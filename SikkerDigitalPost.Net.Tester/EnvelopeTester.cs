@@ -7,7 +7,7 @@ using SikkerDigitalPost.Net.KlientApi.Envelope;
 namespace SikkerDigitalPost.Net.Tests
 {
     [TestClass]
-    public class SignaturTester : TestBase
+    public class EnvelopeTester : TestBase
     {
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
@@ -16,22 +16,25 @@ namespace SikkerDigitalPost.Net.Tests
         }
 
         [TestMethod]
-        public void ValidereSignaturMotXsdValiderer()
+        public void ValidereEnvelopeMotXsdValiderer()
         {
             var settings = new XmlReaderSettings();
-            settings.Schemas.Add(Navnerom.Ns11, SignaturXsdPath());
+            settings.XmlResolver = null;
+            settings.Schemas.Add(Navnerom.Ns9, MeldingXsdSchema());
+            settings.Schemas.Add(Navnerom.Ns9, FellesXsdSchema());
+            settings.Schemas.Add(Navnerom.enc, XmlXencSchema());
             settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             settings.ValidationType = ValidationType.Schema;
-            
+
             try
             {
-                var reader = XmlReader.Create(new MemoryStream(Signatur.Bytes), settings);
+                var reader = XmlReader.Create(new MemoryStream(Envelope.Bytes), settings);
                 var document = new XmlDocument();
                 document.Load(reader);
             }
             catch (Exception e)
             {
-                var message = String.Format("Validering feilet: {0} Inndre feilmelding: {1}", e.Message, e.InnerException);
+                var message = String.Format("Validering feilet: {0}, Indre feilmelding: {1}", e.Message, e.InnerException);
                 Assert.Fail(message);
             }
         }
@@ -41,9 +44,19 @@ namespace SikkerDigitalPost.Net.Tests
             return XsdPath("xmldsig-core-schema.xsd");
         }
 
-        private string SignaturXsdPath()
+        private string XmlXencSchema()
         {
-            return XsdPath("XAdES.xsd");
+            return XsdPath("xenc-schema.xsd");
+        }
+
+        private string FellesXsdSchema()
+        {
+            return XsdPath("sdp-felles.xsd");
+        }
+
+        private string MeldingXsdSchema()
+        {
+            return XsdPath("sdp-melding.xsd");
         }
 
         private string XsdPath(string filnavn)
