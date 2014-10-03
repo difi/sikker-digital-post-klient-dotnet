@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Enums;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
@@ -7,7 +8,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
     public class EbmsApplikasjonskvittering : EbmsUtgåendeMelding
     {
         public readonly StandardForretningsDokument StandardForretningsDokument;
-        public readonly IEnumerable<Referanse> Referanser = new List<Referanse>();
+        public readonly IEnumerable<Sha256Reference> Referanser = new List<Sha256Reference>();
         public EbmsAktør Avsender = null;
         public readonly StreamReader SfdStrøm;
 

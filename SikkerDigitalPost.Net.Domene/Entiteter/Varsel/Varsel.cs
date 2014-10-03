@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
 {
@@ -7,14 +9,22 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
         /// <summary>
         /// Avsenderstyrt varslingstekst som skal inngå i varselet.
         /// </summary>
-        protected string Varslingstekst;
+        public readonly string Varslingstekst;
 
-
-        protected IEnumerable<int> VarselEtterDager = new List<int>();
-
-        protected Varsel(string varslingstekst)
+        public readonly IEnumerable<int> VarselEtterDager;
+        
+        protected Varsel(string varslingstekst, IEnumerable<int> varselEtterDager) 
         {
+            if (!varselEtterDager.Any())
+            {
+                varselEtterDager = new List<int> {0};
+            }
+            else
+            {
+                VarselEtterDager = varselEtterDager;    
+            }
             Varslingstekst = varslingstekst;
+            
         }
     }
 }

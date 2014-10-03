@@ -1,17 +1,19 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
     public class SikkerDigitalPostKlient
     {
-        private readonly TekniskAvsender _tekniskAvsender;
+        private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _konfigurasjon;
 
-        /// <param name="tekniskAvsender">
+        /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
@@ -20,12 +22,12 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender) : this (tekniskAvsender,new Klientkonfigurasjon())
+        public SikkerDigitalPostKlient(Databehandler databehandler) : this (databehandler,new Klientkonfigurasjon())
         {
             
         }
 
-        /// <param name="tekniskAvsender">
+        /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
@@ -37,30 +39,35 @@ namespace SikkerDigitalPost.Net.KlientApi
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(TekniskAvsender tekniskAvsender, Klientkonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon konfigurasjon)
         {
-            _tekniskAvsender = tekniskAvsender;
+            _databehandler = databehandler;
             _konfigurasjon = konfigurasjon;
         }
 
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, Vedlegg mm), enten digitalt eller fyisk.</param>
-        /// <param name="mottaker"></param>
-        /// <param name="mottagerSertifikat"></param>
-        /// <param name="tekniskAvsenderSertifikat"></param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
         public void Send(Forsendelse forsendelse)
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
             var signatur = new Signatur(mottaker.Sertifikat);
+
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
             signaturbygger.Bygg();
-            var arkiv = new Arkiv(forsendelse.Dokumentpakke, signatur, manifest);
             
+
+            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
+            Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
+
+            envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")
+                ? @"Z:\Development\Digipost\Envelope.xml"
+                : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
+
             //encrypt filpakke mottagersertifikat.
             //Lag request
         }

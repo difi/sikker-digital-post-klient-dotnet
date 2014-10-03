@@ -8,6 +8,8 @@ using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 using SikkerDigitalPost.Net.KlientApi.Xml;
 
 namespace SikkerDigitalPost.Net.KlientApi
@@ -15,9 +17,7 @@ namespace SikkerDigitalPost.Net.KlientApi
 
     public class SignaturBygger
     {
-        private const string NsXmlns = "http://uri.etsi.org/2918/v1.2.1#";
-        private const string NsXmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance";
-        private const string NsXsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
+        private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
 
         private readonly Signatur _signatur;
         private readonly Forsendelse _forsendelse;
@@ -44,8 +44,12 @@ namespace SikkerDigitalPost.Net.KlientApi
 
             _signaturDokumentXml.DocumentElement.AppendChild(_signaturDokumentXml.ImportNode(signaturnode.GetXml(), true));
 
-            _signaturDokumentXml.Save(@"Z:\Development\Digipost\SikkerDigitalPost.Net\Signatur.xml");
             _signatur.Bytes = Encoding.UTF8.GetBytes(_signaturDokumentXml.OuterXml);
+        }
+
+        public void SkrivXmlTilFil(string filsti)
+        {
+            _signaturDokumentXml.Save(filsti);
         }
 
         private static Sha256Reference SignedPropertiesReferanse()
@@ -65,11 +69,10 @@ namespace SikkerDigitalPost.Net.KlientApi
                 signaturnode.AddReference(Sha256Referanse(item));
             }
 
-            signaturnode.AddObject(new QualifyingPropertiesObject(_signatur.Sertifikat, "#Signature",
-               referanser
-                   .Select(r => new QualifyingPropertiesReference { Filename = r.Filnavn, Mimetype = r.Innholdstype })
-                   .ToArray(), _signaturDokumentXml.DocumentElement)
-               );
+            signaturnode.AddObject(
+                new QualifyingPropertiesObject(
+                    _signatur.Sertifikat, "#Signature", referanser.ToArray(), _signaturDokumentXml.DocumentElement)
+                    );
 
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
@@ -94,9 +97,9 @@ namespace SikkerDigitalPost.Net.KlientApi
         {
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            signaturXml.AppendChild(signaturXml.CreateElement("XAdESSignatures", NsXmlns));
-            signaturXml.DocumentElement.SetAttribute("xmlns:xsi", NsXmlnsxsi);
-            signaturXml.DocumentElement.SetAttribute("schemaLocation", NsXmlnsxsi, NsXsiSchemaLocation);
+            signaturXml.AppendChild(signaturXml.CreateElement("XAdESSignatures", Navnerom.Ns10));
+            signaturXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
+            signaturXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;
         }

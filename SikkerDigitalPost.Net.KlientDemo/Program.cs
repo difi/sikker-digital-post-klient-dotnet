@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene;
+﻿using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.KlientApi;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.KlientDemo
 {
@@ -44,9 +45,9 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var organisasjonsnummerBehandlingsansvarlig = organisasjonsnummerPosten;
 
             //Avsender
-            var behandlingsansvarlig = new Behandlingsansvarlig(organisasjonsnummerBehandlingsansvarlig);
-            var tekniskAvsender = new TekniskAvsender(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
-            
+            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(organisasjonsnummerBehandlingsansvarlig));
+            var tekniskAvsender = new Databehandler(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
+
             //Mottaker
             var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
 
@@ -54,8 +55,19 @@ namespace SikkerDigitalPost.Net.KlientDemo
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
             //Dokumenter
-            var hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
-            var vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            string hoveddokument;
+            string vedlegg;
+            string machineName = System.Environment.MachineName;
+            if (machineName.Contains("LEK"))
+            {
+                hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
+                vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            }
+            else
+            {
+                hoveddokument = @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.docx";
+                vedlegg = @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\VedleggsGris.docx";    
+            }
 
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));

@@ -7,13 +7,13 @@
         /// 
         /// Vanligvis passord.
         /// </summary>
-        Nivå3,
+        Nivå3 = 3,
 
         /// <summary>
         /// Offentlig godkjent to-faktor elektronisk ID.
         /// 
         /// For eksempel BankID, Buypass eller Comfides.
         /// </summary>
-        Nivå4
+        Nivå4 = 4
     }
 }
