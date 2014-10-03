@@ -7,6 +7,7 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Net.Domene.Extensions;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.KlientApi.Xml
 {
@@ -37,7 +38,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
         {
             var doc = new XmlDocument(context.OwnerDocument.NameTable) {PreserveWhitespace = true};
 
-            var root = doc.CreateElement("QualifyingProperties", "http://uri.etsi.org/01903/v1.3.2#");
+            var root = doc.CreateElement("QualifyingProperties", Navnerom.Ns11);
             root.SetAttribute("Target", this.Target);
 
             /* The SignedXml class will calculate the signature before the data object is added to the main xml document. Because of this, the owner documents namespaces will not be 
@@ -65,29 +66,29 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
             }
 
             // Create Xml Node List
-            var signedProperties = root.AppendChild("SignedProperties", "http://uri.etsi.org/01903/v1.3.2#");
+            var signedProperties = root.AppendChild("SignedProperties", Navnerom.Ns11);
             signedProperties.SetAttribute("Id", "SignedProperties");
 
-            var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", "http://uri.etsi.org/01903/v1.3.2#");
-            signedSignatureProperties.AppendChild("SigningTime", "http://uri.etsi.org/01903/v1.3.2#", DateTime.UtcNow.ToString(DateUtility.DateFormat, CultureInfo.InvariantCulture));
-            var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", "http://uri.etsi.org/01903/v1.3.2#");
+            var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", Navnerom.Ns11);
+            signedSignatureProperties.AppendChild("SigningTime", Navnerom.Ns11, DateTime.UtcNow.ToString(DateUtility.DateFormat, CultureInfo.InvariantCulture));
+            var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", Navnerom.Ns11);
 
-            var cert = signingCertificate.AppendChild("Cert", "http://uri.etsi.org/01903/v1.3.2#");
+            var cert = signingCertificate.AppendChild("Cert", Navnerom.Ns11);
 
-            var certDigest = cert.AppendChild("CertDigest", "http://uri.etsi.org/01903/v1.3.2#");
-            certDigest.AppendChild("DigestMethod", "http://www.w3.org/2000/09/xmldsig#").SetAttribute("Algorithm", "http://www.w3.org/2000/09/xmldsig#sha1");
-            certDigest.AppendChild("DigestValue", "http://www.w3.org/2000/09/xmldsig#", System.Convert.ToBase64String(Certificate.GetCertHash()));
+            var certDigest = cert.AppendChild("CertDigest", Navnerom.Ns11);
+            certDigest.AppendChild("DigestMethod", Navnerom.Ns5).SetAttribute("Algorithm", "http://www.w3.org/2000/09/xmldsig#sha1");
+            certDigest.AppendChild("DigestValue", Navnerom.Ns5, Convert.ToBase64String(Certificate.GetCertHash()));
 
-            var issuerSerial = cert.AppendChild("IssuerSerial", "http://uri.etsi.org/01903/v1.3.2#");
-            issuerSerial.AppendChild("X509IssuerName", "http://www.w3.org/2000/09/xmldsig#", Certificate.Issuer);
-            issuerSerial.AppendChild("X509SerialNumber", "http://www.w3.org/2000/09/xmldsig#", BigInteger.Parse(Certificate.SerialNumber, NumberStyles.HexNumber).ToString());
+            var issuerSerial = cert.AppendChild("IssuerSerial", Navnerom.Ns11);
+            issuerSerial.AppendChild("X509IssuerName", Navnerom.Ns5, Certificate.Issuer);
+            issuerSerial.AppendChild("X509SerialNumber", Navnerom.Ns5, BigInteger.Parse(Certificate.SerialNumber, NumberStyles.HexNumber).ToString());
 
-            var signedDataObjectProperties = signedProperties.AppendChild("SignedDataObjectProperties", "http://uri.etsi.org/01903/v1.3.2#");
+            var signedDataObjectProperties = signedProperties.AppendChild("SignedDataObjectProperties", Navnerom.Ns11);
             foreach (var item in References)
             {
-                var a = signedDataObjectProperties.AppendChild("DataObjectFormat", "http://uri.etsi.org/01903/v1.3.2#");
+                var a = signedDataObjectProperties.AppendChild("DataObjectFormat", Navnerom.Ns11);
                 a.SetAttribute("ObjectReference", "#" + item.Filename);
-                a.AppendChild("MimeType", "http://uri.etsi.org/01903/v1.3.2#", item.Mimetype);
+                a.AppendChild("MimeType", Navnerom.Ns11, item.Mimetype);
             }
 
             return root.SelectNodes(".");
