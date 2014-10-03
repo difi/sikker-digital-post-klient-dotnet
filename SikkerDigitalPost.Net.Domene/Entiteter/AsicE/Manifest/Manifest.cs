@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
+using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest

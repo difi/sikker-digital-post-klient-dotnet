@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Interface
 {
     public abstract class PMode
     {        

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.CodeDom;
-using System.Runtime.Remoting.Messaging;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Aktører
 {
     /// <summary>
     /// Behandlingsansvarlig som beskrevet i http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer.
