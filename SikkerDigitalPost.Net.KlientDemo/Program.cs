@@ -55,21 +55,10 @@ namespace SikkerDigitalPost.Net.KlientDemo
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
-            //Dokumenter
-            string hoveddokument;
-            string vedlegg;
-            string machineName = System.Environment.MachineName;
-            if (machineName.Contains("LEK"))
-            {
-                hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
-                vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
-            }
-            else
-            {
-                hoveddokument = @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.docx";
-                vedlegg = @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\VedleggsGris.docx";    
-            }
-
+           //Dokumenter
+            string hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
+            string vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedleggsgris",vedlegg,"text/docx","EN"));
