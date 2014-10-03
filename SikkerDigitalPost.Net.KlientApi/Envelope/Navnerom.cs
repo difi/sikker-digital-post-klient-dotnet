@@ -22,6 +22,7 @@
        public const string ds = "http://www.w3.org/2000/09/xmldsig#";
        public const string ec = "http://www.w3.org/2001/10/xml-exc-c14n#";
        public const string eb = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/";
+        public const string enc = "http://www.w3.org/2001/04/xmlenc#";
 
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -19,10 +20,10 @@ namespace SikkerDigitalPost.Net.Tests
         {
             var settings = new XmlReaderSettings();
             settings.XmlResolver = null;
-            settings.Schemas.Add("http://begrep.difi.no/sdp/schema_v10", MeldingXsdSchema());
-            settings.Schemas.Add("http://begrep.difi.no/sdp/schema_v10", FellesXsdSchema());
-            settings.Schemas.Add("http://www.w3.org/2001/04/xmlenc#", XmlXencSchema());
-            settings.Schemas.Add("http://www.w3.org/2000/09/xmldsig#", XmlDsigCoreSchema());
+            settings.Schemas.Add(Navnerom.Ns9, MeldingXsdSchema());
+            settings.Schemas.Add(Navnerom.Ns9, FellesXsdSchema());
+            settings.Schemas.Add(Navnerom.enc, XmlXencSchema());
+            settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             settings.ValidationType = ValidationType.Schema;
             Envelope.SkrivTilFil(@"Z:\Development\Digipost\envelope.xml");
             try

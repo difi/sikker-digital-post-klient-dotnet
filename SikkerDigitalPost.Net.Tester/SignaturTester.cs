@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -18,8 +19,8 @@ namespace SikkerDigitalPost.Net.Tests
         public void ValidereSignaturMotXsdValiderer()
         {
             var settings = new XmlReaderSettings();
-            settings.Schemas.Add("http://uri.etsi.org/01903/v1.3.2#", SignaturXsdPath());
-            settings.Schemas.Add("http://www.w3.org/2000/09/xmldsig#", XmlDsigCoreSchema());
+            settings.Schemas.Add(Navnerom.Ns11, SignaturXsdPath());
+            settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             settings.ValidationType = ValidationType.Schema;
             
             try

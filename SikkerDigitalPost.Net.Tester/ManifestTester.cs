@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.Tests
 {
@@ -18,9 +19,9 @@ namespace SikkerDigitalPost.Net.Tests
         public void ValidereManifestMotXsdValiderer()
         {
             var settings = new XmlReaderSettings();
-            settings.Schemas.Add("http://begrep.difi.no/sdp/schema_v10", ManifestXsdPath());
-            settings.Schemas.Add("http://begrep.difi.no/sdp/schema_v10", FellesXsdPath());
-            settings.Schemas.Add("http://www.w3.org/2000/09/xmldsig#", XmlDsigCoreSchema());
+            settings.Schemas.Add(Navnerom.Ns9, ManifestXsdPath());
+            settings.Schemas.Add(Navnerom.Ns9, FellesXsdPath());
+            settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             settings.ValidationType = ValidationType.Schema;
             
             try

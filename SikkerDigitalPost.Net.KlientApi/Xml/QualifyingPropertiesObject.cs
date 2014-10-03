@@ -5,7 +5,6 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Net.Domene.Extensions;
 using SikkerDigitalPost.Net.KlientApi.Envelope;
 
