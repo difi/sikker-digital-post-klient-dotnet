@@ -12,8 +12,6 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
 {
     internal class QualifyingPropertiesObject : DataObject
     {
-        private const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffZ";
-
         public X509Certificate2 Certificate { get; private set; }
 
         public IQualifyingPropertiesReference[] References { get; private set; }
@@ -71,7 +69,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
             signedProperties.SetAttribute("Id", "SignedProperties");
 
             var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", "http://uri.etsi.org/01903/v1.3.2#");
-            signedSignatureProperties.AppendChild("SigningTime", "http://uri.etsi.org/01903/v1.3.2#", DateTime.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
+            signedSignatureProperties.AppendChild("SigningTime", "http://uri.etsi.org/01903/v1.3.2#", DateTime.UtcNow.ToString(DateUtility.DateFormat, CultureInfo.InvariantCulture));
             var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", "http://uri.etsi.org/01903/v1.3.2#");
 
             var cert = signingCertificate.AppendChild("Cert", "http://uri.etsi.org/01903/v1.3.2#");

@@ -68,7 +68,6 @@ namespace SikkerDigitalPost.Net.KlientApi
             {
                 signaturnode.AddReference(Sha256Referanse(item));
             }
-
             signaturnode.AddObject(new QualifyingPropertiesObject(_signatur.Sertifikat, "#Signature",
                referanser
                    .Select(r => new QualifyingPropertiesReference { Filename = r.Filnavn, Mimetype = r.Innholdstype })
