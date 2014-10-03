@@ -2,7 +2,7 @@
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Post
 {
     public class DigitalPost
     {

@@ -2,6 +2,7 @@
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Extensions;
 using SikkerDigitalPost.Net.KlientApi.Envelope;
 

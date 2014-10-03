@@ -5,6 +5,7 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Net.Domene.Extensions;
 using SikkerDigitalPost.Net.KlientApi.Xml;

@@ -8,6 +8,7 @@ using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.KlientApi.Envelope;
 using SikkerDigitalPost.Net.KlientApi.Xml;
 

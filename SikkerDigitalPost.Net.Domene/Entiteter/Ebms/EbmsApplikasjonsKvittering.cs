@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Enums;
-using SikkerDigitalPost.Net.KlientApi.Xml;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
 {

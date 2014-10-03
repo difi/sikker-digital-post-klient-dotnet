@@ -1,6 +1,6 @@
 ﻿using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Post
 {
     public class StandardForretningsDokument
     {
