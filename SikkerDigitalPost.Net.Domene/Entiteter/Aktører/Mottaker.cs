@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+namespace SikkerDigitalPost.Net.Domene.Entiteter.Aktører
 {
     public class Mottaker : Person
     {
