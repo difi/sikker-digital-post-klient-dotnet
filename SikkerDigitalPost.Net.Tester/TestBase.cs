@@ -39,14 +39,14 @@ namespace SikkerDigitalPost.Net.Tests
         protected static Dokumentpakke Dokumentpakke;
         protected static Forsendelse Forsendelse;
 
-        protected static Manifest Manifest;
+        internal static Manifest Manifest;
         
-        protected static Signatur Signatur;
+        internal static Signatur Signatur;
         protected static X509Certificate2 Sertifikat;
 
         protected static Databehandler Databehandler;
-        protected static AsicEArkiv Arkiv;
-        protected static Envelope Envelope;
+        internal static AsicEArkiv Arkiv;
+        internal static Envelope Envelope;
 
         public static void Initialiser()
         {
@@ -78,6 +78,7 @@ namespace SikkerDigitalPost.Net.Tests
 
             Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
             var manifestbygger = new ManifestBygger(Manifest);
+            
             manifestbygger.Bygg();
 
             Signatur = new Signatur(Sertifikat);

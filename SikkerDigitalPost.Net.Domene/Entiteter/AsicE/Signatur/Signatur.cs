@@ -4,7 +4,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
 {
-    public class Signatur : IAsiceVedlegg
+    internal class Signatur : IAsiceVedlegg
     {
         public readonly X509Certificate2 Sertifikat;
 

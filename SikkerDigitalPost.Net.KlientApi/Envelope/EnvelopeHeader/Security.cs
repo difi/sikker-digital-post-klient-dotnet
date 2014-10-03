@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Extensions;
@@ -10,7 +9,7 @@ using SikkerDigitalPost.Net.KlientApi.Xml;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
-    public class Security : XmlPart
+    internal class Security : XmlPart
     {
         private XmlElement _securityElement;
 

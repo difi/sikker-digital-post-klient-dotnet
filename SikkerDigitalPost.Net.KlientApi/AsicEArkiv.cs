@@ -10,14 +10,14 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    public class AsicEArkiv : IAsiceVedlegg
+    internal class AsicEArkiv : IAsiceVedlegg
     {
-        public readonly Manifest Manifest;
-        public readonly Signatur Signatur;
+        internal readonly Manifest Manifest;
+        internal readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
         private byte[] _bytes;
 
-        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
+        internal AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
         {
             Signatur = signatur;
             Manifest = manifest;

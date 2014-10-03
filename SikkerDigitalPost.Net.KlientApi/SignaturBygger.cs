@@ -14,8 +14,7 @@ using SikkerDigitalPost.Net.KlientApi.Xml;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-
-    public class SignaturBygger
+    internal class SignaturBygger
     {
         private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
 
@@ -23,7 +22,7 @@ namespace SikkerDigitalPost.Net.KlientApi
         private readonly Forsendelse _forsendelse;
         private XmlDocument _signaturDokumentXml;
 
-        public SignaturBygger(Signatur signatur, Forsendelse forsendelse)
+        internal SignaturBygger(Signatur signatur, Forsendelse forsendelse)
         {
             _signatur = signatur;
             _forsendelse = forsendelse;

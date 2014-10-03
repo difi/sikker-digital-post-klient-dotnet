@@ -5,7 +5,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
-    public class Header : XmlPart
+    internal class Header : XmlPart
     {
         private Security _security;
 

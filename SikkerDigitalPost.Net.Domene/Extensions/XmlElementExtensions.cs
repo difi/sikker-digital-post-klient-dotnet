@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Net.Domene.Extensions
 {
-    public static class XmlElementExtensions
+    internal static class XmlElementExtensions
     {
         public static XmlElement AppendChildElement(this XmlElement parent, string childname, string namespaceUri, XmlDocument document)
         {

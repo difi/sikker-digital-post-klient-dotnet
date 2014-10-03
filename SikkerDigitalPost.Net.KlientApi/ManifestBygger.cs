@@ -8,14 +8,14 @@ using SikkerDigitalPost.Net.KlientApi.Envelope;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    public class ManifestBygger
+    internal class ManifestBygger
     {
         private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
 
         private readonly Manifest _manifest;
         private XmlDocument _manifestXml;
 
-        public ManifestBygger(Manifest manifest)
+        internal ManifestBygger(Manifest manifest)
         {
             _manifest = manifest;
         }

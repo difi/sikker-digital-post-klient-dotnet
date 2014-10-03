@@ -1,6 +1,6 @@
 ﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Interface
 {
-    public abstract class PMode
+    internal abstract class PMode
     {        
     // ROLES
 	public static readonly string RolleMeldingsformidler = "urn:sdp:meldingsformidler";

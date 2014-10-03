@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Net.KlientApi.Utilities
 {
-    public static class GuidUtility
+    internal static class GuidUtility
     {
         public static string StandardBusinessDocumentHeaderId = Guid.NewGuid().ToString();
         public static string BodyId = String.Format("id-{0}", Guid.NewGuid());

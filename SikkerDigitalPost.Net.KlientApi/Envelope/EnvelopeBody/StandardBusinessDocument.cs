@@ -6,7 +6,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 {
-    public class StandardBusinessDocument : XmlPart
+    internal class StandardBusinessDocument : XmlPart
     {
         private readonly DateTime _creationDateAndtime;
         

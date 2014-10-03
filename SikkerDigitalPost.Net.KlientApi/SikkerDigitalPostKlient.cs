@@ -1,12 +1,12 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene.Entiteter;
+﻿using System;
+using System.Reflection;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope
+namespace SikkerDigitalPost.Net.KlientApi
 {
     public class SikkerDigitalPostKlient
     {
@@ -62,14 +62,15 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
+            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler);
 
-            envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")
+            envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
             //encrypt filpakke mottagersertifikat.
             //Lag request
+            
         }
 
         /// <summary>

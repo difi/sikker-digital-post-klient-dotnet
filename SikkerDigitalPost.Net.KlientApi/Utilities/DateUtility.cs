@@ -1,6 +1,6 @@
-﻿namespace SikkerDigitalPost.Net.KlientApi
+﻿namespace SikkerDigitalPost.Net.KlientApi.Utilities
 {
-    public static class DateUtility
+    internal static class DateUtility
     {
         public const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffZ";
     }
