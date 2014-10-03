@@ -1,4 +1,6 @@
-﻿using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+﻿using System;
+using System.Reflection;
+using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
@@ -68,6 +70,11 @@ namespace SikkerDigitalPost.Net.KlientApi
 
             //encrypt filpakke mottagersertifikat.
             //Lag request
+
+            Assembly assembly = Assembly.LoadFrom("SikkerDigitalPost.Net.KlientApi.dll");
+            Version version = assembly.GetName().Version;
+            int i = 0+1+2;
+            
         }
 
         /// <summary>

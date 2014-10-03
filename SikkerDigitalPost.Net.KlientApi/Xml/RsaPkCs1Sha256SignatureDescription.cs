@@ -6,7 +6,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Xml
     /// From: http://stackoverflow.com/questions/17258800/c-sharp-support-for-rsa-sha-256-signing-for-individual-xml-elements 
     /// Usage: CryptoConfig.AddAlgorithm(typeof(RsaPkCs1Sha256SignatureDescription), @"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256");
     /// </remarks>
-    internal class RsaPkCs1Sha256SignatureDescription : SignatureDescription
+    public class RsaPkCs1Sha256SignatureDescription : SignatureDescription
     {
         public RsaPkCs1Sha256SignatureDescription()
         {
