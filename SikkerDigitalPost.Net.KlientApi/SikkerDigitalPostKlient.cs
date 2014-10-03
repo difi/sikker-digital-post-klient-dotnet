@@ -62,18 +62,14 @@ namespace SikkerDigitalPost.Net.KlientApi
             
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            Envelope.Envelope envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler);
+            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler);
 
-            envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")
+            envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
             //encrypt filpakke mottagersertifikat.
             //Lag request
-
-            Assembly assembly = Assembly.LoadFrom("SikkerDigitalPost.Net.KlientApi.dll");
-            Version version = assembly.GetName().Version;
-            int i = 0+1+2;
             
         }
 
