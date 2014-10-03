@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Net.Tests
             Envelope.SkrivTilFil(@"Z:\Development\Digipost\envelope.xml");
             try
             {
-                var reader = XmlReader.Create(new MemoryStream(Envelope.Bytes()), settings);
+                var reader = XmlReader.Create(new MemoryStream(Envelope.Bytes), settings);
                 var document = new XmlDocument();
                 document.Load(reader);
             }

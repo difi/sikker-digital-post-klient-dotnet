@@ -82,7 +82,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 
             //Partinfo/Dokumentpakke
             {
-                var partInfoReference = new Sha256Reference(AsicEArkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat));
+                var partInfoReference = new Sha256Reference(AsicEArkiv.KrypterteBytes(Forsendelse.DigitalPost.Mottaker.Sertifikat));
                 partInfoReference.Uri = GuidUtility.DokumentpakkeId;
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);

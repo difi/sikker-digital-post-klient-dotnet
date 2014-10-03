@@ -60,7 +60,6 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            arkiv.Bytes();
             Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
 
             envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")

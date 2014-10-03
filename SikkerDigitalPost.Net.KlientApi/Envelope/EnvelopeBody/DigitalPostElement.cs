@@ -152,7 +152,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 
                 XmlElement digestValue = dokumentpakkefingeravtrykk.AppendChildElement("DigestValue", "ns5", Navnerom.Ns5, XmlEnvelope);
                 digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(
-                    AsicEArkiv.Krypter(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
+                    AsicEArkiv.KrypterteBytes(Forsendelse.DigitalPost.Mottaker.Sertifikat)));
             }
             return dokumentpakkefingeravtrykk;
         }

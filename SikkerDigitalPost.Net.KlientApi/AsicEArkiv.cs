@@ -6,10 +6,11 @@ using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Net.KlientApi
 {
-    public class AsicEArkiv
+    public class AsicEArkiv : IAsiceVedlegg
     {
         public readonly Manifest Manifest;
         public readonly Signatur Signatur;
@@ -23,19 +24,37 @@ namespace SikkerDigitalPost.Net.KlientApi
             _dokumentpakke = dokumentpakke;
         }
 
-        public byte[] Bytes()
+
+        public string Filnavn
+        {
+            get { return "post.asice.zip"; }
+        }
+
+
+        public byte[] Bytes
+        {
+            get { return _bytes ?? LagBytes(); }
+        }
+
+
+        public string Innholdstype
+        {
+            get { return "application/cms"; }
+        }
+
+        private byte[] LagBytes()
         {
             if (_bytes != null)
                 return _bytes;
-            
+
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
                 LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
-                
+
                 foreach (var dokument in _dokumentpakke.Vedlegg)
-                    LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);                    
+                    LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);
 
             }
 
@@ -51,10 +70,10 @@ namespace SikkerDigitalPost.Net.KlientApi
                 s.Close();
             }
         }
-
-        public byte[] Krypter(X509Certificate2 sertifikat)
+        
+        public byte[] KrypterteBytes(X509Certificate2 sertifikat)
         {
-            var contentInfo = new ContentInfo(Bytes());
+            var contentInfo = new ContentInfo(Bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
             var recipient = new CmsRecipient(sertifikat);

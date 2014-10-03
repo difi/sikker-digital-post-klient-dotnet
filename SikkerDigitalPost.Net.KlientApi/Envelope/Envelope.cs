@@ -24,9 +24,9 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             _envelopeXml = XmlEnvelope();
         }
 
-        public byte[] Bytes()
+        public byte[] Bytes
         {
-            return _bytes ?? (_bytes = Encoding.UTF8.GetBytes(Xml().OuterXml));
+            get { return _bytes ?? (_bytes = Encoding.UTF8.GetBytes(Xml().OuterXml)); }
         }
 
         public XmlDocument Xml()
