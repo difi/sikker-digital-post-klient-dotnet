@@ -2,7 +2,6 @@
 {
     public class Kvitteringsforespørsel
     {
-
         public readonly Prioritet Prioritet;
 
         /// <summary>

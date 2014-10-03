@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("SikkerDigitalPost.Net.KlientDemo")]
+[assembly: InternalsVisibleTo("SikkerDigitalPost.Net.KlientApi")]
 [assembly: InternalsVisibleTo("SikkerDigitalPost.Net.Tester")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

@@ -7,7 +7,7 @@ using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
-    public class Envelope
+    internal class Envelope
     {
         private readonly XmlDocument _envelopeXml;
         private bool _isCreated = false;

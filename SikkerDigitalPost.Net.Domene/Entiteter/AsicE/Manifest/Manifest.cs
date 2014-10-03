@@ -6,7 +6,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
 {
-    public class Manifest : IAsiceVedlegg
+    internal class Manifest : IAsiceVedlegg
     {
         public Manifest(Mottaker mottaker, Behandlingsansvarlig avsender, Forsendelse forsendelse)
         {

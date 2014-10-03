@@ -5,7 +5,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
-    public abstract class XmlPart
+    internal abstract class XmlPart
     {
         protected readonly XmlDocument XmlEnvelope;
         protected readonly Forsendelse Forsendelse;

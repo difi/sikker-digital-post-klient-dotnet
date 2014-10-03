@@ -1,6 +1,6 @@
 ﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Interface
 {
-    public interface IAsiceVedlegg
+    internal interface IAsiceVedlegg
     {
         string Filnavn { get; }
         byte[] Bytes { get; }

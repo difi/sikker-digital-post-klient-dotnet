@@ -8,7 +8,7 @@ namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
     public class EbmsApplikasjonskvittering : EbmsUtgåendeMelding
     {
         public readonly StandardForretningsDokument StandardForretningsDokument;
-        public readonly IEnumerable<Sha256Reference> Referanser = new List<Sha256Reference>();
+        internal readonly IEnumerable<Sha256Reference> Referanser = new List<Sha256Reference>();
         public EbmsAktør Avsender = null;
         public readonly StreamReader SfdStrøm;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Extensions;
@@ -8,7 +7,7 @@ using SikkerDigitalPost.Net.KlientApi.Utilities;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
 {
-    public class Messaging : XmlPart
+    internal class Messaging : XmlPart
     {
         public Messaging(XmlDocument xmlEnvelope, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) :
             base(xmlEnvelope, forsendelse, asicEArkiv, databehandler)
