@@ -8,6 +8,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Net.KlientApi;
 using SikkerDigitalPost.Net.KlientApi.Envelope;

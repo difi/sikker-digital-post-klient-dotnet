@@ -25,7 +25,7 @@ namespace SikkerDigitalPost.Net.Tests
             settings.Schemas.Add(Navnerom.enc, XmlXencSchema());
             settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             settings.ValidationType = ValidationType.Schema;
-            Envelope.SkrivTilFil(@"Z:\Development\Digipost\envelope.xml");
+
             try
             {
                 var reader = XmlReader.Create(new MemoryStream(Envelope.Bytes), settings);

@@ -2,6 +2,7 @@
 using System.Xml;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
 {

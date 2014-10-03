@@ -4,6 +4,7 @@ using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Net.KlientApi.Envelope
 {
@@ -64,7 +65,7 @@ namespace SikkerDigitalPost.Net.KlientApi.Envelope
             Envelope envelope = new Envelope(forsendelse, arkiv, _databehandler);
 
             envelope.SkrivTilFil(System.Environment.MachineName.Contains("LEK")
-                ? @"Z:\Development\Digipost\SikkerDigitalPost.Net\Envelope.xml"
+                ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
             //encrypt filpakke mottagersertifikat.

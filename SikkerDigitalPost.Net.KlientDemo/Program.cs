@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Net.Domene.Entiteter;
 using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Net.Domene.Entiteter.Post;
 using SikkerDigitalPost.Net.KlientApi;
 using SikkerDigitalPost.Net.KlientApi.Envelope;
 
