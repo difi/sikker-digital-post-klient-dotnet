@@ -26,23 +26,28 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 
 ##Hvordan legge til signering og kryptering
 
-### Privatekey (Avsender-sertifikat)
+### Avsender-sertifikat (Privatekey)
 
 #### Legg inn avsendersertifikat i certificate store
 
-1. Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
-2. Velg at sertifikatet skal lagres i "Current User"
-3. Filnavn skal nå være utfylt. 
-4. Certificate store settes til Autoselect.
-5. Skriv inn passord for privatekey
+1.  Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
+2.  Velg at sertifikatet skal lagres i "Current User"
+3.  Filnavn skal nå være utfylt. 
+4.  Skriv inn passord for privatekey
 
-####
+#### Mottaker-sertifikat (Publickey)
 
-1. Start mmc.exe (Trykk windowstast og skriv 'mmc.exe'.
-2. Velg 'File' -> 'Add/Remove Snap-in...' 
-3. Merk 'Certificates' og trykk 'Add >'
-4. Velg 'My user account' og trykk 'Finish'
-5. 
+1.  Start mmc.exe (Trykk windowstast og skriv 'mmc.exe'.
+2.  Velg 'File' -> 'Add/Remove Snap-in...' 
+3.  Merk 'Certificates' og trykk 'Add >'
+4.  Velg 'My user account' og trykk 'Finish'
+5.  Åpne noden 'Certificates - Current User'
+6.  Åpne noden 'Trusted People'
+7.  Høyreklikk på 'Certificates' og velg 'All Tasks' -> 'Import...'
+8.  Trykk 'Next'
+9.  Finn mottaker-sertifikatet og legg det til. Trykk 'Next'
+10. Velg 'Automatically select the certificate store based on the type of certificate'
+11. 'Next' og 'Finish'
 
 
 
