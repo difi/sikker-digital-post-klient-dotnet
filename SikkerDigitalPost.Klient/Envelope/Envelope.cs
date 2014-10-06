@@ -1,28 +1,32 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class Envelope
     {
-        private readonly XmlDocument _envelopeXml;
+        public readonly XmlDocument EnvelopeXml;
         private bool _isCreated = false;
 
-        private readonly Forsendelse _forsendelse;
-        private readonly AsicEArkiv _asicEArkiv;
-        private readonly Databehandler _databehandler;
+        public readonly Forsendelse Forsendelse;
+        public readonly AsicEArkiv AsicEArkiv;
+        public readonly Databehandler Databehandler;
+        public readonly GuidUtility GuidUtility;
         private Header _header;
         private byte[] _bytes;
 
-        public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler)
+        public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidUtility guidUtility)
         {
-            _forsendelse = forsendelse;
-            _asicEArkiv = asicEArkiv;
-            _databehandler = databehandler;
-            _envelopeXml = XmlEnvelope();
+            Forsendelse = forsendelse;
+            AsicEArkiv = asicEArkiv;
+            Databehandler = databehandler;
+            GuidUtility = guidUtility;
+            EnvelopeXml = XmlEnvelope();
         }
 
         public byte[] Bytes
@@ -32,14 +36,14 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         public XmlDocument Xml()
         {
-            if (_isCreated) return _envelopeXml;
+            if (_isCreated) return EnvelopeXml;
 
-            _envelopeXml.DocumentElement.AppendChild(HeaderElement());
-            _envelopeXml.DocumentElement.AppendChild(BodyElement());
+            EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
+            EnvelopeXml.DocumentElement.AppendChild(BodyElement());
             _header.AddSignatureElement();
             _isCreated = true;
 
-            return _envelopeXml;
+            return EnvelopeXml;
         }
 
         private XmlDocument XmlEnvelope()
@@ -54,13 +58,13 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         private XmlElement HeaderElement()
         {
-            _header = new Header(_envelopeXml, _forsendelse, _asicEArkiv, _databehandler);
+            _header = new Header(this);
             return _header.Xml();
         }
 
         private XmlElement BodyElement()
         {
-            var body = new EnvelopeBody.Body(_envelopeXml, _forsendelse, _asicEArkiv, _databehandler);
+            var body = new EnvelopeBody.Body(this);
             return body.Xml();
         }
 
@@ -69,7 +73,7 @@ namespace SikkerDigitalPost.Klient.Envelope
             if (!_isCreated)
                 Xml();
             
-            _envelopeXml.Save(filsti);
+            EnvelopeXml.Save(filsti);
         }
     }
 }

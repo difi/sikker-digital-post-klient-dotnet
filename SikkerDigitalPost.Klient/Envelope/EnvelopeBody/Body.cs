@@ -8,16 +8,15 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 
     internal class Body : XmlPart
     {
-        public Body(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) :
-            base(dokument, forsendelse, asicEArkiv, databehandler)
+        public Body(Envelope rot) : base(rot)
         {
         }
 
         public override XmlElement Xml()
         {
-            var body = XmlEnvelope.CreateElement("env", "body", Navnerom.env);
+            var body = Rot.EnvelopeXml.CreateElement("env", "body", Navnerom.env);
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("id", Navnerom.wsu, GuidUtility.BodyId);
+            body.SetAttribute("id", Navnerom.wsu, Rot.GuidUtility.BodyId);
             body.AppendChild(StandardBusinessDocumentElement());
             
             return body;
@@ -25,7 +24,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 
         private XmlElement StandardBusinessDocumentElement()
         {
-            var standardBusinessDocument = new StandardBusinessDocument(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler);
+            var standardBusinessDocument = new StandardBusinessDocument(Rot);
             return standardBusinessDocument.Xml();
         }
     }
