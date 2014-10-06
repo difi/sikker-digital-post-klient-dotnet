@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
@@ -10,14 +11,15 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Klient
 {
-    internal class AsicEArkiv : IAsiceVedlegg
+    internal class AsicEArkiv : ISoapVedlegg
     {
-        internal readonly Manifest Manifest;
-        internal readonly Signatur Signatur;
+        public readonly Manifest Manifest;
+        public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
         private byte[] _bytes;
+        private string _contentId;
 
-        internal AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
+        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
         {
             Signatur = signatur;
             Manifest = manifest;
@@ -40,6 +42,16 @@ namespace SikkerDigitalPost.Klient
         public string Innholdstype
         {
             get { return "application/cms"; }
+        }
+
+        public string ContentId
+        {
+            get { return _contentId ?? (_contentId = String.Format("{0}@meldingsformidler.sdp.difi.no", Guid.NewGuid())); }
+        }
+
+        public string TransferEncoding
+        {
+            get { return "binary"; }
         }
 
         private byte[] LagBytes()
@@ -70,7 +82,7 @@ namespace SikkerDigitalPost.Klient
                 s.Close();
             }
         }
-        
+
         public byte[] KrypterteBytes(X509Certificate2 sertifikat)
         {
             var contentInfo = new ContentInfo(Bytes);
