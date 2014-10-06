@@ -71,7 +71,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 typeVersion.InnerText = "1.0";
 
                 XmlElement instanceIdentifier = documentIdentification.AppendChildElement("InstanceIdentifier", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
-                instanceIdentifier.InnerText = Rot.GuidUtility.StandardBusinessDocumentHeaderId;
+                instanceIdentifier.InnerText = Rot.GuidHandler.StandardBusinessDocumentHeaderId;
 
                 XmlElement type = documentIdentification.AppendChildElement("Type", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
                 type.InnerText = "digitalPost";

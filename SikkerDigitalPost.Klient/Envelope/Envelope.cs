@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
-using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -16,16 +14,16 @@ namespace SikkerDigitalPost.Klient.Envelope
         public readonly Forsendelse Forsendelse;
         public readonly AsicEArkiv AsicEArkiv;
         public readonly Databehandler Databehandler;
-        public readonly GuidUtility GuidUtility;
+        public readonly GuidHandler GuidHandler;
         private Header _header;
         private byte[] _bytes;
 
-        public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidUtility guidUtility)
+        public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidHandler guidHandler)
         {
             Forsendelse = forsendelse;
             AsicEArkiv = asicEArkiv;
             Databehandler = databehandler;
-            GuidUtility = guidUtility;
+            GuidHandler = guidHandler;
             EnvelopeXml = XmlEnvelope();
         }
 

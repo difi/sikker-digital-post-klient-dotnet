@@ -18,7 +18,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             XmlElement messaging = Rot.EnvelopeXml.CreateElement("eb", "Messaging", Navnerom.eb);
             messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
             messaging.SetAttribute("MustUnderstand", Navnerom.env, "true");
-            messaging.SetAttribute("Id", Navnerom.wsu, Rot.GuidUtility.EbMessagingId);
+            messaging.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.EbMessagingId);
             
             messaging.AppendChild(UserMessageElement());
 
@@ -54,7 +54,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
 
                 XmlElement messageId = messageInfo.AppendChildElement("MessageId", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
-                messageId.InnerText = Rot.GuidUtility.StandardBusinessDocumentHeaderId;
+                messageId.InnerText = Rot.GuidHandler.StandardBusinessDocumentHeaderId;
             }
             return messageInfo;
         }
@@ -115,10 +115,10 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             XmlElement payloadInfo = Rot.EnvelopeXml.CreateElement("ns6", "PayloadInfoElement", Navnerom.Ns6);
             {
                 XmlElement partInfoBody = payloadInfo.AppendChildElement("partInfo", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
-                partInfoBody.SetAttribute("href", Rot.GuidUtility.BodyId);
+                partInfoBody.SetAttribute("href", Rot.GuidHandler.BodyId);
 
                 XmlElement partInfoDokumentpakke = payloadInfo.AppendChildElement("partInfo", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
-                partInfoDokumentpakke.SetAttribute("href", Rot.GuidUtility.DokumentpakkeId);
+                partInfoDokumentpakke.SetAttribute("href", Rot.GuidHandler.DokumentpakkeId);
                 {
                     XmlElement partProperties = partInfoDokumentpakke.AppendChildElement("PartProperties", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
                     {

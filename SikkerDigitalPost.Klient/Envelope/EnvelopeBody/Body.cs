@@ -16,7 +16,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
         {
             var body = Rot.EnvelopeXml.CreateElement("env", "body", Navnerom.env);
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("id", Navnerom.wsu, Rot.GuidUtility.BodyId);
+            body.SetAttribute("id", Navnerom.wsu, Rot.GuidHandler.BodyId);
             body.AppendChild(StandardBusinessDocumentElement());
             
             return body;

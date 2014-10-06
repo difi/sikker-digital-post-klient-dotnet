@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Klient.Utilities
+namespace SikkerDigitalPost.Klient
 {
-    internal class GuidUtility
+    internal class GuidHandler
     {
         public string StandardBusinessDocumentHeaderId = Guid.NewGuid().ToString();
         public string BodyId = String.Format("id-{0}", Guid.NewGuid());

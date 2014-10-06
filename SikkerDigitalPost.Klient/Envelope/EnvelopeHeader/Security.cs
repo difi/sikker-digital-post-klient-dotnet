@@ -49,7 +49,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
                 expires.InnerText = DateTime.UtcNow.AddMinutes(5).ToString(DateUtility.DateFormat);
             }
 
-            timestamp.SetAttribute("Id", Navnerom.wsu, Rot.GuidUtility.TimestampId);
+            timestamp.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.TimestampId);
             return timestamp;
         }
 
@@ -59,21 +59,21 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
             //Body
             {
-                var bodyReference = new Sha256Reference("#" + Rot.GuidUtility.BodyId);
+                var bodyReference = new Sha256Reference("#" + Rot.GuidHandler.BodyId);
                 bodyReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(bodyReference);
             }
 
             //TimestampElement
             {
-                var timestampReference = new Sha256Reference("#" + Rot.GuidUtility.TimestampId);
+                var timestampReference = new Sha256Reference("#" + Rot.GuidHandler.TimestampId);
                 timestampReference.AddTransform(new XmlDsigExcC14NTransform("wsse env"));
                 signed.AddReference(timestampReference);
             }
 
             //EbMessaging
             {
-                var ebMessagingReference = new Sha256Reference("#" + Rot.GuidUtility.EbMessagingId);
+                var ebMessagingReference = new Sha256Reference("#" + Rot.GuidHandler.EbMessagingId);
                 ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(ebMessagingReference);
             }
@@ -81,12 +81,12 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             //Partinfo/Dokumentpakke
             {
                 var partInfoReference = new Sha256Reference(Rot.AsicEArkiv.KrypterteBytes(Rot.Forsendelse.DigitalPost.Mottaker.Sertifikat));
-                partInfoReference.Uri = Rot.GuidUtility.DokumentpakkeId;
+                partInfoReference.Uri = Rot.GuidHandler.DokumentpakkeId;
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);
             }
 
-            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Rot.GuidUtility.BinarySecurityTokenId));
+            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Rot.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
 
             _securityElement.AppendChild(Rot.EnvelopeXml.ImportNode(signed.GetXml(), true));

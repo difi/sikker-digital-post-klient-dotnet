@@ -88,7 +88,7 @@ namespace SikkerDigitalPost.Tester
 
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
             Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler, new GuidUtility());
+            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler, new GuidHandler());
         }
 
         private static Dokument GenererHoveddokument()

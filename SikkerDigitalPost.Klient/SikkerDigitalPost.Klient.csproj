@@ -65,7 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignaturBygger.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
-    <Compile Include="Utilities\GuidUtility.cs" />
+    <Compile Include="GuidHandler.cs" />
     <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
     <Compile Include="Xml\QualifyingPropertiesObject.cs" />
     <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />

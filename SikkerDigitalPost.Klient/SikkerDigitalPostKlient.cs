@@ -62,7 +62,7 @@ namespace SikkerDigitalPost.Klient
             
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidUtility());
+            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidHandler());
 
             envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
