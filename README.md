@@ -22,3 +22,28 @@ For å installere NuGet-pakken, gjør følgende:
 
 Det er satt opp et eksempelprosjekt som viser bruk av klienten til å definere de ulike entitetene som må opprettes før sending av digital post. 
 Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net-klient-demo). Per dags dato er det kun Program.cs som er i bruk i eksempelprosjektet.
+
+
+##Hvordan legge til signering og kryptering
+
+### Privatekey (Avsender-sertifikat)
+
+#### Legg inn avsendersertifikat i certificate store
+
+1. Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
+2. Velg at sertifikatet skal lagres i "Current User"
+3. Filnavn skal nå være utfylt. 
+4. Certificate store settes til Autoselect.
+5. Skriv inn passord for privatekey
+
+####
+
+1. Start mmc.exe (Trykk windowstast og skriv 'mmc.exe'.
+2. Velg 'File' -> 'Add/Remove Snap-in...' 
+3. Merk 'Certificates' og trykk 'Add >'
+4. Velg 'My user account' og trykk 'Finish'
+5. 
+
+
+
+
