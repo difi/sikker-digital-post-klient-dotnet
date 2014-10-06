@@ -59,7 +59,7 @@ namespace SikkerDigitalPost.Klient
             manifestbygger.Bygg();
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
             signaturbygger.Bygg();
-            
+
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
             var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidHandler());
@@ -68,9 +68,34 @@ namespace SikkerDigitalPost.Klient
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
-            //encrypt filpakke mottagersertifikat.
-            //Lag request
-            
+
+            var soapContainer = new SoapContainer();
+            soapContainer.Envelope = envelope;
+            soapContainer.Vedlegg.Add(arkiv);
+            soapContainer.Action = "\"\"";
+
+            // Lag request
+
+            //var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            //container.Send(request);
+            //try
+            //{
+            //    var response = request.GetResponse();
+            //    var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            //    return true;
+            //}
+            //catch (WebException we)
+            //{
+            //    using (var response = we.Response as HttpWebResponse)
+            //    {
+            //        using (Stream errorStream = response.GetResponseStream())
+            //        {
+            //            var soap = XDocument.Load(errorStream);
+            //            throw SoapException.FromResponse(we, soap);
+            //        }
+
+            //    }
+            //}
         }
 
         /// <summary>

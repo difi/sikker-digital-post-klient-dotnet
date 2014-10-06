@@ -1,12 +1,15 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
-    internal class Envelope
+    internal class Envelope : ISoapVedlegg
     {
         public readonly XmlDocument EnvelopeXml;
         private bool _isCreated = false;
@@ -17,6 +20,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         public readonly GuidHandler GuidHandler;
         private Header _header;
         private byte[] _bytes;
+        private string _contentId;
 
         public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidHandler guidHandler)
         {
@@ -27,9 +31,30 @@ namespace SikkerDigitalPost.Klient.Envelope
             EnvelopeXml = XmlEnvelope();
         }
 
+
+        public string Filnavn
+        {
+            get { return "envelope.xml"; }
+        }
+
         public byte[] Bytes
         {
             get { return _bytes ?? (_bytes = Encoding.UTF8.GetBytes(Xml().OuterXml)); }
+        }
+
+        public string Innholdstype
+        {
+            get { return "application/soap+xml; charset=UTF-8"; }
+        }
+
+        public string ContentId
+        {
+            get { return _contentId ?? (_contentId = String.Format("{0}@meldingsformidler.sdp.difi.no", Guid.NewGuid())); }
+        }
+
+        public string TransferEncoding
+        {
+            get { return "binary"; }
         }
 
         public XmlDocument Xml()
