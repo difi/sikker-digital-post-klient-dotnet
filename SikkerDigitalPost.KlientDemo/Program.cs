@@ -1,12 +1,10 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.KlientApi;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
+using SikkerDigitalPost.Domene.Entiteter;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klientbibliotek;
 
-namespace SikkerDigitalPost.Net.KlientDemo
+namespace SikkerDigitalPost.KlientDemo
 {
     class Program
     {
