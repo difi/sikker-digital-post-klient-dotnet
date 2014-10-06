@@ -5,7 +5,7 @@ som må utføres av avsendervirksomheter. For mer informasjon om sikker digital 
 
 **NB: Klienten er under utvikling, og vil per dags dato ikke kunne brukes til å sende digital post.**
 
-#Getting started
+#Hvordan komme i gang
 
 ##NuGet-pakke
 
@@ -21,4 +21,4 @@ For å installere NuGet-pakken, gjør følgende:
 ##Eksempelkode
 
 Det er satt opp et eksempelprosjekt som viser bruk av klienten til å definere de ulike entitetene som må opprettes før sending av digital post. 
-Dette prosjektet finner du under SikkerDigitalPost.Net.KlientDemo. Per dags dato er det kun Program.cs som er i bruk i eksempelprosjektet.
+Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net-klient-demo). Per dags dato er det kun Program.cs som er i bruk i eksempelprosjektet.
