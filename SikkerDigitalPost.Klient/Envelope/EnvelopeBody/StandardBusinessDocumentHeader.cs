@@ -3,6 +3,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Utilities;
+using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 {

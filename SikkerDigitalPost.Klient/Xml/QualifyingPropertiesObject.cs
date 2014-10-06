@@ -7,6 +7,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
+using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Klient.Xml
 {

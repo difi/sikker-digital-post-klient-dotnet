@@ -4,7 +4,7 @@ using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient;
 
-namespace SikkerDigitalPost.KlientDemo
+namespace SikkerDigitalPost.Testklient
 {
     class Program
     {

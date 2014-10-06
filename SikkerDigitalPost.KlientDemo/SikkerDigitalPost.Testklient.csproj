@@ -7,8 +7,8 @@
     <ProjectGuid>{146BB10B-B9FB-4ED9-8486-BD427765B82A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SikkerDigitalPost.KlientDemo</RootNamespace>
-    <AssemblyName>SikkerDigitalPost.KlientDemo</AssemblyName>
+    <RootNamespace>SikkerDigitalPost.Testklient</RootNamespace>
+    <AssemblyName>SikkerDigitalPost.Testklient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,7 +59,7 @@
       <Project>{C7666E57-D563-40A5-AE3C-B36E29824E87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klient.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Klient\SikkerDigitalPost.Klient.csproj">
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
       <Name>SikkerDigitalPost.Klient</Name>
     </ProjectReference>

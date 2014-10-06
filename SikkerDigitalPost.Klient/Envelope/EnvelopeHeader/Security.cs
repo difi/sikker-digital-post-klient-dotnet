@@ -5,6 +5,7 @@ using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.Xml;
+using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 {

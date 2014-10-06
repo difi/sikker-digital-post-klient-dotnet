@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Domene", "SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj", "{C7666E57-D563-40A5-AE3C-B36E29824E87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Klient", "SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klient.csproj", "{D516DE44-9AFD-495D-B4C7-CCE751CA0369}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.KlientDemo", "SikkerDigitalPost.KlientDemo\SikkerDigitalPost.KlientDemo.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Testklient", "SikkerDigitalPost.KlientDemo\SikkerDigitalPost.Testklient.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Tester", "SikkerDigitalPost.Tester\SikkerDigitalPost.Tester.csproj", "{7EC19624-21F7-4BEE-8206-10608E70D2C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Klient", "SikkerDigitalPost.Klient\SikkerDigitalPost.Klient.csproj", "{D516DE44-9AFD-495D-B4C7-CCE751CA0369}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{C7666E57-D563-40A5-AE3C-B36E29824E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7666E57-D563-40A5-AE3C-B36E29824E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7666E57-D563-40A5-AE3C-B36E29824E87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Release|Any CPU.Build.0 = Release|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{7EC19624-21F7-4BEE-8206-10608E70D2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EC19624-21F7-4BEE-8206-10608E70D2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EC19624-21F7-4BEE-8206-10608E70D2C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D516DE44-9AFD-495D-B4C7-CCE751CA0369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
