@@ -53,7 +53,7 @@ namespace SikkerDigitalPost.Klient
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
-            var signatur = new Signatur(mottaker.Sertifikat);
+            var signatur = new Signatur(_databehandler.Sertifikat);
 
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
@@ -67,6 +67,7 @@ namespace SikkerDigitalPost.Klient
             envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
+
 
 
             var soapContainer = new SoapContainer();

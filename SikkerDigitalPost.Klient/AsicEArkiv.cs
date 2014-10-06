@@ -16,7 +16,7 @@ namespace SikkerDigitalPost.Klient
         public readonly Manifest Manifest;
         public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
-        private byte[] _bytes;
+        private byte[] _bytes, _krypterteBytes;
         private string _contentId;
 
         public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
@@ -85,12 +85,14 @@ namespace SikkerDigitalPost.Klient
 
         public byte[] KrypterteBytes(X509Certificate2 sertifikat)
         {
+            if (_krypterteBytes != null)
+                return _krypterteBytes;
             var contentInfo = new ContentInfo(Bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
             var recipient = new CmsRecipient(sertifikat);
             envelopedCms.Encrypt(recipient);
-            return envelopedCms.Encode();
+            return _krypterteBytes = envelopedCms.Encode();
         }
 
         public static byte[] Dekrypter(byte[] kryptertData)

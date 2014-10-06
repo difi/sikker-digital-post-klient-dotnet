@@ -16,7 +16,7 @@ namespace SikkerDigitalPost.Testklient
              * - Mottagersertifikat brukes for å kryptere og signere dokumentpakke som skal til mottagerens postkasse.
              * - TekniskAvsenderSertifikat brukes for sikker kommunikasjon med meldingsformidler.
              */
-            X509Certificate2 mottagerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
+            X509Certificate2 mottakerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
             X509Certificate2 tekniskAvsenderSertifikat;  //Dette sertifikatet brukes i kommunikasjon mot meldingsformidler. --> all signering (oppslag)
             
             /*
@@ -24,14 +24,16 @@ namespace SikkerDigitalPost.Testklient
              * dette, setter vi sertifikatene til et tilfeldig fra maskinen
              */
 
-            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly);
-            var tilfeldigSertifikat = store.Certificates[0];
+            tekniskAvsenderSertifikat = store.Certificates.Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
             store.Close();
-
-            mottagerSertifikat = tilfeldigSertifikat;
-            tekniskAvsenderSertifikat = tilfeldigSertifikat;
-
+            
+            X509Store store2 = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
+            store2.Open(OpenFlags.ReadOnly);
+            mottakerSertifikat = store2.Certificates.Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
+            store2.Close();
+            
             /*
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. Derfor er alle organisasjonsnummer
@@ -48,7 +50,7 @@ namespace SikkerDigitalPost.Testklient
             var tekniskAvsender = new Databehandler(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
 
             //Mottaker
-            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
+            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottakerSertifikat, organisasjonsnummerMottagerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
@@ -69,3 +71,9 @@ namespace SikkerDigitalPost.Testklient
         }
     }
 }
+
+
+
+
+
+
