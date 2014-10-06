@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SikkerDigitalPost.Klient</RootNamespace>
+    <AssemblyName>SikkerDigitalPost.Klient</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="AsicEArkiv.cs" />
+    <Compile Include="Envelope\EnvelopeBody\Body.cs" />
+    <Compile Include="Envelope\EnvelopeBody\DigitalPostElement.cs" />
+    <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocument.cs" />
+    <Compile Include="Envelope\Envelope.cs" />
+    <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocumentHeader.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Header.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Messaging.cs" />
+    <Compile Include="Envelope\EnvelopeHeader\Security.cs" />
+    <Compile Include="Envelope\Navnerom.cs" />
+    <Compile Include="Envelope\XmlPart.cs" />
+    <Compile Include="Utilities\DateUtility.cs" />
+    <Compile Include="KlientKonfigurasjon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManifestBygger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignaturBygger.cs" />
+    <Compile Include="SikkerDigitalPostKlient.cs" />
+    <Compile Include="Utilities\GuidUtility.cs" />
+    <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
+    <Compile Include="Xml\QualifyingPropertiesObject.cs" />
+    <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />
+    <Compile Include="Xml\SecurityTokenReferenceClause.cs" />
+    <Compile Include="Xml\Sha256Reference.cs" />
+    <Compile Include="Xml\SignedXmlWithAgnosticId.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
+      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
+      <Name>SikkerDigitalPost.Domene</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
