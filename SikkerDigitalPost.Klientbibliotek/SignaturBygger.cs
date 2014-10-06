@@ -1,18 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
-using SikkerDigitalPost.Net.KlientApi.Xml;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klientbibliotek.Envelope;
+using SikkerDigitalPost.Klientbibliotek.Xml;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Klientbibliotek
 {
     internal class SignaturBygger
     {

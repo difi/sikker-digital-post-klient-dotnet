@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿namespace SikkerDigitalPost.Domene.Enums
 {
     public enum Sikkerhetsnivå
     {

@@ -74,7 +74,7 @@
     <Compile Include="Xml\SignedXmlWithAgnosticId.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Domene.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>

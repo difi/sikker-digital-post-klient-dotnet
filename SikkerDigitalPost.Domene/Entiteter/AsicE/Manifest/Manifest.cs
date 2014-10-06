@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest
+namespace SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest
 {
     internal class Manifest : IAsiceVedlegg
     {

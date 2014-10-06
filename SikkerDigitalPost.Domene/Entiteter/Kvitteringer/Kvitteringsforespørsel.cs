@@ -1,4 +1,6 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
+﻿using SikkerDigitalPost.Domene.Enums;
+
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Kvitteringsforespørsel
     {

@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter
+﻿namespace SikkerDigitalPost.Net.Domene.Enums
 {
     /// <summary>
     /// Angir om en melding skal legges i/hentes fra normal eller prioritert kø. 

@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Post
+namespace SikkerDigitalPost.Domene.Entiteter.Post
 {
     public class Dokument : IAsiceVedlegg
     {

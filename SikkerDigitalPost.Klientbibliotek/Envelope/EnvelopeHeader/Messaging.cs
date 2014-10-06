@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.Domene.Extensions;
-using SikkerDigitalPost.Net.KlientApi.Utilities;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klientbibliotek.Utilities;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeHeader
 {
     internal class Messaging : XmlPart
     {

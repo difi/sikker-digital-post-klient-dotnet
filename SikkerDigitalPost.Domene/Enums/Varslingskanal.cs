@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Enums
+﻿namespace SikkerDigitalPost.Domene.Enums
 {
     public enum Varslingskanal
     {

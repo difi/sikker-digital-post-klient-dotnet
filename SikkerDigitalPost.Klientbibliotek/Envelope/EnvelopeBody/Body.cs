@@ -1,9 +1,9 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.KlientApi.Utilities;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klientbibliotek.Utilities;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeBody
 {
 
     internal class Body : XmlPart

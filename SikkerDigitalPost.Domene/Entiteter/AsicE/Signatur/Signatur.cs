@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+﻿using System.Security.Cryptography.X509Certificates;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur
+namespace SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur
 {
     internal class Signatur : IAsiceVedlegg
     {

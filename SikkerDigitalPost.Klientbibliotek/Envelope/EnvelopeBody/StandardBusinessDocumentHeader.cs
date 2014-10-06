@@ -1,12 +1,11 @@
-﻿using System.Xml;
 ﻿using System;
-﻿using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.Domene.Extensions;
-using SikkerDigitalPost.Net.KlientApi.Utilities;
+using System.Xml;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klientbibliotek.Utilities;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeBody
 {
     internal class StandardBusinessDocumentHeader : XmlPart
     {

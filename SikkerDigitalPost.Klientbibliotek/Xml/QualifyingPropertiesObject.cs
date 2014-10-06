@@ -4,12 +4,12 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Net.Domene.Extensions;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
-using SikkerDigitalPost.Net.KlientApi.Utilities;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klientbibliotek.Envelope;
+using SikkerDigitalPost.Klientbibliotek.Utilities;
 
-namespace SikkerDigitalPost.Net.KlientApi.Xml
+namespace SikkerDigitalPost.Klientbibliotek.Xml
 {
     internal class QualifyingPropertiesObject : DataObject
     {

@@ -1,11 +1,10 @@
 ﻿using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeHeader;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope
+namespace SikkerDigitalPost.Klientbibliotek.Envelope
 {
     internal class Envelope
     {

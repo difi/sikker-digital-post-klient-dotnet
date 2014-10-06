@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Configuration;
-using SikkerDigitalPost.Net.Domene.Entiteter;
+using SikkerDigitalPost.Domene.Entiteter;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Klientbibliotek
 {
     public class Klientkonfigurasjon
     {

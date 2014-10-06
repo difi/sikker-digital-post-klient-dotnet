@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Net.KlientApi.Xml
+namespace SikkerDigitalPost.Klientbibliotek.Xml
 {
     /// <summary>
     /// Represents the attachment content signature transform as defined in the Web Services Security SOAP Message with Attachments (SwA) Profile for use with binary attachments. 

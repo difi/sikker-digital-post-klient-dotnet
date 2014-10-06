@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace SikkerDigitalPost.Net.Domene.Extensions
+namespace SikkerDigitalPost.Domene.Extensions
 {
     internal static class XmlElementExtensions
     {

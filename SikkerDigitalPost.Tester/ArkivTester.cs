@@ -1,13 +1,10 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
-using SikkerDigitalPost.Net.KlientApi;
+using SikkerDigitalPost.Klientbibliotek;
 
-namespace SikkerDigitalPost.Net.Tests
+namespace SikkerDigitalPost.Tester
 {
     [TestClass]
     public class ArkivTester : TestBase

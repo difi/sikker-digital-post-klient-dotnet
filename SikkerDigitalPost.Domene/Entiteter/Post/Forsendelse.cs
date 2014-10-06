@@ -1,7 +1,8 @@
 ﻿using System;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Enums;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Post
+namespace SikkerDigitalPost.Domene.Entiteter.Post
 {
     public class Forsendelse
     {

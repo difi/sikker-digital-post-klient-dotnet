@@ -60,11 +60,11 @@
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Net.Domene\SikkerDigitalPost.Domene.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Net.KlientApi\SikkerDigitalPost.Klientbibliotek.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klientbibliotek.csproj">
       <Project>{d516de44-9afd-495d-b4c7-cce751ca0369}</Project>
       <Name>SikkerDigitalPost.Klientbibliotek</Name>
     </ProjectReference>

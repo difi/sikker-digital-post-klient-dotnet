@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace SikkerDigitalPost.Net.KlientApi.Xml
+namespace SikkerDigitalPost.Klientbibliotek.Xml
 {
     /// <remarks>
     /// From: http://stackoverflow.com/questions/17258800/c-sharp-support-for-rsa-sha-256-signing-for-individual-xml-elements 

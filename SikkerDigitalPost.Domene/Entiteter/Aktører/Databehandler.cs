@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Aktører
+namespace SikkerDigitalPost.Domene.Entiteter.Aktører
 {
     public class Databehandler
     {

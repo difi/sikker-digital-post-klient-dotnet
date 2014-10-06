@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Interface
+﻿namespace SikkerDigitalPost.Domene.Entiteter.Interface
 {
     internal interface IAsiceVedlegg
     {

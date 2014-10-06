@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
+﻿namespace SikkerDigitalPost.Domene.Entiteter.Ebms
 {
     public abstract class EbmsMelding
     {

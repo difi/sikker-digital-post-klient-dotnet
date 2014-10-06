@@ -2,9 +2,9 @@
 using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
+using SikkerDigitalPost.Klientbibliotek.Envelope;
 
-namespace SikkerDigitalPost.Net.Tests
+namespace SikkerDigitalPost.Tester
 {
     [TestClass]
     public class SignaturTester : TestBase

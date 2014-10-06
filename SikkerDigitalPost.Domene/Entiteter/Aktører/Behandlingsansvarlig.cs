@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Aktører
+namespace SikkerDigitalPost.Domene.Entiteter.Aktører
 {
     /// <summary>
     /// Behandlingsansvarlig som beskrevet i http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer.

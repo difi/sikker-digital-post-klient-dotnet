@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Net.Domene.Exceptions
+namespace SikkerDigitalPost.Domene.Exceptions
 {
     public class PersonNotFoundException : NullReferenceException
     {

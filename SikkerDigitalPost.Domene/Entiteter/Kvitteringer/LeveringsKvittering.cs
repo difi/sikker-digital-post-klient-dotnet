@@ -1,7 +1,7 @@
 ﻿using System;
-using SikkerDigitalPost.Net.Domene.Entiteter.Ebms;
+using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class LeveringsKvittering : Forretningskvittering
     {

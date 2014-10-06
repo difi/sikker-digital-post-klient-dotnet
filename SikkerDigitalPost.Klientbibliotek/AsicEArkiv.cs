@@ -3,12 +3,12 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Klientbibliotek
 {
     internal class AsicEArkiv : IAsiceVedlegg
     {

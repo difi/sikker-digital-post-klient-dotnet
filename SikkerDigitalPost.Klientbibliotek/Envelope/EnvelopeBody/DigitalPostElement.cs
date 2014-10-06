@@ -3,13 +3,13 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Net.Domene.Extensions;
-using SikkerDigitalPost.Net.KlientApi.Xml;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.Varsel;
+using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klientbibliotek.Xml;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeBody
 {
     internal class DigitalPostElement : XmlPart
     {

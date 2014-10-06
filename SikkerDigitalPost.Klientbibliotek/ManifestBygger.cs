@@ -1,12 +1,11 @@
 ﻿using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.Domene.Extensions;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klientbibliotek.Envelope;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Klientbibliotek
 {
     internal class ManifestBygger
     {

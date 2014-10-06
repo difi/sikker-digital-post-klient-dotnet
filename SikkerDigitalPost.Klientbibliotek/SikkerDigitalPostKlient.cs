@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Reflection;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
-using SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.KlientApi
+namespace SikkerDigitalPost.Klientbibliotek
 {
     public class SikkerDigitalPostKlient
     {

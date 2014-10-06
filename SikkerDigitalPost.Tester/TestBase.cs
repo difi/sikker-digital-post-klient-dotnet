@@ -4,16 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Net.Domene.Entiteter.AsicE.Signatur;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
-using SikkerDigitalPost.Net.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Net.KlientApi;
-using SikkerDigitalPost.Net.KlientApi.Envelope;
+using SikkerDigitalPost.Domene.Entiteter;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
+using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.Varsel;
+using SikkerDigitalPost.Klientbibliotek;
+using SikkerDigitalPost.Klientbibliotek.Envelope;
 
-namespace SikkerDigitalPost.Net.Tests
+namespace SikkerDigitalPost.Tester
 {
     [TestClass]
     public class TestBase

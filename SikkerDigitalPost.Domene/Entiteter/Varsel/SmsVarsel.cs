@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Varsel
+namespace SikkerDigitalPost.Domene.Entiteter.Varsel
 {
 
     /// <summary>

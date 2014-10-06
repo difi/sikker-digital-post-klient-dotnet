@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using SikkerDigitalPost.Net.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Entiteter.Interface;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter
+namespace SikkerDigitalPost.Domene.Entiteter
 {
     public class Organisasjonsnummer
     {

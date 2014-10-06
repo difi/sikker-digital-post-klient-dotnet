@@ -1,9 +1,8 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Net.Domene.Entiteter;
-using SikkerDigitalPost.Net.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Net.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Net.KlientApi.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeHeader
 {
     internal class Header : XmlPart
     {

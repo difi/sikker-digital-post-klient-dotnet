@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Net.KlientApi.Utilities
+﻿namespace SikkerDigitalPost.Klientbibliotek.Utilities
 {
     internal static class DateUtility
     {

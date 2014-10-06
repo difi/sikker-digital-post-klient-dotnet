@@ -1,6 +1,6 @@
-﻿using SikkerDigitalPost.Net.Domene.Enums;
+﻿using SikkerDigitalPost.Domene.Enums;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Ebms
+namespace SikkerDigitalPost.Domene.Entiteter.Ebms
 {
     public abstract class EbmsUtgåendeMelding : EbmsMelding
     {

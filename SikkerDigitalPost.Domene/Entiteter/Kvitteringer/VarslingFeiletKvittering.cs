@@ -1,8 +1,8 @@
 ﻿using System;
-using SikkerDigitalPost.Net.Domene.Entiteter.Ebms;
-using SikkerDigitalPost.Net.Domene.Enums;
+using SikkerDigitalPost.Domene.Entiteter.Ebms;
+using SikkerDigitalPost.Domene.Enums;
 
-namespace SikkerDigitalPost.Net.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class VarslingFeiletKvittering : Forretningskvittering
     {
