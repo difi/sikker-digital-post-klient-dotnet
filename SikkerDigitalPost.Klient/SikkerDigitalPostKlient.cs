@@ -52,7 +52,7 @@ namespace SikkerDigitalPost.Klient
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
-            var signatur = new Signatur(mottaker.Sertifikat);
+            var signatur = new Signatur(_databehandler.Sertifikat);
 
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
@@ -68,10 +68,10 @@ namespace SikkerDigitalPost.Klient
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
 
-            var soapContainer = new SoapContainer();
-            soapContainer.Envelope = envelope;
-            soapContainer.Vedlegg.Add(asicEArkiv);
-            soapContainer.Action = "\"\"";
+            //var soapContainer = new SoapContainer();
+            //soapContainer.Envelope = envelope;
+            //soapContainer.Vedlegg.Add(asicEArkiv);
+            //soapContainer.Action = "\"\"";
 
             // Lag request
 
