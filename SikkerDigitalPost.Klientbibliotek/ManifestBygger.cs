@@ -2,10 +2,9 @@
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Extensions;
-using SikkerDigitalPost.Klientbibliotek.Envelope;
+using SikkerDigitalPost.Klient.Envelope;
 
-namespace SikkerDigitalPost.Klientbibliotek
+namespace SikkerDigitalPost.Klient
 {
     internal class ManifestBygger
     {

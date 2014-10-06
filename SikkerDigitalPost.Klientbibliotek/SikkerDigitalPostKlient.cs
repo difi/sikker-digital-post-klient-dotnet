@@ -5,7 +5,7 @@ using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Klientbibliotek
+namespace SikkerDigitalPost.Klient
 {
     public class SikkerDigitalPostKlient
     {

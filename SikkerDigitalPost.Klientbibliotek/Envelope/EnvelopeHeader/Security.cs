@@ -3,11 +3,10 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Extensions;
-using SikkerDigitalPost.Klientbibliotek.Utilities;
-using SikkerDigitalPost.Klientbibliotek.Xml;
+using SikkerDigitalPost.Klient.Utilities;
+using SikkerDigitalPost.Klient.Xml;
 
-namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 {
     internal class Security : XmlPart
     {

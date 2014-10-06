@@ -64,9 +64,9 @@
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klientbibliotek.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klient.csproj">
       <Project>{d516de44-9afd-495d-b4c7-cce751ca0369}</Project>
-      <Name>SikkerDigitalPost.Klientbibliotek</Name>
+      <Name>SikkerDigitalPost.Klient</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

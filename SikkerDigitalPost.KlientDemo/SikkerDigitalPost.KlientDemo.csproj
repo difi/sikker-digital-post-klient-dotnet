@@ -59,9 +59,9 @@
       <Project>{C7666E57-D563-40A5-AE3C-B36E29824E87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klientbibliotek.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Klientbibliotek\SikkerDigitalPost.Klient.csproj">
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
-      <Name>SikkerDigitalPost.Klientbibliotek</Name>
+      <Name>SikkerDigitalPost.Klient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

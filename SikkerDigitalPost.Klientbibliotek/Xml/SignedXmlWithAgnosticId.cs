@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Klientbibliotek.Xml
+namespace SikkerDigitalPost.Klient.Xml
 {
     /// <summary>
     /// Enhances the core SignedXml provider with namespace agnostic query for Id elements.

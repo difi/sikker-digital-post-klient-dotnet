@@ -2,7 +2,7 @@
 using System.IO.Compression;
 using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klientbibliotek;
+using SikkerDigitalPost.Klient;
 
 namespace SikkerDigitalPost.Tester
 {

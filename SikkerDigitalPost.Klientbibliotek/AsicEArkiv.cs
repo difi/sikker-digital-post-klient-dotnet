@@ -8,7 +8,7 @@ using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Klientbibliotek
+namespace SikkerDigitalPost.Klient
 {
     internal class AsicEArkiv : IAsiceVedlegg
     {

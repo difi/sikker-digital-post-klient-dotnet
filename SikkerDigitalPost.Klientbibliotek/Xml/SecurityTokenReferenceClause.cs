@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace SikkerDigitalPost.Klientbibliotek.Xml
+namespace SikkerDigitalPost.Klient.Xml
 {
     internal class SecurityTokenReferenceClause : KeyInfoClause
     {

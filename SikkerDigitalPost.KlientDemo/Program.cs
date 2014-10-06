@@ -2,7 +2,7 @@
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klientbibliotek;
+using SikkerDigitalPost.Klient;
 
 namespace SikkerDigitalPost.KlientDemo
 {

@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Klientbibliotek.Envelope
+﻿namespace SikkerDigitalPost.Klient.Envelope
 {
     internal static class Navnerom
     {

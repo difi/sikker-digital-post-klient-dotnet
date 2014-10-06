@@ -6,10 +6,9 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Domene.Extensions;
-using SikkerDigitalPost.Klientbibliotek.Xml;
+using SikkerDigitalPost.Klient.Xml;
 
-namespace SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 {
     internal class DigitalPostElement : XmlPart
     {

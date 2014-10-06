@@ -10,8 +10,8 @@ using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Klientbibliotek;
-using SikkerDigitalPost.Klientbibliotek.Envelope;
+using SikkerDigitalPost.Klient;
+using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Tester
 {

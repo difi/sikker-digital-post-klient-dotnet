@@ -7,10 +7,10 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klientbibliotek.Envelope;
-using SikkerDigitalPost.Klientbibliotek.Xml;
+using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Xml;
 
-namespace SikkerDigitalPost.Klientbibliotek
+namespace SikkerDigitalPost.Klient
 {
     internal class SignaturBygger
     {

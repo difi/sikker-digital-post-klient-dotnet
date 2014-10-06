@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klientbibliotek.Envelope;
+using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Tester
 {

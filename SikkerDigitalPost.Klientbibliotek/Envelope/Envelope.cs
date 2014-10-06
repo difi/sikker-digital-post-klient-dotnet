@@ -2,9 +2,9 @@
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klientbibliotek.Envelope.EnvelopeHeader;
+using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 
-namespace SikkerDigitalPost.Klientbibliotek.Envelope
+namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class Envelope
     {

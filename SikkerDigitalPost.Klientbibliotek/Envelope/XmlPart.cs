@@ -2,7 +2,7 @@
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Klientbibliotek.Envelope
+namespace SikkerDigitalPost.Klient.Envelope
 {
     internal abstract class XmlPart
     {

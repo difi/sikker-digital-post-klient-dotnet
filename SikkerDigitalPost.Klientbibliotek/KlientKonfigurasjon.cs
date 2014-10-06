@@ -2,7 +2,7 @@
 using System.Configuration;
 using SikkerDigitalPost.Domene.Entiteter;
 
-namespace SikkerDigitalPost.Klientbibliotek
+namespace SikkerDigitalPost.Klient
 {
     public class Klientkonfigurasjon
     {

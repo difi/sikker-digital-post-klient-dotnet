@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Klientbibliotek.Utilities
+namespace SikkerDigitalPost.Klient.Utilities
 {
     internal static class GuidUtility
     {
