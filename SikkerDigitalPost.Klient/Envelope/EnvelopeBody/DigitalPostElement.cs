@@ -42,7 +42,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
             reference.AddTransform(new XmlDsigExcC14NTransform("ns3"));
             signedXml.AddReference(reference);
 
-            var keyInfoX509Data = new KeyInfoX509Data(Rot.Databehandler.Sertifikat, X509IncludeOption.WholeChain);
+            var keyInfoX509Data = new KeyInfoX509Data(Rot.Databehandler.Sertifikat);
             signedXml.KeyInfo.AddClause(keyInfoX509Data);
 
             signedXml.ComputeSignature();

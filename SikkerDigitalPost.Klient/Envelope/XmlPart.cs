@@ -12,6 +12,5 @@ namespace SikkerDigitalPost.Klient.Envelope
         }
 
         public abstract XmlElement Xml();
-
     }
 }

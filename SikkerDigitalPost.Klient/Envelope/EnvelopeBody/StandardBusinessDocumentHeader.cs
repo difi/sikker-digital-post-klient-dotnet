@@ -67,7 +67,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 XmlElement standard = documentIdentification.AppendChildElement("Standard", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
                 standard.InnerText = _sdpVersion;
 
-                XmlElement typeVersion = documentIdentification.AppendChildElement("typeVersion", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
+                XmlElement typeVersion = documentIdentification.AppendChildElement("TypeVersion", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
                 typeVersion.InnerText = "1.0";
 
                 XmlElement instanceIdentifier = documentIdentification.AppendChildElement("InstanceIdentifier", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
@@ -84,7 +84,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 
         private XmlElement BusinessScopeElement()
         {
-            XmlElement businessScope = Rot.EnvelopeXml.CreateElement("ns3", "BusinessScopeElement", Navnerom.Ns3);
+            XmlElement businessScope = Rot.EnvelopeXml.CreateElement("ns3", "BusinessScope", Navnerom.Ns3);
             {
                 XmlElement scope = businessScope.AppendChildElement("Scope", "ns3", Navnerom.Ns3, Rot.EnvelopeXml);
                 {

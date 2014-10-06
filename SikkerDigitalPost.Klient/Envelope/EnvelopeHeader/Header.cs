@@ -14,7 +14,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public override XmlElement Xml()
         {
-            var header = Rot.EnvelopeXml.CreateElement("env","Header",Navnerom.env);
+            var header = Rot.EnvelopeXml.CreateElement("env", "Header", Navnerom.env);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;

@@ -5,7 +5,6 @@ using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 {
-
     internal class Body : XmlPart
     {
         public Body(Envelope rot) : base(rot)
@@ -14,9 +13,9 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 
         public override XmlElement Xml()
         {
-            var body = Rot.EnvelopeXml.CreateElement("env", "body", Navnerom.env);
+            var body = Rot.EnvelopeXml.CreateElement("env", "Body", Navnerom.env);
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("id", Navnerom.wsu, Rot.GuidHandler.BodyId);
+            body.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.BodyId);
             body.AppendChild(StandardBusinessDocumentElement());
             
             return body;

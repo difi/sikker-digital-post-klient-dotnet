@@ -27,26 +27,25 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         private XmlElement BinarySecurityTokenElement()
         {
-            var binarySecurityTokenId = String.Format("X509-{0}", Guid.NewGuid());
-            
-            XmlElement binarySecurityToken = Rot.EnvelopeXml.CreateElement("wsse", "BinarySecurityTokenElement", Navnerom.wsse);
-            binarySecurityToken.SetAttribute("id", Navnerom.wsu, binarySecurityTokenId);
+            XmlElement binarySecurityToken = Rot.EnvelopeXml.CreateElement("wsse", "BinarySecurityToken", Navnerom.wsse);
+            binarySecurityToken.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.BinarySecurityTokenId);
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
             binarySecurityToken.InnerText = Convert.ToBase64String(Rot.Databehandler.Sertifikat.RawData);
-
             return binarySecurityToken;
         }
 
         private XmlElement TimestampElement()
         {
-            XmlElement timestamp = Rot.EnvelopeXml.CreateElement("wsu", "TimestampElement", Navnerom.wsu);
+            XmlElement timestamp = Rot.EnvelopeXml.CreateElement("wsu", "Timestamp", Navnerom.wsu);
             {
                 XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, Rot.EnvelopeXml);
                 created.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
-
+                
+                // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/WebserviceSecurity
+                // Time-to-live skal være 120 sekunder
                 XmlElement expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.wsu, Rot.EnvelopeXml);
-                expires.InnerText = DateTime.UtcNow.AddMinutes(5).ToString(DateUtility.DateFormat);
+                expires.InnerText = DateTime.UtcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
             }
 
             timestamp.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.TimestampId);
