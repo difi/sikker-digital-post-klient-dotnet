@@ -99,9 +99,12 @@ namespace SikkerDigitalPost.Klient
         {
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            signaturXml.AppendChild(signaturXml.CreateElement("XAdESSignatures", Navnerom.Ns10));
+            signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.Ns10));
             signaturXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
             signaturXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
+            signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.Ns11);
+
+
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;
         }

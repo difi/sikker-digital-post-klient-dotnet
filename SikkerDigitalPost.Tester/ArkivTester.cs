@@ -27,8 +27,8 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
-            
-            var arkivstrøm = new MemoryStream(Arkiv.Bytes);
+            var dekryptertArkivBytes = AsicEArkiv.Dekrypter(Arkiv.Bytes);
+            var arkivstrøm = new MemoryStream(dekryptertArkivBytes);
 
             //Åpne zip og generer sjekksum for å verifisere innhold
             using (var zip = new ZipArchive(arkivstrøm, ZipArchiveMode.Read))
