@@ -12,6 +12,7 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -87,7 +88,7 @@ namespace SikkerDigitalPost.Tester
 
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
             Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler);
+            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler, new GuidHandler());
         }
 
         private static Dokument GenererHoveddokument()

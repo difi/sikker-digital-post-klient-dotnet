@@ -4,6 +4,7 @@ using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -61,7 +62,7 @@ namespace SikkerDigitalPost.Klient
             
 
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler);
+            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidHandler());
 
             envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"

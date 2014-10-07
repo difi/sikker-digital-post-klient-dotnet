@@ -8,14 +8,13 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
     {
         private Security _security;
 
-        public Header(XmlDocument dokument, Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler) :
-            base(dokument, forsendelse, asicEArkiv, databehandler)
+        public Header(Envelope rot) : base(rot)
         {
         }
 
         public override XmlElement Xml()
         {
-            var header = XmlEnvelope.CreateElement("env","Header",Navnerom.env);
+            var header = Rot.EnvelopeXml.CreateElement("env", "Header", Navnerom.env);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;
@@ -23,13 +22,13 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         private XmlElement SecurityElement()
         {
-            _security = new Security(XmlEnvelope,Forsendelse, AsicEArkiv, Databehandler);
+            _security = new Security(Rot);
             return _security.Xml();
         }
 
         private XmlElement MessagingElement()
         {
-            var messaging = new Messaging(XmlEnvelope, Forsendelse, AsicEArkiv, Databehandler);
+            var messaging = new Messaging(Rot);
             return messaging.Xml();
         }
 
