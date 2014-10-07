@@ -85,7 +85,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 
         private XmlElement BusinessScopeElement()
         {
-            XmlElement businessScope = XmlEnvelope.CreateElement("ns3", "BusinessScopeElement", Navnerom.Ns3);
+            XmlElement businessScope = XmlEnvelope.CreateElement("ns3", "BusinessScope", Navnerom.Ns3);
             {
                 XmlElement scope = businessScope.AppendChildElement("Scope", "ns3", Navnerom.Ns3, XmlEnvelope);
                 {

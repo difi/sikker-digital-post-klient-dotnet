@@ -32,7 +32,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         {
             var binarySecurityTokenId = String.Format("X509-{0}", Guid.NewGuid());
             
-            XmlElement binarySecurityToken = XmlEnvelope.CreateElement("wsse", "BinarySecurityTokenElement", Navnerom.wsse);
+            XmlElement binarySecurityToken = XmlEnvelope.CreateElement("wsse", "BinarySecurityToken", Navnerom.wsse);
             binarySecurityToken.SetAttribute("id", Navnerom.wsu, binarySecurityTokenId);
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         private XmlElement TimestampElement()
         {
-            XmlElement timestamp = XmlEnvelope.CreateElement("wsu", "TimestampElement", Navnerom.wsu);
+            XmlElement timestamp = XmlEnvelope.CreateElement("wsu", "Timestamp", Navnerom.wsu);
             {
                 XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, XmlEnvelope);
                 created.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);

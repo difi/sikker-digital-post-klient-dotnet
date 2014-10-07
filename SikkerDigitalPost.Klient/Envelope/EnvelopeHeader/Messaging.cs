@@ -18,7 +18,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         {
             XmlElement messaging = XmlEnvelope.CreateElement("eb", "Messaging", Navnerom.eb);
             messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            messaging.SetAttribute("MustUnderstand", Navnerom.env, "true");
+            messaging.SetAttribute("mustUnderstand", Navnerom.env, "true");
             messaging.SetAttribute("Id", Navnerom.wsu, GuidUtility.EbMessagingId);
             
             messaging.AppendChild(UserMessageElement());
@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement UserMessageElement()
         {
-            XmlElement userMessage = XmlEnvelope.CreateElement("ns6", "UserMessageElement", Navnerom.Ns6);
+            XmlElement userMessage = XmlEnvelope.CreateElement("ns6", "UserMessage", Navnerom.Ns6);
             userMessage.SetAttribute("xmlns:ns2", Navnerom.Ns2);
             userMessage.SetAttribute("xmlns:ns3", Navnerom.Ns3);
             userMessage.SetAttribute("xmlns:ns4", Navnerom.Ns4);
@@ -49,7 +49,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement MessageInfoElement()
         {
-            XmlElement messageInfo = XmlEnvelope.CreateElement("ns6", "MessageInfoElement", Navnerom.Ns6);
+            XmlElement messageInfo = XmlEnvelope.CreateElement("ns6", "MessageInfo", Navnerom.Ns6);
             {
                 XmlElement timestamp =  messageInfo.AppendChildElement("TimeStamp", "ns6", Navnerom.Ns6, XmlEnvelope);
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
@@ -62,7 +62,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement PartyInfoElement()
         {
-            XmlElement partyInfo = XmlEnvelope.CreateElement("ns6", "PartyInfoElement", Navnerom.Ns6);
+            XmlElement partyInfo = XmlEnvelope.CreateElement("ns6", "PartyInfo", Navnerom.Ns6);
             {
                 XmlElement from = partyInfo.AppendChildElement("From", "ns6", Navnerom.Ns6, XmlEnvelope);
                 {
@@ -90,7 +90,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement CollaborationInfoElement()
         {
-            XmlElement collaborationInfo = XmlEnvelope.CreateElement("ns6", "CollaborationInfoElement", Navnerom.Ns6);
+            XmlElement collaborationInfo = XmlEnvelope.CreateElement("ns6", "CollaborationInfo", Navnerom.Ns6);
             {
                 XmlElement agreementRef = collaborationInfo.AppendChildElement("AgreementRef","ns6",Navnerom.Ns6,XmlEnvelope);
                 agreementRef.InnerText = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
@@ -113,19 +113,19 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         {
             //Mer info på http://begrep.difi.no/SikkerDigitalPost/1.0.0-rc.2/UserMessageElement/PayloadInfoElement
 
-            XmlElement payloadInfo = XmlEnvelope.CreateElement("ns6", "PayloadInfoElement", Navnerom.Ns6);
+            XmlElement payloadInfo = XmlEnvelope.CreateElement("ns6", "PayloadInfo", Navnerom.Ns6);
             {
-                XmlElement partInfoBody = payloadInfo.AppendChildElement("partInfo", "ns6", Navnerom.Ns6, XmlEnvelope);
+                XmlElement partInfoBody = payloadInfo.AppendChildElement("PartInfo", "ns6", Navnerom.Ns6, XmlEnvelope);
                 partInfoBody.SetAttribute("href", GuidUtility.BodyId);
 
-                XmlElement partInfoDokumentpakke = payloadInfo.AppendChildElement("partInfo", "ns6", Navnerom.Ns6, XmlEnvelope);
+                XmlElement partInfoDokumentpakke = payloadInfo.AppendChildElement("PartInfo", "ns6", Navnerom.Ns6, XmlEnvelope);
                 partInfoDokumentpakke.SetAttribute("href", GuidUtility.DokumentpakkeId);
                 {
                     XmlElement partProperties = partInfoDokumentpakke.AppendChildElement("PartProperties", "ns6", Navnerom.Ns6, XmlEnvelope);
                     {
                         XmlElement propertyMimeType = partProperties.AppendChildElement("Property", "ns6", Navnerom.Ns6, XmlEnvelope);
                         propertyMimeType.SetAttribute("name", "MimeType");
-                        propertyMimeType.InnerText = "application/octet-stream";
+                        propertyMimeType.InnerText = "application/cms";
 
                         XmlElement propertyContent = partProperties.AppendChildElement("Property", "ns6", Navnerom.Ns6, XmlEnvelope);
                         propertyContent.SetAttribute("name", "Content");
