@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
+using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
@@ -18,12 +19,15 @@ namespace SikkerDigitalPost.Klient
 
         private readonly Signatur _signatur;
         private readonly Forsendelse _forsendelse;
+        private readonly Manifest _manifest;
+
         private XmlDocument _signaturDokumentXml;
 
-        internal SignaturBygger(Signatur signatur, Forsendelse forsendelse)
+        internal SignaturBygger(Signatur signatur, Forsendelse forsendelse, Manifest manifest)
         {
             _signatur = signatur;
             _forsendelse = forsendelse;
+            _manifest = manifest;
         }
 
         public void Bygg()
@@ -32,7 +36,7 @@ namespace SikkerDigitalPost.Klient
 
             var signaturnode = Signaturnode(_signaturDokumentXml, _signatur);
 
-            IEnumerable<Dokument> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg);
+            IEnumerable<IAsiceVedlegg> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg, _manifest);
             OpprettReferanser(signaturnode, referanser);
 
             var keyInfoX509Data = new KeyInfoX509Data(_signatur.Sertifikat, X509IncludeOption.WholeChain);
@@ -59,7 +63,7 @@ namespace SikkerDigitalPost.Klient
             return signedPropertiesReference;
         }
 
-        private void OpprettReferanser(SignedXml signaturnode, IEnumerable<Dokument> referanser)
+        private void OpprettReferanser(SignedXml signaturnode, IEnumerable<IAsiceVedlegg> referanser)
         {
             foreach (var item in referanser)
             {
@@ -74,11 +78,12 @@ namespace SikkerDigitalPost.Klient
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
 
-        private static IEnumerable<Dokument> Referanser(Dokument hoveddokument, IEnumerable<Dokument> vedlegg)
+        private static IEnumerable<IAsiceVedlegg> Referanser(Dokument hoveddokument, IEnumerable<IAsiceVedlegg> vedlegg, Manifest manifest)
         {
-            var referanser = new List<Dokument>();
+            var referanser = new List<IAsiceVedlegg>();
             referanser.Add(hoveddokument);
             referanser.AddRange(vedlegg);
+            referanser.Add(manifest);
             return referanser;
         }
 

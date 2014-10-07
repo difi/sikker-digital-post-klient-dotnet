@@ -84,7 +84,7 @@ namespace SikkerDigitalPost.Tester
             manifestbygger.Bygg();
 
             Signatur = new Signatur(Sertifikat);
-            var signaturbygger = new SignaturBygger(Signatur, Forsendelse);
+            var signaturbygger = new SignaturBygger(Signatur, Forsendelse, Manifest);
             signaturbygger.Bygg();
 
             GuidHandler = new GuidHandler();

@@ -61,7 +61,7 @@ namespace SikkerDigitalPost.Klient
 
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
-            var signaturbygger = new SignaturBygger(signatur, forsendelse);
+            var signaturbygger = new SignaturBygger(signatur, forsendelse, manifest);
             signaturbygger.Bygg();
 
             var guidHandler = new GuidHandler();

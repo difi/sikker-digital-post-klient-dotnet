@@ -18,8 +18,7 @@ namespace SikkerDigitalPost.Klient
         private readonly Dokumentpakke _dokumentpakke;
 
         private byte[] _bytes;
-        private string _contentId;
-        private X509Certificate2 _krypteringssertifikat;
+        private readonly X509Certificate2 _krypteringssertifikat;
         private readonly GuidHandler _guidHandler;
 
 
