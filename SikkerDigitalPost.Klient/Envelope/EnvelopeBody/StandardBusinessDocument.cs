@@ -11,15 +11,14 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
     {
         private readonly DateTime _creationDateAndtime;
 
-        public StandardBusinessDocument(Envelope rot)
-            : base(rot)
+        public StandardBusinessDocument(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
             _creationDateAndtime = DateTime.UtcNow;
         }
 
-        public override XmlElement Xml()
+        public override XmlNode Xml()
         {
-            var standardBusinessDocumentElement = Rot.EnvelopeXml.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
+            var standardBusinessDocumentElement = Context.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
             standardBusinessDocumentElement.SetAttribute("xmlns:ns3", Navnerom.Ns3);
             standardBusinessDocumentElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
             standardBusinessDocumentElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
@@ -30,15 +29,15 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
             return standardBusinessDocumentElement;
         }
 
-        private XmlElement StandardBusinessDocumentHeaderElement()
+        private XmlNode StandardBusinessDocumentHeaderElement()
         {
-            var standardBusinessDocumentHeader = new StandardBusinessDocumentHeader(Rot, _creationDateAndtime);
+            var standardBusinessDocumentHeader = new StandardBusinessDocumentHeader(Settings, Context, _creationDateAndtime);
             return standardBusinessDocumentHeader.Xml();
         }
 
-        private XmlElement DigitalPostElement()
+        private XmlNode DigitalPostElement()
         {
-            var digitalPost = new DigitalPostElement(Rot);
+            var digitalPost = new DigitalPostElement(Settings, Context);
             return digitalPost.Xml();
         }
     }

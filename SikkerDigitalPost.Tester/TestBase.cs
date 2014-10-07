@@ -90,7 +90,7 @@ namespace SikkerDigitalPost.Tester
             GuidHandler = new GuidHandler();
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
             Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
-            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler, GuidHandler);
+            Envelope = new Envelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
         }
 
         private static Dokument GenererHoveddokument()

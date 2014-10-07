@@ -10,24 +10,18 @@ namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class Envelope : ISoapVedlegg
     {
-        public readonly XmlDocument EnvelopeXml;
+        private readonly XmlDocument _envelopeXml;
         private bool _isCreated = false;
 
-        public readonly Forsendelse Forsendelse;
-        public readonly AsicEArkiv AsicEArkiv;
-        public readonly Databehandler Databehandler;
-        public readonly GuidHandler GuidHandler;
+        private EnvelopeSettings _settings;
         private Header _header;
         private byte[] _bytes;
         private string _contentId;
 
-        public Envelope(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidHandler guidHandler)
+        public Envelope(EnvelopeSettings settings)
         {
-            Forsendelse = forsendelse;
-            AsicEArkiv = asicEArkiv;
-            Databehandler = databehandler;
-            GuidHandler = guidHandler;
-            EnvelopeXml = XmlEnvelope();
+            _settings = settings;
+            _envelopeXml = XmlEnvelope();
         }
 
 
@@ -58,14 +52,14 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         public XmlDocument Xml()
         {
-            if (_isCreated) return EnvelopeXml;
+            if (_isCreated) return _envelopeXml;
 
-            EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
-            EnvelopeXml.DocumentElement.AppendChild(BodyElement());
+            _envelopeXml.DocumentElement.AppendChild(HeaderElement());
+            _envelopeXml.DocumentElement.AppendChild(BodyElement());
             _header.AddSignatureElement();
             _isCreated = true;
 
-            return EnvelopeXml;
+            return _envelopeXml;
         }
 
         private XmlDocument XmlEnvelope()
@@ -79,15 +73,15 @@ namespace SikkerDigitalPost.Klient.Envelope
             return xmlDokument;
         }
 
-        private XmlElement HeaderElement()
+        private XmlNode HeaderElement()
         {
-            _header = new Header(this);
+            _header = new Header(_settings, _envelopeXml);
             return _header.Xml();
         }
 
-        private XmlElement BodyElement()
+        private XmlNode BodyElement()
         {
-            var body = new EnvelopeBody.Body(this);
+            var body = new EnvelopeBody.Body(_settings, _envelopeXml);
             return body.Xml();
         }
 
@@ -96,7 +90,7 @@ namespace SikkerDigitalPost.Klient.Envelope
             if (!_isCreated)
                 Xml();
             
-            EnvelopeXml.Save(filsti);
+            _envelopeXml.Save(filsti);
         }
     }
 }
