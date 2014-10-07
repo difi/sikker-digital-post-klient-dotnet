@@ -16,6 +16,7 @@ namespace SikkerDigitalPost.Klient
         public readonly Manifest Manifest;
         public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
+
         private byte[] _bytes;
         private string _contentId;
         private X509Certificate2 _krypteringssertifikat;

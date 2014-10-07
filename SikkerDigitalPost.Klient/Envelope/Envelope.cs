@@ -4,6 +4,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Klient.Envelope
@@ -89,7 +90,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         {
             if (!_isCreated)
                 Xml();
-            
+
             _envelopeXml.Save(filsti);
         }
     }

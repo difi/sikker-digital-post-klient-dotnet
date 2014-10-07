@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SikkerDigitalPost.Domene.Entiteter.Interface
+﻿namespace SikkerDigitalPost.Domene.Entiteter.Interface
 {
     internal interface ISoapVedlegg
     {

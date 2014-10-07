@@ -17,14 +17,13 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
             messaging.SetAttribute("mustUnderstand", Navnerom.env, "true");
             messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
-            messaging.AppendChild(UserMessageElement());
 
+            messaging.AppendChild(UserMessageElement());
             return messaging;
         }
 
         public XmlElement UserMessageElement()
         {
-
             XmlElement userMessage = Context.CreateElement("ns6", "UserMessage", Navnerom.Ns6);
             userMessage.SetAttribute("mpc", Settings.Forsendelse.MpcId);
 
@@ -39,7 +38,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement MessageInfoElement()
         {
             XmlElement messageInfo = Context.CreateElement("ns6", "MessageInfo", Navnerom.Ns6);
-
             {
                 XmlElement timestamp =  messageInfo.AppendChildElement("Timestamp", "ns6", Navnerom.Ns6, Context);
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
@@ -55,7 +53,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement PartyInfoElement()
         {
             XmlElement partyInfo = Context.CreateElement("ns6", "PartyInfo", Navnerom.Ns6);
-
             {
                 XmlElement from = partyInfo.AppendChildElement("From", "ns6", Navnerom.Ns6, Context);
                 {
@@ -84,7 +81,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement CollaborationInfoElement()
         {
             XmlElement collaborationInfo = Context.CreateElement("ns6", "CollaborationInfo", Navnerom.Ns6);
-
             {
                 XmlElement agreementRef = collaborationInfo.AppendChildElement("AgreementRef","ns6",Navnerom.Ns6,Context);
                 agreementRef.InnerText = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";

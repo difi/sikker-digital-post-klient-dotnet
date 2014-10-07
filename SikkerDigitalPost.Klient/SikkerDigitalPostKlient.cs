@@ -72,7 +72,7 @@ namespace SikkerDigitalPost.Klient
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
-            var soapContainer = new SoapContainer(forsendelse.DigitalPost.Mottaker.Sertifikat);
+            var soapContainer = new SoapContainer();
             soapContainer.Envelope = envelope;
             soapContainer.Vedlegg.Add(arkiv);
             soapContainer.Action = "\"\"";

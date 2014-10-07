@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Klient
 {
     internal class SoapContainer
     {
-        private readonly X509Certificate2 _sertifikat;
         private readonly string _boundary;
 
         public string Action { get; set; }
@@ -17,9 +15,8 @@ namespace SikkerDigitalPost.Klient
         public IList<ISoapVedlegg> Vedlegg { get; set; }
         public ISoapVedlegg Envelope { get; set; }
 
-        public SoapContainer(X509Certificate2 sertifikat)
+        public SoapContainer()
         {
-            _sertifikat = sertifikat;
             _boundary = Guid.NewGuid().ToString();
             Vedlegg = new List<ISoapVedlegg>();
         }
@@ -66,7 +63,7 @@ namespace SikkerDigitalPost.Klient
             stream.WriteLine();
 
             stream.Flush();
-            
+
             stream.BaseStream.Write(attachment.Bytes, 0, attachment.Bytes.Length);
         }
     }
