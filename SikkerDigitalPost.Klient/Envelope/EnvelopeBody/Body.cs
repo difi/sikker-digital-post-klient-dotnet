@@ -13,14 +13,16 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
             var body = Context.CreateElement("env", "Body", Navnerom.env);
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
             body.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BodyId);
-            body.AppendChild(StandardBusinessDocumentElement());
+            body.AppendChild(Context.ImportNode(StandardBusinessDocumentElement(), true));
             
             return body;
         }
 
         private XmlNode StandardBusinessDocumentElement()
         {
-            var standardBusinessDocument = new StandardBusinessDocument(Settings, Context);
+            XmlDocument sbdContext = new XmlDocument();
+            sbdContext.PreserveWhitespace = true;
+            var standardBusinessDocument = new StandardBusinessDocument(Settings, sbdContext);
             return standardBusinessDocument.Xml();
         }
     }

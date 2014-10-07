@@ -82,7 +82,7 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         private XmlNode BodyElement()
         {
-            var body = new EnvelopeBody.Body(_settings, _envelopeXml);
+            var body = new Body(_settings, _envelopeXml);
             return body.Xml();
         }
 

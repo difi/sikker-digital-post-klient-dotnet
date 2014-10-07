@@ -22,10 +22,11 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
             standardBusinessDocumentElement.SetAttribute("xmlns:ns3", Navnerom.Ns3);
             standardBusinessDocumentElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
             standardBusinessDocumentElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
+            Context.AppendChild(standardBusinessDocumentElement);
 
             standardBusinessDocumentElement.AppendChild(StandardBusinessDocumentHeaderElement());
-            standardBusinessDocumentElement.AppendChild(DigitalPostElement());
-           
+            var digitalPostElement = standardBusinessDocumentElement.AppendChild(DigitalPostElement());
+            digitalPostElement.PrependChild(Context.ImportNode(SignatureElement().GetXml(), true));
             return standardBusinessDocumentElement;
         }
 
@@ -39,6 +40,23 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
         {
             var digitalPost = new DigitalPostElement(Settings, Context);
             return digitalPost.Xml();
+        }
+
+        private SignedXml SignatureElement()
+        {
+            SignedXml signedXml = new SignedXmlWithAgnosticId(Context, Settings.Databehandler.Sertifikat);
+
+            var reference = new Sha256Reference("");
+            reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
+            reference.AddTransform(new XmlDsigExcC14NTransform("ns9"));
+            signedXml.AddReference(reference);
+
+            var keyInfoX509Data = new KeyInfoX509Data(Settings.Databehandler.Sertifikat);
+            signedXml.KeyInfo.AddClause(keyInfoX509Data);
+
+            signedXml.ComputeSignature();
+
+            return signedXml;
         }
     }
 }
