@@ -29,9 +29,10 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 ### Legg inn avsendersertifikat i certificate store
 
 1.  Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
-2.  Velg at sertifikatet skal lagres i "Current User"
-3.  Filnavn skal nå være utfylt. 
-4.  Skriv inn passord for privatekey
+2.  Velg at sertifikatet skal lagres i _Current User_ og trykk _Next_
+3.  Filnavn skal nå være utfylt. Trykk _Next_
+4.  Skriv inn passord for privatekey og velg _Mark this key as exportable ..._, trykk _Next_
+5.  Velg _Place all certificates in the following store_ og velg _Personal_
 
 ### Legg inn mottakersertifikat i certificate store
 
