@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
@@ -68,33 +71,33 @@ namespace SikkerDigitalPost.Klient
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
 
-            //var soapContainer = new SoapContainer();
-            //soapContainer.Envelope = envelope;
-            //soapContainer.Vedlegg.Add(asicEArkiv);
-            //soapContainer.Action = "\"\"";
+            var soapContainer = new SoapContainer();
+            soapContainer.Envelope = envelope;
+            soapContainer.Vedlegg.Add(asicEArkiv);
+            soapContainer.Action = "\"\"";
 
-            // Lag request
+             //Lag request
 
-            //var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            //container.Send(request);
-            //try
-            //{
-            //    var response = request.GetResponse();
-            //    var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            //    return true;
-            //}
-            //catch (WebException we)
-            //{
-            //    using (var response = we.Response as HttpWebResponse)
-            //    {
-            //        using (Stream errorStream = response.GetResponseStream())
-            //        {
-            //            var soap = XDocument.Load(errorStream);
-            //            throw SoapException.FromResponse(we, soap);
-            //        }
+            var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            soapContainer.Send(request);
+            try
+            {
+                var response = request.GetResponse();
+                var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                //return true;
+            }
+            catch (WebException we)
+            {
+                using (var response = we.Response as HttpWebResponse)
+                {
+                    using (Stream errorStream = response.GetResponseStream())
+                    {
+                        var soap = XDocument.Load(errorStream);
+                        throw new ArithmeticException("En aritmetikuukeikssk feil");
+                    }
 
-            //    }
-            //}
+                }
+            }
         }
 
         /// <summary>

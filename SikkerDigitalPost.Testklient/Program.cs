@@ -16,9 +16,9 @@ namespace SikkerDigitalPost.Testklient
              * - Mottagersertifikat brukes for å kryptere og signere dokumentpakke som skal til mottagerens postkasse.
              * - TekniskAvsenderSertifikat brukes for sikker kommunikasjon med meldingsformidler.
              */
-            X509Certificate2 mottakerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
             X509Certificate2 tekniskAvsenderSertifikat;  //Dette sertifikatet brukes i kommunikasjon mot meldingsformidler. --> all signering (oppslag)
-            
+            X509Certificate2 mottakerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
+
             /*
              * Nåværende versjon av KlientAPI kan ikke sende meldinger, men kan lage hele meldingen som skal sendes. For å gjøre 
              * dette, setter vi sertifikatene til et tilfeldig fra maskinen

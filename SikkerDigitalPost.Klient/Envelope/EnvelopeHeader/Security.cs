@@ -58,7 +58,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public void AddSignatureElement()
         {
-            SignedXml signed = new SignedXmlWithAgnosticId(XmlEnvelope, Forsendelse.DigitalPost.Mottaker.Sertifikat, "env");
+            SignedXml signed = new SignedXmlWithAgnosticId(XmlEnvelope, Databehandler.Sertifikat, "env");
 
             //Body
             {
