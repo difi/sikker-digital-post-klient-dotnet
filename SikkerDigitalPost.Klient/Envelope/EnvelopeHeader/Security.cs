@@ -38,6 +38,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         private XmlElement TimestampElement()
         {
             XmlElement timestamp = Rot.EnvelopeXml.CreateElement("wsu", "Timestamp", Navnerom.wsu);
+
             {
                 XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, Rot.EnvelopeXml);
                 created.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);

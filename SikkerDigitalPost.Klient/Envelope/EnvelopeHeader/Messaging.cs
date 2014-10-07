@@ -19,7 +19,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
             messaging.SetAttribute("mustUnderstand", Navnerom.env, "true");
             messaging.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.EbMessagingId);
-            
             messaging.AppendChild(UserMessageElement());
 
             return messaging;
@@ -27,6 +26,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement UserMessageElement()
         {
+
             XmlElement userMessage = Rot.EnvelopeXml.CreateElement("ns6", "UserMessage", Navnerom.Ns6);
             userMessage.SetAttribute("mpc", Rot.Forsendelse.MpcId);
 
@@ -41,6 +41,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement MessageInfoElement()
         {
             XmlElement messageInfo = Rot.EnvelopeXml.CreateElement("ns6", "MessageInfo", Navnerom.Ns6);
+
             {
                 XmlElement timestamp =  messageInfo.AppendChildElement("Timestamp", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
@@ -56,6 +57,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement PartyInfoElement()
         {
             XmlElement partyInfo = Rot.EnvelopeXml.CreateElement("ns6", "PartyInfo", Navnerom.Ns6);
+
             {
                 XmlElement from = partyInfo.AppendChildElement("From", "ns6", Navnerom.Ns6, Rot.EnvelopeXml);
                 {
@@ -84,6 +86,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public XmlElement CollaborationInfoElement()
         {
             XmlElement collaborationInfo = Rot.EnvelopeXml.CreateElement("ns6", "CollaborationInfo", Navnerom.Ns6);
+
             {
                 XmlElement agreementRef = collaborationInfo.AppendChildElement("AgreementRef","ns6",Navnerom.Ns6,Rot.EnvelopeXml);
                 agreementRef.InnerText = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
