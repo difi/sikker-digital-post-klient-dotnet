@@ -28,9 +28,26 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 digitalPostElement.AppendChild(MottakerElement());
                 digitalPostElement.AppendChild(DigitalPostInfoElement());
                 digitalPostElement.AppendChild(DokumentfingerpakkeavtrykkElement());
-                //digitalPostElement.PrependChild(Rot.EnvelopeXml.ImportNode(SignatureElement().GetXml(), true));
+                digitalPostElement.PrependChild(Rot.EnvelopeXml.ImportNode(SignatureElement().GetXml(), true));
             }
             return digitalPostElement;
+        }
+        
+        private SignedXml SignatureElement()
+        {
+            SignedXml signedXml = new SignedXmlWithAgnosticId(Rot.EnvelopeXml, Rot.Databehandler.Sertifikat);
+
+            var reference = new Sha256Reference("");
+            reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
+            reference.AddTransform(new XmlDsigExcC14NTransform("ns9"));
+            signedXml.AddReference(reference);
+
+            var keyInfoX509Data = new KeyInfoX509Data(Rot.Databehandler.Sertifikat);
+            signedXml.KeyInfo.AddClause(keyInfoX509Data);
+
+            signedXml.ComputeSignature();
+
+            return signedXml;
         }
 
         private XmlElement AvsenderElement()
