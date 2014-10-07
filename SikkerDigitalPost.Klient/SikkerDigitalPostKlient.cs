@@ -63,15 +63,15 @@ namespace SikkerDigitalPost.Klient
             var signaturbygger = new SignaturBygger(signatur, forsendelse);
             signaturbygger.Bygg();
 
-
-            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidHandler());
+            var guidHandler = new GuidHandler();
+            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
+            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, guidHandler);
 
             envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
-            var soapContainer = new SoapContainer();
+            var soapContainer = new SoapContainer(forsendelse.DigitalPost.Mottaker.Sertifikat);
             soapContainer.Envelope = envelope;
             soapContainer.Vedlegg.Add(arkiv);
             soapContainer.Action = "\"\"";

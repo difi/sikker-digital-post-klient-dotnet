@@ -4,7 +4,6 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klient.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Klient.Envelope
@@ -72,6 +71,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         private XmlDocument XmlEnvelope()
         {
             var xmlDokument = new XmlDocument();
+            xmlDokument.PreserveWhitespace = true;
             var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
             var baseNode = xmlDokument.CreateElement("env", "Envelope", Navnerom.env);
             xmlDokument.AppendChild(baseNode);

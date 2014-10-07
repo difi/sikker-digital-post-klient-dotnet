@@ -66,10 +66,10 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void LagKryptertArkivVerifiserInnholdValiderer()
         {
-            var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
+            var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
             var originalData = arkiv.Bytes;
 
-            var krypterteData = arkiv.KrypterteBytes(Sertifikat);
+            var krypterteData = arkiv.Bytes;
             var dekrypterteData = AsicEArkiv.Dekrypter(krypterteData); 
 
             Assert.AreEqual(originalData.ToString(), dekrypterteData.ToString());

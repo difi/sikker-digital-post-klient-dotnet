@@ -56,7 +56,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         public void AddSignatureElement()
         {
 
-            SignedXml signed = new SignedXmlWithAgnosticId(Rot.EnvelopeXml, Rot.Forsendelse.DigitalPost.Mottaker.Sertifikat, "env");
+            SignedXml signed = new SignedXmlWithAgnosticId(Rot.EnvelopeXml, Rot.Databehandler.Sertifikat, "env");
 
             //Body
             {
@@ -81,7 +81,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
             //Partinfo/Dokumentpakke
             {
-                var partInfoReference = new Sha256Reference(Rot.AsicEArkiv.KrypterteBytes(Rot.Forsendelse.DigitalPost.Mottaker.Sertifikat));
+                var partInfoReference = new Sha256Reference(Rot.AsicEArkiv.Bytes);
                 partInfoReference.Uri = Rot.GuidHandler.DokumentpakkeId;
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);

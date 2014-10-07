@@ -56,12 +56,12 @@ namespace SikkerDigitalPost.Testklient
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
            //Dokumenter
-            string hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
-            string vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            string hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.txt";
+            string vedlegg = @"C:\sdp\testdata\vedlegg\Vedlgg.txt";
             
             //Forsendelse
-            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedleggsgris",vedlegg,"text/docx","EN"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg",vedlegg,"text/plain","EN"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
 
             //Send
