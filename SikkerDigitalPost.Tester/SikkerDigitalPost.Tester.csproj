@@ -58,6 +58,7 @@
     <Compile Include="ArkivTester.cs" />
     <Compile Include="SignaturTester.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
