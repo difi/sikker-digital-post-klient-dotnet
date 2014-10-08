@@ -12,16 +12,18 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
-        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "urn:normal".</param>
+        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
         public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, DigitalPost digitalPost,
-            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string språkkode = "NO", string mpcId = "urn:normal")
+            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string språkkode = "NO", string mpcId = "")
         {
             Behandlingsansvarlig = behandlingsansvarlig;
             DigitalPost = digitalPost;
             Dokumentpakke = dokumentpakke;
             Prioritet = prioritet;
             Språkkode = språkkode;
-            MpcId = mpcId;
+            MpcId = mpcId == "" 
+                ? String.Format("urn:{0}", Prioritet.ToString().ToLower()) 
+                : String.Format("urn:{0}:{1}", Prioritet.ToString().ToLower(), mpcId);
         }
         
         /// <summary>
@@ -62,7 +64,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. 
         /// En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id.
         /// 
-        /// Standardverdi er "urn:normal".
+        /// Standardverdi er "".
         /// </summary>
         public string MpcId { get; set; }
     }

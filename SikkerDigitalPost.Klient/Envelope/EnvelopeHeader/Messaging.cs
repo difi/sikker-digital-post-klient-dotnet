@@ -19,6 +19,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
 
             messaging.AppendChild(UserMessageElement());
+            
             return messaging;
         }
 
@@ -73,7 +74,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
                     XmlElement role = to.AppendChildElement("Role", "ns6", Navnerom.Ns6, Context);
                     role.InnerText = "urn:sdp:meldingsformidler";
                 }
-
             }
             return partyInfo;
         }
@@ -93,9 +93,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
                 XmlElement conversationId = collaborationInfo.AppendChildElement("ConversationId", "ns6", Navnerom.Ns6, Context);
                 conversationId.InnerText = Settings.Forsendelse.KonversasjonsId;
-
             }
-
             return collaborationInfo;
         }
 
