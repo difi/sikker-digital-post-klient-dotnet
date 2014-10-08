@@ -12,9 +12,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
-        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er blank MPC Id.</param>
+        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "urn:normal".</param>
         public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, DigitalPost digitalPost,
-            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string språkkode = "NO", string mpcId = "")
+            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string språkkode = "NO", string mpcId = "urn:normal")
         {
             Behandlingsansvarlig = behandlingsansvarlig;
             DigitalPost = digitalPost;
@@ -62,7 +62,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. 
         /// En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id.
         /// 
-        /// Standardverdi er blank MPC Id.
+        /// Standardverdi er "urn:normal".
         /// </summary>
         public string MpcId { get; set; }
     }

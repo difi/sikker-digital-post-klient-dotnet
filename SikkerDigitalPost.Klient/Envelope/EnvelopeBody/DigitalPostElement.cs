@@ -34,6 +34,9 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 XmlElement organisasjon = avsender.AppendChildElement("organisasjon", "ns9", Navnerom.Ns9, Context);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
+
+                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", "ns9", Navnerom.Ns9, Context);
+                fakturaReferanse.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Fakturareferanse;
             }
             return avsender;
         }
