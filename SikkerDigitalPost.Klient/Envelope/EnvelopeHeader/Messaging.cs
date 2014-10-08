@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Domene.Extensions;
 
@@ -25,8 +26,12 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
         public XmlElement UserMessageElement()
         {
+            var mpc = Settings.Forsendelse.MpcId == String.Empty
+                ? String.Format("urn:{0}", Settings.Forsendelse.Prioritet.ToString().ToLower())
+                : String.Format("urn:{0}:{1}", Settings.Forsendelse.Prioritet.ToString().ToLower(), Settings.Forsendelse.MpcId);
+
             XmlElement userMessage = Context.CreateElement("ns6", "UserMessage", Navnerom.Ns6);
-            userMessage.SetAttribute("mpc", Settings.Forsendelse.MpcId);
+            userMessage.SetAttribute("mpc", mpc);
 
             userMessage.AppendChild(MessageInfoElement());
             userMessage.AppendChild(PartyInfoElement());

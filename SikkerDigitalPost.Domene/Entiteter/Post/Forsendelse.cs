@@ -21,9 +21,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
             Dokumentpakke = dokumentpakke;
             Prioritet = prioritet;
             Språkkode = språkkode;
-            MpcId = mpcId == "" 
-                ? String.Format("urn:{0}", Prioritet.ToString().ToLower()) 
-                : String.Format("urn:{0}:{1}", Prioritet.ToString().ToLower(), mpcId);
+            MpcId = mpcId;
         }
         
         /// <summary>
