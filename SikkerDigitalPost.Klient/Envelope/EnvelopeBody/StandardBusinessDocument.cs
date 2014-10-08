@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Xml;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody

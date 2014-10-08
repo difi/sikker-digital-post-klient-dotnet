@@ -1,6 +1,4 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 {

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeBody;
 using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 

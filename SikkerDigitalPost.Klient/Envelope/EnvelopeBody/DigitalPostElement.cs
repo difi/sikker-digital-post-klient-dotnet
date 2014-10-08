@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Klient.Xml;
 using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
@@ -25,7 +23,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 digitalPostElement.AppendChild(MottakerElement());
                 digitalPostElement.AppendChild(DigitalPostInfoElement());
                 digitalPostElement.AppendChild(DokumentfingerpakkeavtrykkElement());
-                //digitalPostElement.PrependChild(Context.ImportNode(SignatureElement().GetXml(), true));
             }
             return digitalPostElement;
         }

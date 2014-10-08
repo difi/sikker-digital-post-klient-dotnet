@@ -40,13 +40,14 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
         {
             XmlElement timestamp = Context.CreateElement("wsu", "Timestamp", Navnerom.wsu);
             {
+                var utcNow = DateTime.UtcNow;
                 XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, Context);
-                created.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
+                created.InnerText = utcNow.ToString(DateUtility.DateFormat);
                 
                 // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/WebserviceSecurity
                 // Time-to-live skal være 120 sekunder
                 XmlElement expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.wsu, Context);
-                expires.InnerText = DateTime.UtcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
+                expires.InnerText = utcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
             }
 
             timestamp.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.TimestampId);
