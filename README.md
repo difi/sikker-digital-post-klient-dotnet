@@ -37,14 +37,13 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 
 ### Legg inn mottakersertifikat i certificate store
 
-1.  Start mmc.exe (Trykk windowstast og skriv _mmc.exe_.
+1.  Start mmc.exe (Trykk windowstast og skriv _mmc.exe_)
 2.  Velg _File_ -> _Add/Remove Snap-in..._ 
 3.  Merk _Certificates_ og trykk _Add >_
 4.  Velg _My user account_ og trykk _Finish_
 5.  Åpne noden _Certificates - Current User_
-6.  Åpne noden _Trusted People_
-7.  Høyreklikk på _Certificates_ og velg _All Tasks_ -> _Import..._
-8.  Trykk _Next_
-9.  Finn mottaker-sertifikatet og legg det til. Trykk _Next_
-10. Velg _Automatically select the certificate store based on the type of certificate_
-11. _Next_ og _Finish_
+6.  Høyreklikk på _Trusted People_ og velg _All Tasks_ -> _Import..._
+7.  Trykk _Next_
+8.  Finn mottaker-sertifikatet og legg det til. Trykk _Next_
+9.  Sertifikatet skal legges til i _Trusted People_
+10. _Next_ og _Finish_
