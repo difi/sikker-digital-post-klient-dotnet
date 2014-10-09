@@ -1,11 +1,14 @@
-﻿using System.Xml;
+﻿using System.Security.Cryptography.Xml;
+using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Xml;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
     internal class Header : AbstractHeader
     {
-        private Security _security;
+        private XmlNode _security;
 
         public Header(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
@@ -13,8 +16,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
         protected override XmlNode SecurityElement()
         {
-            _security = new Security(Settings, Context);
-            return _security.Xml();
+             return _security = new Security(Settings, Context).Xml();
         }
 
         protected override XmlNode MessagingElement()
@@ -25,7 +27,41 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
         public void AddSignatureElement()
         {
-            _security.AddSignatureElement();
+            SignedXml signed = new SignedXmlWithAgnosticId(Context, Settings.Databehandler.Sertifikat, "env");
+
+            //Body
+            {
+                var bodyReference = new Sha256Reference("#" + Settings.GuidHandler.BodyId);
+                bodyReference.AddTransform(new XmlDsigExcC14NTransform());
+                signed.AddReference(bodyReference);
+            }
+
+            //TimestampElement
+            {
+                var timestampReference = new Sha256Reference("#" + Settings.GuidHandler.TimestampId);
+                timestampReference.AddTransform(new XmlDsigExcC14NTransform("wsse env"));
+                signed.AddReference(timestampReference);
+            }
+
+            //EbMessaging
+            {
+                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidHandler.EbMessagingId);
+                ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
+                signed.AddReference(ebMessagingReference);
+            }
+
+            //Partinfo/Dokumentpakke
+            {
+                var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes);
+                partInfoReference.Uri = Settings.GuidHandler.DokumentpakkeId;
+                partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
+                signed.AddReference(partInfoReference);
+            }
+
+            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
+            signed.ComputeSignature();
+
+            _security.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }
 }
