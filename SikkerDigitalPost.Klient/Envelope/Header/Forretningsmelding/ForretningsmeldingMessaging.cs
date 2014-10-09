@@ -27,7 +27,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return messaging;
         }
 
-        public XmlElement UserMessageElement()
+        private XmlElement UserMessageElement()
         {
             var mpc = Settings.Forsendelse.MpcId == String.Empty
                 ? String.Format("urn:{0}", Settings.Forsendelse.Prioritet.ToString().ToLower())
@@ -44,7 +44,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return userMessage;
         }
 
-        public XmlElement MessageInfoElement()
+        private XmlElement MessageInfoElement()
         {
             XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.eb);
             {
@@ -59,7 +59,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return messageInfo;
         }
 
-        public XmlElement PartyInfoElement()
+        private XmlElement PartyInfoElement()
         {
             XmlElement partyInfo = Context.CreateElement("eb", "PartyInfo", Navnerom.eb);
             {
@@ -86,7 +86,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return partyInfo;
         }
 
-        public XmlElement CollaborationInfoElement()
+        private XmlElement CollaborationInfoElement()
         {
             XmlElement collaborationInfo = Context.CreateElement("eb", "CollaborationInfo", Navnerom.eb);
             {
@@ -105,7 +105,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return collaborationInfo;
         }
 
-        public XmlElement PayloadInfoElement()
+        private XmlElement PayloadInfoElement()
         {
             //Mer info på http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/PayloadInfo
 

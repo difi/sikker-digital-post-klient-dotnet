@@ -19,9 +19,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 
         protected override XmlNode SecurityElement()
         {
-
-            var security = new Security(Settings, Context);
-            return security.Xml();
+            return Security = new Security(Settings, Context).Xml();
         }
 
         protected override XmlNode MessagingElement()
