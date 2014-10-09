@@ -6,21 +6,21 @@
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
-    internal class Header : AbstractHeader
+    internal class ForretningsmeldingHeader : AbstractHeader
     {
         
-        public Header(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
         protected override XmlNode SecurityElement()
         {
-             return Security = new Security(Settings, Context).Xml();
+            return Security = new Security(Settings, Context).Xml();
         }
 
         protected override XmlNode MessagingElement()
         {
-            var messaging = new Messaging(Settings, Context);
+            var messaging = new ForretningsmeldingMessaging(Settings, Context);
             return messaging.Xml();
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.Body;
 using SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding;
+using SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -11,22 +11,10 @@ namespace SikkerDigitalPost.Klient.Envelope
         public ForretingsmeldingEnvelope(EnvelopeSettings settings) : base (settings)
         {
         }
-        
-        public override XmlDocument Xml()
-        {
-            if (IsXmlGenerated) return EnvelopeXml;
-
-            EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
-            EnvelopeXml.DocumentElement.AppendChild(BodyElement());
-            Header.AddSignatureElement();
-            IsXmlGenerated = true;
-
-            return EnvelopeXml;
-        }
 
         protected override XmlNode HeaderElement()
         {
-            Header = new Header.Forretningsmelding.Header(Settings, EnvelopeXml);
+            Header = new ForretningsmeldingHeader(Settings, EnvelopeXml);
             return Header.Xml();
         }
 

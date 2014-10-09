@@ -1,33 +1,21 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.Body;
 using SikkerDigitalPost.Klient.Envelope.Body.Kvittering;
+using SikkerDigitalPost.Klient.Envelope.Header.Kvittering;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
-    class KvitteringsEnvelope : AbstractEnvelope, ISoapVedlegg
+    internal class KvitteringsEnvelope : AbstractEnvelope
     {
+
         public KvitteringsEnvelope(EnvelopeSettings settings) : base(settings)
         {
         }
 
-        public override XmlDocument Xml()
-        {
-            if (IsXmlGenerated) return EnvelopeXml;
-            
-            //EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
-            //EnvelopeXml.DocumentElement.AppendChild(BodyElement());
-            Header.AddSignatureElement();
-            IsXmlGenerated = true;
-
-            return EnvelopeXml;
-        }
-
         protected override XmlNode HeaderElement()
         {
-           Header = new Header.Forretningsmelding.Header(Settings, EnvelopeXml);
-           return Header.Xml();
+            Header = new KvitteringsHeader(Settings, EnvelopeXml);
+            return Header.Xml();
         }
 
 

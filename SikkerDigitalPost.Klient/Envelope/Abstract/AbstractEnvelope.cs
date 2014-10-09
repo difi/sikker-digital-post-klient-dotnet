@@ -8,7 +8,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
         protected XmlDocument EnvelopeXml;
-        protected Header.Forretningsmelding.Header Header;
+        protected AbstractHeader Header;
         protected bool IsXmlGenerated = false;
 
         protected EnvelopeSettings Settings;
@@ -56,8 +56,18 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
             xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
             return xmlDokument;
         }
-        
-        public abstract XmlDocument Xml();
+
+        public XmlDocument Xml()
+        {
+            if (IsXmlGenerated) return EnvelopeXml;
+
+            EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
+            EnvelopeXml.DocumentElement.AppendChild(BodyElement());
+            Header.AddSignatureElement();
+            IsXmlGenerated = true;
+
+            return EnvelopeXml;
+        }
 
         public void SkrivTilFil(string filsti)
         {

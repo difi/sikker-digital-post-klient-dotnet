@@ -1,20 +1,15 @@
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding;
 using SikkerDigitalPost.Klient.Xml;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 {
     internal class KvitteringsHeader : AbstractHeader
     {
+
         public KvitteringsHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
-        }
-
-        public override XmlNode Xml()
-        {
-            throw new System.NotImplementedException();
         }
 
         protected override XmlNode SecurityElement()
@@ -24,7 +19,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 
         protected override XmlNode MessagingElement()
         {
-            throw new System.NotImplementedException();
+            var messaging = new KvitteringsMessaging(Settings, Context).Xml();
+            return messaging;
         }
 
         public override void AddSignatureElement()
