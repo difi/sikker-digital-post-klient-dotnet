@@ -1,4 +1,3 @@
-﻿using System;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -20,6 +19,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 
         protected override XmlNode SecurityElement()
         {
+
             var security = new Security(Settings, Context);
             return security.Xml();
         }

@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Security.Cryptography.Xml;
-using System.Xml;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Xml;
+﻿using System.Security.Cryptography.Xml;
+﻿using System.Xml;
+﻿using SikkerDigitalPost.Klient.Envelope.Abstract;
+﻿using SikkerDigitalPost.Klient.Xml;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
     internal class Header : AbstractHeader
     {
+        
         public Header(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
@@ -58,7 +59,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
-
+            
             Security.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }
