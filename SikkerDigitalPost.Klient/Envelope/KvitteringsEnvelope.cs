@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Envelope.Body;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -21,11 +22,18 @@ namespace SikkerDigitalPost.Klient.Envelope
 
             return EnvelopeXml;
         }
-        
-        public string Filnavn { get; private set; }
-        public byte[] Bytes { get; private set; }
-        public string Innholdstype { get; private set; }
-        public string ContentId { get; private set; }
-        public string TransferEncoding { get; private set; }
+
+        protected override XmlNode HeaderElement()
+        {
+           Header = new Header.ForretningsmeldingHeader.Header(Settings, EnvelopeXml);
+           return Header.Xml();
+        }
+
+
+        protected override XmlNode BodyElement()
+        {
+            var body = new KvitteringsBody(Settings, EnvelopeXml);
+            return body.Xml();
+        }
     }
 }

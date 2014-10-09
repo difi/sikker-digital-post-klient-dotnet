@@ -1,10 +1,12 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Envelope.Body.EnvelopeBody;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body
 {
-    internal class Body : XmlPart
+    internal class ForretningsmeldingBody : XmlPart
     {
-        public Body(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingBody(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
