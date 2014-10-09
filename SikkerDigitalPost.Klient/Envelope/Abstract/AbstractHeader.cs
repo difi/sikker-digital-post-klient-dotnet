@@ -4,6 +4,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractHeader : XmlPart
     {
+        protected XmlNode Security;
+
         protected AbstractHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
@@ -19,5 +21,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
         protected abstract XmlNode SecurityElement();
 
         protected abstract XmlNode MessagingElement();
+
+        public abstract void AddSignatureElement();
     }
 }

@@ -56,8 +56,9 @@
     <Compile Include="Envelope\ForretingsmeldingEnvelope.cs" />
     <Compile Include="Envelope\Body\Forretningsmelding\StandardBusinessDocumentHeader.cs" />
     <Compile Include="Envelope\Header\Forretningsmelding\ForretningsmeldingHeader.cs" />
-    <Compile Include="Envelope\Header\Forretningsmelding\Messaging.cs" />
-    <Compile Include="Envelope\Header\Forretningsmelding\Security.cs" />
+    <Compile Include="Envelope\Header\Forretningsmelding\ForretningsmeldingMessaging.cs" />
+    <Compile Include="Envelope\Header\Kvittering\KvitteringsMessaging.cs" />
+    <Compile Include="Envelope\Header\Security.cs" />
     <Compile Include="Envelope\EnvelopeSettings.cs" />
     <Compile Include="Envelope\Header\Kvittering\KvitteringsHeader.cs" />
     <Compile Include="Envelope\KvitteringsEnvelope.cs" />

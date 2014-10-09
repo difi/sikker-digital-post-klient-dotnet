@@ -3,21 +3,18 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Xml;
-using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
     internal class Header : AbstractHeader
     {
-        private XmlNode _security;
-
         public Header(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
         protected override XmlNode SecurityElement()
         {
-             return _security = new Security(Settings, Context).Xml();
+             return Security = new Security(Settings, Context).Xml();
         }
 
         protected override XmlNode MessagingElement()
@@ -26,7 +23,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             return messaging.Xml();
         }
 
-        public void AddSignatureElement()
+        public override void AddSignatureElement()
         {
             SignedXml signed = new SignedXmlWithAgnosticId(Context, Settings.Databehandler.Sertifikat, "env");
 
@@ -62,7 +59,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
 
-            _security.AppendChild(Context.ImportNode(signed.GetXml(), true));
+            Security.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }
 }

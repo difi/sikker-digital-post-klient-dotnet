@@ -10,10 +10,10 @@ namespace SikkerDigitalPost.Klient.Xml
     {
         public RsaPkCs1Sha256SignatureDescription()
         {
-            KeyAlgorithm = "System.Security.Cryptography.RSACryptoServiceProvider";
-            DigestAlgorithm = "System.Security.Cryptography.SHA256Managed";
-            FormatterAlgorithm = "System.Security.Cryptography.RSAPKCS1SignatureFormatter";
-            DeformatterAlgorithm = "System.Security.Cryptography.RSAPKCS1SignatureDeformatter";
+            KeyAlgorithm = "System.SecurityElement.Cryptography.RSACryptoServiceProvider";
+            DigestAlgorithm = "System.SecurityElement.Cryptography.SHA256Managed";
+            FormatterAlgorithm = "System.SecurityElement.Cryptography.RSAPKCS1SignatureFormatter";
+            DeformatterAlgorithm = "System.SecurityElement.Cryptography.RSAPKCS1SignatureDeformatter";
         }
 
         public override AsymmetricSignatureDeformatter CreateDeformatter(AsymmetricAlgorithm key)
