@@ -65,7 +65,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 aapningskvittering.InnerText = Settings.Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();
 
                 XmlElement virkningsdato = digitalPostInfo.AppendChildElement("virkningsdato", "ns9", Navnerom.Ns9, Context);
-                virkningsdato.InnerText = Settings.Forsendelse.DigitalPost.Virkningsdato.ToString("YYYY-MM-dd");
+                virkningsdato.InnerText = Settings.Forsendelse.DigitalPost.Virkningsdato.ToString("yyyy-MM-dd");
 
                 XmlElement sikkerhetsnivaa = digitalPostInfo.AppendChildElement("sikkerhetsnivaa", "ns9", Navnerom.Ns9, Context);
                 sikkerhetsnivaa.InnerText = ((int)Settings.Forsendelse.DigitalPost.Sikkerhetsnivå).ToString();

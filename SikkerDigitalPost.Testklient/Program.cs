@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
@@ -56,8 +57,12 @@ namespace SikkerDigitalPost.Testklient
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
            //Dokumenter
-            string hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.txt";
-            string vedlegg = @"C:\sdp\testdata\vedlegg\Vedlgg.txt";
+            string hoveddokument = Environment.MachineName.Contains("LEK")
+                ? @"C:\sdp\testdata\hoveddokument\hoveddokument.txt"
+                : @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.txt";
+            string vedlegg = Environment.MachineName.Contains("LEK")
+                ? @"C:\sdp\testdata\vedlegg\Vedlgg.txt"
+                : @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\Vedlgg.txt"; 
             
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
