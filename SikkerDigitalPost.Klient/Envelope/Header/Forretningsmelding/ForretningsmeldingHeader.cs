@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.Xml;
+﻿using System;
+using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Xml;
@@ -53,7 +54,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
             //Partinfo/Dokumentpakke
             {
                 var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes);
-                partInfoReference.Uri = Settings.GuidHandler.DokumentpakkeId;
+                partInfoReference.Uri = String.Format("cid:{0}", Settings.GuidHandler.DokumentpakkeId);
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);
             }
