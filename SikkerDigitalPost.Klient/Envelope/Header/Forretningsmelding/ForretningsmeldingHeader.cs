@@ -1,8 +1,9 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Header.ForretningsmeldingHeader
+namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
-    internal class Header : XmlPart
+    internal class Header : AbstractHeader
     {
         private Security _security;
 
@@ -10,21 +11,13 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.ForretningsmeldingHeader
         {
         }
 
-        public override XmlNode Xml()
-        {
-            var header = Context.CreateElement("env", "Header", Navnerom.env);
-            header.AppendChild(SecurityElement());
-            header.AppendChild(MessagingElement());
-            return header;
-        }
-
-        private XmlNode SecurityElement()
+        protected override XmlNode SecurityElement()
         {
             _security = new Security(Settings, Context);
             return _security.Xml();
         }
 
-        private XmlNode MessagingElement()
+        protected override XmlNode MessagingElement()
         {
             var messaging = new Messaging(Settings, Context);
             return messaging.Xml();

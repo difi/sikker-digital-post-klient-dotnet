@@ -2,6 +2,7 @@
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Envelope.Body;
+using SikkerDigitalPost.Klient.Envelope.Body.Kvittering;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -25,7 +26,7 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         protected override XmlNode HeaderElement()
         {
-           Header = new Header.ForretningsmeldingHeader.Header(Settings, EnvelopeXml);
+           Header = new Header.Forretningsmelding.Header(Settings, EnvelopeXml);
            return Header.Xml();
         }
 

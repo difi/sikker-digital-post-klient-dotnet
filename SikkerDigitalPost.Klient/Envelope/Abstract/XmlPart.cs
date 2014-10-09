@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace SikkerDigitalPost.Klient.Envelope
+namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class XmlPart
     {

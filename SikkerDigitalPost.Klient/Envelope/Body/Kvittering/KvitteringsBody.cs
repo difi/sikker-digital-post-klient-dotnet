@@ -1,6 +1,7 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Body
+namespace SikkerDigitalPost.Klient.Envelope.Body.Kvittering
 {
     class KvitteringsBody : XmlPart
     {

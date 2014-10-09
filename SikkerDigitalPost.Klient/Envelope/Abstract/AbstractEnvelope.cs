@@ -8,7 +8,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
         protected XmlDocument EnvelopeXml;
-        protected Header.ForretningsmeldingHeader.Header Header;
+        protected Header.Forretningsmelding.Header Header;
         protected bool IsXmlGenerated = false;
 
         protected EnvelopeSettings Settings;
