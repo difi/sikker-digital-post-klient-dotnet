@@ -47,7 +47,7 @@ namespace SikkerDigitalPost.Tester
 
         protected static Databehandler Databehandler;
         internal static AsicEArkiv Arkiv;
-        internal static Envelope Envelope;
+        internal static ForretingsmeldingEnvelope Envelope;
         internal static GuidHandler GuidHandler;
 
         public static void Initialiser()
@@ -90,7 +90,7 @@ namespace SikkerDigitalPost.Tester
             GuidHandler = new GuidHandler();
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
             Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
-            Envelope = new Envelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
+            Envelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
         }
 
         private static Dokument GenererHoveddokument()
