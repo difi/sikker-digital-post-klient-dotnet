@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
@@ -16,22 +17,24 @@ namespace SikkerDigitalPost.Testklient
              * - Mottagersertifikat brukes for å kryptere og signere dokumentpakke som skal til mottagerens postkasse.
              * - TekniskAvsenderSertifikat brukes for sikker kommunikasjon med meldingsformidler.
              */
-            X509Certificate2 mottagerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
             X509Certificate2 tekniskAvsenderSertifikat;  //Dette sertifikatet brukes i kommunikasjon mot meldingsformidler. --> all signering (oppslag)
-            
+            X509Certificate2 mottakerSertifikat; //Sertifikat til mottager fra oppslagstjeneste --> kryptering
+
             /*
              * Nåværende versjon av KlientAPI kan ikke sende meldinger, men kan lage hele meldingen som skal sendes. For å gjøre 
              * dette, setter vi sertifikatene til et tilfeldig fra maskinen
              */
 
-            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly);
-            var tilfeldigSertifikat = store.Certificates[0];
+            tekniskAvsenderSertifikat = store.Certificates.Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
             store.Close();
-
-            mottagerSertifikat = tilfeldigSertifikat;
-            tekniskAvsenderSertifikat = tilfeldigSertifikat;
-
+            
+            X509Store store2 = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
+            store2.Open(OpenFlags.ReadOnly);
+            mottakerSertifikat = store2.Certificates.Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
+            store2.Close();
+            
             /*
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. Derfor er alle organisasjonsnummer
@@ -48,18 +51,22 @@ namespace SikkerDigitalPost.Testklient
             var tekniskAvsender = new Databehandler(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
 
             //Mottaker
-            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottagerSertifikat, organisasjonsnummerMottagerPostkasse);
+            var mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", mottakerSertifikat, organisasjonsnummerMottagerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
             
            //Dokumenter
-            string hoveddokument = @"C:\sdp\testdata\hoveddokument\hoveddokument.docx";
-            string vedlegg = @"C:\sdp\testdata\vedlegg\VedleggsGris.docx";
+            string hoveddokument = Environment.MachineName.Contains("LEK")
+                ? @"C:\sdp\testdata\hoveddokument\hoveddokument.txt"
+                : @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.txt";
+            string vedlegg = Environment.MachineName.Contains("LEK")
+                ? @"C:\sdp\testdata\vedlegg\Vedlgg.txt"
+                : @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\Vedlgg.txt"; 
             
             //Forsendelse
-            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/docx"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedleggsgris",vedlegg,"text/docx","EN"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg",vedlegg,"text/plain","EN"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
 
             //Send
@@ -69,3 +76,9 @@ namespace SikkerDigitalPost.Testklient
         }
     }
 }
+
+
+
+
+
+

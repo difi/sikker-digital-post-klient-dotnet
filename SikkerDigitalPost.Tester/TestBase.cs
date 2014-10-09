@@ -48,6 +48,7 @@ namespace SikkerDigitalPost.Tester
         protected static Databehandler Databehandler;
         internal static AsicEArkiv Arkiv;
         internal static Envelope Envelope;
+        internal static GuidHandler GuidHandler;
 
         public static void Initialiser()
         {
@@ -83,12 +84,13 @@ namespace SikkerDigitalPost.Tester
             manifestbygger.Bygg();
 
             Signatur = new Signatur(Sertifikat);
-            var signaturbygger = new SignaturBygger(Signatur, Forsendelse);
+            var signaturbygger = new SignaturBygger(Signatur, Forsendelse, Manifest);
             signaturbygger.Bygg();
 
+            GuidHandler = new GuidHandler();
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
-            Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest);
-            Envelope = new Envelope(Forsendelse,Arkiv,Databehandler, new GuidHandler());
+            Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
+            Envelope = new Envelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
         }
 
         private static Dokument GenererHoveddokument()

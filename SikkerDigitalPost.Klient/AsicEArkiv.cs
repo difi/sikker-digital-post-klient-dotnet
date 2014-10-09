@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
@@ -10,18 +11,24 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Klient
 {
-    internal class AsicEArkiv : IAsiceVedlegg
+    internal class AsicEArkiv : ISoapVedlegg
     {
-        internal readonly Manifest Manifest;
-        internal readonly Signatur Signatur;
+        public readonly Manifest Manifest;
+        public readonly Signatur Signatur;
         private readonly Dokumentpakke _dokumentpakke;
-        private byte[] _bytes;
 
-        internal AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest)
+        private byte[] _bytes;
+        private readonly X509Certificate2 _krypteringssertifikat;
+        private readonly GuidHandler _guidHandler;
+
+
+        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest, X509Certificate2 krypteringssertifikat, GuidHandler guidHandler)
         {
             Signatur = signatur;
             Manifest = manifest;
             _dokumentpakke = dokumentpakke;
+            _krypteringssertifikat = krypteringssertifikat;
+            _guidHandler = guidHandler;
         }
 
 
@@ -33,20 +40,33 @@ namespace SikkerDigitalPost.Klient
 
         public byte[] Bytes
         {
-            get { return _bytes ?? LagBytes(); }
+            get
+            {
+                if (_bytes != null)
+                    return _bytes;
+
+                _bytes = KrypterteBytes(LagBytes());
+                return _bytes;
+            }
         }
-
-
+        
         public string Innholdstype
         {
             get { return "application/cms"; }
         }
 
+        public string ContentId
+        {
+            get { return _guidHandler.DokumentpakkeId; }
+        }
+
+        public string TransferEncoding
+        {
+            get { return "binary"; }
+        }
+
         private byte[] LagBytes()
         {
-            if (_bytes != null)
-                return _bytes;
-
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
@@ -57,8 +77,7 @@ namespace SikkerDigitalPost.Klient
                     LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);
 
             }
-
-            return _bytes = stream.ToArray();
+            return stream.ToArray();
         }
 
         private static void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
@@ -70,13 +89,13 @@ namespace SikkerDigitalPost.Klient
                 s.Close();
             }
         }
-        
-        public byte[] KrypterteBytes(X509Certificate2 sertifikat)
+
+        private byte[] KrypterteBytes(byte[] bytes)
         {
-            var contentInfo = new ContentInfo(Bytes);
+            var contentInfo = new ContentInfo(bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
-            var recipient = new CmsRecipient(sertifikat);
+            var recipient = new CmsRecipient(_krypteringssertifikat);
             envelopedCms.Encrypt(recipient);
             return envelopedCms.Encode();
         }

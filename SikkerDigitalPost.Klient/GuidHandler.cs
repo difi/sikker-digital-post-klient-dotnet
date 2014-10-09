@@ -9,6 +9,6 @@ namespace SikkerDigitalPost.Klient
         public string EbMessagingId = String.Format("id-{0}", Guid.NewGuid());
         public string BinarySecurityTokenId = String.Format("X509-{0}", Guid.NewGuid());
         public string TimestampId = String.Format("TS-{0}", Guid.NewGuid());
-        public string DokumentpakkeId = String.Format("cid:{0}@meldingsformidler.sdp.difi.no", Guid.NewGuid());
+        public string DokumentpakkeId = String.Format("{0}@meldingsformidler.sdp.difi.no", Guid.NewGuid());
     }
 }

@@ -1,29 +1,28 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
 {
     internal class Body : XmlPart
     {
-        public Body(Envelope rot) : base(rot)
+        public Body(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
-        public override XmlElement Xml()
+        public override XmlNode Xml()
         {
-            var body = Rot.EnvelopeXml.CreateElement("env", "Body", Navnerom.env);
+            var body = Context.CreateElement("env", "Body", Navnerom.env);
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("Id", Navnerom.wsu, Rot.GuidHandler.BodyId);
-            body.AppendChild(StandardBusinessDocumentElement());
+            body.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BodyId);
+            body.AppendChild(Context.ImportNode(StandardBusinessDocumentElement(), true));
             
             return body;
         }
 
-        private XmlElement StandardBusinessDocumentElement()
+        private XmlNode StandardBusinessDocumentElement()
         {
-            var standardBusinessDocument = new StandardBusinessDocument(Rot);
+            XmlDocument sbdContext = new XmlDocument();
+            sbdContext.PreserveWhitespace = true;
+            var standardBusinessDocument = new StandardBusinessDocument(Settings, sbdContext);
             return standardBusinessDocument.Xml();
         }
     }

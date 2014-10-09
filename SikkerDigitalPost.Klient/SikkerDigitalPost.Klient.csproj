@@ -55,8 +55,10 @@
     <Compile Include="Envelope\EnvelopeHeader\Header.cs" />
     <Compile Include="Envelope\EnvelopeHeader\Messaging.cs" />
     <Compile Include="Envelope\EnvelopeHeader\Security.cs" />
+    <Compile Include="Envelope\EnvelopeSettings.cs" />
     <Compile Include="Envelope\Navnerom.cs" />
     <Compile Include="Envelope\XmlPart.cs" />
+    <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="KlientKonfigurasjon.cs">
       <SubType>Code</SubType>

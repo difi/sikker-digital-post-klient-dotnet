@@ -1,6 +1,4 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 {
@@ -8,27 +6,27 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
     {
         private Security _security;
 
-        public Header(Envelope rot) : base(rot)
+        public Header(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
-        public override XmlElement Xml()
+        public override XmlNode Xml()
         {
-            var header = Rot.EnvelopeXml.CreateElement("env", "Header", Navnerom.env);
+            var header = Context.CreateElement("env", "Header", Navnerom.env);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;
         }
 
-        private XmlElement SecurityElement()
+        private XmlNode SecurityElement()
         {
-            _security = new Security(Rot);
+            _security = new Security(Settings, Context);
             return _security.Xml();
         }
 
-        private XmlElement MessagingElement()
+        private XmlNode MessagingElement()
         {
-            var messaging = new Messaging(Rot);
+            var messaging = new Messaging(Settings, Context);
             return messaging.Xml();
         }
 

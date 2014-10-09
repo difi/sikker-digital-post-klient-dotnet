@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient
@@ -53,24 +57,48 @@ namespace SikkerDigitalPost.Klient
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
-            var signatur = new Signatur(mottaker.Sertifikat);
+            var signatur = new Signatur(_databehandler.Sertifikat);
 
             var manifestbygger = new ManifestBygger(manifest);
             manifestbygger.Bygg();
-            var signaturbygger = new SignaturBygger(signatur, forsendelse);
+            var signaturbygger = new SignaturBygger(signatur, forsendelse, manifest);
             signaturbygger.Bygg();
-            
 
-            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest);
-            var envelope = new Envelope.Envelope(forsendelse, arkiv, _databehandler, new GuidHandler());
+            var guidHandler = new GuidHandler();
+            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
+            var envelope = new Envelope.Envelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
             envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
                 ? @"Z:\Development\Digipost\Envelope.xml"
                 : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
-            //encrypt filpakke mottagersertifikat.
-            //Lag request
-            
+            var soapContainer = new SoapContainer();
+            soapContainer.Envelope = envelope;
+            soapContainer.Vedlegg.Add(arkiv);
+            soapContainer.Action = "\"\"";
+
+             //Lag request
+
+            var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            soapContainer.Send(request);
+            try
+            {
+                var response = request.GetResponse();
+                var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                //return true;
+            }
+            catch (WebException we)
+            {
+                using (var response = we.Response as HttpWebResponse)
+                {
+                    using (Stream errorStream = response.GetResponseStream())
+                    {
+                        var soap = XDocument.Load(errorStream);
+                        throw new Exception("En feil");
+                    }
+
+                }
+            }
         }
 
         /// <summary>
