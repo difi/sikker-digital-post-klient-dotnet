@@ -48,17 +48,18 @@
     </Compile>
     <Compile Include="AsicEArkiv.cs" />
     <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
-    <Compile Include="Envelope\Body\ForretningsmeldingBody.cs" />
-    <Compile Include="Envelope\Body\EnvelopeBody\DigitalPostElement.cs" />
-    <Compile Include="Envelope\Body\KvitteringsBody.cs" />
-    <Compile Include="Envelope\Body\EnvelopeBody\StandardBusinessDocument.cs" />
+    <Compile Include="Envelope\Abstract\AbstractHeader.cs" />
+    <Compile Include="Envelope\Body\Forretningsmelding\ForretningsmeldingBody.cs" />
+    <Compile Include="Envelope\Body\Forretningsmelding\DigitalPostElement.cs" />
+    <Compile Include="Envelope\Body\Kvittering\KvitteringsBody.cs" />
+    <Compile Include="Envelope\Body\Forretningsmelding\StandardBusinessDocument.cs" />
     <Compile Include="Envelope\ForretingsmeldingEnvelope.cs" />
-    <Compile Include="Envelope\Body\EnvelopeBody\StandardBusinessDocumentHeader.cs" />
-    <Compile Include="Envelope\Header\ForretningsmeldingHeader\ForretningsmeldingHeader.cs" />
-    <Compile Include="Envelope\Header\ForretningsmeldingHeader\Messaging.cs" />
-    <Compile Include="Envelope\Header\ForretningsmeldingHeader\Security.cs" />
+    <Compile Include="Envelope\Body\Forretningsmelding\StandardBusinessDocumentHeader.cs" />
+    <Compile Include="Envelope\Header\Forretningsmelding\ForretningsmeldingHeader.cs" />
+    <Compile Include="Envelope\Header\Forretningsmelding\Messaging.cs" />
+    <Compile Include="Envelope\Header\Forretningsmelding\Security.cs" />
     <Compile Include="Envelope\EnvelopeSettings.cs" />
-    <Compile Include="Envelope\Header\KvitteringsHeader\KvitteringsHeader.cs" />
+    <Compile Include="Envelope\Header\Kvittering\KvitteringsHeader.cs" />
     <Compile Include="Envelope\KvitteringsEnvelope.cs" />
     <Compile Include="Envelope\Navnerom.cs" />
     <Compile Include="Envelope\Abstract\XmlPart.cs" />
