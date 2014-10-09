@@ -66,11 +66,11 @@ namespace SikkerDigitalPost.Klient
 
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
-            var envelope = new Envelope.Envelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+            var envelope = new Envelope.ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
-                ? @"Z:\Development\Digipost\Envelope.xml"
-                : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
+            //envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
+                //? @"Z:\Development\Digipost\Envelope.xml"
+                //: @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
 
             var soapContainer = new SoapContainer();
             soapContainer.Envelope = envelope;

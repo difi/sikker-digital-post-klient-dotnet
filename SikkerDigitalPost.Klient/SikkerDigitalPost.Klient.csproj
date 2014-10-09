@@ -47,15 +47,17 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="AsicEArkiv.cs" />
+    <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
     <Compile Include="Envelope\EnvelopeBody\Body.cs" />
     <Compile Include="Envelope\EnvelopeBody\DigitalPostElement.cs" />
     <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocument.cs" />
-    <Compile Include="Envelope\Envelope.cs" />
+    <Compile Include="Envelope\ForretingsmeldingEnvelope.cs" />
     <Compile Include="Envelope\EnvelopeBody\StandardBusinessDocumentHeader.cs" />
     <Compile Include="Envelope\EnvelopeHeader\Header.cs" />
     <Compile Include="Envelope\EnvelopeHeader\Messaging.cs" />
     <Compile Include="Envelope\EnvelopeHeader\Security.cs" />
     <Compile Include="Envelope\EnvelopeSettings.cs" />
+    <Compile Include="Envelope\KvitteringsEnvelope.cs" />
     <Compile Include="Envelope\Navnerom.cs" />
     <Compile Include="Envelope\XmlPart.cs" />
     <Compile Include="SoapContainer.cs" />
