@@ -1,10 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
+﻿using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.EnvelopeBody;
-using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
+using SikkerDigitalPost.Klient.Envelope.Body;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -27,15 +23,15 @@ namespace SikkerDigitalPost.Klient.Envelope
             return EnvelopeXml;
         }
 
-        private XmlNode HeaderElement()
+        protected override XmlNode HeaderElement()
         {
-            Header = new Header(Settings, EnvelopeXml);
+            Header = new Header.ForretningsmeldingHeader.Header(Settings, EnvelopeXml);
             return Header.Xml();
         }
 
-        private XmlNode BodyElement()
+        protected override XmlNode BodyElement()
         {
-            var body = new Body(Settings, EnvelopeXml);
+            var body = new ForretningsmeldingBody(Settings, EnvelopeXml);
             return body.Xml();
         }
        

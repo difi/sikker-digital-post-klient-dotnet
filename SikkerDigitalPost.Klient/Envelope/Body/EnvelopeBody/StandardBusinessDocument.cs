@@ -3,7 +3,7 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Xml;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body.EnvelopeBody
 {
     internal class StandardBusinessDocument : XmlPart
     {

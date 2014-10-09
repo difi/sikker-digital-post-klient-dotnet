@@ -2,14 +2,13 @@
 using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Klient.Envelope.EnvelopeHeader;
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
         protected XmlDocument EnvelopeXml;
-        protected Header Header;
+        protected Header.ForretningsmeldingHeader.Header Header;
         protected bool IsXmlGenerated = false;
 
         protected EnvelopeSettings Settings;
@@ -67,7 +66,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
 
             EnvelopeXml.Save(filsti);
         }
-        
+
+        protected abstract XmlNode HeaderElement();
+        protected abstract XmlNode BodyElement();
     }
 
 

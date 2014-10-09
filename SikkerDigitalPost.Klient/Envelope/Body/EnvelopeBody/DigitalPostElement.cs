@@ -4,7 +4,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Extensions;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body.EnvelopeBody
 {
     internal class DigitalPostElement : XmlPart
     {

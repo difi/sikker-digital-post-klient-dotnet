@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klient.Envelope.Header.ForretningsmeldingHeader
 {
     internal class Header : XmlPart
     {

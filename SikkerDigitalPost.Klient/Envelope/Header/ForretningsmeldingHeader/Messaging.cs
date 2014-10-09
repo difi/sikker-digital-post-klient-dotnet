@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klient.Envelope.Header.ForretningsmeldingHeader
 {
     internal class Messaging : XmlPart
     {
