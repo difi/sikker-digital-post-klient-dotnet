@@ -64,8 +64,8 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 XmlElement aapningskvittering = digitalPostInfo.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, Context);
                 aapningskvittering.InnerText = Settings.Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();
 
-                XmlElement virkningsdato = digitalPostInfo.AppendChildElement("virkningsdato", "ns9", Navnerom.Ns9, Context);
-                virkningsdato.InnerText = Settings.Forsendelse.DigitalPost.Virkningsdato.ToString("yyyy-MM-dd");
+                //XmlElement virkningsdato = digitalPostInfo.AppendChildElement("virkningsdato", "ns9", Navnerom.Ns9, Context);
+                //virkningsdato.InnerText = Settings.Forsendelse.DigitalPost.Virkningsdato.ToString("yyyy-MM-dd");
 
                 XmlElement sikkerhetsnivaa = digitalPostInfo.AppendChildElement("sikkerhetsnivaa", "ns9", Navnerom.Ns9, Context);
                 sikkerhetsnivaa.InnerText = ((int)Settings.Forsendelse.DigitalPost.Sikkerhetsnivå).ToString();
@@ -74,9 +74,9 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 ikkeSensitivTittel.SetAttribute("lang", Settings.Forsendelse.Språkkode.ToLower());
                 ikkeSensitivTittel.InnerText = Settings.Forsendelse.DigitalPost.IkkeSensitivTittel;
 
-                if (Settings.Forsendelse.DigitalPost.SmsVarsel != null || Settings.Forsendelse.DigitalPost.EpostVarsel != null)
+                XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, Context);
                 {
-                    XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, Context);
+                    if (Settings.Forsendelse.DigitalPost.SmsVarsel != null || Settings.Forsendelse.DigitalPost.EpostVarsel != null)
                     {
                         if (Settings.Forsendelse.DigitalPost.EpostVarsel != null)
                         {
@@ -112,7 +112,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
                 kontakt.InnerText = kontaktinfo;
                 
                 XmlElement varseltekst = varsel.AppendChildElement("varslingsTekst", "ns9", Navnerom.Ns9, Context);
-                varseltekst.SetAttribute("lang", Settings.Forsendelse.Språkkode.ToLower());
+                varseltekst.SetAttribute("lang", Settings.Forsendelse.Språkkode.ToUpper());
                 varseltekst.InnerText = varslingstekst;
 
                 XmlElement repetisjoner = varsel.AppendChildElement("repetisjoner", "ns9", Navnerom.Ns9, Context);

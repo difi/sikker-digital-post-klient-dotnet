@@ -65,10 +65,10 @@ namespace SikkerDigitalPost.Klient.Envelope
         {
             var xmlDokument = new XmlDocument();
             xmlDokument.PreserveWhitespace = true;
-            var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
+            //var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
             var baseNode = xmlDokument.CreateElement("env", "Envelope", Navnerom.env);
             xmlDokument.AppendChild(baseNode);
-            xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
+            //xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
             return xmlDokument;
         }
 

@@ -94,7 +94,7 @@ namespace SikkerDigitalPost.Klient
                     using (Stream errorStream = response.GetResponseStream())
                     {
                         var soap = XDocument.Load(errorStream);
-                        throw new ArithmeticException("En aritmetikuukeikssk feil");
+                        throw new Exception("En feil");
                     }
 
                 }
