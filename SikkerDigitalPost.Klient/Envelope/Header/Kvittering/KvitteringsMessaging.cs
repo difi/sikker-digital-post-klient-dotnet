@@ -15,13 +15,23 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
         public override XmlNode Xml()
         {
             XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.eb);
+            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.env);
+            mustUnderstand.InnerText = "true";
+            messaging.Attributes.Append(mustUnderstand);
+            messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
+
             messaging.AppendChild(SignalMessageElement());
+            
             return messaging;
         }
 
         private XmlElement SignalMessageElement()
         {
             XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.eb);
+
+            signalMessage.AppendChild(MessageInfoElement());
+            signalMessage.AppendChild(PullRequestElement());
+            
             return signalMessage;
         }
 
@@ -34,14 +44,15 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 
                 XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.eb, Context);
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
-
-                var mpc = Settings.Forsendelse.MpcId == String.Empty
-                ? String.Format("urn:{0}", Settings.Forsendelse.Prioritet.ToString().ToLower())
-                : String.Format("urn:{0}:{1}", Settings.Forsendelse.Prioritet.ToString().ToLower(), Settings.Forsendelse.MpcId);
-                XmlElement pullRequest = messageInfo.AppendChildElement("PullRequest", "eb", Navnerom.eb, Context);
-                pullRequest.SetAttribute("mpc", mpc);
             }
             return messageInfo;
+        }
+
+        private XmlElement PullRequestElement()
+        {
+            XmlElement pullRequest = Context.CreateElement("eb", "PullRequest", Navnerom.eb);
+            pullRequest.SetAttribute("mpc", Settings.Forsendelse.Mpc);
+            return pullRequest;
         }
 
     }

@@ -73,8 +73,6 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         {
             get
             {
-                if (Mpc != null)
-                    return Mpc;
                 return MpcId == String.Empty
                 ? String.Format("urn:{0}", Prioritet.ToString().ToLower())
                 : String.Format("urn:{0}:{1}", Prioritet.ToString().ToLower(), MpcId);

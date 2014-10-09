@@ -29,12 +29,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
         private XmlElement UserMessageElement()
         {
-            var mpc = Settings.Forsendelse.MpcId == String.Empty
-                ? String.Format("urn:{0}", Settings.Forsendelse.Prioritet.ToString().ToLower())
-                : String.Format("urn:{0}:{1}", Settings.Forsendelse.Prioritet.ToString().ToLower(), Settings.Forsendelse.MpcId);
-
             XmlElement userMessage = Context.CreateElement("eb", "UserMessage", Navnerom.eb);
-            userMessage.SetAttribute("mpc", mpc);
+            userMessage.SetAttribute("mpc", Settings.Forsendelse.Mpc);
 
             userMessage.AppendChild(MessageInfoElement());
             userMessage.AppendChild(PartyInfoElement());
