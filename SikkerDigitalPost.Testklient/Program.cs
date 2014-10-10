@@ -2,7 +2,9 @@
 using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
 
 namespace SikkerDigitalPost.Testklient
@@ -76,6 +78,9 @@ namespace SikkerDigitalPost.Testklient
 
             //Info om Kvitteringer:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/forretningslag/forretningsprosess_kvittering
+
+            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Normal);
+            //sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
             //Eksempelforespørsel for kvittering:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/eksempler/soap/5_request_forespoersel_om_forretningskvittering_fra_postavsender_til_meldingsformidler.xml

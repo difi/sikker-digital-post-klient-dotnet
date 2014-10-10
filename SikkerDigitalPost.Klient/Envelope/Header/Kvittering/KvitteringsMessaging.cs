@@ -53,7 +53,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
         private XmlElement PullRequestElement()
         {
             XmlElement pullRequest = Context.CreateElement("eb", "PullRequest", Navnerom.eb);
-            pullRequest.SetAttribute("mpc", Settings.Forsendelse.Mpc);
+            pullRequest.SetAttribute("mpc", Settings.Kvitteringsforespørsel.Mpc);
             return pullRequest;
         }
 

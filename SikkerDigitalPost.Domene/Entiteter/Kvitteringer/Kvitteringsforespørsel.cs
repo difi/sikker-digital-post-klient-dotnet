@@ -1,4 +1,5 @@
-﻿using SikkerDigitalPost.Domene.Enums;
+﻿using System;
+using SikkerDigitalPost.Domene.Enums;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
@@ -12,11 +13,22 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// </summary>
         public string MpcId { get; set; }
 
-        
+        public string Mpc
+        {
+            get
+            {
+                return MpcId == String.Empty
+                    ? String.Format("urn:{0}", Prioritet.ToString().ToLower())
+                    : String.Format("urn:{0}:{1}", Prioritet.ToString().ToLower(), MpcId);
+            }
+        }
+
         /// <param name="prioritet">Prioritet for forespørselen.</param>
-        public Kvitteringsforespørsel(Prioritet prioritet)
+        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
+        public Kvitteringsforespørsel(Prioritet prioritet, string mpcId = "")
         {
             Prioritet = prioritet;
+            MpcId = mpcId;
         }
     }
 }
