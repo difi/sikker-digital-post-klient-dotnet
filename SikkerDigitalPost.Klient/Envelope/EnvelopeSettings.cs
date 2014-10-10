@@ -13,9 +13,10 @@ namespace SikkerDigitalPost.Klient.Envelope
         internal readonly GuidHandler GuidHandler;
         public readonly Kvitteringsforespørsel Kvitteringsforespørsel;
 
-        public EnvelopeSettings(Kvitteringsforespørsel kvitteringsforespørsel, GuidHandler guidHandler)
+        public EnvelopeSettings(Kvitteringsforespørsel kvitteringsforespørsel, Databehandler databehandler, GuidHandler guidHandler)
         {
             Kvitteringsforespørsel = kvitteringsforespørsel;
+            Databehandler = databehandler;
             GuidHandler = guidHandler;
         }
 

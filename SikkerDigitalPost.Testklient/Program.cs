@@ -69,18 +69,18 @@ namespace SikkerDigitalPost.Testklient
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg",vedlegg,"text/plain","EN"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke);
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert);
 
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
             
-            sikkerDigitalPostKlient.Send(forsendelse);
+           //sikkerDigitalPostKlient.Send(forsendelse);
 
             //Info om Kvitteringer:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/forretningslag/forretningsprosess_kvittering
 
-            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Normal);
-            //sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
+            sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
             //Eksempelforespørsel for kvittering:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/eksempler/soap/5_request_forespoersel_om_forretningskvittering_fra_postavsender_til_meldingsformidler.xml

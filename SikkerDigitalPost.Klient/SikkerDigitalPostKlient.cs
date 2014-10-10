@@ -78,7 +78,7 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Vedlegg.Add(arkiv);
             soapContainer.Action = "\"\"";
 
-            SendContainer(soapContainer);
+            SendSoapContainer(soapContainer);
              //Lag request
 
             //var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
@@ -118,11 +118,11 @@ namespace SikkerDigitalPost.Klient
         /// </remarks>
         public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, new GuidHandler());
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             var envelope = new KvitteringsEnvelope(envelopeSettings);
             var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
 
-            SendContainer(soapContainer);
+            SendSoapContainer(soapContainer);
             return null;
         }
 
@@ -164,7 +164,7 @@ namespace SikkerDigitalPost.Klient
             
         }
 
-        private void SendContainer(SoapContainer soapContainer)
+        private void SendSoapContainer(SoapContainer soapContainer)
         {
             var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
             soapContainer.Send(request);
