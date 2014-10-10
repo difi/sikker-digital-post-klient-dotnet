@@ -1,10 +1,11 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class Body : XmlPart
+    internal class ForretningsmeldingBody : XmlPart
     {
-        public Body(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingBody(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -14,7 +15,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
             body.SetAttribute("xmlns:wsu", Navnerom.wsu);
             body.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BodyId);
             body.AppendChild(Context.ImportNode(StandardBusinessDocumentElement(), true));
-            
             return body;
         }
 

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Klient.Utilities;
-using SikkerDigitalPost.Klient.Xml;
 using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klient.Envelope.Header
 {
     internal class Security : XmlPart
     {
@@ -51,45 +50,6 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
 
             timestamp.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.TimestampId);
             return timestamp;
-        }
-
-        public void AddSignatureElement()
-        {
-            SignedXml signed = new SignedXmlWithAgnosticId(Context, Settings.Databehandler.Sertifikat, "env");
-
-            //Body
-            {
-                var bodyReference = new Sha256Reference("#" + Settings.GuidHandler.BodyId);
-                bodyReference.AddTransform(new XmlDsigExcC14NTransform());
-                signed.AddReference(bodyReference);
-            }
-
-            //TimestampElement
-            {
-                var timestampReference = new Sha256Reference("#" + Settings.GuidHandler.TimestampId);
-                timestampReference.AddTransform(new XmlDsigExcC14NTransform("wsse env"));
-                signed.AddReference(timestampReference);
-            }
-
-            //EbMessaging
-            {
-                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidHandler.EbMessagingId);
-                ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
-                signed.AddReference(ebMessagingReference);
-            }
-
-            //Partinfo/Dokumentpakke
-            {
-                var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes);
-                partInfoReference.Uri = "cid:"+Settings.GuidHandler.DokumentpakkeId;
-                partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
-                signed.AddReference(partInfoReference);
-            }
-
-            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
-            signed.ComputeSignature();
-
-            _securityElement.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }
 }

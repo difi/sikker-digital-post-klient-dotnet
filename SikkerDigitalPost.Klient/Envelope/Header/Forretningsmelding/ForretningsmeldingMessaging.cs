@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
+namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
-    internal class Messaging : XmlPart
+    internal class ForretningsmeldingMessaging : XmlPart
     {
-        public Messaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingMessaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -26,14 +27,10 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             return messaging;
         }
 
-        public XmlElement UserMessageElement()
+        private XmlElement UserMessageElement()
         {
-            var mpc = Settings.Forsendelse.MpcId == String.Empty
-                ? String.Format("urn:{0}", Settings.Forsendelse.Prioritet.ToString().ToLower())
-                : String.Format("urn:{0}:{1}", Settings.Forsendelse.Prioritet.ToString().ToLower(), Settings.Forsendelse.MpcId);
-
             XmlElement userMessage = Context.CreateElement("eb", "UserMessage", Navnerom.eb);
-            userMessage.SetAttribute("mpc", mpc);
+            userMessage.SetAttribute("mpc", Settings.Forsendelse.Mpc);
 
             userMessage.AppendChild(MessageInfoElement());
             userMessage.AppendChild(PartyInfoElement());
@@ -43,7 +40,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             return userMessage;
         }
 
-        public XmlElement MessageInfoElement()
+        private XmlElement MessageInfoElement()
         {
             XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.eb);
             {
@@ -58,7 +55,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             return messageInfo;
         }
 
-        public XmlElement PartyInfoElement()
+        private XmlElement PartyInfoElement()
         {
             XmlElement partyInfo = Context.CreateElement("eb", "PartyInfo", Navnerom.eb);
             {
@@ -85,7 +82,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             return partyInfo;
         }
 
-        public XmlElement CollaborationInfoElement()
+        private XmlElement CollaborationInfoElement()
         {
             XmlElement collaborationInfo = Context.CreateElement("eb", "CollaborationInfo", Navnerom.eb);
             {
@@ -104,7 +101,7 @@ namespace SikkerDigitalPost.Klient.Envelope.EnvelopeHeader
             return collaborationInfo;
         }
 
-        public XmlElement PayloadInfoElement()
+        private XmlElement PayloadInfoElement()
         {
             //Mer info på http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/PayloadInfo
 

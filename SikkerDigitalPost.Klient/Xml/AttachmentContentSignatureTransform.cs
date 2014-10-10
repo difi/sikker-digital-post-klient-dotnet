@@ -6,7 +6,7 @@ using System.Xml;
 namespace SikkerDigitalPost.Klient.Xml
 {
     /// <summary>
-    /// Represents the attachment content signature transform as defined in the Web Services Security SOAP Message with Attachments (SwA) Profile for use with binary attachments. 
+    /// Represents the attachment content signature transform as defined in the Web Services SecurityElement SOAP Message with Attachments (SwA) Profile for use with binary attachments. 
     /// </summary>
     internal class AttachmentContentSignatureTransform : Transform
     {

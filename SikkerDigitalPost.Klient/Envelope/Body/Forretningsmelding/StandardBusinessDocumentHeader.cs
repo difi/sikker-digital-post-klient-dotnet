@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Domene.Extensions;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
     internal class StandardBusinessDocumentHeader : XmlPart
     {

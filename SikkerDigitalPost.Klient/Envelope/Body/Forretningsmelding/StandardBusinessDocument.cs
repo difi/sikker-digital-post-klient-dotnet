@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Xml;
 
-namespace SikkerDigitalPost.Klient.Envelope.EnvelopeBody
+namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
     internal class StandardBusinessDocument : XmlPart
     {
