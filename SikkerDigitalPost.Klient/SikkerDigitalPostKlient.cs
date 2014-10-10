@@ -79,28 +79,6 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Action = "\"\"";
 
             SendSoapContainer(soapContainer);
-             //Lag request
-
-            //var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            //soapContainer.Send(request);
-            //try
-            //{
-            //    var response = request.GetResponse();
-            //    var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            //    //return true;
-            //}
-            //catch (WebException we)
-            //{
-            //    using (var response = we.Response as HttpWebResponse)
-            //    {
-            //        using (Stream errorStream = response.GetResponseStream())
-            //        {
-            //            var soap = XDocument.Load(errorStream);
-            //            throw new Exception("En feil");
-            //        }
-
-            //    }
-            //}
         }
 
         /// <summary>
@@ -161,18 +139,20 @@ namespace SikkerDigitalPost.Klient
         /// </remarks>
         public void Bekreft(Forretningskvittering forrigeKvittering)
         {
-            
+
         }
 
-        private void SendSoapContainer(SoapContainer soapContainer)
+        private string SendSoapContainer(SoapContainer soapContainer)
         {
-            var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            string data = String.Empty;
+
+            var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+
             soapContainer.Send(request);
             try
             {
                 var response = request.GetResponse();
-                var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                //return true;
+                data = new StreamReader(response.GetResponseStream()).ReadToEnd();
             }
             catch (WebException we)
             {
@@ -181,11 +161,11 @@ namespace SikkerDigitalPost.Klient
                     using (Stream errorStream = response.GetResponseStream())
                     {
                         var soap = XDocument.Load(errorStream);
-                        throw new Exception("En feil");
                     }
 
                 }
             }
+            return data;
         }
     }
 }
