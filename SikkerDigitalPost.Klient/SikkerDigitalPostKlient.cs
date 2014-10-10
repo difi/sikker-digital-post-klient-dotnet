@@ -98,8 +98,11 @@ namespace SikkerDigitalPost.Klient
         public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            var envelope = new KvitteringsEnvelope(envelopeSettings);
-            var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
+            KvitteringsEnvelope kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
+
+            FileUtility.WriteToFileInBasePath("Kvitteringsforespørsel.xml", kvitteringsenvelope.Xml().InnerXml);
+
+            var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
 
             return SendSoapContainer(soapContainer);
         }

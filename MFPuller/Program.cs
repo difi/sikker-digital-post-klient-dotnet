@@ -13,6 +13,7 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
 using Timer = System.Timers.Timer;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace MFPuller
 {
@@ -65,7 +66,9 @@ namespace MFPuller
         private static void SaveTextToFile(string filename, string text)
         {
             XDocument doc = XDocument.Parse(text);
-            string path = Path.Combine(@"C:\sdp", "kvitteringer", filename);
+            string path = Path.Combine("kvitteringer", filename);
+            FileUtility.AppendToFileInBasePath(path,text);
+            
             File.AppendAllText(path, doc.ToString());
         }
     }
