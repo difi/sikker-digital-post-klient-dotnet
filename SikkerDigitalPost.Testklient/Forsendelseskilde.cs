@@ -18,7 +18,7 @@
 
 //        public Forsendelse LagBrev()
 //        {
-//            string konversasjonsId = "konversasjonsId-" + new DateTime().ToString("yyyyMMdd-HHmmssSSS");
+//            Forretningskvittering konversasjonsId = "konversasjonsId-" + new DateTime().ToString("yyyyMMdd-HHmmssSSS");
 
 //            Mottaker mottaker = HentMottaker("04036125433");
 
@@ -31,7 +31,7 @@
 //            return new Forsendelse(behandlingsansvarlig, testPost, dokumentpakke);
 //        }
 
-//        private Mottaker HentMottaker(string personidentifikator)
+//        private Mottaker HentMottaker(Forretningskvittering personidentifikator)
 //        {
 //            var personforespørsel = new HentPersonerForespoersel();
 //            var personrequest = new HentPersonerRequest(personforespørsel);

@@ -67,7 +67,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         public string MpcId { get; set; }
 
         /// <summary>
-        /// Returnerer en ferdig formattert mpc-string.
+        /// Returnerer en ferdig formattert mpc-Forretningskvittering.
         /// </summary>
         public string Mpc
         {

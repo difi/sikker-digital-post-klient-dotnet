@@ -79,6 +79,7 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Action = "\"\"";
 
             SendSoapContainer(soapContainer);
+
         }
 
         /// <summary>
@@ -94,14 +95,13 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             var envelope = new KvitteringsEnvelope(envelopeSettings);
             var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
 
-            SendSoapContainer(soapContainer);
-            return null;
+            return SendSoapContainer(soapContainer);
         }
 
         /// <summary>
