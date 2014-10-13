@@ -21,21 +21,21 @@ namespace MFPuller
     {
         static void Main(string[] args)
         {
-            OnTimedEvent(null,null);
+            HentKvitteringOnTimedEvent(null,null);
 
             Timer pullMessagesTimer = new Timer(600000); //Hvert 10. minutt.
-            pullMessagesTimer.Elapsed += OnTimedEvent;
+            pullMessagesTimer.Elapsed += HentKvitteringOnTimedEvent;
             pullMessagesTimer.Enabled = true;
             pullMessagesTimer.Start();
 
             while (true)
             {
                 //keep running
-                Thread.Sleep(15000);
+                Thread.Sleep(30000);
             }
         }
 
-        private static void OnTimedEvent(object sender, ElapsedEventArgs e)
+        private static void HentKvitteringOnTimedEvent(object sender, ElapsedEventArgs e)
         {
             var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly);
@@ -46,8 +46,7 @@ namespace MFPuller
 
             var organisasjonsnummerTekniskAvsender = organisasjonsnummerPosten;
             var tekniskAvsender = new Databehandler(organisasjonsnummerTekniskAvsender, tekniskAvsenderSertifikat);
-
-            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler: tekniskAvsender);
+            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
             var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
 
@@ -65,11 +64,7 @@ namespace MFPuller
 
         private static void SaveTextToFile(string filename, string text)
         {
-            XDocument doc = XDocument.Parse(text);
-            string path = Path.Combine("kvitteringer", filename);
-            FileUtility.AppendToFileInBasePath(path,text);
-            
-            File.AppendAllText(path, doc.ToString());
+            FileUtility.WriteXmlToFileInBasePath(Path.Combine("Kvitteringer", filename), text);            
         }
     }
 }

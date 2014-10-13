@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace SikkerDigitalPost.Klient.Utilities
 {
@@ -58,7 +60,8 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt".
         /// </summary>
-        /// <param name="pathRelativeToBase"></param>
+        /// <param name="pathRelativeToBase">The relative part of the path. The base path is set in your settings. </param>
+        /// <param name="data">The data to write.</param>
         public static void WriteToFileInBasePath(string pathRelativeToBase, string data)
         {
             File.WriteAllText(Path.Combine(BasePath,pathRelativeToBase),data);
@@ -69,5 +72,10 @@ namespace SikkerDigitalPost.Klient.Utilities
             File.AppendAllText(Path.Combine(BasePath, pathRelativeToBase),data);
         }
 
+        public static void WriteXmlToFileInBasePath(string pathRelativeToBase, string xml)
+        {
+            XDocument doc = XDocument.Parse(xml);
+            WriteToFileInBasePath(pathRelativeToBase, doc.ToString());
+        }
     }
 }

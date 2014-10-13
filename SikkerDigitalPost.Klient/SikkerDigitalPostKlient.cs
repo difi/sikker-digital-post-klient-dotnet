@@ -69,10 +69,8 @@ namespace SikkerDigitalPost.Klient
 
             var envelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            //envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
-            //    ? @"Z:\Development\Digipost\Envelope.xml"
-            //    : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
-
+            FileUtility.WriteToFileInBasePath("Envelope.xml", envelope.Xml().OuterXml);
+            
             var soapContainer = new SoapContainer();
             soapContainer.Envelope = envelope;
             soapContainer.Vedlegg.Add(arkiv);
