@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
@@ -6,12 +7,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     public class Leveringskvittering //: Forretningskvittering
     {
         public string RefToMessageId { get; private set; }
-        public string MessagePartNrInformation { get; private set; }
+        public XmlNode BodyReference { get; private set; }
 
-        public Leveringskvittering(string refToMessageId, string messagePartNRInformation)
+        public Leveringskvittering(string refToMessageId, XmlNode bodyReference)
         {
             RefToMessageId = refToMessageId;
-            MessagePartNrInformation = messagePartNRInformation;
+            BodyReference = bodyReference;
         }
 
         //    public Leveringskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)

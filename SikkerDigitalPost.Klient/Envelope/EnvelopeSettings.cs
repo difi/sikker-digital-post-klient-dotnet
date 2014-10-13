@@ -38,10 +38,11 @@ namespace SikkerDigitalPost.Klient.Envelope
         /// <summary>
         /// Settings for BekreftKvittering
         /// </summary>
-        public EnvelopeSettings(Leveringskvittering leveringskvittering, Databehandler databehandler)
+        public EnvelopeSettings(Leveringskvittering leveringskvittering, Databehandler databehandler, GuidHandler guidHandler)
         {
             Leveringskvittering = leveringskvittering;
             Databehandler = databehandler;
+            GuidHandler = guidHandler;
         }
     }
 }

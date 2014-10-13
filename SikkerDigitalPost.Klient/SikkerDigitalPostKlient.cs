@@ -120,8 +120,6 @@ namespace SikkerDigitalPost.Klient
         {
             if (forrigeKvittering != null)
             {
-                //Doxmlparsing
-                //Bekreft forrigeKvittering (ACK)
                 Bekreft(forrigeKvittering);
             }
 
@@ -138,38 +136,48 @@ namespace SikkerDigitalPost.Klient
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(kvittering);
             
-            return fetchId(xmlDoc);
+            return LagLeveringskvittering(xmlDoc);
         }
 
-        private Leveringskvittering fetchId(XmlDocument document)
+        private Leveringskvittering LagLeveringskvittering(XmlDocument document)
         {
-            string refToMessageId = String.Empty;
-            string dokumentpakkeId = String.Empty;
+            string messageId = String.Empty;
+            string partInfoBodyId = String.Empty;
+            string bodyId = String.Empty;
+            XmlNode bodyReference;
 
             XmlNode rot = document.DocumentElement;
             XmlNamespaceManager mgr = new XmlNamespaceManager(document.NameTable);
             mgr.AddNamespace("env", Navnerom.env);
             mgr.AddNamespace("eb", Navnerom.eb);
-            mgr.AddNamespace("ns5", Navnerom.Ns5);
+            mgr.AddNamespace("wsu", Navnerom.wsu);
+            mgr.AddNamespace("ds", Navnerom.ds);
             mgr.AddNamespace("ns6", Navnerom.Ns6);
             mgr.AddNamespace("ns7", Navnerom.Ns7);
 
             try
             {
-                var refToMessageIdtest = rot.SelectSingleNode("//ns6:MessageInfo", mgr);
-                var receiptIdtest = rot.SelectSingleNode("//ns6:Receipt", mgr);
-                var messagePartId = rot.SelectSingleNode("//ns7:MessagePartNRInformation", mgr);
-                dokumentpakkeId = messagePartId.SelectSingleNode("./ns5:Reference", mgr).Attributes[0].Value;
+                messageId = rot.SelectSingleNode("//ns6:MessageId", mgr).InnerText;
+                
+                var partInfo = rot.SelectSingleNode("//ns6:PartInfo", mgr);
+                if (partInfo.Attributes.Count > 0)
+                    partInfoBodyId = partInfo.Attributes["href"].Value;
 
+                bodyId = rot.SelectSingleNode("//env:Body", mgr).Attributes["wsu:Id"].Value;
 
-                refToMessageId = rot.SelectSingleNode("//ns6:RefToMessageId", mgr).InnerText;
+                if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
+                {
+                    throw new Exception("Id i PartInfo og i Body matcher ikke.");
+                }
+
+                bodyReference = rot.SelectSingleNode("//ds:Reference[@URI = '#" + bodyId + "']", mgr);
             }
             catch (Exception e)
             {
-                throw new Exception("", e);
+                throw new Exception("Feil under søking i xml.", e);
             }
 
-            return new Leveringskvittering(refToMessageId, dokumentpakkeId);
+            return new Leveringskvittering(messageId, bodyReference);
         }
 
         /// <summary>
@@ -187,7 +195,12 @@ namespace SikkerDigitalPost.Klient
         /// </remarks>
         public void Bekreft(Leveringskvittering forrigeKvittering)
         {
+            EnvelopeSettings settings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
+            var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(settings);
 
+            var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
+
+            var bekreftelseAvBekreftelse = SendSoapContainer(soapContainer);
         }
 
         private string SendSoapContainer(SoapContainer soapContainer)
