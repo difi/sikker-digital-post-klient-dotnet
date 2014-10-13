@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Klient", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Testklient", "SikkerDigitalPost.Testklient\SikkerDigitalPost.Testklient.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFPuller", "MFPuller\MFPuller.csproj", "{CFBC137C-7768-4056-94BF-A402BE6B1CFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFBC137C-7768-4056-94BF-A402BE6B1CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFBC137C-7768-4056-94BF-A402BE6B1CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFBC137C-7768-4056-94BF-A402BE6B1CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFBC137C-7768-4056-94BF-A402BE6B1CFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

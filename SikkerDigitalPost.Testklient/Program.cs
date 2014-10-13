@@ -74,7 +74,7 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
             
-           //sikkerDigitalPostKlient.Send(forsendelse);
+           sikkerDigitalPostKlient.Send(forsendelse);
 
             //Info om Kvitteringer:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/forretningslag/forretningsprosess_kvittering

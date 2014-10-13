@@ -17,12 +17,12 @@
 //    /// </summary>
 //    public class SdpStatus
 //    {
-//        private readonly Dictionary<string, string> _status;
+//        private readonly Dictionary<Forretningskvittering, Forretningskvittering> _status;
 //        private Queue<Thread> _kø;
 
 //        public SdpStatus()
 //        {
-//            _status = new Dictionary<string, string>();
+//            _status = new Dictionary<Forretningskvittering, Forretningskvittering>();
 //            _kø = new Queue<Thread>();
 //        }
 
@@ -51,7 +51,7 @@
 //            _status.Add(forretningskvittering.KonversasjonsId, forretningskvittering.ToString());
 //        }
 
-//        public string Status()
+//        public Forretningskvittering Status()
 //        {
 //            StringBuilder stringbygger = new StringBuilder();
 
@@ -62,7 +62,7 @@
 //            return stringbygger.ToString();
 //        }
 
-//        public string Køstatusstring()
+//        public Forretningskvittering Køstatusstring()
 //        {
 //            if (_kø == null)
 //            {

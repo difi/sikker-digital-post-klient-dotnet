@@ -74,6 +74,7 @@
     <Compile Include="SignaturBygger.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
     <Compile Include="GuidHandler.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
     <Compile Include="Xml\QualifyingPropertiesObject.cs" />
     <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />

@@ -69,38 +69,15 @@ namespace SikkerDigitalPost.Klient
 
             var envelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            //envelope.SkrivTilFil(Environment.MachineName.Contains("LEK")
-            //    ? @"Z:\Development\Digipost\Envelope.xml"
-            //    : @"C:\Prosjekt\DigiPost\Temp\Envelope.xml");
-
+            FileUtility.WriteToFileInBasePath("Envelope.xml", envelope.Xml().OuterXml);
+            
             var soapContainer = new SoapContainer();
             soapContainer.Envelope = envelope;
             soapContainer.Vedlegg.Add(arkiv);
             soapContainer.Action = "\"\"";
 
             SendSoapContainer(soapContainer);
-             //Lag request
 
-            //var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            //soapContainer.Send(request);
-            //try
-            //{
-            //    var response = request.GetResponse();
-            //    var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            //    //return true;
-            //}
-            //catch (WebException we)
-            //{
-            //    using (var response = we.Response as HttpWebResponse)
-            //    {
-            //        using (Stream errorStream = response.GetResponseStream())
-            //        {
-            //            var soap = XDocument.Load(errorStream);
-            //            throw new Exception("En feil");
-            //        }
-
-            //    }
-            //}
         }
 
         /// <summary>
@@ -116,14 +93,16 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            var envelope = new KvitteringsEnvelope(envelopeSettings);
-            var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
+            KvitteringsEnvelope kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
-            SendSoapContainer(soapContainer);
-            return null;
+            FileUtility.WriteXmlToFileInBasePath("Kvitteringsforespørsel.xml", kvitteringsenvelope.Xml().InnerXml);
+
+            var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
+
+            return SendSoapContainer(soapContainer);
         }
 
         /// <summary>
@@ -161,18 +140,20 @@ namespace SikkerDigitalPost.Klient
         /// </remarks>
         public void Bekreft(Forretningskvittering forrigeKvittering)
         {
-            
+
         }
 
-        private void SendSoapContainer(SoapContainer soapContainer)
+        private string SendSoapContainer(SoapContainer soapContainer)
         {
-            var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            string data = String.Empty;
+
+            var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+
             soapContainer.Send(request);
             try
             {
                 var response = request.GetResponse();
-                var data = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                //return true;
+                data = new StreamReader(response.GetResponseStream()).ReadToEnd();
             }
             catch (WebException we)
             {
@@ -181,11 +162,11 @@ namespace SikkerDigitalPost.Klient
                     using (Stream errorStream = response.GetResponseStream())
                     {
                         var soap = XDocument.Load(errorStream);
-                        throw new Exception("En feil");
                     }
 
                 }
             }
+            return data;
         }
     }
 }
