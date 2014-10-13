@@ -3,15 +3,24 @@ using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
-    public class LeveringsKvittering : Forretningskvittering
+    public class Leveringskvittering //: Forretningskvittering
     {
-        public LeveringsKvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
+        public string RefToMessageId { get; private set; }
+        public string MessagePartNrInformation { get; private set; }
+
+        public Leveringskvittering(string refToMessageId, string messagePartNRInformation)
         {
+            RefToMessageId = refToMessageId;
+            MessagePartNrInformation = messagePartNRInformation;
         }
 
-        public override string ToString()
-        {
-            return String.Format("{0} {konversasjonsid={1}}" ,GetType().Name, KonversasjonsId);
-        }
+        //    public Leveringskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
+    //    {
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return String.Format("{0} {konversasjonsid={1}}" ,GetType().Name, KonversasjonsId);
+    //    }
     }
 }

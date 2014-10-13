@@ -1,5 +1,8 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
+using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 {
@@ -11,7 +14,35 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 
         public override XmlNode Xml()
         {
-            return null;
+            XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.eb);
+            messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
+            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.env);
+            mustUnderstand.InnerText = "true";
+            messaging.Attributes.Append(mustUnderstand);
+
+            messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
+
+            //messaging.AppendChild(SignalMessageElement());
+
+            return messaging;
         }
+
+        private XmlElement MessageInfoElement()
+        {
+            XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.eb);
+            {
+                XmlElement timestamp = messageInfo.AppendChildElement("Timestamp", "eb", Navnerom.eb, Context);
+                timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
+
+                XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.eb, Context);
+                messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
+
+                //Den forrige sin headerid.
+                XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
+                //refToMessageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId
+            }
+            return messageInfo;
+        }
+    
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
@@ -94,19 +96,9 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public Leveringskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
-
-            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-
-            var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
-
-            var kvittering = SendSoapContainer(soapContainer);
-            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
-
-            return kvittering;
+            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
 
         /// <summary>
@@ -124,9 +116,60 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Forretningskvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public Leveringskvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Leveringskvittering forrigeKvittering)
         {
-            return null;
+            if (forrigeKvittering != null)
+            {
+                //Doxmlparsing
+                //Bekreft forrigeKvittering (ACK)
+                Bekreft(forrigeKvittering);
+            }
+
+
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
+            var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
+
+            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
+
+            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+
+            var kvittering = SendSoapContainer(soapContainer);
+            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(kvittering);
+            
+            return fetchId(xmlDoc);
+        }
+
+        private Leveringskvittering fetchId(XmlDocument document)
+        {
+            string refToMessageId = String.Empty;
+            string dokumentpakkeId = String.Empty;
+
+            XmlNode rot = document.DocumentElement;
+            XmlNamespaceManager mgr = new XmlNamespaceManager(document.NameTable);
+            mgr.AddNamespace("env", Navnerom.env);
+            mgr.AddNamespace("eb", Navnerom.eb);
+            mgr.AddNamespace("ns5", Navnerom.Ns5);
+            mgr.AddNamespace("ns6", Navnerom.Ns6);
+            mgr.AddNamespace("ns7", Navnerom.Ns7);
+
+            try
+            {
+                var refToMessageIdtest = rot.SelectSingleNode("//ns6:MessageInfo", mgr);
+                var receiptIdtest = rot.SelectSingleNode("//ns6:Receipt", mgr);
+                var messagePartId = rot.SelectSingleNode("//ns7:MessagePartNRInformation", mgr);
+                dokumentpakkeId = messagePartId.SelectSingleNode("./ns5:Reference", mgr).Attributes[0].Value;
+
+
+                refToMessageId = rot.SelectSingleNode("//ns6:RefToMessageId", mgr).InnerText;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("", e);
+            }
+
+            return new Leveringskvittering(refToMessageId, dokumentpakkeId);
         }
 
         /// <summary>
@@ -142,7 +185,7 @@ namespace SikkerDigitalPost.Klient
         /// <remarks>
         /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public void Bekreft(Forretningskvittering forrigeKvittering)
+        public void Bekreft(Leveringskvittering forrigeKvittering)
         {
 
         }

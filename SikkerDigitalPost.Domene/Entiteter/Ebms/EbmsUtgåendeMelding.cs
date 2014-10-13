@@ -9,7 +9,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Ebms
         public readonly string MpcId;
         protected EbmsAktør EbmsMottaker;
 
-        protected EbmsUtgåendeMelding(EbmsAktør ebmsMottaker, string meldingsId, string opprinnelsesMeldingId, Handling handling, Prioritet prioritet, string mpcId) : base(meldingsId, opprinnelsesMeldingId)
+        protected EbmsUtgåendeMelding(EbmsAktør ebmsMottaker, string meldingsId, string opprinnelsesMeldingId, Handling handling, Prioritet prioritet, string mpcId) :
+            base(meldingsId, opprinnelsesMeldingId)
         {
             Handling = handling;
             Prioritet = prioritet;
