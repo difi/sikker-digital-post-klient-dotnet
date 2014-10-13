@@ -98,7 +98,7 @@ namespace SikkerDigitalPost.Klient
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             KvitteringsEnvelope kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
-            FileUtility.WriteToFileInBasePath("Kvitteringsforespørsel.xml", kvitteringsenvelope.Xml().InnerXml);
+            FileUtility.WriteXmlToFileInBasePath("Kvitteringsforespørsel.xml", kvitteringsenvelope.Xml().InnerXml);
 
             var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
 
