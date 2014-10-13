@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography.Xml;
+using System.Xml;
 using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
@@ -9,6 +13,7 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
+using SikkerDigitalPost.Klient.Xml;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -71,13 +76,16 @@ namespace SikkerDigitalPost.Klient
 
             FileUtility.WriteToFileInBasePath(envelope.Xml().OuterXml, "Envelope.xml");
             
-            var soapContainer = new SoapContainer();
-            soapContainer.Envelope = envelope;
+            var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
-            soapContainer.Action = "\"\"";
 
-            SendSoapContainer(soapContainer);
+            var responseXml = SendSoapContainer(soapContainer);
 
+            if(!ValiderSignatur(responseXml))
+                throw new Exception("Signatur validerer ikke");
+
+            if(!ValiderDigests(responseXml, envelope.Xml(), guidHandler))
+                throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
         }
 
         /// <summary>
@@ -102,7 +110,7 @@ namespace SikkerDigitalPost.Klient
 
             var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
 
-            return SendSoapContainer(soapContainer);
+            return SendSoapContainer(soapContainer).OuterXml;
         }
 
         /// <summary>
@@ -143,17 +151,21 @@ namespace SikkerDigitalPost.Klient
 
         }
 
-        private string SendSoapContainer(SoapContainer soapContainer)
+        private XmlDocument SendSoapContainer(SoapContainer soapContainer)
         {
-            string data = String.Empty;
-
+            var xmlDocument = new XmlDocument();
             var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
 
             soapContainer.Send(request);
             try
             {
-                var response = request.GetResponse();
-                data = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                using (Stream responseStream = request.GetResponse().GetResponseStream())
+                {
+                    using (XmlReader xmlReader = XmlReader.Create(responseStream))
+                    {
+                        xmlDocument.Load(xmlReader);
+                    }
+                }
             }
             catch (WebException we)
             {
@@ -166,7 +178,56 @@ namespace SikkerDigitalPost.Klient
 
                 }
             }
-            return data;
+            return xmlDocument;
+        }
+
+        private bool ValiderSignatur(XmlDocument response)
+        {
+            XmlNode responseRot = response.DocumentElement;
+            var responseMgr = new XmlNamespaceManager(response.NameTable);
+            responseMgr.AddNamespace("env", Navnerom.env);
+            responseMgr.AddNamespace("ds", Navnerom.ds);
+
+            try
+            {
+                var signatureNode = (XmlElement)responseRot.SelectSingleNode("//ds:Signature", responseMgr);
+                var signed = new SignedXmlWithAgnosticId(response);
+                signed.LoadXml(signatureNode);
+                return signed.CheckSignature();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Feil under validering av signatur.", e);
+            }
+        }
+
+        private bool ValiderDigests(XmlDocument response, XmlDocument envelope, GuidHandler guidHandler)
+        {
+            XmlNode responseRot = response.DocumentElement;
+            XmlNamespaceManager responseMgr = new XmlNamespaceManager(response.NameTable);
+            responseMgr.AddNamespace("env", Navnerom.env);
+            responseMgr.AddNamespace("ns5", Navnerom.Ns5);
+
+            try
+            {
+                var responseBodyDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = '#" + guidHandler.BodyId + "']", responseMgr).InnerText;
+                var responseAsicDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", responseMgr).InnerText;
+
+                var envelopeRot = envelope.DocumentElement;
+                var envelopeMgr = new XmlNamespaceManager(envelope.NameTable);
+                envelopeMgr.AddNamespace("env", Navnerom.env);
+                envelopeMgr.AddNamespace("wsse", Navnerom.wsse);
+                envelopeMgr.AddNamespace(String.Empty, Navnerom.Ns5);
+                
+                var envelopeBodyDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = '#" + guidHandler.BodyId + "']", envelopeMgr).InnerText;
+                var envelopeAsicDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", envelopeMgr).InnerText;
+
+                return responseBodyDigest.Equals(envelopeBodyDigest) && responseAsicDigest.Equals(envelopeAsicDigest);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("En feil", e);
+            }
         }
     }
 }
