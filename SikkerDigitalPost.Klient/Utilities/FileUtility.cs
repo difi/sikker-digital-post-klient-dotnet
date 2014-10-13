@@ -60,22 +60,34 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt".
         /// </summary>
-        /// <param name="pathRelativeToBase">The relative part of the path. The base path is set in your settings. </param>
-        /// <param name="data">The data to write.</param>
+        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
+        /// <param name="data">Data som skal skrives.</param>
+        public static void WriteXmlToFileInBasePath(string pathRelativeToBase, string xml)
+        {
+            var doc = XDocument.Parse(xml);
+            WriteToFileInBasePath(pathRelativeToBase, doc.ToString());
+        }
+
+        /// <summary>
+        /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        /// på "C:\base\mappe\hei.txt".
+        /// </summary>
+        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
+        /// <param name="data">Data som skal skrives.</param>
         public static void WriteToFileInBasePath(string pathRelativeToBase, string data)
         {
             File.WriteAllText(Path.Combine(BasePath,pathRelativeToBase),data);
         }
 
+        /// <summary>
+        /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        /// på "C:\base\mappe\hei.txt". Legg er tekst til allerede eksisterende tekst.
+        /// </summary>
+        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
+        /// <param name="data">Data som skal skrives.</param>
         public static void AppendToFileInBasePath(string pathRelativeToBase, string data)
         {
             File.AppendAllText(Path.Combine(BasePath, pathRelativeToBase),data);
-        }
-
-        public static void WriteXmlToFileInBasePath(string pathRelativeToBase, string xml)
-        {
-            XDocument doc = XDocument.Parse(xml);
-            WriteToFileInBasePath(pathRelativeToBase, doc.ToString());
         }
     }
 }
