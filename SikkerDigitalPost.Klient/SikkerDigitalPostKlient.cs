@@ -69,14 +69,15 @@ namespace SikkerDigitalPost.Klient
 
             var envelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            FileUtility.WriteToFileInBasePath(envelope.Xml().OuterXml, "Envelope.xml");
+            FileUtility.WriteXmlToFileInBasePath(envelope.Xml().OuterXml, "Forretningsmelding.xml");
             
             var soapContainer = new SoapContainer();
             soapContainer.Envelope = envelope;
             soapContainer.Vedlegg.Add(arkiv);
             soapContainer.Action = "\"\"";
 
-            SendSoapContainer(soapContainer);
+            var sendKvittering = SendSoapContainer(soapContainer);
+            FileUtility.WriteXmlToFileInBasePath(sendKvittering, "ForretningsmeldingSendtKvittering.xml");
 
         }
 
@@ -96,13 +97,16 @@ namespace SikkerDigitalPost.Klient
         public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            KvitteringsEnvelope kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
+            var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
             FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
 
             var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
 
-            return SendSoapContainer(soapContainer);
+            var kvittering = SendSoapContainer(soapContainer);
+            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+
+            return kvittering;
         }
 
         /// <summary>
