@@ -22,9 +22,19 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 
             messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
 
-            //messaging.AppendChild(SignalMessageElement());
+            messaging.AppendChild(SignalMessageElement());
 
             return messaging;
+        }
+
+        private XmlElement SignalMessageElement()
+        {
+            XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.eb);
+
+            signalMessage.AppendChild(MessageInfoElement());
+            signalMessage.AppendChild(ReceiptElement());
+
+            return signalMessage;
         }
 
         private XmlElement MessageInfoElement()
@@ -37,12 +47,26 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
                 XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.eb, Context);
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
 
-                //Den forrige sin headerid.
                 XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
-                //refToMessageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId
+                refToMessageId.InnerText = Settings.Leveringskvittering.RefToMessageId;
             }
             return messageInfo;
         }
-    
+
+        private XmlElement ReceiptElement()
+        {
+            XmlElement receipt = Context.CreateElement("ns6", "Receipt", Navnerom.Ns6);
+            {
+                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.Ns6, Context);
+                {
+                    XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
+                    {
+                        XmlNode reference = Settings.Leveringskvittering.BodyReference;
+                        messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));
+                    }
+                }
+            }
+            return receipt;
+        }
     }
 }
