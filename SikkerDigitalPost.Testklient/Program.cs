@@ -6,6 +6,7 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Testklient
 {
@@ -57,14 +58,9 @@ namespace SikkerDigitalPost.Testklient
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
-            
-           //Dokumenter
-            string hoveddokument = Environment.MachineName.Contains("LEK")
-                ? @"C:\sdp\testdata\hoveddokument\hoveddokument.txt"
-                : @"C:\Prosjekt\DigiPost\Temp\TestData\hoveddokument\hoveddokument.txt";
-            string vedlegg = Environment.MachineName.Contains("LEK")
-                ? @"C:\sdp\testdata\vedlegg\Vedlgg.txt"
-                : @"C:\Prosjekt\DigiPost\Temp\TestData\vedlegg\Vedlgg.txt"; 
+
+            string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
+            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlgg.txt");
             
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));

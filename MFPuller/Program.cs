@@ -64,7 +64,7 @@ namespace MFPuller
 
         private static void SaveTextToFile(string filename, string text)
         {
-            FileUtility.WriteXmlToFileInBasePath(Path.Combine("Kvitteringer", filename), text);            
+            FileUtility.WriteXmlToFileInBasePath(text, "Kvitteringer", filename);            
         }
     }
 }

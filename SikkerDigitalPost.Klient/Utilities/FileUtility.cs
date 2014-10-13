@@ -38,13 +38,13 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// <summary>
         /// Returnerer base-sti basert på nåværede bruker.
         /// </summary>
-        public static string BasePath 
+        public static string BasePath
         {
             get
             {
                 if (CurrentBruker == Bruker.Aleksander)
                 {
-                    return @"C:\sdp";
+                    return @"Z:\Development\Digipost\sdp-data";
                 }
 
                 if (CurrentBruker == Bruker.Marius)
@@ -62,32 +62,38 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// </summary>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         /// <param name="data">Data som skal skrives.</param>
-        public static void WriteXmlToFileInBasePath(string pathRelativeToBase, string xml)
+        public static void WriteXmlToFileInBasePath(string xml, params string[] pathRelativeToBase)
         {
             var doc = XDocument.Parse(xml);
-            WriteToFileInBasePath(pathRelativeToBase, doc.ToString());
+            WriteToFileInBasePath(doc.ToString(), pathRelativeToBase);
         }
 
         /// <summary>
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt".
         /// </summary>
-        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         /// <param name="data">Data som skal skrives.</param>
-        public static void WriteToFileInBasePath(string pathRelativeToBase, string data)
+        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
+        public static void WriteToFileInBasePath(string data, params string[] pathRelativeToBase)
         {
-            File.WriteAllText(Path.Combine(BasePath,pathRelativeToBase),data);
+            File.WriteAllText(AbsolutePath(pathRelativeToBase), data);
         }
 
         /// <summary>
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt". Legg er tekst til allerede eksisterende tekst.
         /// </summary>
-        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         /// <param name="data">Data som skal skrives.</param>
-        public static void AppendToFileInBasePath(string pathRelativeToBase, string data)
+        /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
+        public static void AppendToFileInBasePath(string data, params string[] pathRelativeToBase)
         {
-            File.AppendAllText(Path.Combine(BasePath, pathRelativeToBase),data);
+            File.AppendAllText(AbsolutePath(pathRelativeToBase), data);
+        }
+
+        public static string AbsolutePath(params string[] pathRelativeToBase)
+        {
+            return Path.Combine(BasePath, Path.Combine(pathRelativeToBase));
         }
     }
 }
+
