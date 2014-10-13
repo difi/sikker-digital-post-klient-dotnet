@@ -83,50 +83,11 @@ namespace SikkerDigitalPost.Klient
 
             var responseXml = SendSoapContainer(soapContainer);
 
-            //Valider signatur
-            XmlNode rot = responseXml.DocumentElement;
-            XmlNamespaceManager responseMgr = new XmlNamespaceManager(responseXml.NameTable);
-            responseMgr.AddNamespace("ds", Navnerom.ds);
-            responseMgr.AddNamespace("ns5", Navnerom.Ns5);
-            responseMgr.AddNamespace("ns7", Navnerom.Ns7);
-            
-            try
-            {
-                XmlNode signatureNode = rot.SelectSingleNode("ds:Signature", responseMgr);
-                //valider
-            }
-            catch (Exception e)
-            {
-                throw new Exception("", e);
-            }
+            if(!ValiderSignatur(responseXml))
+                throw new Exception("Signatur validerer ikke");
 
-            //Valider body og attachment
-            try
-            {
-                //Hent body og attachment digests
-                var bodyReference = rot.SelectSingleNode("//ns5:Reference[@URI = #" + guidHandler.BodyId + "]", responseMgr);
-                var asicReference = rot.SelectSingleNode("//ns5:Reference[@URI = cid:" + guidHandler.DokumentpakkeId + "]", responseMgr);
-                var bodyDigest = bodyReference.SelectSingleNode("ns5:DigestValue", responseMgr).InnerText;
-                var asicDigest = asicReference.SelectSingleNode("ns5:DigestValue", responseMgr).InnerText;
-
-                //Valider mot envelope
-                var envelopeXml = envelope.Xml();
-                var envelopeRoot = envelopeXml.DocumentElement;
-                XmlNamespaceManager envelopeMgr = new XmlNamespaceManager(envelopeXml.NameTable);
-                envelopeMgr.AddNamespace("", "http://www.w3.org/2000/09/xmldsig#");
-                var envBodyReference = rot.SelectSingleNode("Signature/SignedInfo/Reference[@URI = " + guidHandler.BodyId + "]", envelopeMgr);
-                var envAsicReference = rot.SelectSingleNode("Signature/SignedInfo/Reference[@URI = " + guidHandler.DokumentpakkeId + "]", envelopeMgr);
-                var envBodyDigest = envBodyReference.SelectSingleNode("DigestValue", envelopeMgr).InnerText;
-                var envAsicDigest = envAsicReference.SelectSingleNode("DigestValue", envelopeMgr).InnerText;
-                if (!bodyDigest.Equals(envBodyDigest) || !envAsicDigest.Equals(asicDigest))
-                {
-                    throw new Exception("Digests are not equal!");
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Fant ikke...", e);
-            }
+            if(!ValiderDigests(responseXml, envelope.Xml(), guidHandler))
+                throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
         }
 
         /// <summary>
@@ -217,6 +178,55 @@ namespace SikkerDigitalPost.Klient
                     }
 
                 }
+            }
+        }
+
+        private bool ValiderSignatur(XmlDocument response)
+        {
+            XmlNode responseRot = response.DocumentElement;
+            var responseMgr = new XmlNamespaceManager(response.NameTable);
+            responseMgr.AddNamespace("env", Navnerom.env);
+            responseMgr.AddNamespace("ds", Navnerom.ds);
+
+            try
+            {
+                var signatureNode = (XmlElement)responseRot.SelectSingleNode("//ds:Signature", responseMgr);
+                var signed = new SignedXmlWithAgnosticId(response);
+                signed.LoadXml(signatureNode);
+                return signed.CheckSignature();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Feil under validering av signatur.", e);
+            }
+        }
+
+        private bool ValiderDigests(XmlDocument response, XmlDocument envelope, GuidHandler guidHandler)
+        {
+            XmlNode responseRot = response.DocumentElement;
+            XmlNamespaceManager responseMgr = new XmlNamespaceManager(response.NameTable);
+            responseMgr.AddNamespace("env", Navnerom.env);
+            responseMgr.AddNamespace("ns5", Navnerom.Ns5);
+
+            try
+            {
+                var responseBodyDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = '#" + guidHandler.BodyId + "']", responseMgr).InnerText;
+                var responseAsicDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", responseMgr).InnerText;
+
+                var envelopeRot = envelope.DocumentElement;
+                var envelopeMgr = new XmlNamespaceManager(envelope.NameTable);
+                envelopeMgr.AddNamespace("env", Navnerom.env);
+                envelopeMgr.AddNamespace("wsse", Navnerom.wsse);
+                envelopeMgr.AddNamespace(String.Empty, Navnerom.Ns5);
+                
+                var envelopeBodyDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = '#" + guidHandler.BodyId + "']", envelopeMgr).InnerText;
+                var envelopeAsicDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", envelopeMgr).InnerText;
+
+                return responseBodyDigest.Equals(envelopeBodyDigest) && responseAsicDigest.Equals(envelopeAsicDigest);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("En feil", e);
             }
         }
     }
