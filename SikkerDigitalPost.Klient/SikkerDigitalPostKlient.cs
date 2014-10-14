@@ -82,11 +82,11 @@ namespace SikkerDigitalPost.Klient
             FileUtility.WriteXmlToFileInBasePath(response, "ForretningsmeldingSendtKvittering.xml");
 
 
-            //if(!ValiderSignatur(response))
-            //    throw new Exception("Signatur validerer ikke");
+            if (!ValiderSignatur(response))
+                throw new Exception("Signatur validerer ikke");
 
-            //if(!ValiderDigests(response, envelope.Xml(), guidHandler))
-            //    throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
+            if (!ValiderDigests(response, envelope.Xml(), guidHandler))
+                throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
         }
 
         /// <summary>
@@ -241,17 +241,19 @@ namespace SikkerDigitalPost.Klient
             return data;
         }
 
-        private bool ValiderSignatur(XmlDocument response)
+        private bool ValiderSignatur(string response)
         {
-            XmlNode responseRot = response.DocumentElement;
-            var responseMgr = new XmlNamespaceManager(response.NameTable);
+            var responseXml = new XmlDocument();
+            responseXml.LoadXml(response);
+            XmlNode responseRot = responseXml.DocumentElement;
+            var responseMgr = new XmlNamespaceManager(responseXml.NameTable);
             responseMgr.AddNamespace("env", Navnerom.env);
             responseMgr.AddNamespace("ds", Navnerom.ds);
 
             try
             {
                 var signatureNode = (XmlElement)responseRot.SelectSingleNode("//ds:Signature", responseMgr);
-                var signed = new SignedXmlWithAgnosticId(response);
+                var signed = new SignedXmlWithAgnosticId(responseXml);
                 signed.LoadXml(signatureNode);
                 return signed.CheckSignature();
             }
@@ -261,10 +263,12 @@ namespace SikkerDigitalPost.Klient
             }
         }
 
-        private bool ValiderDigests(XmlDocument response, XmlDocument envelope, GuidHandler guidHandler)
+        private bool ValiderDigests(string response, XmlDocument envelope, GuidHandler guidHandler)
         {
-            XmlNode responseRot = response.DocumentElement;
-            XmlNamespaceManager responseMgr = new XmlNamespaceManager(response.NameTable);
+            XmlDocument responseXml = new XmlDocument();
+            responseXml.LoadXml(response);
+            XmlNode responseRot = responseXml.DocumentElement;
+            XmlNamespaceManager responseMgr = new XmlNamespaceManager(responseXml.NameTable);
             responseMgr.AddNamespace("env", Navnerom.env);
             responseMgr.AddNamespace("ns5", Navnerom.Ns5);
 
