@@ -76,12 +76,9 @@ namespace SikkerDigitalPost.Klient
             var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
 
-
-
             var response = SendSoapContainer(soapContainer);
 
-            FileUtility.WriteXmlToFileInBasePath(response, "ForretningsmeldingSendtKvittering.xml");
-
+            FileUtility.WriteXmlToFileInBasePath(response, "Leveringskvittering.xml");
 
             //if(!ValiderSignatur(response))
             //    throw new Exception("Signatur validerer ikke");
