@@ -47,9 +47,8 @@
     <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
-    <Compile Include="Entiteter\Kvitteringer\FeiletKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Feilmelding.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretningskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Kvittering.cs" />
     <Compile Include="Entiteter\Post\DigitalPost.cs" />
     <Compile Include="Entiteter\Post\Dokument.cs" />
     <Compile Include="Entiteter\Post\Dokumentpakke.cs" />

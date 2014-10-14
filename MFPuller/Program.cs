@@ -52,7 +52,7 @@ namespace MFPuller
 
             try
             {
-                Kvittering leveringskvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                Forretningskvittering leveringskvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
                 string fileName = String.Format("{0}.txt", DateUtility.DateForFile());
                 SaveTextToFile(fileName,leveringskvittering.ToString());
             }

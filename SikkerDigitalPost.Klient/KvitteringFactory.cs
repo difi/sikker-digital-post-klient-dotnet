@@ -8,7 +8,7 @@ namespace SikkerDigitalPost.Klient
     internal class KvitteringFactory
     {
 
-        public static Kvittering Get(string xml)
+        public static Forretningskvittering Get(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
@@ -36,7 +36,7 @@ namespace SikkerDigitalPost.Klient
 
         private static bool IsFeiletkvittering(XmlDocument document)
         {
-            return DocumentHasNode(document, "env:Fault");
+            return DocumentHasNode(document, "ns6:Error");
         }
 
         private static bool IsÅpningskvittering(XmlDocument document)
