@@ -232,6 +232,10 @@ namespace SikkerDigitalPost.Klient
 
                 }
             }
+            finally
+            {
+                throw new Exception("Feil ved sending.");
+            }
             return data;
         }
     }

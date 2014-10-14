@@ -7,7 +7,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     public class Leveringskvittering //: Forretningskvittering
     {
         public string RefToMessageId { get; private set; }
-        public XmlNode BodyReference { get; private set; }
+        public string KonversasjonsId { get; private set; }
+        internal XmlNode BodyReference { get; private set; }
 
         public Leveringskvittering(string refToMessageId, XmlNode bodyReference)
         {
