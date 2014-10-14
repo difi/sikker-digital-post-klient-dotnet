@@ -201,7 +201,7 @@ namespace SikkerDigitalPost.Klient
         {
             EnvelopeSettings settings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
             var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(settings);
-
+            FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
 
             var bekreftelseAvBekreftelse = SendSoapContainer(soapContainer);

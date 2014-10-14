@@ -55,9 +55,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 
         private XmlElement ReceiptElement()
         {
-            XmlElement receipt = Context.CreateElement("ns6", "Receipt", Navnerom.Ns6);
+            XmlElement receipt = Context.CreateElement("eb", "Receipt", Navnerom.eb);
             {
-                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.Ns6, Context);
+                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.Ns7, Context);
                 {
                     XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
                     {
