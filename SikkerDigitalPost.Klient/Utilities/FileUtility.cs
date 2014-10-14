@@ -64,6 +64,9 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// <param name="data">Data som skal skrives.</param>
         public static void WriteXmlToFileInBasePath(string xml, params string[] pathRelativeToBase)
         {
+            if (String.IsNullOrEmpty(xml))
+                return;
+
             var doc = XDocument.Parse(xml);
             WriteToFileInBasePath(doc.ToString(), pathRelativeToBase);
         }
@@ -76,7 +79,12 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         public static void WriteToFileInBasePath(string data, params string[] pathRelativeToBase)
         {
-            File.WriteAllText(AbsolutePath(pathRelativeToBase), data);
+            if (String.IsNullOrEmpty(data))
+                return;
+
+            var absolutePath = AbsolutePath(pathRelativeToBase);
+            CreateDirectory(absolutePath);
+            File.WriteAllText(absolutePath, data);
         }
 
         /// <summary>
@@ -87,12 +95,23 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         public static void AppendToFileInBasePath(string data, params string[] pathRelativeToBase)
         {
-            File.AppendAllText(AbsolutePath(pathRelativeToBase), data);
+            if (String.IsNullOrEmpty(data))
+                return;
+
+            var absolutePath = AbsolutePath(pathRelativeToBase);
+            CreateDirectory(absolutePath);
+            File.AppendAllText(absolutePath, data);
         }
 
         public static string AbsolutePath(params string[] pathRelativeToBase)
         {
             return Path.Combine(BasePath, Path.Combine(pathRelativeToBase));
+        }
+
+        private static void CreateDirectory(string path)
+        {
+            var dir = Path.GetDirectoryName(path);
+            Directory.CreateDirectory(dir);
         }
     }
 }

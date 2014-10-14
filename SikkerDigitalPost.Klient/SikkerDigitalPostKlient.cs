@@ -133,6 +133,10 @@ namespace SikkerDigitalPost.Klient
 
             var kvittering = SendSoapContainer(soapContainer);
             FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+
+            if (String.IsNullOrWhiteSpace(kvittering))
+                return null;
+
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(kvittering);
             
@@ -221,7 +225,9 @@ namespace SikkerDigitalPost.Klient
                 {
                     using (Stream errorStream = response.GetResponseStream())
                     {
-                        var soap = XDocument.Load(errorStream);
+                        XDocument soap = XDocument.Load(errorStream);
+                        var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
+                        FileUtility.WriteXmlToFileInBasePath(soap.ToString(), "FeilVedSending", errorFileName);
                     }
 
                 }

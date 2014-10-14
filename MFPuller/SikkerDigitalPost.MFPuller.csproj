@@ -7,8 +7,8 @@
     <ProjectGuid>{CFBC137C-7768-4056-94BF-A402BE6B1CFC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MFPuller</RootNamespace>
-    <AssemblyName>MFPuller</AssemblyName>
+    <RootNamespace>SikkerDigitalPost.MFPuller</RootNamespace>
+    <AssemblyName>SikkerDigitalPost.MFPuller</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
