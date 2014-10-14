@@ -1,9 +1,11 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -40,6 +42,9 @@ namespace SikkerDigitalPost.Klient
             {
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
+
+            FileUtility.WriteXmlToFileInBasePath(_manifestXml.OuterXml, "Manifest.xml");
+
             _manifest.Bytes = Encoding.UTF8.GetBytes(_manifestXml.OuterXml);
         }
 
@@ -73,8 +78,12 @@ namespace SikkerDigitalPost.Klient
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = _manifest.Avsender.Organisasjonsnummer.Iso6523();
 
-                XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.Ns9, _manifestXml);
-                avsenderidentifikator.InnerText = _manifest.Avsender.Avsenderidentifikator;
+                var avsenderIdentifikator = _manifest.Avsender.Avsenderidentifikator;
+                if (!String.IsNullOrWhiteSpace(avsenderIdentifikator))
+                {
+                    XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.Ns9, _manifestXml);
+                    avsenderidentifikator.InnerText = _manifest.Avsender.Avsenderidentifikator;                    
+                }
 
                 XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
                 fakturaReferanse.InnerText = _manifest.Avsender.Fakturareferanse;

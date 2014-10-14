@@ -1,17 +1,28 @@
 ﻿using System;
+using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
-    public class LeveringsKvittering : Forretningskvittering
+    public class Leveringskvittering //: Forretningskvittering
     {
-        public LeveringsKvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
+        public string RefToMessageId { get; private set; }
+        public string KonversasjonsId { get; private set; }
+        internal XmlNode BodyReference { get; private set; }
+
+        public Leveringskvittering(string refToMessageId, XmlNode bodyReference)
         {
+            RefToMessageId = refToMessageId;
+            BodyReference = bodyReference;
         }
 
-        public override string ToString()
-        {
-            return String.Format("{0} {konversasjonsid={1}}" ,GetType().Name, KonversasjonsId);
-        }
+        //    public Leveringskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
+    //    {
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return String.Format("{0} {konversasjonsid={1}}" ,GetType().Name, KonversasjonsId);
+    //    }
     }
 }

@@ -70,6 +70,7 @@ namespace SikkerDigitalPost.Klient
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
+                LeggFilTilArkiv(archive, _dokumentpakke.Hoveddokument.Filnavn, _dokumentpakke.Hoveddokument.Bytes);
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
                 LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
 

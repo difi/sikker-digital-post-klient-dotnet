@@ -44,6 +44,10 @@ namespace SikkerDigitalPost.Testklient
              * identiske. 
              */
 
+            var organisasjonsnummerEboks = "996460320";
+            var fødselsnummerEboks = "01043100358";
+            var postkasseadresseEboks = "";
+
             var organisasjonsnummerPosten = "984661185";
             var organisasjonsnummerTekniskAvsender = organisasjonsnummerPosten;
             var organisasjonsnummerMottagerPostkasse = organisasjonsnummerPosten;
@@ -69,19 +73,18 @@ namespace SikkerDigitalPost.Testklient
 
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
-       
-           sikkerDigitalPostKlient.Send(forsendelse);
             
+            sikkerDigitalPostKlient.Send(forsendelse);
+
             //Info om Kvitteringer:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/forretningslag/forretningsprosess_kvittering
-
-           var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
-           sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
             //Eksempelforespørsel for kvittering:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/eksempler/soap/5_request_forespoersel_om_forretningskvittering_fra_postavsender_til_meldingsformidler.xml
 
-
+            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
+            var leveringskvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+            sikkerDigitalPostKlient.Bekreft(leveringskvittering);
         }
     }
 }

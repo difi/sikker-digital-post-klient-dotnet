@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Security.Cryptography.Xml;
 using System.Xml;
 using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -74,18 +71,22 @@ namespace SikkerDigitalPost.Klient
 
             var envelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            FileUtility.WriteToFileInBasePath(envelope.Xml().OuterXml, "Envelope.xml");
+            FileUtility.WriteXmlToFileInBasePath(envelope.Xml().OuterXml, "Forretningsmelding.xml");
             
             var soapContainer = new SoapContainer {Envelope = envelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
 
-            var responseXml = SendSoapContainer(soapContainer);
 
-            if(!ValiderSignatur(responseXml))
-                throw new Exception("Signatur validerer ikke");
+            var response = SendSoapContainer(soapContainer);
 
-            if(!ValiderDigests(responseXml, envelope.Xml(), guidHandler))
-                throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
+            FileUtility.WriteXmlToFileInBasePath(response, "ForretningsmeldingSendtKvittering.xml");
+
+
+            //if(!ValiderSignatur(response))
+            //    throw new Exception("Signatur validerer ikke");
+
+            //if(!ValiderDigests(response, envelope.Xml(), guidHandler))
+            //    throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
         }
 
         /// <summary>
@@ -101,16 +102,9 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public string HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public Leveringskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            KvitteringsEnvelope kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
-
-            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-
-            var soapContainer = new SoapContainer {Envelope = kvitteringsenvelope, Action = "\"\""};
-
-            return SendSoapContainer(soapContainer).OuterXml;
+            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
 
         /// <summary>
@@ -128,9 +122,72 @@ namespace SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Forretningskvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public Leveringskvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Leveringskvittering forrigeKvittering)
         {
-            return null;
+            if (forrigeKvittering != null)
+            {
+                Bekreft(forrigeKvittering);
+            }
+
+
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
+            var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
+
+            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
+
+            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+
+            var kvittering = SendSoapContainer(soapContainer);
+            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+
+            if (String.IsNullOrWhiteSpace(kvittering))
+                return null;
+
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(kvittering);
+            
+            return LagLeveringskvittering(xmlDoc);
+        }
+
+        private Leveringskvittering LagLeveringskvittering(XmlDocument document)
+        {
+            string messageId = String.Empty;
+            string partInfoBodyId = String.Empty;
+            string bodyId = String.Empty;
+            XmlNode bodyReference;
+
+            XmlNode rot = document.DocumentElement;
+            XmlNamespaceManager mgr = new XmlNamespaceManager(document.NameTable);
+            mgr.AddNamespace("env", Navnerom.env);
+            mgr.AddNamespace("eb", Navnerom.eb);
+            mgr.AddNamespace("wsu", Navnerom.wsu);
+            mgr.AddNamespace("ds", Navnerom.ds);
+            mgr.AddNamespace("ns6", Navnerom.Ns6);
+            mgr.AddNamespace("ns7", Navnerom.Ns7);
+
+            try
+            {
+                messageId = rot.SelectSingleNode("//ns6:MessageId", mgr).InnerText;
+                
+                var partInfo = rot.SelectSingleNode("//ns6:PartInfo", mgr);
+                if (partInfo.Attributes.Count > 0)
+                    partInfoBodyId = partInfo.Attributes["href"].Value;
+
+                bodyId = rot.SelectSingleNode("//env:Body", mgr).Attributes["wsu:Id"].Value;
+
+                if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
+                {
+                    throw new Exception("Id i PartInfo og i Body matcher ikke.");
+                }
+
+                bodyReference = rot.SelectSingleNode("//ds:Reference[@URI = '#" + bodyId + "']", mgr);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Feil under søking i xml.", e);
+            }
+
+            return new Leveringskvittering(messageId, bodyReference);
         }
 
         /// <summary>
@@ -146,26 +203,27 @@ namespace SikkerDigitalPost.Klient
         /// <remarks>
         /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public void Bekreft(Forretningskvittering forrigeKvittering)
+        public void Bekreft(Leveringskvittering forrigeKvittering)
         {
+            EnvelopeSettings settings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
+            var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(settings);
+            FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
+            var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
 
+            var bekreftelseAvBekreftelse = SendSoapContainer(soapContainer);
         }
 
-        private XmlDocument SendSoapContainer(SoapContainer soapContainer)
+        private string SendSoapContainer(SoapContainer soapContainer)
         {
-            var xmlDocument = new XmlDocument();
+            string data = String.Empty;
+
             var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
 
             soapContainer.Send(request);
             try
             {
-                using (Stream responseStream = request.GetResponse().GetResponseStream())
-                {
-                    using (XmlReader xmlReader = XmlReader.Create(responseStream))
-                    {
-                        xmlDocument.Load(xmlReader);
-                    }
-                }
+                var response = request.GetResponse();
+                data = new StreamReader(response.GetResponseStream()).ReadToEnd();
             }
             catch (WebException we)
             {
@@ -173,12 +231,14 @@ namespace SikkerDigitalPost.Klient
                 {
                     using (Stream errorStream = response.GetResponseStream())
                     {
-                        var soap = XDocument.Load(errorStream);
+                        XDocument soap = XDocument.Load(errorStream);
+                        var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
+                        FileUtility.WriteXmlToFileInBasePath(soap.ToString(), "FeilVedSending", errorFileName);
                     }
 
                 }
             }
-            return xmlDocument;
+            return data;
         }
 
         private bool ValiderSignatur(XmlDocument response)

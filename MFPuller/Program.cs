@@ -52,9 +52,9 @@ namespace MFPuller
 
             try
             {
-                string textKvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
-                string fileName = String.Format("{0}.txt", DateTime.Now.ToString("s").Replace(":","."));
-                SaveTextToFile(fileName,textKvittering);
+                Leveringskvittering leveringskvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                string fileName = String.Format("{0}.txt", DateUtility.DateForFile());
+                SaveTextToFile(fileName,leveringskvittering.ToString());
             }
             catch (Exception error)
             {
