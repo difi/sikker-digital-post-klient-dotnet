@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
@@ -6,16 +7,41 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Leveringskvittering :Kvittering //: Forretningskvittering
     {
-        public string RefToMessageId { get; private set; }
-        public string KonversasjonsId { get; private set; }
+        public string MessageId { get; private set; }
         internal XmlNode BodyReference { get; private set; }
 
-        public Leveringskvittering(DateTime tidspunkt, string refToMessageId, XmlNode bodyReference) : base(tidspunkt)
+        public Leveringskvittering(DateTime tidspunkt, string messageId, XmlNode bodyReference)
         {
-            RefToMessageId = refToMessageId;
+            Tidspunkt = tidspunkt;
+            MessageId = messageId;
             BodyReference = bodyReference;
         }
 
+        public Leveringskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
+        {
+            Tidspunkt = Convert.ToDateTime(DocumentNode(xmlDocument, namespaceManager, "//ns6:Timestamp").InnerText);
+            MessageId = DocumentNode(xmlDocument, namespaceManager, "//ns6:MessageId").InnerText;
+            BodyReference = BodyReferenceNode(xmlDocument, namespaceManager);
+        }
+
+        private static XmlNode DocumentNode(XmlDocument document, XmlNamespaceManager namespaceManager, string node)
+        {
+            var rot = document.DocumentElement;
+            string nodeString = String.Format("//{0}", node);
+            var targetNode = rot.SelectSingleNode(nodeString, namespaceManager);
+
+            return targetNode;
+        }
+
+        private static XmlNode BodyReferenceNode(XmlDocument document, XmlNamespaceManager namespaceManager)
+        {
+            var rot = document.DocumentElement;
+            var referenceNodes = rot.SelectNodes("./ns5:Reference", namespaceManager);
+
+            return referenceNodes.Cast<XmlNode>()
+                .FirstOrDefault(referenceNode => referenceNode.Attributes["URI"]
+                    .Value.StartsWith("#id"));
+        }
         //    public Leveringskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
     //    {
     //    }

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Åpningskvittering : Kvittering
     {
-        public Åpningskvittering(DateTime tidspunkt) : base(tidspunkt)
+        public Åpningskvittering(DateTime tidspunkt)
         {
+            Tidspunkt = tidspunkt;
+        }
+
+        public Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
+        {
+            Tidspunkt = Convert.ToDateTime(DocumentNode(xmlDocument, namespaceManager, "local-name()='tidspunkt'").InnerText);
         }
     }
 

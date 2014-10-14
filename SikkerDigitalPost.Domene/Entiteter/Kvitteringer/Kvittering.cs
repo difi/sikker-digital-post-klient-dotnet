@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Xml;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Kvittering
     {
-        public readonly DateTime Tidspunkt;
+        public DateTime Tidspunkt { get; protected set; }
 
-        public Kvittering(DateTime tidspunkt)
+        protected static XmlNode DocumentNode(XmlDocument document, XmlNamespaceManager namespaceManager, string xPath)
         {
-            
-        }
+            var rot = document.DocumentElement;
+            var targetNode = rot.SelectSingleNode(xPath, namespaceManager);
 
+            return targetNode;
+        }
     }
 }

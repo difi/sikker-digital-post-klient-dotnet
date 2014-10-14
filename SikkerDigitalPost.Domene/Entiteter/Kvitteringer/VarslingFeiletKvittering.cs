@@ -9,7 +9,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         public readonly Varslingskanal Varslingskanal;
         public string Beskrivelse { get; set; }
 
-        public VarslingFeiletKvittering(DateTime tidspunkt, Varslingskanal varslingskanal) : base(tidspunkt)
+        public VarslingFeiletKvittering(DateTime tidspunkt, Varslingskanal varslingskanal)
         {
             Varslingskanal = varslingskanal;
         }
