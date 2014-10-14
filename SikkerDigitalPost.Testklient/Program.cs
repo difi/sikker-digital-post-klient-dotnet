@@ -44,6 +44,10 @@ namespace SikkerDigitalPost.Testklient
              * identiske. 
              */
 
+            var organisasjonsnummerEboks = "996460320";
+            var fødselsnummerEboks = "01043100358";
+            var postkasseadresseEboks = "";
+
             var organisasjonsnummerPosten = "984661185";
             var organisasjonsnummerTekniskAvsender = organisasjonsnummerPosten;
             var organisasjonsnummerMottagerPostkasse = organisasjonsnummerPosten;
