@@ -77,6 +77,7 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Vedlegg.Add(arkiv);
 
 
+
             var response = SendSoapContainer(soapContainer);
 
             FileUtility.WriteXmlToFileInBasePath(response, "ForretningsmeldingSendtKvittering.xml");
@@ -187,7 +188,7 @@ namespace SikkerDigitalPost.Klient
                 throw new Exception("Feil under søking i xml.", e);
             }
 
-            return new Leveringskvittering(messageId, bodyReference);
+            return new Leveringskvittering(new DateTime(), messageId, bodyReference);
         }
 
         /// <summary>

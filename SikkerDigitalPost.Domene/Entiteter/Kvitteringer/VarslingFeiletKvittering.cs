@@ -4,6 +4,17 @@ using SikkerDigitalPost.Domene.Enums;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    public class VarslingFeiletKvittering : Kvittering
+    {
+        public readonly Varslingskanal Varslingskanal;
+        public string Beskrivelse { get; set; }
+
+        public VarslingFeiletKvittering(DateTime tidspunkt, Varslingskanal varslingskanal) : base(tidspunkt)
+        {
+            Varslingskanal = varslingskanal;
+        }
+    }
+
     //public class OldVarslingFeiletKvittering : Forretningskvittering
     //{
         //public readonly Varslingskanal Varslingskanal;

@@ -47,6 +47,8 @@
     <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
+    <Compile Include="Entiteter\Kvitteringer\FeiletKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Kvittering.cs" />
     <Compile Include="Entiteter\Post\DigitalPost.cs" />
     <Compile Include="Entiteter\Post\Dokument.cs" />
     <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
@@ -55,13 +57,13 @@
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
     <Compile Include="Entiteter\Ebms\OldEbmsApplikasjonsKvittering.cs" />
     <Compile Include="Entiteter\Ebms\EbmsUtgåendeMelding.cs" />
-    <Compile Include="Entiteter\Kvitteringer\OldLeveringskvittering.cs" />
     <Compile Include="Entiteter\Interface\PMode.cs" />
     <Compile Include="Entiteter\Kvitteringer\Kvitteringsforespørsel.cs" />
     <Compile Include="Entiteter\Kvitteringer\LeveringsKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\OldVarslingFeiletKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\OldÅpningskvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\VarslingFeiletKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Åpningskvittering.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
+    <Compile Include="Enums\Feiltype.cs" />
     <Compile Include="Enums\Handling.cs" />
     <Compile Include="Enums\Sikkerhetsnivå.cs" />
     <Compile Include="Entiteter\Varsel\Varsel.cs" />
