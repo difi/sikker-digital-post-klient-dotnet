@@ -27,6 +27,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         private static XmlNode BodyReferenceNode(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
             var rot = document.DocumentElement;
+            var 
             var referenceNodes = rot.SelectNodes("//ns5:Reference", namespaceManager);
 
             return referenceNodes.Cast<XmlNode>()
