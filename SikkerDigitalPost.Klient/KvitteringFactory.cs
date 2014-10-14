@@ -15,15 +15,15 @@ namespace SikkerDigitalPost.Klient
 
             if (IsLevertkvittering(xmlDocument))
             {
-
+                return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
             else if (IsFeiletkvittering(xmlDocument))
             {
-
+                return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
             }
             else if (IsÅpningskvittering(xmlDocument))
             {
-
+                return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
             return null;
 
@@ -46,23 +46,27 @@ namespace SikkerDigitalPost.Klient
 
         private static bool DocumentHasNode(XmlDocument document, string node)
         {
-            var rot = document.DocumentElement;
-            string nodeString = String.Format("//{0}", node);
-            var receiptNode = rot.SelectSingleNode(nodeString, NamespaceManager(document));
-
-            return receiptNode != null;
+            return DocumentNode(document, node) == null;
         }
 
+        private static XmlNode DocumentNode(XmlDocument document, string node)
+        {
+            var rot = document.DocumentElement;
+            string nodeString = String.Format("//{0}", node);
+            var targetNode = rot.SelectSingleNode(nodeString, NamespaceManager(document));
+
+            return targetNode;
+        }
 
         private static XmlNamespaceManager NamespaceManager(XmlDocument document)
         {
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
             manager.AddNamespace("env", Navnerom.env);
             manager.AddNamespace("eb", Navnerom.eb);
+            manager.AddNamespace("ns5", Navnerom.Ns5);
             manager.AddNamespace("ns6", Navnerom.Ns6);
 
             //Endre
-            manager.AddNamespace("env", Navnerom.env);
             manager.AddNamespace("env", Navnerom.env);
             manager.AddNamespace("env", Navnerom.env);
             manager.AddNamespace("env", Navnerom.env);

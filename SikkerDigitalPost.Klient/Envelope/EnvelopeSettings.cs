@@ -12,7 +12,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         public readonly Databehandler Databehandler;
         internal readonly GuidHandler GuidHandler;
         public readonly Kvitteringsforespørsel Kvitteringsforespørsel;
-        public readonly Leveringskvittering Leveringskvittering;
+        public readonly Leveringskvittering ForrigeKvittering;
 
         /// <summary>
         /// Settings for KvitteringsEnvelope
@@ -38,9 +38,9 @@ namespace SikkerDigitalPost.Klient.Envelope
         /// <summary>
         /// Settings for BekreftKvittering
         /// </summary>
-        public EnvelopeSettings(Leveringskvittering leveringskvittering, Databehandler databehandler, GuidHandler guidHandler)
+        public EnvelopeSettings(Leveringskvittering forrigeKvittering, Databehandler databehandler, GuidHandler guidHandler)
         {
-            Leveringskvittering = leveringskvittering;
+            ForrigeKvittering = forrigeKvittering;
             Databehandler = databehandler;
             GuidHandler = guidHandler;
         }

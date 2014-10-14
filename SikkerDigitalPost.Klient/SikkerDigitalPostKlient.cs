@@ -78,7 +78,7 @@ namespace SikkerDigitalPost.Klient
 
             var response = SendSoapContainer(soapContainer);
 
-            FileUtility.WriteXmlToFileInBasePath(response, "Leveringskvittering.xml");
+            FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
 
             //if(!ValiderSignatur(response))
             //    throw new Exception("Signatur validerer ikke");
@@ -143,8 +143,12 @@ namespace SikkerDigitalPost.Klient
 
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(kvittering);
-            
-            return LagLeveringskvittering(xmlDoc);
+
+            var kvit = KvitteringFactory.Get(kvittering);
+
+            if(kvit.GetType() == typeof(Leveringskvittering))
+               return (Leveringskvittering)kvit;
+            return null;
         }
 
         private Leveringskvittering LagLeveringskvittering(XmlDocument document)

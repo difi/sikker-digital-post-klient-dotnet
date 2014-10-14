@@ -24,19 +24,10 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
             BodyReference = BodyReferenceNode(xmlDocument, namespaceManager);
         }
 
-        private static XmlNode DocumentNode(XmlDocument document, XmlNamespaceManager namespaceManager, string node)
-        {
-            var rot = document.DocumentElement;
-            string nodeString = String.Format("//{0}", node);
-            var targetNode = rot.SelectSingleNode(nodeString, namespaceManager);
-
-            return targetNode;
-        }
-
         private static XmlNode BodyReferenceNode(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
             var rot = document.DocumentElement;
-            var referenceNodes = rot.SelectNodes("./ns5:Reference", namespaceManager);
+            var referenceNodes = rot.SelectNodes("//ns5:Reference", namespaceManager);
 
             return referenceNodes.Cast<XmlNode>()
                 .FirstOrDefault(referenceNode => referenceNode.Attributes["URI"]

@@ -48,7 +48,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
 
                 XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
-                refToMessageId.InnerText = Settings.Leveringskvittering.RefToMessageId;
+                refToMessageId.InnerText = Settings.ForrigeKvittering.MessageId;
             }
             return messageInfo;
         }
@@ -61,7 +61,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
                 {
                     XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
                     {
-                        XmlNode reference = Settings.Leveringskvittering.BodyReference;
+                        XmlNode reference = Settings.ForrigeKvittering.BodyReference;
                         
                         messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));
                     }
