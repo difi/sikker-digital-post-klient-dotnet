@@ -4,7 +4,7 @@ using SikkerDigitalPost.Domene.Enums;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
-    public class Feilmelding : Kvittering
+    public class Feilmelding : Forretningskvittering
     {
         public readonly Feiltype Feiltype;
         public string Feilkode { get; set; }
@@ -19,6 +19,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
         {
             Tidspunkt = Convert.ToDateTime(DocumentNode(xmlDocument, namespaceManager, "//ns6:Timestamp").InnerText);
+            
             var feiltype = DocumentNode(xmlDocument, namespaceManager, "//env:Value").InnerText;
             
             Feiltype = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower()) 

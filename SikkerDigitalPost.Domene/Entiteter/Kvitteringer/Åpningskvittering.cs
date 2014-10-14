@@ -4,7 +4,7 @@ using SikkerDigitalPost.Domene.Entiteter.Ebms;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
-    public class Åpningskvittering : Kvittering
+    public class Åpningskvittering : Forretningskvittering
     {
         public Åpningskvittering(DateTime tidspunkt)
         {
