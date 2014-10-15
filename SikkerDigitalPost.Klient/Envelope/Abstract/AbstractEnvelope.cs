@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract

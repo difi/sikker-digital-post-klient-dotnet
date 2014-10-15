@@ -78,10 +78,7 @@ namespace SikkerDigitalPost.Tester
             Dokumentpakke = GenererDokumentpakke();
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
 
-            Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
-            var manifestbygger = new ManifestBygger(Manifest);
-            
-            manifestbygger.Bygg();
+            Manifest = new Manifest(Forsendelse);
 
             Signatur = new Signatur(Sertifikat);
             var signaturbygger = new SignaturBygger(Signatur, Forsendelse, Manifest);

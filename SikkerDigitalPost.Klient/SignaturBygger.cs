@@ -4,12 +4,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Xml;
+using Sha256Reference = SikkerDigitalPost.Klient.Xml.Sha256Reference;
 
 namespace SikkerDigitalPost.Klient
 {

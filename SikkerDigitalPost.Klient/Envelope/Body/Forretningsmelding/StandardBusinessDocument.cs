@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Xml;
+using Sha256Reference = SikkerDigitalPost.Klient.Xml.Sha256Reference;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {

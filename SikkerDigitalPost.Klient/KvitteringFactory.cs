@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Klient.Envelope;
 

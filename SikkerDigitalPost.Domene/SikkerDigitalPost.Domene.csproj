@@ -78,6 +78,7 @@
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
+    <Compile Include="Navnerom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entiteter\Aktører\Databehandler.cs" />
     <Compile Include="Sha256Reference.cs" />

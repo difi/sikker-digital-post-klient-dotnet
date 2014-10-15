@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
 using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
@@ -58,12 +59,10 @@ namespace SikkerDigitalPost.Klient
         public Transportkvittering Send(Forsendelse forsendelse)
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
-            var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
+            var manifest = new Manifest(forsendelse);
             var signatur = new Signatur(_databehandler.Sertifikat);
 
-            var manifestbygger = new ManifestBygger(manifest);
-            manifestbygger.Bygg();
-            var signaturbygger = new SignaturBygger(signatur, forsendelse, manifest);
+            SignaturBygger signaturbygger = new SignaturBygger(signatur, forsendelse, manifest);
             signaturbygger.Bygg();
 
             var guidHandler = new GuidHandler();
