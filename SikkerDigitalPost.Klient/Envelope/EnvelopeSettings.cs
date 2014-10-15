@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.Pkcs;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
+﻿using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 
@@ -12,7 +11,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         public readonly Databehandler Databehandler;
         internal readonly GuidHandler GuidHandler;
         public readonly Kvitteringsforespørsel Kvitteringsforespørsel;
-        public readonly Leveringskvittering Leveringskvittering;
+        public readonly Forretningskvittering ForrigeKvittering;
 
         /// <summary>
         /// Settings for KvitteringsEnvelope
@@ -38,9 +37,9 @@ namespace SikkerDigitalPost.Klient.Envelope
         /// <summary>
         /// Settings for BekreftKvittering
         /// </summary>
-        public EnvelopeSettings(Leveringskvittering leveringskvittering, Databehandler databehandler, GuidHandler guidHandler)
+        public EnvelopeSettings(Forretningskvittering forrigeKvittering, Databehandler databehandler, GuidHandler guidHandler)
         {
-            Leveringskvittering = leveringskvittering;
+            ForrigeKvittering = forrigeKvittering;
             Databehandler = databehandler;
             GuidHandler = guidHandler;
         }

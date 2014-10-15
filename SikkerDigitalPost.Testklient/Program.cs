@@ -74,7 +74,7 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
             
-            sikkerDigitalPostKlient.Send(forsendelse);
+            //Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             //Info om Kvitteringer:
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/forretningslag/forretningsprosess_kvittering
@@ -83,8 +83,8 @@ namespace SikkerDigitalPost.Testklient
             //http://begrep.difi.no/SikkerDigitalPost/1.0.2/eksempler/soap/5_request_forespoersel_om_forretningskvittering_fra_postavsender_til_meldingsformidler.xml
 
             var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
-            var leveringskvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
-            sikkerDigitalPostKlient.Bekreft(leveringskvittering);
+            Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+            sikkerDigitalPostKlient.Bekreft(kvittering);
         }
     }
 }
