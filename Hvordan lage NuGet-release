@@ -14,7 +14,7 @@
 		- BUILD - Batch Build - Velg Release for Domene og klient.
 	3. Finn versjonsnummer ved å kjøre PowerShell-scriptet 'VersionInfo.ps1', som ligger i rotmappen. Versjonsnummer for Klient er det du skal bruke videre.
 	4. Kopier mappen som ligger i roten av prosjektet ('Oppsett/NuGet StandardOppsett') til et annet sted på disk utenfor repositoriet.
-	5. I filen SikkerDigitalPostKlientbibliotek.VERSION-alpha.nupkg, bytt ut VERSION med versjonsnummeret som du fant tidligere.
+	5. I filen SikkerDigitalPostKlientbibliotek.VERSION.nupkg, bytt ut VERSION med versjonsnummeret som du fant tidligere.
 	6. I mappen som heter lib legger du inn SikkerDigitalPost.Domene.dll og SikkerDigitalPost.Klient.dll som du finner i 
 		SikkerDigitalPost.Klient\bin\Release
 	7. Legg til nye .dll-filer til NuGet-pakken: 
@@ -36,5 +36,6 @@
 	3. Velg Updates i menyen til venstre, og nuget.org
 	4. Har du gjort alt rett, skal det vises at Sikker Digital Post Klientbibliotek kan oppdateres.
 	5. Trykk update og gjør eventuelle endringer i Program.cs og sørg for at eksempelkoden kjører uten problemer. 
+	6. Push opp endringene igjen.
 
 
