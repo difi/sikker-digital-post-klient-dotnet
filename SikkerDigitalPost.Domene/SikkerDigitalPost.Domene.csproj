@@ -43,8 +43,6 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Entiteter\AsicE\Manifest\Manifest.cs" />
-    <Compile Include="Entiteter\AsicE\Signatur\Signatur.cs" />
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
     <Compile Include="Entiteter\Kvitteringer\Feilmelding.cs" />
@@ -78,7 +76,6 @@
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
-    <Compile Include="Navnerom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entiteter\Aktører\Databehandler.cs" />
     <Compile Include="Sha256Reference.cs" />

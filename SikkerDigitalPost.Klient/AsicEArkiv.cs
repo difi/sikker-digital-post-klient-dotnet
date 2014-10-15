@@ -4,10 +4,9 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Klient
 {

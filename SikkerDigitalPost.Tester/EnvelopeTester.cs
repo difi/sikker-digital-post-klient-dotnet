@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene;
+using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Tester

@@ -47,6 +47,8 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="AsicEArkiv.cs" />
+    <Compile Include="AsicE\Manifest.cs" />
+    <Compile Include="AsicE\Signatur.cs" />
     <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
     <Compile Include="Envelope\Abstract\AbstractHeader.cs" />
     <Compile Include="Envelope\Body\Forretningsmelding\ForretningsmeldingBody.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Envelope\KvitteringsEnvelope.cs" />
     <Compile Include="Envelope\Abstract\XmlPart.cs" />
     <Compile Include="KvitteringFactory.cs" />
+    <Compile Include="Navnerom.cs" />
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="KlientKonfigurasjon.cs">

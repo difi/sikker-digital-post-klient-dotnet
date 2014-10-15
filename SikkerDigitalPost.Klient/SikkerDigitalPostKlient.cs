@@ -5,10 +5,9 @@ using System.Xml;
 using System.Xml.Linq;
 using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.Xml;
@@ -58,13 +57,9 @@ namespace SikkerDigitalPost.Klient
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
-            var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(forsendelse);
-            var signatur = new Signatur(_databehandler.Sertifikat);
-
-            SignaturBygger signaturbygger = new SignaturBygger(signatur, forsendelse, manifest);
-            signaturbygger.Bygg();
-
+            var signatur = new Signatur(forsendelse, manifest, _databehandler.Sertifikat);
+            
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
 

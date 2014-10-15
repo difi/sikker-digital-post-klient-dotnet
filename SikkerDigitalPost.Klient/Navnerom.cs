@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Domene
+﻿namespace SikkerDigitalPost.Klient
 {
     internal static class Navnerom
     {
