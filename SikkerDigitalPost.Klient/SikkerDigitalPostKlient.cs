@@ -238,47 +238,5 @@ namespace SikkerDigitalPost.Klient
                 throw new Exception("En feil", e);
             }
         }
-
-        private Leveringskvittering LagLeveringskvittering(XmlDocument document)
-        {
-            //string messageId = String.Empty;
-            //string partInfoBodyId = String.Empty;
-            //string bodyId = String.Empty;
-            //XmlNode bodyReference;
-
-            //XmlNode rot = document.DocumentElement;
-            //XmlNamespaceManager mgr = new XmlNamespaceManager(document.NameTable);
-            //mgr.AddNamespace("env", Navnerom.env);
-            //mgr.AddNamespace("eb", Navnerom.eb);
-            //mgr.AddNamespace("wsu", Navnerom.wsu);
-            //mgr.AddNamespace("ds", Navnerom.ds);
-            //mgr.AddNamespace("ns6", Navnerom.Ns6);
-            //mgr.AddNamespace("ns7", Navnerom.Ns7);
-
-            //try
-            //{
-            //    messageId = rot.SelectSingleNode("//ns6:MessageId", mgr).InnerText;
-
-            //    var partInfo = rot.SelectSingleNode("//ns6:PartInfo", mgr);
-            //    if (partInfo.Attributes.Count > 0)
-            //        partInfoBodyId = partInfo.Attributes["href"].Value;
-
-            //    bodyId = rot.SelectSingleNode("//env:Body", mgr).Attributes["wsu:Id"].Value;
-
-            //    if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
-            //    {
-            //        throw new Exception("Id i PartInfo og i Body matcher ikke.");
-            //    }
-
-            //    bodyReference = rot.SelectSingleNode("//ds:Reference[@URI = '#" + bodyId + "']", mgr);
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception("Feil under søking i xml.", e);
-            //}
-
-            //return new Leveringskvittering(new DateTime(), messageId, bodyReference);
-            throw new NotImplementedException();
-        }
     }
 }

@@ -36,7 +36,7 @@ namespace SikkerDigitalPost.Klient
 
         private static bool IsFeiletkvittering(XmlDocument document)
         {
-            return DocumentHasNode(document, "ns6:Error");
+            return DocumentHasNode(document, "ns9:feil");
         }
 
         private static bool IsÅpningskvittering(XmlDocument document)
