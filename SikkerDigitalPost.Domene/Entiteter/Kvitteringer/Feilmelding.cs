@@ -10,12 +10,6 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         public string Feilkode { get; set; }
         public string Detaljer { get; set; }
 
-        public Feilmelding(DateTime tidspunkt, Feiltype feiltype)
-        {
-            Tidspunkt = tidspunkt;
-            Feiltype = feiltype;
-        }
-
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
             Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);

@@ -69,8 +69,6 @@ namespace SikkerDigitalPost.Klient
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
 
-
-
             var forretingsmeldingEnvelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
             var soapContainer = new SoapContainer {Envelope = forretingsmeldingEnvelope, Action = "\"\""};

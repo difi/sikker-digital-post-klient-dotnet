@@ -29,7 +29,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
             _document = document;
             _namespaceManager = namespaceManager;
 
+            KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
             MessageId = DocumentNode("//ns6:MessageId").InnerText;
+            RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
             BodyReference = BodyReferenceNode();
         }
 
@@ -37,10 +39,10 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         {
             var rot = _document.DocumentElement;
             var targetNode = rot.SelectSingleNode(xPath, _namespaceManager);
-
+            
             return targetNode;
         }
-
+        
         protected XmlNode BodyReferenceNode()
         {
             var rot = _document.DocumentElement;

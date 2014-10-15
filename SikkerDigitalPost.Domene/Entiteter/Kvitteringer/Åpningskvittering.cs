@@ -11,7 +11,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
             Tidspunkt = tidspunkt;
         }
 
-        public Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
+        internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
             Tidspunkt = Convert.ToDateTime(DocumentNode("local-name()='tidspunkt'").InnerText);
         }

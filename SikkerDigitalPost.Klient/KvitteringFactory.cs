@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Klient
 
         private static bool IsLevertkvittering(XmlDocument document)
         {
-            return DocumentHasNode(document, "ns6:Receipt");
+            return DocumentHasNode(document, "ns9:kvittering");
         }
 
         private static bool IsFeiletkvittering(XmlDocument document)
@@ -46,7 +46,7 @@ namespace SikkerDigitalPost.Klient
 
         private static bool DocumentHasNode(XmlDocument document, string node)
         {
-            return DocumentNode(document, node) == null;
+            return DocumentNode(document, node) != null;
         }
 
         private static XmlNode DocumentNode(XmlDocument document, string node)
@@ -63,8 +63,11 @@ namespace SikkerDigitalPost.Klient
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
             manager.AddNamespace("env", Navnerom.env);
             manager.AddNamespace("eb", Navnerom.eb);
+            manager.AddNamespace("ns3", Navnerom.Ns3);
             manager.AddNamespace("ns5", Navnerom.Ns5);
             manager.AddNamespace("ns6", Navnerom.Ns6);
+            manager.AddNamespace("ns9", Navnerom.Ns9);
+
 
             return manager;
         }
