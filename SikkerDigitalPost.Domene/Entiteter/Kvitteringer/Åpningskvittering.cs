@@ -6,26 +6,14 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Åpningskvittering : Forretningskvittering
     {
-        public Åpningskvittering(DateTime tidspunkt)
+        public Åpningskvittering(DateTime tidspunkt)    
         {
             Tidspunkt = tidspunkt;
         }
 
-        public Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
+        public Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
-            Tidspunkt = Convert.ToDateTime(DocumentNode(xmlDocument, namespaceManager, "local-name()='tidspunkt'").InnerText);
+            Tidspunkt = Convert.ToDateTime(DocumentNode("local-name()='tidspunkt'").InnerText);
         }
     }
-
-    //public class OldÅpningskvittering : Forretningskvittering
-    //{
-    //    public OldÅpningskvittering(EbmsApplikasjonskvittering applikasjonskvittering) : base(applikasjonskvittering)
-    //    {
-    //    }
-
-    //    public override string ToString()
-    //    {
-    //        return String.Format("{0} {konversasjonsId={1}}", GetType(), KonversasjonsId);
-    //    }
-    //}
 }
