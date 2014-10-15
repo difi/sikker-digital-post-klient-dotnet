@@ -57,11 +57,8 @@ namespace SikkerDigitalPost.Klient
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
-            var manifest = new Manifest(forsendelse);
-            var signatur = new Signatur(forsendelse, manifest, _databehandler.Sertifikat);
-            
             var guidHandler = new GuidHandler();
-            var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
+            var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
 
             var forretingsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 

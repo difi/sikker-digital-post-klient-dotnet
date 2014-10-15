@@ -21,12 +21,12 @@ namespace SikkerDigitalPost.Klient
         private readonly GuidHandler _guidHandler;
 
 
-        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest, X509Certificate2 krypteringssertifikat, GuidHandler guidHandler)
+        public AsicEArkiv(Forsendelse forsendelse, GuidHandler guidHandler, X509Certificate2 avsenderSertifikat)
         {
-            Signatur = signatur;
-            Manifest = manifest;
-            _dokumentpakke = dokumentpakke;
-            _krypteringssertifikat = krypteringssertifikat;
+            Manifest = new Manifest(forsendelse);
+            Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
+            _dokumentpakke = forsendelse.Dokumentpakke;
+            _krypteringssertifikat = forsendelse.DigitalPost.Mottaker.Sertifikat;
             _guidHandler = guidHandler;
         }
 

@@ -82,7 +82,7 @@ namespace SikkerDigitalPost.Tester
 
             GuidHandler = new GuidHandler();
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
-            Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
+            Arkiv = new AsicEArkiv(Forsendelse, GuidHandler, Databehandler.Sertifikat);
             Envelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
         }
 
