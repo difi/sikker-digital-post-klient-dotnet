@@ -1,0 +1,33 @@
+-Hvordan lage ny NuGet-release:
+	0. Last ned NuGet Package Explorer og installer
+	1. Sett versjonsnummer på biblioteket:
+		- Åpne VersionInfo.cs som ligger i rotmappen på  på sikker-digital-post-net-klient.
+		- Versjonering er på formen <major version>.<minor version>.<build number>.<revision>
+		Slik skal det gjøres:
+			- Major - Stor release som er drastisk forandret fra forrige
+			- Minor - Ny funskjonalitet / utbedret
+			- BuildVersion - Antall dager etter 1. januar 2000.
+			- Revision - Tilfeldig nummer (Muligens stigende)
+
+			BuildVersion og Revision settes automatisk av koden vha "1.0.*, hvor * definerer at BuildVersion og Revision ettes etter .NET sine regler. 
+	2. Sørg for at du bygger releaseverson av klienten i visual studio:
+		- BUILD - Batch Build - Velg Release for Domene og klient.
+	3. Finn versjonsnummer ved å kjøre PowerShell-scriptet 'VersionInfo.ps1', som ligger i rotmappen. Versjonsnummer for Klient er det du skal bruke videre.
+	4. Kopier mappen som ligger i roten av prosjektet ('Oppsett/NuGet StandardOppsett') til et annet sted på disk utenfor repositoriet.
+	5. I filen SikkerDigitalPostKlientbibliotek.VERSION-alpha.nupkg, bytt ut VERSION med versjonsnummeret som du fant tidligere.
+	6. I mappen som heter lib legger du inn SikkerDigitalPost.Domene.dll og SikkerDigitalPost.Klient.dll som du finner i 
+		SikkerDigitalPost.Klient\bin\Release
+	7. Legg til nye .dll-filer til NuGet-pakken: 
+		- Åpne opp nupkg-fila (steg 5). Under 'Package contents', åpne opp 'lib'. I mappen som heter net45(eller høere versjon om .NET-versjon på biblioteket enderer seg.)
+		- Finn .dll-filene fra steg 6 og dra de inn i mappen 'net45'.
+		- Velg TOOLS - Analyze Package. I høre del av vinduet skal du få opp feilmeldinger om noe hadde skjedd galt. Om du får 0 issue(s), har du vært en flink gutt (i snitt er du nok en gutt).
+	8. Endre versjonen på selve NuGet-pakken
+		- Velg EDIT - Edit Metadata og sett Version.
+		- Her er det slik at om du har '-alpha' eller lignende etter versjonsnummeret, blir releasen satt som prerelease. Her kan det forsåvidt stå hva som helst etter '-'.
+		- Lagre endringene du har gjort.
+	9. Velg FILE - Publish. 
+	10. Her er det Publish Key som identifiserer pakken, og sørger for at alle som har denne pakken vil få en ny versjon. 
+	11. Leser du denne guiden uten å vite hvordan du sjekker hvor mange som har lastet den ned. Kontakt Aleksander Sjåfjell (meg@sjafjell.no), så skal jeg gi deg rettigheter på pakken slik at jeg slipper å ha det! 
+	11. Gratulerer, du har nå lagt ut en NuGet-pakke!
+
+
