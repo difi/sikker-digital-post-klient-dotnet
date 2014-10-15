@@ -30,4 +30,11 @@
 	11. Leser du denne guiden uten å vite hvordan du sjekker hvor mange som har lastet den ned. Kontakt Aleksander Sjåfjell (meg@sjafjell.no), så skal jeg gi deg rettigheter på pakken slik at jeg slipper å ha det! 
 	11. Gratulerer, du har nå lagt ut en NuGet-pakke!
 
+- Hvordan oppdatere sikker-digital-post-net-klient-demo til å bruke ny NuGet-versjon.
+	1. Høyreklikk på prosjektet i Solution Explorer på SikkerDigitalPost.KlientDemo
+	2. Velg Manage NuGet Packages
+	3. Velg Updates i menyen til venstre, og nuget.org
+	4. Har du gjort alt rett, skal det vises at Sikker Digital Post Klientbibliotek kan oppdateres.
+	5. Trykk update og gjør eventuelle endringer i Program.cs og sørg for at eksempelkoden kjører uten problemer. 
+
 
