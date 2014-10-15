@@ -48,7 +48,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
 
                 XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
-                refToMessageId.InnerText = Settings.ForrigeKvittering.MessageId;
+                refToMessageId.InnerText = Settings.ForrigeKvittering.MeldingsId;
             }
             return messageInfo;
         }

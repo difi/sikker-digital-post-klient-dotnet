@@ -7,12 +7,13 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     public class Feilmelding : Forretningskvittering
     {
         public readonly Feiltype Feiltype;
+
         public string Detaljer { get; set; }
+
         public readonly DateTime TidspunktFeilet;
 
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
-            Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
             TidspunktFeilet = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
             
             var feiltype = DocumentNode("//ns9:feiltype").InnerText;

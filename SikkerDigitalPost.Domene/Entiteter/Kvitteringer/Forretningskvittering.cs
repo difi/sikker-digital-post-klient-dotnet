@@ -7,17 +7,18 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     {
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
-
-
+        
         public DateTime Tidspunkt { get; protected set; }
 
-        public string KonversasjonsId { get; protected set; }
+        public readonly string KonversasjonsId;
 
-        public string MessageId { get; protected set; }
+        public readonly string MeldingsId;
 
-        public string RefToMessageId { get; protected set; }
+        public readonly string RefToMessageId;
         
         internal XmlNode BodyReference { get; set; }
+
+        public readonly string Rådata;
 
         protected Forretningskvittering()
         {
@@ -29,10 +30,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
             _document = document;
             _namespaceManager = namespaceManager;
 
+            Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
             KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
-            MessageId = DocumentNode("//ns6:MessageId").InnerText;
+            MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
             RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
             BodyReference = BodyReferenceNode();
+            Rådata = document.OuterXml;
         }
 
         protected XmlNode DocumentNode(string xPath)

@@ -6,14 +6,11 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
     public class Åpningskvittering : Forretningskvittering
     {
-        public Åpningskvittering(DateTime tidspunkt)    
-        {
-            Tidspunkt = tidspunkt;
-        }
+        public readonly DateTime Åpningstidspunkt;
 
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
-            Tidspunkt = Convert.ToDateTime(DocumentNode("local-name()='tidspunkt'").InnerText);
+            Åpningstidspunkt = Convert.ToDateTime(DocumentNode("ns9:tidspunkt").InnerText);
         }
     }
 }

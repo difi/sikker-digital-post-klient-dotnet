@@ -14,7 +14,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
         public override XmlNode Xml()
         {
-            XmlElement messaging = Context.CreateElement("eb", "FJERNMEGMessaging", Navnerom.eb);
+            XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.eb);
             messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
             XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.env);
             mustUnderstand.InnerText = "true";

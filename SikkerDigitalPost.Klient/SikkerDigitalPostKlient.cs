@@ -55,7 +55,7 @@ namespace SikkerDigitalPost.Klient
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
-        public void Send(Forsendelse forsendelse)
+        public Transportkvittering Send(Forsendelse forsendelse)
         {
             var mottaker = forsendelse.DigitalPost.Mottaker;
             var manifest = new Manifest(mottaker, forsendelse.Behandlingsansvarlig, forsendelse);
@@ -69,7 +69,7 @@ namespace SikkerDigitalPost.Klient
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse.Dokumentpakke, signatur, manifest, forsendelse.DigitalPost.Mottaker.Sertifikat, guidHandler);
 
-            var forretingsmeldingEnvelope = new ForretingsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+            var forretingsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
             var soapContainer = new SoapContainer {Envelope = forretingsmeldingEnvelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
@@ -79,6 +79,7 @@ namespace SikkerDigitalPost.Klient
             FileUtility.WriteXmlToFileInBasePath(forretingsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
 
+            return KvitteringFactory.GetTransportkvittering(response);
             //if(!ValiderSignatur(response))
             //    throw new Exception("Signatur validerer ikke");
 
@@ -136,7 +137,7 @@ namespace SikkerDigitalPost.Klient
             FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
             FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
 
-            return KvitteringFactory.Get(kvittering);
+            return KvitteringFactory.GetForretningskvittering(kvittering);
         }
 
         /// <summary>
@@ -183,6 +184,7 @@ namespace SikkerDigitalPost.Klient
                         XDocument soap = XDocument.Load(errorStream);
                         var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
                         FileUtility.WriteXmlToFileInBasePath(soap.ToString(), "FeilVedSending", errorFileName);
+                        data = soap.ToString();
                     }
 
                 }

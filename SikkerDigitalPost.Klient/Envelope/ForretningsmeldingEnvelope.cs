@@ -5,10 +5,10 @@ using SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
-    internal class ForretingsmeldingEnvelope : AbstractEnvelope
+    internal class ForretningsmeldingEnvelope : AbstractEnvelope
     {
         
-        public ForretingsmeldingEnvelope(EnvelopeSettings settings) : base (settings)
+        public ForretningsmeldingEnvelope(EnvelopeSettings settings) : base (settings)
         {
         }
 
