@@ -68,7 +68,7 @@ namespace SikkerDigitalPost.Klient.AsicE
             }
             catch (Exception e)
             {
-                throw new XmlParseException("Kunne ikke bygge Xml for manifest. Sjekk InnerException for mer detaljer.",e);
+                throw new XmlParseException("Kunne ikke bygge Xml for manifest.",e);
             }
 
             return _manifestXml;

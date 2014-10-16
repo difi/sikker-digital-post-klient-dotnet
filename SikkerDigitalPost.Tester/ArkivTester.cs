@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Klient;
+using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Tester
 {

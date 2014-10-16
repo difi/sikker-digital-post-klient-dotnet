@@ -8,7 +8,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
-using SikkerDigitalPost.Klient.Xml;
+using SikkerDigitalPost.Klient.Security;
 using Sha256Reference = SikkerDigitalPost.Domene.Sha256Reference;
 
 namespace SikkerDigitalPost.Klient.AsicE
@@ -69,7 +69,7 @@ namespace SikkerDigitalPost.Klient.AsicE
             }
             catch (Exception e)
             {
-                throw new XmlParseException("Kunne ikke bygge Xml for signatur. Sjekk InnerException for mer detaljer.",e);
+                throw new XmlParseException("Kunne ikke bygge Xml for signatur.",e);
             }
 
             return _xml;

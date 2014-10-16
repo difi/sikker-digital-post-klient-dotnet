@@ -9,6 +9,8 @@ namespace SikkerDigitalPost.Domene.Exceptions
 
         private const string ekstrainnerinfo = " Sjekk inner exception for mer detaljer.";
 
+        public string Rådata { get; set; }
+
         public XmlParseException()
         {
             

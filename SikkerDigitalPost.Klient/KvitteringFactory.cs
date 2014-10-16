@@ -2,6 +2,7 @@
 using System.Xml;
 using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient
@@ -31,7 +32,13 @@ namespace SikkerDigitalPost.Klient
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
 
-            throw new Exception("Speccen har endra sæ, så du har fått ei TransportFeiletKvittering hær! Ikkebra. Nei.");
+            var ingenKvitteringstypeFunnetException = new XmlParseException(
+                "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+            {
+                Rådata = xml
+            };
+            
+            throw ingenKvitteringstypeFunnetException;
         }
 
         public static Transportkvittering GetTransportkvittering(string xml)
@@ -48,7 +55,12 @@ namespace SikkerDigitalPost.Klient
                 return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
 
-            throw new Exception("Du har fått ei transportkvittering såm vi ike hadde før. Lol.");
+            var exception = new XmlParseException("Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+            {
+                Rådata = xml
+            };
+
+            throw exception;
         }
 
         private static bool IsLevertkvittering(XmlDocument document)

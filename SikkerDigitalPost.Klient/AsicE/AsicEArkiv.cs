@@ -1,14 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klient.AsicE;
 
-namespace SikkerDigitalPost.Klient
+namespace SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {

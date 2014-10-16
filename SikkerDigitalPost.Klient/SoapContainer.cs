@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -24,7 +25,7 @@ namespace SikkerDigitalPost.Klient
         public void Send(HttpWebRequest request)
         {
             if (Envelope == null)
-                throw new InvalidOperationException("Unable to send soap message without an envelope.");
+                throw new SendException("Kan ikke sende en Soap-melding uten en envelope.");
 
             if (!string.IsNullOrWhiteSpace(Action))
                 request.Headers.Add("SOAPAction", Action);

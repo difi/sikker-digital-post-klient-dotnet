@@ -6,9 +6,10 @@ using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Security;
 using SikkerDigitalPost.Klient.Utilities;
-using SikkerDigitalPost.Klient.Xml;
 
 namespace SikkerDigitalPost.Klient
 {
