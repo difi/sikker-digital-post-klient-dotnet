@@ -3,7 +3,7 @@ using SikkerDigitalPost.Domene;
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
-    internal abstract class AbstractHeader : XmlPart
+    internal abstract class AbstractHeader : EnvelopeXmlPart
     {
         protected XmlNode Security;
 

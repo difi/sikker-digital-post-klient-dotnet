@@ -7,7 +7,7 @@ using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header
 {
-    internal class Security : XmlPart
+    internal class Security : EnvelopeXmlPart
     {
         private XmlElement _securityElement;
 

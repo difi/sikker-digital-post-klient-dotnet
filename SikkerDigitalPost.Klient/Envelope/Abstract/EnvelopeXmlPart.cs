@@ -2,12 +2,12 @@
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
-    internal abstract class XmlPart
+    internal abstract class EnvelopeXmlPart
     {
         protected readonly EnvelopeSettings Settings;
         protected readonly XmlDocument Context;
 
-        protected XmlPart(EnvelopeSettings settings, XmlDocument context)
+        protected EnvelopeXmlPart(EnvelopeSettings settings, XmlDocument context)
         {
             Settings = settings;
             Context = context;

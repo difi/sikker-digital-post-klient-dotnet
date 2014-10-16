@@ -3,12 +3,12 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Xml;
-using Sha256Reference = SikkerDigitalPost.Klient.Xml.Sha256Reference;
+using SikkerDigitalPost.Klient.Security;
+using Sha256Reference = SikkerDigitalPost.Klient.Security.Sha256Reference;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class StandardBusinessDocument : XmlPart
+    internal class StandardBusinessDocument : EnvelopeXmlPart
     {
         private readonly DateTime _creationDateAndtime;
 

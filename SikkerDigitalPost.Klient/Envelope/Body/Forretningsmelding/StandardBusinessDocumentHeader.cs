@@ -7,7 +7,7 @@ using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class StandardBusinessDocumentHeader : XmlPart
+    internal class StandardBusinessDocumentHeader : EnvelopeXmlPart
     {
         private readonly DateTime _creationDateAndtime;
         private const string SdpVersion = "urn:no:difi:sdp:1.0";

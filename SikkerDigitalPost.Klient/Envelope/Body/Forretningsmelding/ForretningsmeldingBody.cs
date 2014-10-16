@@ -4,7 +4,7 @@ using SikkerDigitalPost.Klient.Envelope.Abstract;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class ForretningsmeldingBody : XmlPart
+    internal class ForretningsmeldingBody : EnvelopeXmlPart
     {
         public ForretningsmeldingBody(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {

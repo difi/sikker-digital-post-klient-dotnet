@@ -1,7 +1,7 @@
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Xml;
+using SikkerDigitalPost.Klient.Security;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Kvittering
 {

@@ -65,11 +65,11 @@ namespace SikkerDigitalPost.Testklient
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
 
             string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
-            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlgg.txt");
+            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
             
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg",vedlegg,"text/plain","EN"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert);
 
             //Send

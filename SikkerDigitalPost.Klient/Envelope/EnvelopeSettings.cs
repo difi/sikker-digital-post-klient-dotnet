@@ -1,6 +1,7 @@
 ﻿using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {

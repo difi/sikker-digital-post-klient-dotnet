@@ -46,7 +46,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AsicEArkiv.cs" />
+    <Compile Include="AsicE\AsicEArkiv.cs" />
     <Compile Include="AsicE\Manifest.cs" />
     <Compile Include="AsicE\Signatur.cs" />
     <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Envelope\Header\Kvittering\KvitteringsHeader.cs" />
     <Compile Include="Envelope\KvitteringMottattEnvelope.cs" />
     <Compile Include="Envelope\KvitteringsEnvelope.cs" />
-    <Compile Include="Envelope\Abstract\XmlPart.cs" />
+    <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Navnerom.cs" />
     <Compile Include="SoapContainer.cs" />
@@ -76,16 +76,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignaturBygger.cs" />
     <Compile Include="SikkerDigitalPostKlient.cs" />
     <Compile Include="GuidHandler.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
-    <Compile Include="Xml\AttachmentContentSignatureTransform.cs" />
-    <Compile Include="Xml\QualifyingPropertiesObject.cs" />
-    <Compile Include="Xml\RsaPkCs1Sha256SignatureDescription.cs" />
-    <Compile Include="Xml\SecurityTokenReferenceClause.cs" />
-    <Compile Include="Xml\Sha256Reference.cs" />
-    <Compile Include="Xml\SignedXmlWithAgnosticId.cs" />
+    <Compile Include="Security\AttachmentContentSignatureTransform.cs" />
+    <Compile Include="Security\QualifyingPropertiesObject.cs" />
+    <Compile Include="Security\RsaPkCs1Sha256SignatureDescription.cs" />
+    <Compile Include="Security\SecurityTokenReferenceClause.cs" />
+    <Compile Include="Security\Sha256Reference.cs" />
+    <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">

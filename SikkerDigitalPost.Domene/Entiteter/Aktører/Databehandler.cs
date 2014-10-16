@@ -23,6 +23,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
             Sertifikat = sertifikat;
         }
 
+        /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
+        /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>
         public Databehandler(String organisasjonsnummer, X509Certificate2 sertifikat): 
             this(new Organisasjonsnummer(organisasjonsnummer), sertifikat )
         {
