@@ -132,3 +132,6 @@ pip-log.txt
 combined*.css
 *.js.map
 Status API Training Shop Blog About © 2014 GitHub, Inc. Terms Privacy Security Contact 
+
+# NuGet Package files
+*.nupkg
