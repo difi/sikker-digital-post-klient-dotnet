@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {
@@ -62,20 +62,19 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
         {
             if (_isXmlGenerated) return EnvelopeXml;
 
-            EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
-            EnvelopeXml.DocumentElement.AppendChild(BodyElement());
-            Header.AddSignatureElement();
-            _isXmlGenerated = true;
+            try
+            {
+                EnvelopeXml.DocumentElement.AppendChild(HeaderElement());
+                EnvelopeXml.DocumentElement.AppendChild(BodyElement());
+                Header.AddSignatureElement();
+                _isXmlGenerated = true;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(String.Format("Kunne ikke bygge Xml for {0} (av type AbstractEnvelope) . Sjekk InnerException for mer detaljer.",GetType()),e);
+            }
 
             return EnvelopeXml;
-        }
-
-        public void SkrivTilFil(string filsti)
-        {
-            if (!_isXmlGenerated)
-                Xml();
-
-            EnvelopeXml.Save(filsti);
         }
 
         protected abstract XmlNode HeaderElement();

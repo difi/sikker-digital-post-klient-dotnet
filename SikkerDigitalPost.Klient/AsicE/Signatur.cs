@@ -69,17 +69,12 @@ namespace SikkerDigitalPost.Klient.AsicE
             }
             catch (Exception e)
             {
-                throw new XmlParseException("Kunne ikke bygge Xml for signatur. Sjekk InnerException for mer detaljer.");
+                throw new XmlParseException("Kunne ikke bygge Xml for signatur. Sjekk InnerException for mer detaljer.",e);
             }
 
             return _xml;
         }
-
-        public void SkrivXmlTilFil(string filsti)
-        {
-            _xml.Save(filsti);
-        }
-
+        
         private static Sha256Reference SignedPropertiesReferanse()
         {
             var signedPropertiesReference = new Sha256Reference("#SignedProperties")

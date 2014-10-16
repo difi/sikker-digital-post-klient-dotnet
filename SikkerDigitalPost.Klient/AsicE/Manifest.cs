@@ -4,6 +4,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Klient.AsicE
@@ -41,27 +42,35 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         public XmlDocument Xml()
         {
-            if (_manifestXml != null)
-                return _manifestXml;
-
-            _manifestXml = new XmlDocument { PreserveWhitespace = true };
-            var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
-            _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
-            _manifestXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
-            _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
-
-            _manifestXml.DocumentElement.AppendChild(MottakerNode());
-            _manifestXml.DocumentElement.AppendChild(AvsenderNode());
-
-            var hoveddokument = Forsendelse.Dokumentpakke.Hoveddokument;
-            _manifestXml.DocumentElement.AppendChild(DokumentNode(hoveddokument, "hoveddokument", hoveddokument.Tittel));
-
-            foreach (var vedlegg in Forsendelse.Dokumentpakke.Vedlegg)
+            try
             {
-                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
+                if (_manifestXml != null)
+                    return _manifestXml;
+
+                _manifestXml = new XmlDocument {PreserveWhitespace = true};
+                var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
+                _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
+                _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
+                _manifestXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
+                _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
+
+                _manifestXml.DocumentElement.AppendChild(MottakerNode());
+                _manifestXml.DocumentElement.AppendChild(AvsenderNode());
+
+                var hoveddokument = Forsendelse.Dokumentpakke.Hoveddokument;
+                _manifestXml.DocumentElement.AppendChild(DokumentNode(hoveddokument, "hoveddokument",
+                    hoveddokument.Tittel));
+
+                foreach (var vedlegg in Forsendelse.Dokumentpakke.Vedlegg)
+                {
+                    _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
+                }
             }
-            
+            catch (Exception e)
+            {
+                throw new XmlParseException("Kunne ikke bygge Xml for manifest. Sjekk InnerException for mer detaljer.",e);
+            }
+
             return _manifestXml;
         }
 
