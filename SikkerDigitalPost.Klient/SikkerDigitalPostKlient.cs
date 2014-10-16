@@ -6,9 +6,11 @@ using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.Xml;
+using SikkerDigitalPost.Klient.XmlValidering;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -59,6 +61,28 @@ namespace SikkerDigitalPost.Klient
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
 
             var forretingsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+
+            try
+            {
+                var validering = new ForretningsmeldingEnvelopeValidering();
+                var validert = validering.ValiderDokumentMotXsd(forretingsmeldingEnvelope.Xml().OuterXml);
+                if(!validert)
+                    throw new Exception(validering.ValideringsVarsler);
+
+                var mValidering = new ManifestValidering();
+                var mValidert = mValidering.ValiderDokumentMotXsd(arkiv.Manifest.Xml().OuterXml);
+                if (!mValidert)
+                    throw new Exception(mValidering.ValideringsVarsler);
+
+                var sValidering = new SignaturValidering();
+                var sValidert = sValidering.ValiderDokumentMotXsd(arkiv.Signatur.Xml().OuterXml);
+                if (!sValidert)
+                    throw new Exception(sValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Envelope xml validerer ikke mot xsd:\n" + e.Message);
+            }
 
             var soapContainer = new SoapContainer {Envelope = forretingsmeldingEnvelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
