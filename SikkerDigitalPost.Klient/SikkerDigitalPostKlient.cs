@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Security;
@@ -59,22 +60,23 @@ namespace SikkerDigitalPost.Klient
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
 
-            var forretingsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
-            var soapContainer = new SoapContainer {Envelope = forretingsmeldingEnvelope, Action = "\"\""};
+            var soapContainer = new SoapContainer {Envelope = forretningsmeldingEnvelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
 
             var response = SendSoapContainer(soapContainer);
 
-            FileUtility.WriteXmlToFileInBasePath(forretingsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
+            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
 
-            return KvitteringFactory.GetTransportkvittering(response);
-            //if(!ValiderSignatur(response))
-            //    throw new Exception("Signatur validerer ikke");
+            if(!ValiderSignatur(response))
+                throw new SendException("Signatur av respons fra Meldingsformidler var ikke gyldig.");
 
-            //if(!ValiderDigests(response, envelope.Xml(), guidHandler))
-            //    throw new Exception("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
+            if(!ValiderDigests(response, forretningsmeldingEnvelope.Xml(), guidHandler))
+                throw new SendException("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
+            
+            return KvitteringFactory.GetTransportkvittering(response);
         }
 
         /// <summary>
@@ -182,17 +184,19 @@ namespace SikkerDigitalPost.Klient
             return data;
         }
 
-        private bool ValiderSignatur(XmlDocument response)
+        private bool ValiderSignatur(string response)
         {
-            XmlNode responseRot = response.DocumentElement;
-            var responseMgr = new XmlNamespaceManager(response.NameTable);
+            XmlDocument document = new XmlDocument();
+            document.LoadXml(response);
+            XmlNode responseRot = document.DocumentElement;
+            var responseMgr = new XmlNamespaceManager(document.NameTable);
             responseMgr.AddNamespace("env", Navnerom.env);
             responseMgr.AddNamespace("ds", Navnerom.ds);
 
             try
             {
                 var signatureNode = (XmlElement)responseRot.SelectSingleNode("//ds:Signature", responseMgr);
-                var signed = new SignedXmlWithAgnosticId(response);
+                var signed = new SignedXmlWithAgnosticId(document);
                 signed.LoadXml(signatureNode);
                 return signed.CheckSignature();
             }
@@ -202,10 +206,13 @@ namespace SikkerDigitalPost.Klient
             }
         }
 
-        private bool ValiderDigests(XmlDocument response, XmlDocument envelope, GuidHandler guidHandler)
+        private bool ValiderDigests(string response, XmlDocument envelope, GuidHandler guidHandler)
         {
-            XmlNode responseRot = response.DocumentElement;
-            XmlNamespaceManager responseMgr = new XmlNamespaceManager(response.NameTable);
+            XmlDocument document = new XmlDocument();
+            document.LoadXml(response);
+
+            XmlNode responseRot = document.DocumentElement;
+            XmlNamespaceManager responseMgr = new XmlNamespaceManager(document.NameTable);
             responseMgr.AddNamespace("env", Navnerom.env);
             responseMgr.AddNamespace("ns5", Navnerom.Ns5);
 
