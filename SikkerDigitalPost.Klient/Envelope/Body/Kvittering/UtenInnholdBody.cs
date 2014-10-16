@@ -4,7 +4,7 @@ using SikkerDigitalPost.Klient.Envelope.Abstract;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Kvittering
 {
-    internal class UtenInnholdBody : XmlPart
+    internal class UtenInnholdBody : EnvelopeXmlPart
     {
         public UtenInnholdBody(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {

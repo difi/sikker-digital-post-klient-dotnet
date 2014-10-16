@@ -8,7 +8,7 @@ using Sha256Reference = SikkerDigitalPost.Klient.Xml.Sha256Reference;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class StandardBusinessDocument : XmlPart
+    internal class StandardBusinessDocument : EnvelopeXmlPart
     {
         private readonly DateTime _creationDateAndtime;
 

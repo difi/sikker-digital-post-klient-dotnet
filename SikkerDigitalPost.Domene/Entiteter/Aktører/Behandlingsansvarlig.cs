@@ -10,40 +10,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
     {
         public readonly Organisasjonsnummer Organisasjonsnummer;
 
-        private string _avsenderidentifikator = String.Empty;
         /// <summary>
         /// Brukes for å identifisere en ansvarlig enhet innenfor en virksomhet. Benyttes dersom det er behov for å skille mellom ulike enheter hos avsender.
         /// </summary>
-        public string Avsenderidentifikator
-        {
-            get { return _avsenderidentifikator; }
-            set
-            {
-                if (value.Length <= 100)
-                    _avsenderidentifikator = value;
-                else
-                    throw new KonfigurasjonsException(
-                        String.Format("Avsenderidentifikator kan ikke være lengre enn 100 tegn, input streng er {0} tegn lang. Du sendte inn {1}",
-                        value.Length, value));
-                    
-            }
-        }
+        public string Avsenderidentifikator { get; set; }
 
-        private string _fakturareferanse = String.Empty;
-
-        public string Fakturareferanse
-        {
-            get { return _fakturareferanse; }
-            set
-            {
-                if (value.Length <= 40)
-                    _fakturareferanse = value;
-                else
-                    throw new KonfigurasjonsException(
-                        String.Format("Fakturareferanse kan ikke være lengre enn 100 tegn, input streng er {0} tegn lang. Du sendte inn {1}",
-                        value.Length, value));
-            }
-        }
+        public string Fakturareferanse { get; set; }
 
         /// <summary>
         /// Lager et nytt instans av behandlingsansvarlig.

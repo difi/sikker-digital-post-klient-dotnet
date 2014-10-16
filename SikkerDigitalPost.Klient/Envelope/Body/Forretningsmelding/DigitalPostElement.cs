@@ -8,7 +8,7 @@ using SikkerDigitalPost.Klient.Envelope.Abstract;
 
 namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
 {
-    internal class DigitalPostElement : XmlPart
+    internal class DigitalPostElement : EnvelopeXmlPart
     {
         private readonly SHA256Managed _managedSha256;
 

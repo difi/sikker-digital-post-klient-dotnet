@@ -7,7 +7,7 @@ using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 {
-    internal class ForretningsmeldingMessaging : XmlPart
+    internal class ForretningsmeldingMessaging : EnvelopeXmlPart
     {
         public ForretningsmeldingMessaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {

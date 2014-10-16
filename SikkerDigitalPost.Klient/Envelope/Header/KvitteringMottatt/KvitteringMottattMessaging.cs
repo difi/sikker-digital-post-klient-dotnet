@@ -7,7 +7,7 @@ using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 {
-    internal class KvitteringMottattMessaging : XmlPart
+    internal class KvitteringMottattMessaging : EnvelopeXmlPart
     {
         public KvitteringMottattMessaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {

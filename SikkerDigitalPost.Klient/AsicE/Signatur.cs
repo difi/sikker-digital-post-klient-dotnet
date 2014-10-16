@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.Xml;
 using Sha256Reference = SikkerDigitalPost.Domene.Sha256Reference;
 
@@ -34,7 +36,7 @@ namespace SikkerDigitalPost.Klient.AsicE
         {
             get
             {
-              return Encoding.UTF8.GetBytes(Xml().OuterXml);
+                return Encoding.UTF8.GetBytes(Xml().OuterXml); 
             }
             
         }
@@ -45,22 +47,30 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         public XmlDocument Xml()
         {
-            if (_xml != null)
+            try
             {
-                return _xml;
+                if (_xml != null)
+                {
+                    return _xml;
+                }
+                _xml = OpprettXmlDokument();
+
+                var signaturnode = Signaturnode();
+
+                IEnumerable<IAsiceVedlegg> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument,
+                    _forsendelse.Dokumentpakke.Vedlegg, _manifest);
+                OpprettReferanser(signaturnode, referanser);
+
+                var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.WholeChain);
+                signaturnode.KeyInfo.AddClause(keyInfoX509Data);
+                signaturnode.ComputeSignature();
+
+                _xml.DocumentElement.AppendChild(_xml.ImportNode(signaturnode.GetXml(), true));
             }
-            _xml = OpprettXmlDokument();
-
-            var signaturnode = Signaturnode();
-
-            IEnumerable<IAsiceVedlegg> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument, _forsendelse.Dokumentpakke.Vedlegg, _manifest);
-            OpprettReferanser(signaturnode, referanser);
-
-            var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.WholeChain);
-            signaturnode.KeyInfo.AddClause(keyInfoX509Data);
-            signaturnode.ComputeSignature();
-
-            _xml.DocumentElement.AppendChild(_xml.ImportNode(signaturnode.GetXml(), true));
+            catch (Exception e)
+            {
+                throw new XmlParseException("Kunne ikke bygge Xml for signatur. Sjekk InnerException for mer detaljer.");
+            }
 
             return _xml;
         }
