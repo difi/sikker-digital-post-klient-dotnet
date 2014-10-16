@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
                 digitalPostElement.AppendChild(AvsenderElement());
                 digitalPostElement.AppendChild(MottakerElement());
                 digitalPostElement.AppendChild(DigitalPostInfoElement());
-                digitalPostElement.AppendChild(DokumentfingerpakkeavtrykkElement());
+                digitalPostElement.AppendChild(DokumentpakkeFingeravtrykkElement());
             }
             return digitalPostElement;
         }
@@ -128,7 +128,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
             return varsel;
         }
 
-        private XmlElement DokumentfingerpakkeavtrykkElement()
+        private XmlElement DokumentpakkeFingeravtrykkElement()
         {
             XmlElement dokumentpakkefingeravtrykk = Context.CreateElement("ns9", "dokumentpakkefingeravtrykk", Navnerom.Ns9);
             {
