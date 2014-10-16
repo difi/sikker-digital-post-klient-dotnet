@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Ebms;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
@@ -10,7 +10,14 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
-            Åpningstidspunkt = Convert.ToDateTime(DocumentNode("ns9:tidspunkt").InnerText);
+            try
+            {
+                Åpningstidspunkt = Convert.ToDateTime(DocumentNode("ns9:tidspunkt").InnerText);
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException("Feil under bygging av Åpningskvittering. Klarte ikke finne alle felter i xml.", e);
+            }
         }
     }
 }

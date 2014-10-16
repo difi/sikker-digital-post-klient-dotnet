@@ -1,12 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SikkerDigitalPost.Domene.Exceptions
 {
-    class SendException
+    public class SendException : SikkerDigitalPostException
     {
+        public SendException()
+        {
+
+        }
+
+        public SendException(string message)
+            : base(message)
+        {
+
+        }
+
+        public SendException(string message, Exception inner)
+            : base(message, inner)
+        {
+
+        }
+
+
     }
 }

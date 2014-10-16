@@ -1,4 +1,5 @@
 ﻿using System;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Aktører
 {
@@ -21,22 +22,26 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
                 if (value.Length <= 100)
                     _avsenderidentifikator = value;
                 else
-                    throw new ArgumentException("Avsenderidentifikator kan ikke være lengre enn 100 tegn, følgende streng er ikke: " + value);
+                    throw new KonfigurasjonsException(
+                        String.Format("Avsenderidentifikator kan ikke være lengre enn 100 tegn, input streng er {0} tegn lang. Du sendte inn {1}",
+                        value.Length, value));
                     
             }
         }
 
-        private string _fakturaReferanse = String.Empty;
+        private string _fakturareferanse = String.Empty;
 
         public string Fakturareferanse
         {
-            get { return _fakturaReferanse; }
+            get { return _fakturareferanse; }
             set
             {
                 if (value.Length <= 40)
-                    _fakturaReferanse = value;
+                    _fakturareferanse = value;
                 else
-                    throw new ArgumentException("Fakturareferanse kan ikke være lengre enn 40 tegn, følgende streng er ikke: " + value);
+                    throw new KonfigurasjonsException(
+                        String.Format("Fakturareferanse kan ikke være lengre enn 100 tegn, input streng er {0} tegn lang. Du sendte inn {1}",
+                        value.Length, value));
             }
         }
 

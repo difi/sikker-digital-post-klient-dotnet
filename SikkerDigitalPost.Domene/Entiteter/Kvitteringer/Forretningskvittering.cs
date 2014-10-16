@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
@@ -27,42 +28,76 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 
         protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
-            _document = document;
-            _namespaceManager = namespaceManager;
+            try
+            {
+                _document = document;
+                _namespaceManager = namespaceManager;
 
-            Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
-            KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
-            MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
-            RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
-            BodyReference = BodyReferenceNode();
-            Rådata = document.OuterXml;
+                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:TISSTimestamp").InnerText);
+                KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
+                MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
+                RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
+                BodyReference = BodyReferenceNode();
+                Rådata = document.OuterXml;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(
+                    String.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
+                    ,GetType()), e);
+            }
         }
 
         protected XmlNode DocumentNode(string xPath)
         {
-            var rot = _document.DocumentElement;
-            var targetNode = rot.SelectSingleNode(xPath, _namespaceManager);
-            
-            return targetNode;
+            try
+            {
+                var rot = _document.DocumentElement;
+                var targetNode = rot.SelectSingleNode(xPath, _namespaceManager);
+
+                return targetNode;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(
+                    String.Format("Feil under henting av dokumentnode i {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
+                    , GetType()), e);
+            }
         }
         
         protected XmlNode BodyReferenceNode()
         {
-            var rot = _document.DocumentElement;
-            
-            var partInfo = rot.SelectSingleNode("//ns6:PartInfo", _namespaceManager);
-            var partInfoBodyId = "";
-            if (partInfo.Attributes.Count > 0)
-                partInfoBodyId = partInfo.Attributes["href"].Value;
+            XmlNode bodyReferenceNode;
 
-            var bodyId = rot.SelectSingleNode("//env:Body", _namespaceManager).Attributes["wsu:Id"].Value;
-
-            if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
+            try
             {
-                throw new Exception("Id i PartInfo og i Body matcher ikke.");
+                XmlNode rotnode = _document.DocumentElement;
+
+                var partInfo = rotnode.SelectSingleNode("//ns6:PartInfo", _namespaceManager);
+                var partInfoBodyId = String.Empty;
+                if (partInfo.Attributes.Count > 0)
+                    partInfoBodyId = partInfo.Attributes["href"].Value;
+
+                string bodyId = rotnode.SelectSingleNode("//env:Body", _namespaceManager).Attributes["wsu:Id"].Value;
+
+                if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
+                {
+                    throw new Exception(
+                        String.Format(
+                        "Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",
+                        partInfoBodyId,
+                        bodyId));
+                }
+
+                bodyReferenceNode = rotnode.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']",
+                    _namespaceManager);
             }
-            
-            var bodyReferenceNode = rot.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", _namespaceManager);
+            catch (Exception e)
+            {
+                throw new XmlParseException(
+                  String.Format("Feil under henting av referanser i {0} (av type Forretningskvittering). ",
+                  GetType()), e);
+            }
 
             return bodyReferenceNode;
         }
