@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Utilities;

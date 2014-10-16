@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Xml;
+using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;

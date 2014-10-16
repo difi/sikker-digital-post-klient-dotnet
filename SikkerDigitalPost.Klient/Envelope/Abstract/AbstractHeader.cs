@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using SikkerDigitalPost.Domene;
 
 namespace SikkerDigitalPost.Klient.Envelope.Abstract
 {

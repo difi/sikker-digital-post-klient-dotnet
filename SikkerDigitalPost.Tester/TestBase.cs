@@ -6,11 +6,10 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Klient;
+using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Utilities;
 
@@ -78,18 +77,12 @@ namespace SikkerDigitalPost.Tester
             Dokumentpakke = GenererDokumentpakke();
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
 
-            Manifest = new Manifest(Mottaker, Behandlingsansvarlig, Forsendelse);
-            var manifestbygger = new ManifestBygger(Manifest);
-            
-            manifestbygger.Bygg();
-
-            Signatur = new Signatur(Sertifikat);
-            var signaturbygger = new SignaturBygger(Signatur, Forsendelse, Manifest);
-            signaturbygger.Bygg();
+            Manifest = new Manifest(Forsendelse);
+            Signatur = new Signatur(Forsendelse,Manifest,Sertifikat);
 
             GuidHandler = new GuidHandler();
             Databehandler = new Databehandler(OrgNrAvsender,Sertifikat);
-            Arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
+            Arkiv = new AsicEArkiv(Forsendelse, GuidHandler, Databehandler.Sertifikat);
             Envelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(Forsendelse,Arkiv,Databehandler, GuidHandler));
         }
 

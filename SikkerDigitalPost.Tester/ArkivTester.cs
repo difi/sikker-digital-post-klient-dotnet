@@ -66,7 +66,7 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void LagKryptertArkivVerifiserInnholdValiderer()
         {
-            var arkiv = new AsicEArkiv(Dokumentpakke, Signatur, Manifest, Forsendelse.DigitalPost.Mottaker.Sertifikat, GuidHandler);
+            var arkiv = new AsicEArkiv(Forsendelse, GuidHandler, Databehandler.Sertifikat);
             var originalData = arkiv.Bytes;
 
             var krypterteData = arkiv.Bytes;

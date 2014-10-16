@@ -4,10 +4,9 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Manifest;
-using SikkerDigitalPost.Domene.Entiteter.AsicE.Signatur;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -22,12 +21,12 @@ namespace SikkerDigitalPost.Klient
         private readonly GuidHandler _guidHandler;
 
 
-        public AsicEArkiv(Dokumentpakke dokumentpakke, Signatur signatur, Manifest manifest, X509Certificate2 krypteringssertifikat, GuidHandler guidHandler)
+        public AsicEArkiv(Forsendelse forsendelse, GuidHandler guidHandler, X509Certificate2 avsenderSertifikat)
         {
-            Signatur = signatur;
-            Manifest = manifest;
-            _dokumentpakke = dokumentpakke;
-            _krypteringssertifikat = krypteringssertifikat;
+            Manifest = new Manifest(forsendelse);
+            Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
+            _dokumentpakke = forsendelse.Dokumentpakke;
+            _krypteringssertifikat = forsendelse.DigitalPost.Mottaker.Sertifikat;
             _guidHandler = guidHandler;
         }
 
