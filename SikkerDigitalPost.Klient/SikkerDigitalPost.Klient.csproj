@@ -67,7 +67,7 @@
     <Compile Include="Envelope\Header\Kvittering\KvitteringsHeader.cs" />
     <Compile Include="Envelope\KvitteringMottattEnvelope.cs" />
     <Compile Include="Envelope\KvitteringsEnvelope.cs" />
-    <Compile Include="Envelope\Abstract\XmlPart.cs" />
+    <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Navnerom.cs" />
     <Compile Include="SoapContainer.cs" />

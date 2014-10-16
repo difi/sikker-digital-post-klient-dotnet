@@ -69,7 +69,7 @@ namespace SikkerDigitalPost.Testklient
             
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
-            dokumentpakke.LeggTilVedlegg(null);
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert);
 
             //Send

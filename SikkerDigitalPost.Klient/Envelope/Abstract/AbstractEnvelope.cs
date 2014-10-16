@@ -71,7 +71,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
             }
             catch (Exception e)
             {
-                throw new XmlParseException(String.Format("Kunne ikke bygge Xml for {0} (av type AbstractEnvelope) . Sjekk InnerException for mer detaljer.",GetType()),e);
+                throw new XmlParseException(String.Format("Kunne ikke bygge Xml for {0} (av type AbstractEnvelope).",GetType()),e);
             }
 
             return EnvelopeXml;
