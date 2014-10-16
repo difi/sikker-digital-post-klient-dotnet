@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationEventHandler += ValidationEventHandler;
             
-            var xmlReader = XmlReader.Create(new MemoryStream(Encoding.UTF8.GetBytes(document)));
+            var xmlReader = XmlReader.Create(new MemoryStream(Encoding.UTF8.GetBytes(document)), settings);
 
             while (xmlReader.Read()) { }
             ValideringsVarsler = _validationMessages;
@@ -49,8 +49,11 @@ namespace SikkerDigitalPost.Klient.XmlValidering
                     break;
                 case XmlSeverityType.Error:
                     _validationMessages += String.Format("{0} {1}\n", ErrorMessage, e.Message);
-                    if(!e.Message.Equals(ErrorTolerated))
+                    if (!e.Message.Equals(ErrorTolerated))
                         _harErrors = true;
+                    else
+                        _validationMessages +=
+                            "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet";
                     break;
             }
         }
