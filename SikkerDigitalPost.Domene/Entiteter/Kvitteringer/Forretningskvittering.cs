@@ -33,7 +33,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                 _document = document;
                 _namespaceManager = namespaceManager;
 
-                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:TISSTimestamp").InnerText);
+                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
                 KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
                 MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
                 RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
