@@ -21,9 +21,11 @@ namespace SikkerDigitalPost.Tester
         public void ValidereManifestMotXsdValiderer()
         {
             var settings = new XmlReaderSettings();
+            settings.XmlResolver = null;
+
             settings.Schemas.Add(Navnerom.Ns9, ManifestXsdPath());
             settings.Schemas.Add(Navnerom.Ns9, FellesXsdPath());
-            settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
+
             settings.ValidationType = ValidationType.Schema;
             
             try
