@@ -15,7 +15,7 @@ namespace SikkerDigitalPost.Klient
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
-            if (IsLevertkvittering(xmlDocument))
+            if (IsLeveringskvittering(xmlDocument))
             {
                 return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Klient
             {
                 return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
-            if (IsFeiletkvittering(xmlDocument))
+            if (IsFeilmelding(xmlDocument))
             {
                 return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
             }
@@ -63,7 +63,7 @@ namespace SikkerDigitalPost.Klient
             throw exception;
         }
 
-        private static bool IsLevertkvittering(XmlDocument document)
+        private static bool IsLeveringskvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns9:kvittering");
         }
@@ -73,7 +73,7 @@ namespace SikkerDigitalPost.Klient
             return DocumentHasNode(document, "ns9:varslingfeilet");
         }
 
-        private static bool IsFeiletkvittering(XmlDocument document)
+        private static bool IsFeilmelding(XmlDocument document)
         {
             return DocumentHasNode(document, "ns9:feil");
         }

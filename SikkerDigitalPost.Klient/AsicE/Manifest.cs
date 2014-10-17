@@ -14,23 +14,23 @@ namespace SikkerDigitalPost.Klient.AsicE
         private XmlDocument _manifestXml;
 
         public Behandlingsansvarlig Avsender { get; private set; }
+        public Forsendelse Forsendelse { get; private set; }
 
-        public Forsendelse Forsendelse { get; set; }
-
+        
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
             Avsender = forsendelse.Behandlingsansvarlig;
         }
-
+        
         public string Filnavn {
             get { return "manifest.xml"; }
         }
-
+        
         public string Innholdstype {
             get { return "application/xml"; }
         }
-
+        
         public byte[] Bytes
         {
             get
