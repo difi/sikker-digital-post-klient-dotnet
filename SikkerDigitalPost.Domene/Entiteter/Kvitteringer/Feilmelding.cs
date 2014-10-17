@@ -5,13 +5,20 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// En feilmelding fra postkasseleverandør med informasjon om en forretningsfeil knyttet til en digital post forsendelse.
+    /// Les mer på http://begrep.difi.no/SikkerDigitalPost/1.0.2/meldinger/FeilMelding.
+    /// </summary>
     public class Feilmelding : Forretningskvittering
     {
-        public readonly Feiltype Feiltype;
+        /// <summary>
+        /// Beskriver hvor feilen ligger. Enten Klient eller Server.
+        /// </summary>
+        public Feiltype Skyldig { get; private set; }
 
-        public string Detaljer { get; set; }
+        public string Detaljer { get; private set; }
 
-        public readonly DateTime TidspunktFeilet;
+        public DateTime TidspunktFeilet { get; private set; }
 
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
@@ -20,7 +27,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                 TidspunktFeilet = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
 
                 var feiltype = DocumentNode("//ns9:feiltype").InnerText;
-                Feiltype = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower())
+                Skyldig = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower())
                     ? Feiltype.Klient
                     : Feiltype.Server;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter
 {
@@ -17,6 +18,11 @@ namespace SikkerDigitalPost.Domene.Entiteter
         /// <param name="verdi">Stringrepresentasjon av organisasjonsnummeret</param>
         public Organisasjonsnummer(string verdi)
         {
+            if (verdi.Contains(":"))
+            {
+                throw new KonfigurasjonsException(String.Format("Organisasjonsnummer skal bestå av tall, og skal her oppgis uten prefix for 'Enhetsregistrert ved Brønnøysundregistrene' " +
+                                                                "Organisasjonsnummeret du sendte inn var {0}.", verdi));
+            }
             Verdi = verdi;
         }
 
@@ -35,7 +41,7 @@ namespace SikkerDigitalPost.Domene.Entiteter
             
             if (!match.Success)
             {
-                throw new ArgumentException(String.Format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
+                throw new KonfigurasjonsException(String.Format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
                                                           "fikk følgende organisasjonsnummer: {0}.", iso6523Orgnr));
             }
             return new Organisasjonsnummer(match.Groups[2].ToString());

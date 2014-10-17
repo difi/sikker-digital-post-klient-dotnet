@@ -8,12 +8,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
         /// <summary>
         /// Organisasjonsnummeret til avsender av brevet.
         /// </summary>
-        public Organisasjonsnummer Organisasjonsnummer { get; set; }
+        public Organisasjonsnummer Organisasjonsnummer { get; private set; }
 
         /// <summary>
         /// Avsenders sertifikat: Virksomhetssertifikat.
         /// </summary>
-        public X509Certificate2 Sertifikat { get; set; }
+        public X509Certificate2 Sertifikat { get; private set; }
 
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
         /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>

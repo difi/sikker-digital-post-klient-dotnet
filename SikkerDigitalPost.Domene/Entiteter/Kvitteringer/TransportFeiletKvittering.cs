@@ -5,19 +5,22 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// Transportkvittering som indikerer at noe har gått galt ved sending av en melding. 
+    /// </summary>
     public class TransportFeiletKvittering : Transportkvittering
     {
-        public readonly string Feilkode;
+        public string Feilkode { get; private set; }
 
-        public readonly string Kategori;
+        public string Kategori { get; private set; }
 
-        public readonly string Opprinnelse;
+        public string Opprinnelse { get; private set; }
 
-        public readonly string Alvorlighetsgrad;
+        public string Alvorlighetsgrad { get; private set; }
 
-        public readonly string Beskrivelse;
+        public string Beskrivelse { get; private set; }
 
-        public readonly Feiltype Skyldig;
+        public Feiltype Skyldig { get; private set; }
         
         internal TransportFeiletKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
