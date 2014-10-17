@@ -18,11 +18,6 @@ namespace SikkerDigitalPost.Domene.Entiteter
         /// <param name="verdi">Stringrepresentasjon av organisasjonsnummeret</param>
         public Organisasjonsnummer(string verdi)
         {
-            if (verdi.Contains(":"))
-            {
-                throw new KonfigurasjonsException(String.Format("Organisasjonsnummer skal bestå av tall, og skal her oppgis uten prefix for 'Enhetsregistrert ved Brønnøysundregistrene' " +
-                                                                "Organisasjonsnummeret du sendte inn var {0}.", verdi));
-            }
             Verdi = verdi;
         }
 
@@ -32,7 +27,7 @@ namespace SikkerDigitalPost.Domene.Entiteter
         /// <returns>Organisasjonsnummer, prefikset med '9908':, som er id for 'Enhetsregistret ved Brønnøysundregisterne'</returns>
         public string Iso6523()
         {
-            return String.Format("9908:{0}", Verdi);
+            return Verdi.StartsWith("9908:") ? Verdi : String.Format("9908:{0}", Verdi);
         }
 
         public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
