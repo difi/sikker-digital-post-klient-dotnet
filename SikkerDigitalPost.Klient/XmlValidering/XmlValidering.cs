@@ -29,6 +29,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             var settings = new XmlReaderSettings();
             settings.Schemas.Add(GenererSchemaSet());
             settings.ValidationType = ValidationType.Schema;
+            settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
             settings.ValidationEventHandler += ValidationEventHandler;
             
             var xmlReader = XmlReader.Create(new MemoryStream(Encoding.UTF8.GetBytes(document)), settings);
