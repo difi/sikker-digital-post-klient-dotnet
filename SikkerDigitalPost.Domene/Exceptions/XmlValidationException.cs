@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Domene.Exceptions
 {
-    class XmlValidationException : KonfigurasjonsException
+    public class XmlValidationException : KonfigurasjonsException
     {
         private const string Ekstrainfo = " Validering av Xml feilet. Se inner exception for mer info.";
 

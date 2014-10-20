@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Domene.Exceptions
 {
-    class XmlParseException : KonfigurasjonsException
+    public class XmlParseException : KonfigurasjonsException
     {
         private const string ekstrainfo =
             " En mulig grunn til dette kan være at svar fra server har endret seg, eller at en feilaktig endring har blitt gjort.";
