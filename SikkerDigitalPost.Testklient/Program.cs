@@ -75,7 +75,7 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
-            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            //Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             //Hent kvittering
             var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);

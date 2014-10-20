@@ -90,15 +90,19 @@ namespace SikkerDigitalPost.Klient.AsicE
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Avsender.Organisasjonsnummer.Iso6523();
 
-                var avsenderIdentifikator = Avsender.Avsenderidentifikator;
-                if (!String.IsNullOrWhiteSpace(avsenderIdentifikator))
+                var avsenderId = Avsender.Avsenderidentifikator;
+                if (!String.IsNullOrWhiteSpace(avsenderId))
                 {
                     XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.Ns9, _manifestXml);
                     avsenderidentifikator.InnerText = Avsender.Avsenderidentifikator;
                 }
 
-                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
-                fakturaReferanse.InnerText = Avsender.Fakturareferanse;
+                var fakturaRef = Avsender.Fakturareferanse;
+                if (!String.IsNullOrWhiteSpace(fakturaRef))
+                {
+                    XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
+                    fakturaReferanse.InnerText = Avsender.Fakturareferanse;
+                }
             }
 
             return avsender;

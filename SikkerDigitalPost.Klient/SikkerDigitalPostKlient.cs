@@ -9,7 +9,6 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
-using SikkerDigitalPost.Klient.Security;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.XmlValidering;
 
@@ -19,6 +18,7 @@ namespace SikkerDigitalPost.Klient
     {
         private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _konfigurasjon;
+
 
         /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
@@ -33,6 +33,7 @@ namespace SikkerDigitalPost.Klient
         {
             
         }
+
 
         /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
@@ -52,55 +53,46 @@ namespace SikkerDigitalPost.Klient
             _konfigurasjon = konfigurasjon;
         }
 
+
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
             try
             {
-                var validering = new ForretningsmeldingEnvelopeValidering();
-                var validert = validering.ValiderDokumentMotXsd(forretningsmeldingEnvelope.Xml().OuterXml);
-                if(!validert)
-                    throw new Exception(validering.ValideringsVarsler);
-
-                var mValidering = new ManifestValidering();
-                var mValidert = mValidering.ValiderDokumentMotXsd(arkiv.Manifest.Xml().OuterXml);
-                if (!mValidert)
-                    throw new Exception(mValidering.ValideringsVarsler);
-
-                var sValidering = new SignaturValidering();
-                var sValidert = sValidering.ValiderDokumentMotXsd(arkiv.Signatur.Xml().OuterXml);
-                if (!sValidert)
-                    throw new Exception(sValidering.ValideringsVarsler);
+                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(), arkiv.Signatur.Xml());
             }
             catch (Exception e)
             {
-                throw new Exception("Envelope xml validerer ikke mot xsd:\n" + e.Message);
+                throw new XmlValidationException("Envelope xml validerer ikke mot xsd:\n", e);
             }
 
             var soapContainer = new SoapContainer {Envelope = forretningsmeldingEnvelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
-
             var response = SendSoapContainer(soapContainer);
 
             FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
-
-            if(!ValiderSignatur(response))
-                throw new SendException("Signatur av respons fra Meldingsformidler var ikke gyldig.");
-
-            if(!ValiderDigests(response, forretningsmeldingEnvelope.Xml(), guidHandler))
-                throw new SendException("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
             
+            try
+            {
+                var valideringAvRespons = new ValideringAvRespons();
+                valideringAvRespons.ValiderRespons(response, forretningsmeldingEnvelope.Xml(), guidHandler);
+            }
+            catch (Exception e)
+            {
+                throw new SendException("Validering av respons fra meldingsformidler feilet. Se inner exception for detaljer.\n", e);
+            }
+
             return KvitteringFactory.GetTransportkvittering(response);
         }
+
 
         /// <summary>
         /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
@@ -119,6 +111,7 @@ namespace SikkerDigitalPost.Klient
         {
             return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
+
 
         /// <summary>
         /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
@@ -145,15 +138,38 @@ namespace SikkerDigitalPost.Klient
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
-            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+            try
+            {
+                var kfeValidering = new KvitteringForespørselEnvelopeValidering();
+                var kfeValidert = kfeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                if(!kfeValidert)
+                    throw new Exception(kfeValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:\n" + e.Message);
+            }
 
+            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
             var kvittering = SendSoapContainer(soapContainer);
 
             FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
             FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
 
+            try
+            {
+                var valideringAvResponsSignatur = new ValideringAvRespons();
+                if (!valideringAvResponsSignatur.ValiderSignatur(kvittering))
+                    throw new Exception("Signaturen på kvitteringen du har mottatt validerer ikke.\n");
+            }
+            catch (Exception e)
+            {
+                throw new SendException(e.Message, e);
+            }
+            
             return KvitteringFactory.GetForretningskvittering(kvittering);
         }
+
 
         /// <summary>
         /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
@@ -172,16 +188,29 @@ namespace SikkerDigitalPost.Klient
         {
             var envelopeSettings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
             var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(envelopeSettings);
+
+            try
+            {
+                var kmeValidering = new KvitteringMottattEnvelopeValidering();
+                var kmeValidert = kmeValidering.ValiderDokumentMotXsd(kvitteringMottattEnvelope.Xml().OuterXml);
+                if (!kmeValidert)
+                    throw new Exception(kmeValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:\n" + e.Message);
+            }
+
             FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
-            SendSoapContainer(soapContainer);
+            var response = SendSoapContainer(soapContainer);
         }
+
 
         private string SendSoapContainer(SoapContainer soapContainer)
         {
-            string data = String.Empty;
-
+            var data = String.Empty;
             var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
 
             soapContainer.Send(request);
@@ -197,68 +226,32 @@ namespace SikkerDigitalPost.Klient
                     using (Stream errorStream = response.GetResponseStream())
                     {
                         XDocument soap = XDocument.Load(errorStream);
-                        var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
-                        FileUtility.WriteXmlToFileInBasePath(soap.ToString(), "FeilVedSending", errorFileName);
                         data = soap.ToString();
+                        var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
+                        FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
                     }
-
                 }
             }
             return data;
         }
 
-        private bool ValiderSignatur(string response)
+
+        private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml, XmlDocument manifestXml, XmlDocument signaturXml)
         {
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(response);
-            XmlNode responseRot = document.DocumentElement;
-            var responseMgr = new XmlNamespaceManager(document.NameTable);
-            responseMgr.AddNamespace("env", Navnerom.env);
-            responseMgr.AddNamespace("ds", Navnerom.ds);
+            var envelopeValidering = new ForretningsmeldingEnvelopeValidering();
+            var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            if (!envelopeValidert)
+                throw new Exception(envelopeValidering.ValideringsVarsler);
 
-            try
-            {
-                var signatureNode = (XmlElement)responseRot.SelectSingleNode("//ds:Signature", responseMgr);
-                var signed = new SignedXmlWithAgnosticId(document);
-                signed.LoadXml(signatureNode);
-                return signed.CheckSignature();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Feil under validering av signatur.", e);
-            }
-        }
+            var manifestValidering = new ManifestValidering();
+            var manifestValidert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+            if (!manifestValidert)
+                throw new Exception(manifestValidering.ValideringsVarsler);
 
-        private bool ValiderDigests(string response, XmlDocument envelope, GuidHandler guidHandler)
-        {
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(response);
-
-            XmlNode responseRot = document.DocumentElement;
-            XmlNamespaceManager responseMgr = new XmlNamespaceManager(document.NameTable);
-            responseMgr.AddNamespace("env", Navnerom.env);
-            responseMgr.AddNamespace("ns5", Navnerom.Ns5);
-
-            try
-            {
-                var responseBodyDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = '#" + guidHandler.BodyId + "']", responseMgr).InnerText;
-                var responseAsicDigest = responseRot.SelectSingleNode("//ns5:Reference[@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", responseMgr).InnerText;
-
-                var envelopeRot = envelope.DocumentElement;
-                var envelopeMgr = new XmlNamespaceManager(envelope.NameTable);
-                envelopeMgr.AddNamespace("env", Navnerom.env);
-                envelopeMgr.AddNamespace("wsse", Navnerom.wsse);
-                envelopeMgr.AddNamespace(String.Empty, Navnerom.Ns5);
-                
-                var envelopeBodyDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = '#" + guidHandler.BodyId + "']", envelopeMgr).InnerText;
-                var envelopeAsicDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", envelopeMgr).InnerText;
-
-                return responseBodyDigest.Equals(envelopeBodyDigest) && responseAsicDigest.Equals(envelopeAsicDigest);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("En feil", e);
-            }
+            var signaturValidering = new SignaturValidering();
+            var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
+            if (!signaturValidert)
+                throw new Exception(signaturValidering.ValideringsVarsler);
         }
     }
 }

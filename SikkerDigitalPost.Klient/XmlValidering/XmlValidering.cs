@@ -54,7 +54,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
                         _harErrors = true;
                     else
                         _validationMessages +=
-                            "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet";
+                            "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet\n";
                     break;
             }
         }
@@ -167,6 +167,16 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         protected string XAdESXsdPath()
         {
             return XsdPath(@"w3/XAdES.xsd");
+        }
+
+        protected string EbmsSignalsXsdPath()
+        {
+            return XsdPath(@"ebxml/ebbp-signals-2.0.xsd");
+        }
+
+        protected string XlinkXsdPath()
+        {
+            return XsdPath(@"w3/xlink.xsd");
         }
 
         private static string XsdPath(string filnavn)
