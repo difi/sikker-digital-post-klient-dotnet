@@ -10,15 +10,15 @@ namespace SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
-        public readonly Manifest Manifest;
-        public readonly Signatur Signatur;
+        public Manifest Manifest { get; private set; }
+        public Signatur Signatur { get; private set; }
         private readonly Dokumentpakke _dokumentpakke;
-
+        
         private byte[] _bytes;
         private readonly X509Certificate2 _krypteringssertifikat;
         private readonly GuidHandler _guidHandler;
-
-
+        
+        
         public AsicEArkiv(Forsendelse forsendelse, GuidHandler guidHandler, X509Certificate2 avsenderSertifikat)
         {
             Manifest = new Manifest(forsendelse);

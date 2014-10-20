@@ -5,11 +5,21 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// Sendes fra Postkasse til Avsender dersom Postkasse opplever problemer med å utføre varslingen som spesifisert i meldingen.
+    /// Les mer på http://begrep.difi.no/SikkerDigitalPost/1.0.2/meldinger/VarslingfeiletKvittering.
+    /// </summary>
     public class VarslingFeiletKvittering : Forretningskvittering
     {
-        public readonly Varslingskanal Varslingskanal;
+        /// <summary>
+        /// Kanal for varsling til eier av postkasse. Varsling og påminnelsesmeldinger skal sendes på den kanal som blir spesifisert. Kanalen SMS er priset.
+        /// </summary>
+        public Varslingskanal Varslingskanal { get; private set; }
 
-        public string Beskrivelse;
+        /// <summary>
+        /// Beskrivelse av varsling feilet.
+        /// </summary>
+        public string Beskrivelse { get; private set; }
 
         internal VarslingFeiletKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {

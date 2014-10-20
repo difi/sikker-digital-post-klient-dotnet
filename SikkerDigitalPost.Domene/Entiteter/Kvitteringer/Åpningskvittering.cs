@@ -4,9 +4,16 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// En kvitteringsmelding til Avsender om at Mottaker har åpnet forsendelsen i sin postkasse.
+    /// Mer informasjon finnes på http://begrep.difi.no/SikkerDigitalPost/1.0.2/meldinger/AapningsKvittering.
+    /// </summary>
     public class Åpningskvittering : Forretningskvittering
     {
-        public readonly DateTime Åpningstidspunkt;
+        /// <summary>
+        /// Tidspunkt for når borger åpnet posten i sin postkasse.
+        /// </summary>
+        public DateTime Åpningstidspunkt { get; private set; }
 
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {

@@ -7,12 +7,12 @@ namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class EnvelopeSettings
     {
-        public readonly Forsendelse Forsendelse;
-        internal readonly AsicEArkiv AsicEArkiv;
-        public readonly Databehandler Databehandler;
-        internal readonly GuidHandler GuidHandler;
-        public readonly Kvitteringsforespørsel Kvitteringsforespørsel;
-        public readonly Forretningskvittering ForrigeKvittering;
+        public Forsendelse Forsendelse { get; private set; }
+        public Databehandler Databehandler { get; private set; }
+        public Kvitteringsforespørsel Kvitteringsforespørsel { get; private set; }
+        public Forretningskvittering ForrigeKvittering { get; private set; }
+        internal AsicEArkiv AsicEArkiv { get; private set; }
+        internal GuidHandler GuidHandler { get; private set; }
 
         /// <summary>
         /// Settings for KvitteringsEnvelope

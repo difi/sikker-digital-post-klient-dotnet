@@ -4,18 +4,33 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// Abstrakt klasse for transportkvitteringer.
+    /// </summary>
     public abstract class Transportkvittering
     {
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
 
+        /// <summary>
+        /// Tidspunktet da kvitteringen ble sendt.
+        /// </summary>
         public DateTime Tidspunkt { get; protected set; }
 
+        /// <summary>
+        /// Unik identifikator for kvitteringen.
+        /// </summary>
         public string MeldingsId { get; protected set; }
 
-        public string ReferanseTilMeldingsId { get; set; }
+        /// <summary>
+        /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
+        /// </summary>
+        public string ReferanseTilMeldingsId { get; protected set; }
 
-        public string Rådata { get; set; }
+        /// <summary>
+        /// Kvitteringen presentert som tekststreng.
+        /// </summary>
+        public string Rådata { get; protected set; }
 
         protected Transportkvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {

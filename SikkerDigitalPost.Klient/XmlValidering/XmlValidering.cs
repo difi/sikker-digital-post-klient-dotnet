@@ -20,7 +20,8 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         private static bool _harErrors;
 
         private static string _validationMessages;
-        public string ValideringsVarsler { get; set; }
+
+        public string ValideringsVarsler { get; private set; }
 
         protected abstract XmlSchemaSet GenererSchemaSet();
 

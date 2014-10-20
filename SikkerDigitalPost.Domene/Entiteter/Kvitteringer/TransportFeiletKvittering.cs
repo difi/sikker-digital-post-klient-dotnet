@@ -5,19 +5,40 @@ using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
+    /// <summary>
+    /// Transportkvittering som indikerer at noe har gått galt ved sending av en melding. 
+    /// </summary>
     public class TransportFeiletKvittering : Transportkvittering
     {
-        public readonly string Feilkode;
+        /// <summary>
+        /// Spesifikk feilkode for transporten.
+        /// </summary>
+        public string Feilkode { get; private set; }
 
-        public readonly string Kategori;
+        /// <summary>
+        /// Kategori/id for hvilken feil som oppstod.
+        /// </summary>
+        public string Kategori { get; private set; }
 
-        public readonly string Opprinnelse;
+        /// <summary>
+        /// Opprinnelse for feilmeldingen.
+        /// </summary>
+        public string Opprinnelse { get; private set; }
 
-        public readonly string Alvorlighetsgrad;
+        /// <summary>
+        /// Hvor alvorlig er feilen som oppstod
+        /// </summary>
+        public string Alvorlighetsgrad { get; private set; }
 
-        public readonly string Beskrivelse;
+        /// <summary>
+        /// En mer detaljert beskrivelse av hva som gikk galt.
+        /// </summary>
+        public string Beskrivelse { get; private set; }
 
-        public readonly Feiltype Skyldig;
+        /// <summary>
+        /// Hvem man antar har skyld i feilen.
+        /// </summary>
+        public Feiltype Skyldig { get; private set; }
         
         internal TransportFeiletKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {

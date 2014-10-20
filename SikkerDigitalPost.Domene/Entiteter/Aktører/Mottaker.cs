@@ -2,10 +2,13 @@
 
 namespace SikkerDigitalPost.Domene.Entiteter.Aktører
 {
+    /// <summary>
+    /// Mottaker av en digital postmelding.
+    /// </summary>
     public class Mottaker : Person
     {
-        public X509Certificate2 Sertifikat { get; set; }
-        public Organisasjonsnummer OrganisasjonsnummerPostkasse { get; set; }
+        public X509Certificate2 Sertifikat { get; private set; }
+        public Organisasjonsnummer OrganisasjonsnummerPostkasse { get; private set; }
 
         /// <summary>
         /// Informasjon om mottaker. Vil vanligvis være hentet fra http://begrep.difi.no/Oppslagstjenesten/.

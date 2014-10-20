@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter
 {
@@ -26,7 +27,7 @@ namespace SikkerDigitalPost.Domene.Entiteter
         /// <returns>Organisasjonsnummer, prefikset med '9908':, som er id for 'Enhetsregistret ved Brønnøysundregisterne'</returns>
         public string Iso6523()
         {
-            return String.Format("9908:{0}", Verdi);
+            return Verdi.StartsWith("9908:") ? Verdi : String.Format("9908:{0}", Verdi);
         }
 
         public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
@@ -35,7 +36,7 @@ namespace SikkerDigitalPost.Domene.Entiteter
             
             if (!match.Success)
             {
-                throw new ArgumentException(String.Format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
+                throw new KonfigurasjonsException(String.Format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
                                                           "fikk følgende organisasjonsnummer: {0}.", iso6523Orgnr));
             }
             return new Organisasjonsnummer(match.Groups[2].ToString());

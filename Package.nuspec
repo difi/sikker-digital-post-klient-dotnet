@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Package</id>
+    <version>0.7-testnuget</version>
+    <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
+    <owners>Posten Norge AS </owners>    
+    <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Klientbibliotek for </description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Posten SikkerDigitalPost Sikker Post</tags>
+  </metadata>
+  <files>
+    <file src ="SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />
+    <file src ="SikkerDigitalPost.Klient\XmlValidering\xsd\*" target="content\xsd"/>
+  </files>
+</package>

@@ -9,7 +9,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Header
 {
     internal class Security : EnvelopeXmlPart
     {
-        private XmlElement _securityElement;
 
         public Security(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
@@ -17,12 +16,12 @@ namespace SikkerDigitalPost.Klient.Envelope.Header
 
         public override XmlNode Xml()
         {
-            _securityElement = Context.CreateElement("wsse", "Security", Navnerom.wsse);
-            _securityElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            _securityElement.SetAttribute("mustUnderstand", Navnerom.env, "true");
-            _securityElement.AppendChild(BinarySecurityTokenElement());
-            _securityElement.AppendChild(TimestampElement());
-            return _securityElement;
+            var securityElement = Context.CreateElement("wsse", "Security", Navnerom.wsse);
+            securityElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
+            securityElement.SetAttribute("mustUnderstand", Navnerom.env, "true");
+            securityElement.AppendChild(BinarySecurityTokenElement());
+            securityElement.AppendChild(TimestampElement());
+            return securityElement;
         }
 
         private XmlElement BinarySecurityTokenElement()

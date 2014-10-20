@@ -16,7 +16,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         }
 
         /// <summary>
-        /// Legger til vedlegg til allerede eksisterende vedlegg.
+        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
         /// </summary>
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
@@ -25,7 +25,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         }
 
         /// <summary>
-        /// Legger til vedlegg til allerede eksisterende vedlegg.
+        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
         /// </summary>
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(params Dokument[] dokumenter)
