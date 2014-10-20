@@ -140,10 +140,10 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                var kfeValidering = new KvitteringForespørselEnvelopeValidering();
-                var kfeValidert = kfeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
-                if(!kfeValidert)
-                    throw new Exception(kfeValidering.ValideringsVarsler);
+                var kvitteringForespørselEnvelopeValidering = new KvitteringForespørselEnvelopeValidering();
+                var kvitteringForespørselEnvelopeValidert = kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                if(!kvitteringForespørselEnvelopeValidert)
+                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
             }
             catch (Exception e)
             {
@@ -191,10 +191,10 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                var kmeValidering = new KvitteringMottattEnvelopeValidering();
-                var kmeValidert = kmeValidering.ValiderDokumentMotXsd(kvitteringMottattEnvelope.Xml().OuterXml);
-                if (!kmeValidert)
-                    throw new Exception(kmeValidering.ValideringsVarsler);
+                var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidering();
+                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(kvitteringMottattEnvelope.Xml().OuterXml);
+                if (!kvitteringMottattEnvelopeValidert)
+                    throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
             }
             catch (Exception e)
             {
