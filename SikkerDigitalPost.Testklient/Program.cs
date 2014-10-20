@@ -64,7 +64,7 @@ namespace SikkerDigitalPost.Testklient
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
 
             string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
-            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "1Vedlegg.txt");
+            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
             
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
