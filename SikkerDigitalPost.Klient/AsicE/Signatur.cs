@@ -20,12 +20,14 @@ namespace SikkerDigitalPost.Klient.AsicE
         private readonly X509Certificate2 _sertifikat;
         private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
         private XmlDocument _xml;
+        private int _idTeller; 
 
         public Signatur(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat)
         {
             _forsendelse = forsendelse;
             _manifest = manifest;
             _sertifikat = sertifikat;
+            _idTeller = 0;
         }
 
         public string Filnavn {
@@ -136,7 +138,7 @@ namespace SikkerDigitalPost.Klient.AsicE
             return new Sha256Reference(dokument.Bytes)
             {
                 Uri = dokument.Filnavn,
-                Id = dokument.Filnavn
+                Id = String.Format("Id_{0}", _idTeller++)
             };
         }
     }
