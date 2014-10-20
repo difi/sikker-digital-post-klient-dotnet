@@ -11,8 +11,14 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     /// </summary>
     public class VarslingFeiletKvittering : Forretningskvittering
     {
+        /// <summary>
+        /// Kanal for varsling til eier av postkasse. Varsling og påminnelsesmeldinger skal sendes på den kanal som blir spesifisert. Kanalen SMS er priset.
+        /// </summary>
         public Varslingskanal Varslingskanal { get; private set; }
 
+        /// <summary>
+        /// Beskrivelse av varsling feilet.
+        /// </summary>
         public string Beskrivelse { get; private set; }
 
         internal VarslingFeiletKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)

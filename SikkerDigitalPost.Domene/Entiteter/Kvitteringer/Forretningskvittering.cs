@@ -22,6 +22,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// </summary>
         public string KonversasjonsId { get; private set; }
 
+        /// <summary>
+        /// Unik identifikator for kvitteringen.
+        /// </summary>
         public string MeldingsId { get; private set; }
 
         /// <summary>

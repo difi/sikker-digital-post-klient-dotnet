@@ -17,6 +17,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// </summary>
         public DateTime Tidspunkt { get; protected set; }
 
+        /// <summary>
+        /// Unik identifikator for kvitteringen.
+        /// </summary>
         public string MeldingsId { get; protected set; }
 
         /// <summary>

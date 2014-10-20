@@ -70,6 +70,11 @@
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Navnerom.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="KlientKonfigurasjon.cs">
@@ -96,11 +101,16 @@
       <Name>SikkerDigitalPost.Domene</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="XmlValidering\xsd\ebxml\ebms-header-3_0-200704.xsd">
       <SubType>Designer</SubType>
     </None>

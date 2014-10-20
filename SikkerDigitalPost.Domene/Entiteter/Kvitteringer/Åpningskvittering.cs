@@ -10,6 +10,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     /// </summary>
     public class Åpningskvittering : Forretningskvittering
     {
+        /// <summary>
+        /// Tidspunkt for når borger åpnet posten i sin postkasse.
+        /// </summary>
         public DateTime Åpningstidspunkt { get; private set; }
 
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
