@@ -50,6 +50,7 @@ namespace SikkerDigitalPost.Klient
         {
             _databehandler = databehandler;
             _konfigurasjon = konfigurasjon;
+            Logging.Initialize(konfigurasjon);
         }
 
         /// <summary>

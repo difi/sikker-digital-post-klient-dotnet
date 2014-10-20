@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using SikkerDigitalPost.Domene.Entiteter;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -19,6 +20,8 @@ namespace SikkerDigitalPost.Klient
         public double ConnectTimeoutInMillis { get; set; }
 
         public double ConnectionRequestTimeoutInMillis { get; set; }
+
+        public Action<TraceEventType, Guid, string, string> Logger { get; set; }
 
         public bool UseProxy
         {
