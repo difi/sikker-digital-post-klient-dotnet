@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -80,6 +81,11 @@ namespace SikkerDigitalPost.Testklient
             //Hent kvittering
             var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
             Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+
+            if (kvittering.GetType() == typeof (Feilmelding))
+            {
+                throw new Exception("Du fikk en feiletkvittering, men det er ikke sikkert du genererte den nå nettopp.");
+            }
 
             //Bekreft mottak av kvittering. 
             sikkerDigitalPostKlient.Bekreft(kvittering);

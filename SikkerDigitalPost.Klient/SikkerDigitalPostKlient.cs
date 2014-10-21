@@ -148,7 +148,7 @@ namespace SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:\n" + e.Message);
+                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:" + e.Message);
             }
 
             var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
@@ -200,7 +200,7 @@ namespace SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:\n" + e.Message);
+                throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
 #if DEBUG
             FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
