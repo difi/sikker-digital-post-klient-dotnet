@@ -1,5 +1,4 @@
 ﻿using System.Xml.Schema;
-using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {

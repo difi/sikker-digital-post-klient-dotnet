@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Exceptions;
-using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient
 {

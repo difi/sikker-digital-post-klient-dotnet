@@ -13,7 +13,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         /// Denne strengen beskriver en feil som blir oppdaget ved xsd-validering av ws-security, men som vi ikke får gjort noe med.
         /// </summary>
         private const string ToleratedError = "It is an error if there is a member of the attribute uses of a type definition with type xs:ID or derived from xs:ID and another attribute with type xs:ID matches an attribute wildcard.";
-        
+        private const string ErrorToleratedPrefix = "The 'PrefixList' attribute is invalid - The value '' is invalid according to its datatype 'http://www.w3.org/2001/XMLSchema:NMTOKENS' - The attribute value cannot be empty.";
         private const string WarningMessage = "\tWarning: Matching schema not found. No validation occurred.";
         private const string ErrorMessage = "\tValidation error:";
 
@@ -52,11 +52,11 @@ namespace SikkerDigitalPost.Klient.XmlValidering
                     break;
                 case XmlSeverityType.Error:
                     _validationMessages += String.Format("{0} {1}\n", ErrorMessage, e.Message);
-                    if (!e.Message.Equals(ToleratedError))
+                    if (!e.Message.Equals(ToleratedError) && !e.Message.Equals(ErrorToleratedPrefix))
                         _harErrors = true;
                     else
                         _validationMessages +=
-                            "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet";
+                            "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet\n";
                     break;
             }
         }
@@ -176,6 +176,16 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         protected XmlReader XmlDsigCoreSchema()
         {
             return XsdResource(@"w3.xmldsig-core-schema.xsd");
+        }
+
+        protected XmlReader EbmsSignalsXsdPath()
+        {
+            return XsdResource(@"ebxml.ebbp-signals-2.0.xsd");
+        }
+
+        protected XmlReader XlinkXsdPath()
+        {
+            return XsdResource(@"w3.xlink.xsd");
         }
 
         protected XmlReader XadesXsdPath()
