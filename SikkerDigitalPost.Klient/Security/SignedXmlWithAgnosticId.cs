@@ -61,8 +61,27 @@ namespace SikkerDigitalPost.Klient.Security
                 CryptoConfig.AddAlgorithm(typeof(RsaPkCs1Sha256SignatureDescription), signatureMethod);
 
             // Makes sure the signingkey is using Microsoft Enhanced RSA and AES Cryptographic Provider which enables SHA256
-            SigningKey = new RSACryptoServiceProvider();
-            SigningKey.FromXmlString(certificate.PrivateKey.ToXmlString(true));
+            if (!certificate.HasPrivateKey)
+                throw new Exception(string.Format("Angitt sertifikat med fingeravtrykk {0} inneholder ikke en privatnøkkel. Dette er påkrevet for å signere xml dokumenter.", certificate.Thumbprint));
+
+            var targetKey = certificate.PrivateKey as RSACryptoServiceProvider;
+            if (targetKey == null)
+                throw new Exception(string.Format("Privatnøkkelen i sertifikatet med fingeravtrykk {0} er ikke en gyldig RSA asymetrisk nøkkel.", certificate.Thumbprint));
+
+            if (targetKey.CspKeyContainerInfo.ProviderType == 24)
+                SigningKey = targetKey;
+            else
+            {
+                SigningKey = new RSACryptoServiceProvider();
+                try
+                {
+                    SigningKey.FromXmlString(certificate.PrivateKey.ToXmlString(true));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(string.Format("Angitt sertifikat med fingeravtrykk {0} kan ikke eksporteres. Det er nødvendig når sertifikatet ikke er opprettet med 'Microsoft Enhanced RSA and AES Cryptographic Provider' som CryptoAPI provider name (-sp parameter i makecert.exe eller -csp parameter i openssl).", certificate.Thumbprint), e);
+                }
+            }
 
             SignedInfo.SignatureMethod = signatureMethod;
             SignedInfo.CanonicalizationMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
