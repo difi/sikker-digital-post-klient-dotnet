@@ -17,7 +17,7 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void ValidereManifestMotXsdValiderer()
         {
-            var manifestXml = Manifest.Xml();
+            var manifestXml = Arkiv.Manifest.Xml();
 
             var manifestValidering = new ManifestValidering();
             var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);

@@ -20,7 +20,7 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void ValidereSignaturMotXsdValiderer()
         {
-            var signaturXml = Signatur.Xml();
+            var signaturXml = Arkiv.Signatur.Xml();
             var signaturValidering = new SignaturValidering();
 
             var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);

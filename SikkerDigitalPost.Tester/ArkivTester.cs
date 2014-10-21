@@ -49,7 +49,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Signatur.Bytes, Arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Arkiv.Signatur.Bytes, Arkiv.Signatur.Filnavn, out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -58,7 +58,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Manifest.Bytes, Path.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, Path.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }

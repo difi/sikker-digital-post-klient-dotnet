@@ -32,6 +32,7 @@ namespace SikkerDigitalPost.Tester
         {
             _store.Close();
         }
+
         [TestMethod]
         public void TestLowercaseThumbprint()
         {
