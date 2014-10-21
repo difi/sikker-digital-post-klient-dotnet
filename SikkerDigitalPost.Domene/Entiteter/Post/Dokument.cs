@@ -9,6 +9,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         public string Filnavn { get; private set; }
         public byte[] Bytes { get; private set; }
         public string Innholdstype { get; private set; }
+        public string Id { get; set; }
         public string Språkkode { get; private set; }
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>

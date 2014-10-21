@@ -5,5 +5,6 @@
         string Filnavn { get; }
         byte[] Bytes { get; }
         string Innholdstype { get; }
+        string Id { get; }
     }
 }

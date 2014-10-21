@@ -79,6 +79,8 @@ namespace SikkerDigitalPost.Klient
 #if DEBUG
             FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
+            FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "Signatur.xml");
+            FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "Manifest.xml");
 #endif
             
             try

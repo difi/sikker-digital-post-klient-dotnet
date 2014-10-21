@@ -47,6 +47,11 @@ namespace SikkerDigitalPost.Klient.AsicE
             get { return "application/xml"; }
         }
 
+        public string Id
+        {
+            get { return "Id_0"; }
+        }
+
         public XmlDocument Xml()
         {
             try
@@ -138,7 +143,7 @@ namespace SikkerDigitalPost.Klient.AsicE
             return new Sha256Reference(dokument.Bytes)
             {
                 Uri = dokument.Filnavn,
-                Id = String.Format("Id_{0}", _idTeller++)
+                Id = dokument.Id
             };
         }
     }

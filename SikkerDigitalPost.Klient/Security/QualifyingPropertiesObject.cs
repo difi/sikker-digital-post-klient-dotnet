@@ -77,7 +77,7 @@ namespace SikkerDigitalPost.Klient.Security
             foreach (var item in References)
             {
                 var a = signedDataObjectProperties.AppendChild("DataObjectFormat", Navnerom.Ns11);
-                a.SetAttribute("ObjectReference", "#" + item.Filnavn);
+                a.SetAttribute("ObjectReference", "#" + item.Id);
                 a.AppendChild("MimeType", "http://uri.etsi.org/01903/v1.3.2#", item.Innholdstype);
             }
 

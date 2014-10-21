@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Post
@@ -13,15 +14,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         {
             Vedlegg = new List<Dokument>();
             Hoveddokument = hoveddokument;
-        }
-
-        /// <summary>
-        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
-        /// </summary>
-        /// <param name="dokumenter"></param>
-        public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
-        {
-            Vedlegg.AddRange(dokumenter);
+            Hoveddokument.Id = "Id_2";
         }
 
         /// <summary>
@@ -30,7 +23,23 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(params Dokument[] dokumenter)
         {
-            Vedlegg.AddRange(dokumenter.ToList());
+            LeggTilVedlegg(dokumenter.ToList());
+        }
+
+        /// <summary>
+        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
+        /// </summary>
+        /// <param name="dokumenter"></param>
+        public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
+        {
+            Dokument nåværendeDokument;
+            for (int i = 0; i < dokumenter.Count(); i++)
+            {
+                nåværendeDokument = dokumenter.ElementAt(i);
+                nåværendeDokument.Id = String.Format("Id_{0}", i + 3);
+            }
+
+            Vedlegg.AddRange(dokumenter);
         }
     }
 }

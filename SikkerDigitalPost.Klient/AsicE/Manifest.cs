@@ -30,7 +30,15 @@ namespace SikkerDigitalPost.Klient.AsicE
         public string Innholdstype {
             get { return "application/xml"; }
         }
-        
+
+        public string Id
+        {
+            get
+            {
+                return "Id_1";
+            }
+        }
+
         public byte[] Bytes
         {
             get
@@ -97,12 +105,8 @@ namespace SikkerDigitalPost.Klient.AsicE
                     avsenderidentifikator.InnerText = Avsender.Avsenderidentifikator;
                 }
 
-                var fakturaRef = Avsender.Fakturareferanse;
-                if (!String.IsNullOrWhiteSpace(fakturaRef))
-                {
-                    XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
-                    fakturaReferanse.InnerText = Avsender.Fakturareferanse;
-                }
+                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
+                fakturaReferanse.InnerText = Avsender.Fakturareferanse;
             }
 
             return avsender;
