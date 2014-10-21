@@ -47,7 +47,7 @@ namespace SikkerDigitalPost.Tester
 
         public static void Initialiser()
         {
-            //Hoveddokument og vedlegg
+            //Dokumentpakke
             TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
             VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
             HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
