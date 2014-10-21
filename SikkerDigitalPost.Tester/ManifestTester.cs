@@ -1,11 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Xml;
-using System.Xml.Schema;
+﻿using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.XmlValidering;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -23,58 +19,23 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void ValidereManifestMotXsdValiderer()
         {
-            var settings = new XmlReaderSettings();
-            settings.XmlResolver = null;
+            var manifestXml = Manifest.Xml();
 
-            settings.Schemas.Add(Navnerom.Ns9, ManifestXsdPath());
-            settings.Schemas.Add(Navnerom.Ns9, FellesXsdPath());
-
-            settings.ValidationType = ValidationType.Schema;
-            settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
-            settings.ValidationEventHandler += ValidationEventHandler;
-
-            try
-            {
-                var reader = XmlReader.Create(new MemoryStream(Manifest.Bytes), settings);
-                var document = new XmlDocument();
-                document.Load(reader);
-                Assert.IsFalse(_harFeilet);
-            }
-            catch (Exception e)
-            {
-                var message = String.Format("Validering feilet: {0} Inndre feilmelding: {1}", e.Message,e.InnerException);
-                Assert.Fail(message);
-            }
-        }
-
-        private static void ValidationEventHandler(object sender, ValidationEventArgs e)
-        {
-            if (e.Severity == XmlSeverityType.Warning)
-                Console.WriteLine("\tWarning: Matching schema not found.  No validation occurred. " + e.Message);
-            else if (e.Severity == XmlSeverityType.Error)
-                Console.WriteLine("\tValidation error: " + e.Message);
-            _harFeilet = true;
-        }
-
-        private string ManifestXsdPath()
-        {
-            return XsdFil("sdp-manifest.xsd");
-        }
-
-        private string FellesXsdPath()
-        {
-            return XsdFil("sdp-felles.xsd");
-        }
-
-        private string XmlDsigCoreSchema()
-        {
-            return XsdFil(@"w3/xmldsig-core-schema.xsd");
+            var manifestValidering = new ManifestValidering();
+            var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+            Assert.IsTrue(validert);
             
-        }
+            //Endre navn på hoveddokument til å være for kort
+            var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
+            namespaceManager.AddNamespace("ns9", Navnerom.Ns9);
+            namespaceManager.AddNamespace("ds", Navnerom.ds);
 
-        private string XsdFil(string bareFilnavn)
-        {
-            return Path.Combine(TestDataMappe, "xsd", bareFilnavn);
+            var hoveddokumentNode = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument", namespaceManager);
+            hoveddokumentNode.Attributes["href"].Value = "abc";
+
+            validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+
+            Assert.IsFalse(validert);
         }
     }
 }
