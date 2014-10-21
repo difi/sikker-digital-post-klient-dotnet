@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
@@ -27,6 +28,18 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 
         public bool ValiderDokumentMotXsd(string document)
         {
+            //XmlValideringstest
+            var assembly = Assembly.GetExecutingAssembly();
+            var names = assembly.GetManifestResourceNames();
+
+            string[] resourceNames = assembly.GetManifestResourceNames();
+            foreach (string resourceName in resourceNames)
+            {
+                System.Diagnostics.Trace.WriteLine(resourceName);
+            }
+
+            //Slutt på test
+
             var settings = new XmlReaderSettings();
             settings.Schemas.Add(GenererSchemaSet());
             settings.ValidationType = ValidationType.Schema;
@@ -60,114 +73,132 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             }
         }
 
-        protected string SoapEnvelopeXsdPath()
+        protected XmlReader SoapEnvelopeXsdPath()
         {
-            return XsdPath(@"w3/soap-envelope.xsd");
+            return XsdResource(@"w3.soap-envelope.xsd");
         }
 
-        protected string EnvelopeXsdPath()
+        //
+        protected XmlReader EnvelopeXsdPath()
         {
-            return XsdPath(@"xmlsoap/envelope.xsd");
+            return XsdResource(@"xmlsoap.envelope.xsd");
         }
 
-        protected string XmlXsdPath()
+        protected XmlReader XmlXsdPath()
         {
-            return XsdPath(@"w3/xml.xsd");
+            return XsdResource(@"w3.xml.xsd");
         }
 
-        protected string ExecC14nXsdPath()
+        protected XmlReader ExecC14nXsdPath()
         {
-            return XsdPath(@"w3/exc-c14n.xsd");
+            return XsdResource(@"w3.exc-c14n.xsd");
         }
 
-        protected string EbmsHeaderXsdPath()
+        protected XmlReader EbmsHeaderXsdPath()
         {
-            return XsdPath(@"ebxml/ebms-header-3_0-200704.xsd");
+            return XsdResource(@"ebxml.ebms-header-3_0-200704.xsd");
         }
 
-        protected string XmlDsigCoreXsdPath()
+        protected XmlReader XmlDsigCoreXsdPath()
         {
-            return XsdPath(@"w3/xmldsig-core-schema.xsd");
+            return XsdResource(@"w3.xmldsig-core-schema.xsd");
         }
 
-        protected string XmlXencXsdPath()
+        protected XmlReader XmlXencXsdPath()
         {
-            return XsdPath(@"w3/xenc-schema.xsd");
+            return XsdResource(@"w3.xenc-schema.xsd");
+        }
+        //
+        //
+        protected XmlReader FellesXsdPath()
+        {
+            return XsdResource("sdp-felles.xsd");
         }
 
-        protected string FellesXsdPath()
+        //
+        protected XmlReader MeldingXsdPath()
         {
-            return XsdPath("sdp-felles.xsd");
+            return XsdResource("sdp-melding.xsd");
         }
 
-        protected string MeldingXsdPath()
+        protected XmlReader StandardBusinessDocumentHeaderXsdPath()
         {
-            return XsdPath("sdp-melding.xsd");
+            return XsdResource(@"SBDH20040506_02.StandardBusinessDocumentHeader.xsd");
         }
 
-        protected string StandardBusinessDocumentHeaderXsdPath()
+        protected XmlReader DocumentIdentificationXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/StandardBusinessDocumentHeader.xsd");
+            return XsdResource(@"SBDH20040506_02.DocumentIdentification.xsd");
         }
 
-        protected string DocumentIdentificationXsdPath()
+        protected XmlReader SBDHManifestXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/DocumentIdentification.xsd");
+            return XsdResource(@"SBDH20040506_02.Manifest.xsd");
         }
 
-        protected string SBDHManifestXsdPath()
+        protected XmlReader SdpManifestXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/Manifest.xsd");
+            return XsdResource("sdp-manifest.xsd");
         }
 
-        protected string SdpManifestXsdPath()
+        protected XmlReader PartnerXsdPath()
         {
-            return XsdPath("sdp-manifest.xsd");
+            return XsdResource(@"SBDH20040506_02.Partner.xsd");
         }
 
-        protected string PartnerXsdPath()
+        protected XmlReader BusinessScopeXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/Partner.xsd");
+            return XsdResource(@"SBDH20040506_02.BusinessScope.xsd");
         }
 
-        protected string BusinessScopeXsdPath()
+        protected XmlReader BasicTypesXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/BusinessScope.xsd");
+            return XsdResource(@"SBDH20040506_02.BasicTypes.xsd");
         }
 
-        protected string BasicTypesXsdPath()
+        //
+        //
+
+        protected XmlReader WsSecurityUtilityXsdPath()
         {
-            return XsdPath(@"SBDH20040506-02/BasicTypes.xsd");
+            return XsdResource(@"wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd");
         }
 
-        protected string WsSecurityUtilityXsdPath()
+        protected XmlReader WsSecuritySecExt1_0XsdPath()
         {
-            return XsdPath(@"wssecurity/oasis-200401-wss-wssecurity-utility-1.0.xsd");
+            return XsdResource(@"wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd");
         }
 
-        protected string WsSecuritySecExt1_0XsdPath()
+        protected XmlReader WsSecuritySecExt1_1XsdPath()
         {
-            return XsdPath(@"wssecurity/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+            return XsdResource(@"wssecurity.oasis-wss-wssecurity-secext-1.1.xsd");
         }
 
-        protected string WsSecuritySecExt1_1XsdPath()
+        protected XmlReader AsicEXsdPath()
         {
-            return XsdPath(@"wssecurity/oasis-wss-wssecurity-secext-1.1.xsd");
+            return XsdResource("w3.ts_102918v010201.xsd");
         }
 
-        protected string AsicEXsdPath()
+        protected XmlReader XsdResource(string xsdResource)
         {
-            return XsdPath(@"w3/ts_102918v010201.xsd");
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = String.Format("{0}.{1}", "SikkerDigitalPost.Klient.XmlValidering.xsd",xsdResource);
+
+            Stream stream = assembly.GetManifestResourceStream(resourceName);
+            StreamReader reader = new StreamReader(stream);
+            XmlReader reader2 = XmlReader.Create(reader);
+
+            return reader2;
         }
 
-        protected string XmlDsigCoreSchema()
+        protected XmlReader XmlDsigCoreSchema()
         {
-            return XsdPath(@"w3/xmldsig-core-schema.xsd");
+            return XsdResource(@"w3.xmldsig-core-schema.xsd");
         }
 
-        protected string XAdESXsdPath()
+        protected XmlReader XAdESXsdPath()
         {
-            return XsdPath(@"w3/XAdES.xsd");
+            return XsdResource(@"w3.XAdES.xsd");
         }
 
         private static string XsdPath(string filnavn)
