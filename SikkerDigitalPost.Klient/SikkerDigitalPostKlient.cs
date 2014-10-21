@@ -12,6 +12,7 @@ using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Security;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.XmlValidering;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -59,6 +60,8 @@ namespace SikkerDigitalPost.Klient
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fyisk.</param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
+            Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
+
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
 
@@ -117,7 +120,7 @@ namespace SikkerDigitalPost.Klient
         /// </list>
         /// </remarks>
         public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
-        {
+        {            
             return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
 

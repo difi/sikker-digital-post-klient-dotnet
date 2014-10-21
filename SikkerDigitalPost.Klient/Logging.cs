@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Klient
                 };
             }
         }
-
+        
         internal static void Log(TraceEventType severity, Guid koversasjonsId, string message, [CallerMemberName] string callerMember = null)
         {
             if (_logAction == null)
