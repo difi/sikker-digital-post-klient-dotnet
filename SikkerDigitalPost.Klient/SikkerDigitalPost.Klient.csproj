@@ -90,7 +90,7 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
-    <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidering.cs" />
+    <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ManifestValidering.cs" />
     <Compile Include="XmlValidering\SignaturValidering.cs" />
     <Compile Include="XmlValidering\XmlValidering.cs" />

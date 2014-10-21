@@ -65,7 +65,7 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                var validering = new ForretningsmeldingEnvelopeValidering();
+                var validering = new ForretningsmeldingEnvelopeValidator();
                 var validert = validering.ValiderDokumentMotXsd(forretningsmeldingEnvelope.Xml().OuterXml);
                 if(!validert)
                     throw new Exception(validering.ValideringsVarsler);

@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.XmlValidering;
@@ -18,10 +19,18 @@ namespace SikkerDigitalPost.Tester
         public void ValidereEnvelopeMotXsdValiderer()
         {
             var forretningsmeldingEnvelopeXml = Envelope.Xml();
-            var envelopeValiderer = new ForretningsmeldingEnvelopeValidering();
-            var validert = envelopeValiderer.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            var  envelopeValidator = new ForretningsmeldingEnvelopeValidator();
+            var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
 
-            Assert.IsTrue(validert, envelopeValiderer.ValideringsVarsler);
+            Assert.IsTrue(validert, envelopeValidator.ValideringsVarsler);
+        }
+
+        [TestMethod]
+        public void LagUgyldigSecurityNodeXsdValidererIkke()
+        {
+           var forretningsmeldingEnvelopeXml = Envelope.Xml();
+            var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
+            var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
 
             //Endre til ugyldig forretningsmeldingenvelope
             var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
@@ -35,11 +44,14 @@ namespace SikkerDigitalPost.Tester
             namespaceManager.AddNamespace("ns5", Navnerom.Ns5);
 
             var securityNode = forretningsmeldingEnvelopeXml.DocumentElement.SelectSingleNode("//wsse:Security", namespaceManager);
+
+            var gammelVerdi = securityNode.Attributes["mustUnderstand"].Value;
             securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
-            validert = envelopeValiderer.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            Assert.IsFalse(validert, envelopeValidator.ValideringsVarsler);
 
-            Assert.IsFalse(validert, envelopeValiderer.ValideringsVarsler);
+            securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
         }
     }
 }
