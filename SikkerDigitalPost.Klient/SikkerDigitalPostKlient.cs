@@ -76,9 +76,10 @@ namespace SikkerDigitalPost.Klient
             var soapContainer = new SoapContainer {Envelope = forretningsmeldingEnvelope, Action = "\"\""};
             soapContainer.Vedlegg.Add(arkiv);
             var response = SendSoapContainer(soapContainer);
-
+#if DEBUG
             FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
+#endif
             
             try
             {
@@ -152,9 +153,10 @@ namespace SikkerDigitalPost.Klient
 
             var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
             var kvittering = SendSoapContainer(soapContainer);
-
+#if DEBUG
             FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
             FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+#endif
 
             try
             {
@@ -200,8 +202,9 @@ namespace SikkerDigitalPost.Klient
             {
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:\n" + e.Message);
             }
-
+#if DEBUG
             FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
+#endif
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
             var response = SendSoapContainer(soapContainer);
@@ -227,8 +230,13 @@ namespace SikkerDigitalPost.Klient
                     {
                         XDocument soap = XDocument.Load(errorStream);
                         data = soap.ToString();
+
+#if DEBUG               
                         var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
                         FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
+#endif
+
+
                     }
                 }
             }
