@@ -10,7 +10,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             var schemaSet = new XmlSchemaSet();
 
             schemaSet.Add(Navnerom.Ns10, AsicEXsdPath());
-            schemaSet.Add(Navnerom.Ns11, XAdESXsdPath());
+            schemaSet.Add(Navnerom.Ns11, XadesXsdPath());
             schemaSet.Add(Navnerom.Ns5, XmlDsigCoreSchema());
             
             return schemaSet;

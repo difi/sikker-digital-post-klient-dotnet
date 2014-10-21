@@ -12,11 +12,11 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         /// <summary>
         /// Denne strengen beskriver en feil som blir oppdaget ved xsd-validering av ws-security, men som vi ikke får gjort noe med.
         /// </summary>
-        private const string ErrorTolerated = "It is an error if there is a member of the attribute uses of a type definition with type xs:ID or derived from xs:ID and another attribute with type xs:ID matches an attribute wildcard.";
+        private const string ToleratedError = "It is an error if there is a member of the attribute uses of a type definition with type xs:ID or derived from xs:ID and another attribute with type xs:ID matches an attribute wildcard.";
+        
         private const string WarningMessage = "\tWarning: Matching schema not found. No validation occurred.";
         private const string ErrorMessage = "\tValidation error:";
-        private const string XsdMappe = @"../../../SikkerDigitalPost.Klient/XmlValidering/xsd";
-        
+
         private static bool _harWarnings;
         private static bool _harErrors;
 
@@ -28,24 +28,12 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 
         public bool ValiderDokumentMotXsd(string document)
         {
-            //XmlValideringstest
-            var assembly = Assembly.GetExecutingAssembly();
-            var names = assembly.GetManifestResourceNames();
-
-            string[] resourceNames = assembly.GetManifestResourceNames();
-            foreach (string resourceName in resourceNames)
-            {
-                System.Diagnostics.Trace.WriteLine(resourceName);
-            }
-
-            //Slutt på test
-
             var settings = new XmlReaderSettings();
             settings.Schemas.Add(GenererSchemaSet());
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
             settings.ValidationEventHandler += ValidationEventHandler;
-            
+
             var xmlReader = XmlReader.Create(new MemoryStream(Encoding.UTF8.GetBytes(document)), settings);
 
             while (xmlReader.Read()) { }
@@ -64,7 +52,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
                     break;
                 case XmlSeverityType.Error:
                     _validationMessages += String.Format("{0} {1}\n", ErrorMessage, e.Message);
-                    if (!e.Message.Equals(ErrorTolerated))
+                    if (!e.Message.Equals(ToleratedError))
                         _harErrors = true;
                     else
                         _validationMessages +=
@@ -78,7 +66,6 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             return XsdResource(@"w3.soap-envelope.xsd");
         }
 
-        //
         protected XmlReader EnvelopeXsdPath()
         {
             return XsdResource(@"xmlsoap.envelope.xsd");
@@ -108,14 +95,12 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         {
             return XsdResource(@"w3.xenc-schema.xsd");
         }
-        //
-        //
+
         protected XmlReader FellesXsdPath()
         {
             return XsdResource("sdp-felles.xsd");
         }
 
-        //
         protected XmlReader MeldingXsdPath()
         {
             return XsdResource("sdp-melding.xsd");
@@ -131,7 +116,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             return XsdResource(@"SBDH20040506_02.DocumentIdentification.xsd");
         }
 
-        protected XmlReader SBDHManifestXsdPath()
+        protected XmlReader SbdhManifestXsdPath()
         {
             return XsdResource(@"SBDH20040506_02.Manifest.xsd");
         }
@@ -156,9 +141,6 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             return XsdResource(@"SBDH20040506_02.BasicTypes.xsd");
         }
 
-        //
-        //
-
         protected XmlReader WsSecurityUtilityXsdPath()
         {
             return XsdResource(@"wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd");
@@ -182,13 +164,13 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         protected XmlReader XsdResource(string xsdResource)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = String.Format("{0}.{1}", "SikkerDigitalPost.Klient.XmlValidering.xsd",xsdResource);
+            var resourceName = String.Format("{0}.{1}", "SikkerDigitalPost.Klient.XmlValidering.xsd", xsdResource);
 
             Stream stream = assembly.GetManifestResourceStream(resourceName);
-            StreamReader reader = new StreamReader(stream);
-            XmlReader reader2 = XmlReader.Create(reader);
+            StreamReader streamReader = new StreamReader(stream);
+            XmlReader xmlReader = XmlReader.Create(streamReader);
 
-            return reader2;
+            return xmlReader;
         }
 
         protected XmlReader XmlDsigCoreSchema()
@@ -196,16 +178,9 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             return XsdResource(@"w3.xmldsig-core-schema.xsd");
         }
 
-        protected XmlReader XAdESXsdPath()
+        protected XmlReader XadesXsdPath()
         {
             return XsdResource(@"w3.XAdES.xsd");
-        }
-
-        private static string XsdPath(string filnavn)
-        {
-            var absoluteXsdSource = Path.GetFullPath(XsdMappe);
-            string xsdPath = Path.Combine(absoluteXsdSource, filnavn);
-            return xsdPath;
         }
     }
 }
