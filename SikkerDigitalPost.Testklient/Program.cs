@@ -71,7 +71,7 @@ namespace SikkerDigitalPost.Testklient
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,"NO", "hest");
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,"NO");
 
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
@@ -79,7 +79,7 @@ namespace SikkerDigitalPost.Testklient
            // Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             //Hent kvittering
-            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, "11");
+            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
             Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
             if (kvittering == null)
