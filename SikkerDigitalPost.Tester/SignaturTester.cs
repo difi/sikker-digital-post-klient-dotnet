@@ -17,8 +17,6 @@ namespace SikkerDigitalPost.Tester
             Initialiser();
         }
 
-        private static bool _harFeilet;
-
         [TestMethod]
         public void ValidereSignaturMotXsdValiderer()
         {
@@ -27,7 +25,7 @@ namespace SikkerDigitalPost.Tester
 
             var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
 
-            Assert.IsTrue(validerer);
+            Assert.IsTrue(validerer, signaturValidering.ValideringsVarsler);
 
             //Endre id på hoveddokument til å starte på et tall
             var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
@@ -41,7 +39,7 @@ namespace SikkerDigitalPost.Tester
 
             validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
 
-            Assert.IsFalse(validerer);
+            Assert.IsFalse(validerer, signaturValidering.ValideringsVarsler);
         }
     }
 }

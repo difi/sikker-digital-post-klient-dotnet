@@ -14,8 +14,6 @@ namespace SikkerDigitalPost.Tester
             Initialiser();
         }
 
-        private static bool _harFeilet;
-
         [TestMethod]
         public void ValidereManifestMotXsdValiderer()
         {
@@ -23,7 +21,7 @@ namespace SikkerDigitalPost.Tester
 
             var manifestValidering = new ManifestValidering();
             var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-            Assert.IsTrue(validert);
+            Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
             
             //Endre navn på hoveddokument til å være for kort
             var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -35,7 +33,7 @@ namespace SikkerDigitalPost.Tester
 
             validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
 
-            Assert.IsFalse(validert);
+            Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
         }
     }
 }
