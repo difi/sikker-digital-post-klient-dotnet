@@ -3,7 +3,7 @@
 Dette er en .NET-klient for sending av sikker digital post for det offentlige. Formålet for klienten er å forenkle integrasjonen 
 som må utføres av avsendervirksomheter. For mer informasjon om sikker digital post, se [her](http://begrep.difi.no/SikkerDigitalPost/).
 
-**NB: Klienten er under utvikling, og vil per dags dato ikke kunne brukes til å sende digital post.**
+**NB: Klienten er under utvikling, og vil inneholde en del feil. Forberdinger vil komme fortløpende.**
 
 #Hvordan komme i gang
 
