@@ -3,7 +3,7 @@ using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ManifestValidering : XmlValidering
+    internal class ManifestValidering : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

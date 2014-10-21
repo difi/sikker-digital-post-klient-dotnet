@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class KvitteringMottattEnvelopeValidering : XmlValidering
+    internal class KvitteringMottattEnvelopeValidering : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

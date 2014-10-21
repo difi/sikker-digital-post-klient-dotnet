@@ -2,7 +2,7 @@
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class SignaturValidering : XmlValidering
+    internal class Signaturvalidator : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

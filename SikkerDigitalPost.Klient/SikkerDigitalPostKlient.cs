@@ -83,7 +83,7 @@ namespace SikkerDigitalPost.Klient
             
             try
             {
-                var valideringAvRespons = new ValideringAvRespons();
+                var valideringAvRespons = new Responsvalidator();
                 valideringAvRespons.ValiderRespons(response, forretningsmeldingEnvelope.Xml(), guidHandler);
             }
             catch (Exception e)
@@ -139,17 +139,7 @@ namespace SikkerDigitalPost.Klient
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
-            try
-            {
-                var kvitteringForespørselEnvelopeValidering = new KvitteringForespørselEnvelopeValidering();
-                var kvitteringForespørselEnvelopeValidert = kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
-                if(!kvitteringForespørselEnvelopeValidert)
-                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
-            }
-            catch (Exception e)
-            {
-                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:" + e.Message);
-            }
+            ValiderKvitteringsEnvelope(kvitteringsenvelope);
 
             var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
             var kvittering = SendSoapContainer(soapContainer);
@@ -160,7 +150,7 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                var valideringAvResponsSignatur = new ValideringAvRespons();
+                var valideringAvResponsSignatur = new Responsvalidator();
                 if (!valideringAvResponsSignatur.ValiderSignatur(kvittering))
                     throw new Exception("Signaturen på kvitteringen du har mottatt validerer ikke.\n");
             }
@@ -170,6 +160,23 @@ namespace SikkerDigitalPost.Klient
             }
             
             return KvitteringFactory.GetForretningskvittering(kvittering);
+        }
+
+        private static void ValiderKvitteringsEnvelope(KvitteringsEnvelope kvitteringsenvelope)
+        {
+            try
+            {
+                var kvitteringForespørselEnvelopeValidering = new KvitteringForespørselEnvelopeValidering();
+                var kvitteringForespørselEnvelopeValidert =
+                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                if (!kvitteringForespørselEnvelopeValidert)
+                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:" + e.Message);
+            }
+            
         }
 
 
@@ -256,7 +263,7 @@ namespace SikkerDigitalPost.Klient
             if (!manifestValidert)
                 throw new Exception(manifestValidering.ValideringsVarsler);
 
-            var signaturValidering = new SignaturValidering();
+            var signaturValidering = new Signaturvalidator();
             var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
             if (!signaturValidert)
                 throw new Exception(signaturValidering.ValideringsVarsler);

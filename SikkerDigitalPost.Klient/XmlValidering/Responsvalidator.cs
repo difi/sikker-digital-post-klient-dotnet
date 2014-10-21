@@ -5,7 +5,7 @@ using SikkerDigitalPost.Klient.Security;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ValideringAvRespons
+    internal class Responsvalidator
     {
         public void ValiderRespons(string response, XmlDocument sendtMelding, GuidHandler guidHandler)
         {

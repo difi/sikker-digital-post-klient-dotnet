@@ -7,7 +7,7 @@ using System.Xml.Schema;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal abstract class XmlValidering
+    internal abstract class Xmlvalidator
     {
         /// <summary>
         /// Denne strengen beskriver en feil som blir oppdaget ved xsd-validering av ws-security, men som vi ikke får gjort noe med.

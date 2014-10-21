@@ -94,9 +94,9 @@
     <Compile Include="XmlValidering\KvitteringForespørselEnvelopeValidering.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidering.cs" />
     <Compile Include="XmlValidering\ManifestValidering.cs" />
-    <Compile Include="XmlValidering\SignaturValidering.cs" />
-    <Compile Include="XmlValidering\ValideringAvRespons.cs" />
-    <Compile Include="XmlValidering\XmlValidering.cs" />
+    <Compile Include="XmlValidering\Signaturvalidator.cs" />
+    <Compile Include="XmlValidering\Responsvalidator.cs" />
+    <Compile Include="XmlValidering\Xmlvalidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">

@@ -3,7 +3,7 @@ using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ForretningsmeldingEnvelopeValidering : XmlValidering
+    internal class ForretningsmeldingEnvelopeValidering : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {
