@@ -38,5 +38,11 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                 throw new XmlParseException("Feil under bygging av Feilmelding-kvittering. Klarte ikke finne alle felter i xml.", e);
             }
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0} med meldingsId {1}:\nTidspunkt: {2}.\nTidspunkt feilet: {3}.\nSkyldig: {4}.\nDetaljer: {5}.\nKonversasjonsId: {6}.\nRefererer til melding med id: {7}", 
+                GetType().Name, MeldingsId, Tidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, RefToMessageId);
+        }
     }
 }

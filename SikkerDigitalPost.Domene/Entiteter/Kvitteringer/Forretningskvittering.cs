@@ -38,6 +38,11 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// Kvitteringen presentert som tekststreng.
         /// </summary>
         public readonly string Rådata;
+
+        /// <summary>
+        /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
+        /// </summary>
+        public override abstract string ToString();
         
         protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {

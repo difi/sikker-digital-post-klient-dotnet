@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
 {
@@ -9,6 +10,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     {
         public TransportOkKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} med meldingsId {1}:\nTidspunkt: {2}.\nRefererer til melding med id: {3}",
+                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingsId);
         }
     }
 }
