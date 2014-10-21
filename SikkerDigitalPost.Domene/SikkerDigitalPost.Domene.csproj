@@ -61,7 +61,6 @@
     <Compile Include="Entiteter\Kvitteringer\Åpningskvittering.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
     <Compile Include="Enums\Feiltype.cs" />
-    <Compile Include="Enums\Handling.cs" />
     <Compile Include="Enums\Sikkerhetsnivå.cs" />
     <Compile Include="Entiteter\Varsel\Varsel.cs" />
     <Compile Include="Enums\Prioritet.cs" />
