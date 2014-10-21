@@ -70,15 +70,15 @@ namespace SikkerDigitalPost.Klient
                 if(!validert)
                     throw new Exception(validering.ValideringsVarsler);
 
-                //var mValidering = new ManifestValidering();
-                //var mValidert = mValidering.ValiderDokumentMotXsd(arkiv.Manifest.Xml().OuterXml);
-                //if (!mValidert)
-                //    throw new Exception(mValidering.ValideringsVarsler);
+                var mValidering = new ManifestValidering();
+                var mValidert = mValidering.ValiderDokumentMotXsd(arkiv.Manifest.Xml().OuterXml);
+                if (!mValidert)
+                    throw new Exception(mValidering.ValideringsVarsler);
 
-                //var sValidering = new SignaturValidering();
-                //var sValidert = sValidering.ValiderDokumentMotXsd(arkiv.Signatur.Xml().OuterXml);
-                //if (!sValidert)
-                //    throw new Exception(sValidering.ValideringsVarsler);
+                var sValidering = new SignaturValidering();
+                var sValidert = sValidering.ValiderDokumentMotXsd(arkiv.Signatur.Xml().OuterXml);
+                if (!sValidert)
+                    throw new Exception(sValidering.ValideringsVarsler);
             }
             catch (Exception e)
             {
