@@ -71,16 +71,21 @@ namespace SikkerDigitalPost.Testklient
             //Forsendelse
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert);
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,"NO", "hest");
 
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
-            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+           // Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             //Hent kvittering
-            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
+            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, "11");
             Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+
+            if (kvittering == null)
+            {
+                throw new Exception("Denne meldingskøen er tom.");
+            }
 
             if (kvittering.GetType() == typeof (Feilmelding))
             {

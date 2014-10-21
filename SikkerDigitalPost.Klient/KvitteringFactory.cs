@@ -29,7 +29,10 @@ namespace SikkerDigitalPost.Klient
             {
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
-
+            if (IsTomKøKvittering(xmlDocument))
+            {
+                return null;
+            }
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
@@ -79,6 +82,11 @@ namespace SikkerDigitalPost.Klient
         private static bool IsÅpningskvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns9:aapning");
+        }
+
+        private static bool IsTomKøKvittering(XmlDocument document)
+        {
+            return DocumentHasNode(document, "ns6:Error[@shortDescription = 'EmptyMessagePartitionChannel']");
         }
 
         private static bool IsTransportOkKvittering(XmlDocument document)
