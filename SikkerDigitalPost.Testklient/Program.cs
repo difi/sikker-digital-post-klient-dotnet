@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using KontaktregisteretGateway;
 using KontaktregisteretGateway.Difi;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -57,7 +58,9 @@ namespace SikkerDigitalPost.Testklient
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,"NO");
 
             //Send
-            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
+            var klientkonfigurasjon = new Klientkonfigurasjon();
+            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender,klientkonfigurasjon);
 
             Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
