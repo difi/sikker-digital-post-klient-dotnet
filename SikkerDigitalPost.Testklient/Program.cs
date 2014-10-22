@@ -46,7 +46,7 @@ namespace SikkerDigitalPost.Testklient
             //var personer = _kontaktregisteretGateway.HentPersoner(request);
 
             //Digital Post
-            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, true);
+            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, åpningskvittering: false);
 
             string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
             string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
@@ -59,7 +59,7 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
-            //Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             var kjør = true;
             while (kjør)
