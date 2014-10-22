@@ -73,7 +73,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 {
                     XmlElement partyId = to.AppendChildElement("PartyId", "eb", Navnerom.eb, Context);
                     partyId.SetAttribute("type", "urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908");
-                    partyId.InnerText = "9908:984661185";
+                    partyId.InnerText = Settings.Konfigurasjon.MeldingsformidlerOrganisasjon.Iso6523();
 
                     XmlElement role = to.AppendChildElement("Role", "eb", Navnerom.eb, Context);
                     role.InnerText = "urn:sdp:meldingsformidler";

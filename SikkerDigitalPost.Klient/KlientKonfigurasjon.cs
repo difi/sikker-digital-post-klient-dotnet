@@ -4,22 +4,47 @@ using SikkerDigitalPost.Domene.Entiteter;
 
 namespace SikkerDigitalPost.Klient
 {
+    /// <summary>
+    /// Inneholder konfigurasjon for sending av digital post.
+    /// </summary>
     public class Klientkonfigurasjon
     {
-        public Uri MeldingsformidlerRoot { get; set; }
+        /// <summary>
+        /// Angir Uri som skal benyttes for sending av meldinger. Standardverdi er 'https://meldingsformidler.digipost.no/api/ebms'. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:MeldingsformidlerUrl'.
+        /// </summary>
+        /// <remarks>
+        /// Uri for QA miljø er 'https://qaoffentlig.meldingsformidler.digipost.no/api/ebms'.
+        /// </remarks>
+        public Uri MeldingsformidlerUrl { get; set; }
 
+        /// <summary>
+        /// Angir host som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en proxy skal benyttes. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:ProxyHost'.
+        /// </summary>
         public string ProxyHost { get; set; }
 
+        /// <summary>
+        /// Angir portnummeret som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en proxy skal benyttes. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:ProxyPort'.
+        /// </summary>
         public int ProxyPort { get; set; }
 
+        /// <summary>
+        /// Angir schema ved bruk av proxy. Standardverdien er 'https'. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:ProxyScheme'.
+        /// </summary>
         public string ProxyScheme { get; set; }
 
-        public double SocketTimeoutInMillis { get; set; }
-
-        public double ConnectTimeoutInMillis { get; set; }
-
-        public double ConnectionRequestTimeoutInMillis { get; set; }
-
+        /// <summary>
+        /// Angir timeout for komunikasjonen fra og til meldingsformindleren. Default tid er 30 sekunder. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:TimeoutIMillisekunder'.
+        /// </summary>
+        public int TimeoutIMillisekunder { get; set; }
+        
+        /// <summary>
+        /// Indikerer om proxy skal benyttes for oppkoblingen mot meldingsformidleren.
+        /// </summary>
         public bool UseProxy
         {
             get
@@ -28,6 +53,10 @@ namespace SikkerDigitalPost.Klient
             }
         }
 
+        /// <summary>
+        /// Angir organisasjonsnummeret til meldingsformidleren. Standardverdi er '984661185' som er organisasjonsnummeret til Posten Norge AS. Denne verdien kan også overstyres i 
+        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:MeldingsformidlerOrganisasjon'.
+        /// </summary>
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
         /// <summary>
@@ -36,14 +65,12 @@ namespace SikkerDigitalPost.Klient
         /// </summary>
         public Klientkonfigurasjon()
         {
-            MeldingsformidlerRoot = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
+            MeldingsformidlerUrl = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
             MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
             ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
             ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
 
-            SocketTimeoutInMillis = SetFromAppConfig<double>("SDP:SocketTimeoutInMillis", TimeSpan.FromSeconds(30).TotalMilliseconds);
-            ConnectTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
-            ConnectionRequestTimeoutInMillis = SetFromAppConfig<double>("SDP:ConnectionRequestTimeoutInMillis", TimeSpan.FromSeconds(10).TotalMilliseconds);
+            TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
         }
 
         private T SetFromAppConfig<T>(string key, T @default)

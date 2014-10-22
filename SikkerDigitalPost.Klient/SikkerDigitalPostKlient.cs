@@ -65,7 +65,7 @@ namespace SikkerDigitalPost.Klient
         {
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _konfigurasjon));
 
             try
             {
@@ -226,7 +226,11 @@ namespace SikkerDigitalPost.Klient
         private string SendSoapContainer(SoapContainer soapContainer)
         {
             var data = String.Empty;
-            var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            var request = (HttpWebRequest) WebRequest.Create(_konfigurasjon.MeldingsformidlerUrl);
+            if (_konfigurasjon.UseProxy)
+                request.Proxy = new WebProxy(new UriBuilder(_konfigurasjon.ProxyScheme, _konfigurasjon.ProxyHost, _konfigurasjon.ProxyPort).Uri);
+
+            request.Timeout = _konfigurasjon.TimeoutIMillisekunder;
 
             soapContainer.Send(request);
             try
