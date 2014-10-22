@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using KontaktregisteretGateway;
 using KontaktregisteretGateway.Difi;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -10,7 +8,6 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.Utilities;
-using SikkerDigitalPost.Net.KlientDemo;
 
 namespace SikkerDigitalPost.Testklient
 {
