@@ -18,7 +18,6 @@ namespace SikkerDigitalPost.Klient.AsicE
         private readonly Forsendelse _forsendelse;
         private readonly Manifest _manifest;
         private readonly X509Certificate2 _sertifikat;
-        private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/ts_102918v010201.xsd";
         private XmlDocument _xml;
         private int _idTeller; 
 
@@ -129,8 +128,6 @@ namespace SikkerDigitalPost.Klient.AsicE
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.Ns10));
-            signaturXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
-            signaturXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
             signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.Ns11);
 
 

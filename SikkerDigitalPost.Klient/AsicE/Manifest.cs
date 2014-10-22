@@ -10,7 +10,6 @@ namespace SikkerDigitalPost.Klient.AsicE
 {
     internal class Manifest : IAsiceVedlegg
     {
-        private const string XsiSchemaLocation = "http://begrep.difi.no/sdp/schema_v10 ../xsd/sdp-manifest.xsd ";
         private XmlDocument _manifestXml;
 
         public Behandlingsansvarlig Avsender { get; private set; }
@@ -55,8 +54,6 @@ namespace SikkerDigitalPost.Klient.AsicE
             _manifestXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
-            _manifestXml.DocumentElement.SetAttribute("xmlns:xsi", Navnerom.xsi);
-            _manifestXml.DocumentElement.SetAttribute("schemaLocation", Navnerom.xsi, XsiSchemaLocation);
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
 
             _manifestXml.DocumentElement.AppendChild(MottakerNode());
