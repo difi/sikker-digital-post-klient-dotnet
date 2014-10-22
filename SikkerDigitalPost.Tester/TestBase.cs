@@ -57,18 +57,7 @@ namespace SikkerDigitalPost.Tester
             
             Dokumentpakke = GenererDokumentpakke();
             
-            //Sertifikater
-            var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            storeMy.Open(OpenFlags.ReadOnly);
-            AvsenderSertifikat = storeMy.Certificates.Find(
-                    X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
-            storeMy.Close();
-
-            var storeTrusted = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
-            storeTrusted.Open(OpenFlags.ReadOnly);
-            MottakerSertifikat =
-                storeTrusted.Certificates.Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
-            storeTrusted.Close();
+            SettSertifikater();
 
             //Avsender og mottaker
             OrgNrAvsender = new Organisasjonsnummer("984661185");
@@ -77,8 +66,7 @@ namespace SikkerDigitalPost.Tester
 
             OrgNrMottaker = new Organisasjonsnummer("984661185");
             Mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", MottakerSertifikat, OrgNrMottaker.Iso6523());
-
-
+            
             //DigitalPost og forsendelse
             DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel");
             DigitalPost.EpostVarsel = new EpostVarsel("epost@sjafjell.no", "Dette er et epostvarsel. En trojansk ... hest.", 0, 7);
@@ -92,14 +80,30 @@ namespace SikkerDigitalPost.Tester
             Envelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(Forsendelse, Arkiv, Databehandler, GuidHandler));
         }
 
+        private static void SettSertifikater()
+        {
+            var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            storeMy.Open(OpenFlags.ReadOnly);
+            AvsenderSertifikat = storeMy.Certificates
+                .Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
+            storeMy.Close();
+
+            var storeTrusted = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
+            storeTrusted.Open(OpenFlags.ReadOnly);
+            MottakerSertifikat =
+                storeTrusted.Certificates
+                .Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
+            storeTrusted.Close();
+        }
+
         private static Dokument GenererHoveddokument()
         {
-            return new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
+            return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
         }
 
         private static IEnumerable<Dokument> GenererVedlegg()
         {
-            return new List<Dokument>(
+            return Vedlegg = new List<Dokument>(
                     Vedleggsstier.Select(
                         v => new Dokument(Path.GetFileNameWithoutExtension(v), v, "text/" + Path.GetExtension(_hoveddokument))));
         }

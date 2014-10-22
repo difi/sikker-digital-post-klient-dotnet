@@ -17,11 +17,9 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         private const string WarningMessage = "\tWarning: Matching schema not found. No validation occurred.";
         private const string ErrorMessage = "\tValidation error:";
 
-        private static bool _harWarnings;
-        private static bool _harErrors;
-
-        private static string _validationMessages;
-
+        private bool _harWarnings;
+        private bool _harErrors;
+        
         public string ValideringsVarsler { get; private set; }
 
         protected abstract XmlSchemaSet GenererSchemaSet();
@@ -37,25 +35,24 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             var xmlReader = XmlReader.Create(new MemoryStream(Encoding.UTF8.GetBytes(document)), settings);
 
             while (xmlReader.Read()) { }
-            ValideringsVarsler = _validationMessages;
 
             return _harErrors == false && _harWarnings == false;
         }
 
-        private static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        private void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
             switch (e.Severity)
             {
                 case XmlSeverityType.Warning:
-                    _validationMessages += String.Format("{0} {1}\n", WarningMessage, e.Message);
+                    ValideringsVarsler += String.Format("{0} {1}\n", WarningMessage, e.Message);
                     _harWarnings = true;
                     break;
                 case XmlSeverityType.Error:
-                    _validationMessages += String.Format("{0} {1}\n", ErrorMessage, e.Message);
+                    ValideringsVarsler += String.Format("{0} {1}\n", ErrorMessage, e.Message);
                     if (!e.Message.Equals(ToleratedError) && !e.Message.Equals(ErrorToleratedPrefix))
                         _harErrors = true;
                     else
-                        _validationMessages +=
+                        ValideringsVarsler +=
                             "Feilen over er ikke noe vi håndterer, og er heller ikke årsaken til at validering feilet\n";
                     break;
             }

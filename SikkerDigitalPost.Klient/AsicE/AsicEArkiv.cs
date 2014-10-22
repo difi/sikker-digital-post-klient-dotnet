@@ -13,27 +13,45 @@ namespace SikkerDigitalPost.Klient.AsicE
         public Manifest Manifest { get; private set; }
         public Signatur Signatur { get; private set; }
         private readonly Dokumentpakke _dokumentpakke;
-        
+        private Forsendelse _forsendelse;
+
         private byte[] _bytes;
-        private readonly X509Certificate2 _krypteringssertifikat;
+        private byte[] _ukrypterteBytes;
+
         private readonly GuidHandler _guidHandler;
-        
-        
+
+
         public AsicEArkiv(Forsendelse forsendelse, GuidHandler guidHandler, X509Certificate2 avsenderSertifikat)
         {
             Manifest = new Manifest(forsendelse);
             Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
-            _dokumentpakke = forsendelse.Dokumentpakke;
-            _krypteringssertifikat = forsendelse.DigitalPost.Mottaker.Sertifikat;
+
+            _forsendelse = forsendelse;
+            _dokumentpakke = _forsendelse.Dokumentpakke;
             _guidHandler = guidHandler;
         }
 
-
+        private X509Certificate2 _krypteringssertifikat 
+        {
+            get { return _forsendelse.DigitalPost.Mottaker.Sertifikat; }
+        }
+        
         public string Filnavn
         {
             get { return "post.asice.zip"; }
         }
 
+        internal byte[] UkrypterteBytes
+        {
+            get
+            {
+                if (_ukrypterteBytes != null)
+                    return _ukrypterteBytes;
+
+                _ukrypterteBytes = LagBytes();
+                return _ukrypterteBytes;
+            }
+        }
 
         public byte[] Bytes
         {
@@ -42,7 +60,7 @@ namespace SikkerDigitalPost.Klient.AsicE
                 if (_bytes != null)
                     return _bytes;
 
-                _bytes = KrypterteBytes(LagBytes());
+                _bytes = KrypterteBytes(UkrypterteBytes);
                 return _bytes;
             }
         }

@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Tester
             namespaceManager.AddNamespace("ns11", Navnerom.Ns11);
 
             var hoveddokumentReferanseNode = signaturXml.DocumentElement
-                .SelectSingleNode("//ds:Reference[@Id = 'Hoveddokument.docx']", namespaceManager);
+                .SelectSingleNode("//ds:Reference[@Id = '" + Hoveddokument.Id + "']", namespaceManager);
 
             var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
             hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";

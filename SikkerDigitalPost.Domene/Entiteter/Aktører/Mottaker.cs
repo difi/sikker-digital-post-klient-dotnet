@@ -7,7 +7,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
     /// </summary>
     public class Mottaker : Person
     {
-        public X509Certificate2 Sertifikat { get; private set; }
+        public X509Certificate2 Sertifikat { get; internal set; }
         public Organisasjonsnummer OrganisasjonsnummerPostkasse { get; private set; }
 
         /// <summary>

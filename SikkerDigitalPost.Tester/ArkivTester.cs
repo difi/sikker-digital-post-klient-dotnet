@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klient;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Tester
@@ -15,7 +17,9 @@ namespace SikkerDigitalPost.Tester
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-              Initialiser();
+            Initialiser();
+            //Overkjør arkiv i Base for å bruke et sertifikat vi har privatekey til.
+            Mottaker.Sertifikat = Mottakersertifikat();
         }
 
         [TestMethod]
@@ -95,6 +99,13 @@ namespace SikkerDigitalPost.Tester
                     hash2 = md5.ComputeHash(stream);
                 }
             }
+        }
+
+        private static X509Certificate2 Mottakersertifikat()
+        {
+            var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            storeMy.Open(OpenFlags.ReadOnly);
+            return storeMy.Certificates[0];
         }
 
     }
