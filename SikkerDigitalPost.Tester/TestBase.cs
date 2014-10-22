@@ -11,6 +11,7 @@ using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 
 namespace SikkerDigitalPost.Tester
 {

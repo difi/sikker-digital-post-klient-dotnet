@@ -19,7 +19,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         {
             try
             {
-                Åpningstidspunkt = Convert.ToDateTime(DocumentNode("ns9:tidspunkt").InnerText);
+                Åpningstidspunkt = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
             }
             catch (Exception e)
             {

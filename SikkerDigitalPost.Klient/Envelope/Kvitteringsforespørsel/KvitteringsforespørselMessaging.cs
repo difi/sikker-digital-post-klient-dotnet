@@ -4,11 +4,11 @@ using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
+namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
-    internal class KvitteringMottattMessaging : EnvelopeXmlPart
+    internal class KvitteringsforespørselMessaging : EnvelopeXmlPart
     {
-        public KvitteringMottattMessaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public KvitteringsforespørselMessaging(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
             messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
 
             messaging.AppendChild(SignalMessageElement());
-
+            
             return messaging;
         }
 
@@ -32,8 +32,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
             XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.eb);
 
             signalMessage.AppendChild(MessageInfoElement());
-            signalMessage.AppendChild(ReceiptElement());
-
+            signalMessage.AppendChild(PullRequestElement());
+            
             return signalMessage;
         }
 
@@ -46,28 +46,16 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 
                 XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.eb, Context);
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
-
-                XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
-                refToMessageId.InnerText = Settings.ForrigeKvittering.MeldingsId;
             }
             return messageInfo;
         }
 
-        private XmlElement ReceiptElement()
+        private XmlElement PullRequestElement()
         {
-            XmlElement receipt = Context.CreateElement("eb", "Receipt", Navnerom.eb);
-            {
-                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.Ns7, Context);
-                {
-                    XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
-                    {
-                        XmlNode reference = Settings.ForrigeKvittering.BodyReference;
-                        
-                        messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));
-                    }
-                }
-            }
-            return receipt;
+            XmlElement pullRequest = Context.CreateElement("eb", "PullRequest", Navnerom.eb);
+            pullRequest.SetAttribute("mpc", Settings.Kvitteringsforespørsel.Mpc);
+            return pullRequest;
         }
+
     }
 }

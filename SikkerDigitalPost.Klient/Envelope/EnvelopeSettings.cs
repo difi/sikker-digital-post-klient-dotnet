@@ -2,6 +2,7 @@
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Klient.AsicE;
+using KvitteringsForespørsel = SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel;
 
 namespace SikkerDigitalPost.Klient.Envelope
 {
@@ -9,7 +10,7 @@ namespace SikkerDigitalPost.Klient.Envelope
     {
         public Forsendelse Forsendelse { get; private set; }
         public Databehandler Databehandler { get; private set; }
-        public Kvitteringsforespørsel Kvitteringsforespørsel { get; private set; }
+        public Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel Kvitteringsforespørsel { get; private set; }
         public Forretningskvittering ForrigeKvittering { get; private set; }
         internal AsicEArkiv AsicEArkiv { get; private set; }
         internal GuidHandler GuidHandler { get; private set; }
@@ -17,7 +18,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         /// <summary>
         /// Settings for KvitteringsEnvelope
         /// </summary>
-        public EnvelopeSettings(Kvitteringsforespørsel kvitteringsforespørsel, Databehandler databehandler, GuidHandler guidHandler)
+        public EnvelopeSettings(Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel kvitteringsforespørsel, Databehandler databehandler, GuidHandler guidHandler)
         {
             Kvitteringsforespørsel = kvitteringsforespørsel;
             Databehandler = databehandler;

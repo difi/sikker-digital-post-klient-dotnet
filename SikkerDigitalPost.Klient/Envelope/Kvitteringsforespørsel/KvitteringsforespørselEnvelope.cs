@@ -1,20 +1,18 @@
 ﻿using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.Body.Kvittering;
-using SikkerDigitalPost.Klient.Envelope.Header.Kvittering;
 
-namespace SikkerDigitalPost.Klient.Envelope
+namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
-    internal class KvitteringsEnvelope : AbstractEnvelope
+    internal class KvitteringsforespørselEnvelope : AbstractEnvelope
     {
 
-        public KvitteringsEnvelope(EnvelopeSettings settings) : base(settings)
+        public KvitteringsforespørselEnvelope(EnvelopeSettings settings) : base(settings)
         {
         }
 
         protected override XmlNode HeaderElement()
         {
-            Header = new KvitteringsHeader(Settings, EnvelopeXml);
+            Header = new KvitteringsforespørselHeader(Settings, EnvelopeXml);
             return Header.Xml();
         }
 

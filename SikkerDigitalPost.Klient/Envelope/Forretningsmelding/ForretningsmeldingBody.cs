@@ -1,8 +1,7 @@
 ﻿using System.Xml;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
+namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingBody : EnvelopeXmlPart
     {
