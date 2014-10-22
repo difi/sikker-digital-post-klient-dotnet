@@ -5,7 +5,7 @@ using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
+namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class DigitalPostElement : EnvelopeXmlPart
     {

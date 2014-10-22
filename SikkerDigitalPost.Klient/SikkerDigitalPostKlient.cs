@@ -9,6 +9,9 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
+using SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using SikkerDigitalPost.Klient.Utilities;
 using SikkerDigitalPost.Klient.XmlValidering;
 
@@ -139,7 +142,7 @@ namespace SikkerDigitalPost.Klient
             }
             
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
-            var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
+            var kvitteringsenvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
             ValiderKvitteringsEnvelope(kvitteringsenvelope);
 
@@ -164,7 +167,7 @@ namespace SikkerDigitalPost.Klient
             return KvitteringFactory.GetForretningskvittering(kvittering);
         }
 
-        private static void ValiderKvitteringsEnvelope(KvitteringsEnvelope kvitteringsenvelope)
+        private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
         {
             try
             {
@@ -198,7 +201,7 @@ namespace SikkerDigitalPost.Klient
         public void Bekreft(Forretningskvittering forrigeKvittering)
         {
             var envelopeSettings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
-            var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(envelopeSettings);
+            var kvitteringMottattEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
             try
             {

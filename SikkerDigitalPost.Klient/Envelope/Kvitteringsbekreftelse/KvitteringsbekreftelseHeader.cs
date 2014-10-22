@@ -1,15 +1,13 @@
-﻿using System;
 ﻿using System.Security.Cryptography.Xml;
-﻿using System.Xml;
-﻿using SikkerDigitalPost.Klient.Envelope.Abstract;
+using System.Xml;
+using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
+namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 {
-    internal class ForretningsmeldingHeader : AbstractHeader
+    internal class KvitteringsbekreftelseHeader : AbstractHeader
     {
-        
-        public ForretningsmeldingHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public KvitteringsbekreftelseHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -20,8 +18,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
 
         protected override XmlNode MessagingElement()
         {
-            var messaging = new ForretningsmeldingMessaging(Settings, Context);
-            return messaging.Xml();
+            var messaging = new KvitteringsbekreftelseMessaging(Settings, Context).Xml();
+            return messaging;
         }
 
         public override void AddSignatureElement()
@@ -49,17 +47,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding
                 signed.AddReference(ebMessagingReference);
             }
 
-            //Partinfo/Dokumentpakke
-            {
-                var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes);
-                partInfoReference.Uri = String.Format("cid:{0}", Settings.GuidHandler.DokumentpakkeId);
-                partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
-                signed.AddReference(partInfoReference);
-            }
-
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
-            
+
             Security.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }

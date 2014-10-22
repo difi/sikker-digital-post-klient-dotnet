@@ -3,9 +3,8 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Security;
-using Sha256Reference = SikkerDigitalPost.Klient.Security.Sha256Reference;
 
-namespace SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding
+namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class StandardBusinessDocument : EnvelopeXmlPart
     {

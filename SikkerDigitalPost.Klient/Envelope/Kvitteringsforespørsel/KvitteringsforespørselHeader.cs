@@ -1,13 +1,14 @@
-ï»¿using System.Security.Cryptography.Xml;
+using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
+namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
-    internal class KvitteringMottattHeader : AbstractHeader
+    internal class KvitteringsforespørselHeader : AbstractHeader
     {
-        public KvitteringMottattHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+
+        public KvitteringsforespørselHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -18,7 +19,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
 
         protected override XmlNode MessagingElement()
         {
-            var messaging = new KvitteringMottattMessaging(Settings, Context).Xml();
+            var messaging = new KvitteringsforespørselMessaging(Settings, Context).Xml();
             return messaging;
         }
 
@@ -46,7 +47,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Header.KvitteringMottatt
                 ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(ebMessagingReference);
             }
-
+            
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
 

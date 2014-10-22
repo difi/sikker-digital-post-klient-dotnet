@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.Envelope.Header
+namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class Security : EnvelopeXmlPart
     {

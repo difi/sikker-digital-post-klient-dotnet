@@ -1,9 +1,7 @@
 ﻿using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Envelope.Body.Forretningsmelding;
-using SikkerDigitalPost.Klient.Envelope.Header.Forretningsmelding;
 
-namespace SikkerDigitalPost.Klient.Envelope
+namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingEnvelope : AbstractEnvelope
     {

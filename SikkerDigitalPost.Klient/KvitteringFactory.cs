@@ -66,7 +66,7 @@ namespace SikkerDigitalPost.Klient
 
         private static bool IsLeveringskvittering(XmlDocument document)
         {
-            return DocumentHasNode(document, "ns9:kvittering");
+            return DocumentHasNode(document, "ns9:levering");
         }
 
         private static bool IsVarslingFeiletkvittering(XmlDocument document)

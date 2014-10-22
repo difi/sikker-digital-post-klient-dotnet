@@ -30,23 +30,23 @@ namespace SikkerDigitalPost.Testklient
             //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse, postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
-            var service = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/idporten-ver2.difi.no-v2.crt", "changeit");
-            var client = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/WcfClient.pfx", "changeit");
-            var settings = new DifiGatewaySettings(client, service);
+            //var service = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/idporten-ver2.difi.no-v2.crt", "changeit");
+            //var client = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/WcfClient.pfx", "changeit");
+            //var settings = new DifiGatewaySettings(client, service);
 
-            var _kontaktregisteretGateway = new KontaktregisteretGateway.KontaktregisteretGateway(settings);
+            //var _kontaktregisteretGateway = new KontaktregisteretGateway.KontaktregisteretGateway(settings);
 
-            //Hent person fra difi! 
-            var request = new HentPersonerForespoersel();
-            request.informasjonsbehov = new informasjonsbehov[1];
-            request.informasjonsbehov[0] = informasjonsbehov.Kontaktinfo;
-            request.personidentifikator = new string[1];
-            request.personidentifikator[0] = postkasseInnstillinger.Personnummer;
+            ////Hent person fra difi! 
+            //var request = new HentPersonerForespoersel();
+            //request.informasjonsbehov = new informasjonsbehov[1];
+            //request.informasjonsbehov[0] = informasjonsbehov.Kontaktinfo;
+            //request.personidentifikator = new string[1];
+            //request.personidentifikator[0] = postkasseInnstillinger.Personnummer;
 
-            var personer = _kontaktregisteretGateway.HentPersoner(request);
+            //var personer = _kontaktregisteretGateway.HentPersoner(request);
 
             //Digital Post
-            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
+            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, true);
 
             string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
             string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
@@ -59,7 +59,7 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
-            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            //Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
 
             var kjør = true;
             while (kjør)
