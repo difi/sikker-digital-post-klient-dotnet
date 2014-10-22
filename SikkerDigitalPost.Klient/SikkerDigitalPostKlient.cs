@@ -223,7 +223,11 @@ namespace SikkerDigitalPost.Klient
         private string SendSoapContainer(SoapContainer soapContainer)
         {
             var data = String.Empty;
-            var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            var request = (HttpWebRequest) WebRequest.Create(_konfigurasjon.MeldingsformidlerUrl);
+            if (_konfigurasjon.UseProxy)
+                request.Proxy = new WebProxy(new UriBuilder(_konfigurasjon.ProxyScheme, _konfigurasjon.ProxyHost, _konfigurasjon.ProxyPort).Uri);
+
+            request.Timeout = _konfigurasjon.TimeoutIMillisekunder;
 
             soapContainer.Send(request);
             try
