@@ -1,9 +1,11 @@
 ﻿using System.Xml.Schema;
 using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.XmlValidering;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ForretningsmeldingEnvelopeValidering : Xmlvalidator
+
+    internal class ForretningsmeldingEnvelopeValidator : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

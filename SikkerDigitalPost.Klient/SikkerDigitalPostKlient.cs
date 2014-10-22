@@ -67,7 +67,7 @@ namespace SikkerDigitalPost.Klient
             try
             {
                 ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(), arkiv.Signatur.Xml());
-            }
+           }
             catch (Exception e)
             {
                 throw new XmlValidationException("Envelope xml validerer ikke mot xsd:", e);
@@ -252,10 +252,9 @@ namespace SikkerDigitalPost.Klient
             return data;
         }
 
-
         private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml, XmlDocument manifestXml, XmlDocument signaturXml)
         {
-            var envelopeValidering = new ForretningsmeldingEnvelopeValidering();
+            var envelopeValidering = new ForretningsmeldingEnvelopeValidator();
             var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
             if (!envelopeValidert)
                 throw new Exception(envelopeValidering.ValideringsVarsler);

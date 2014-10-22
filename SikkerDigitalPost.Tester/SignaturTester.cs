@@ -3,9 +3,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Domene;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.Envelope;
+using SikkerDigitalPost.Klient.XmlValidering;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -18,61 +17,39 @@ namespace SikkerDigitalPost.Tester
             Initialiser();
         }
 
-        private static bool _harFeilet;
+        [TestMethod]
+        public void HoveddokumentStarterMedEtTallXsdValidererIkke()
+        {
+            var signaturXml = Arkiv.Signatur.Xml();
+            var signaturvalidator = new Signaturvalidator();
+            var validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
+
+            //Endre id på hoveddokument til å starte på et tall
+            var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
+            namespaceManager.AddNamespace("ds", Navnerom.ds);
+            namespaceManager.AddNamespace("ns10", Navnerom.Ns10);
+            namespaceManager.AddNamespace("ns11", Navnerom.Ns11);
+
+            var hoveddokumentReferanseNode = signaturXml.DocumentElement
+                .SelectSingleNode("//ds:Reference[@Id = 'Hoveddokument.docx']", namespaceManager);
+
+            var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
+            hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
+
+            validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
+            Assert.IsFalse(validerer, signaturvalidator.ValideringsVarsler);
+
+            hoveddokumentReferanseNode.Attributes["Id"].Value = gammelVerdi;
+        }
 
         [TestMethod]
         public void ValidereSignaturMotXsdValiderer()
         {
-            var settings = new XmlReaderSettings();
-            settings.Schemas.Add(Navnerom.Ns10, AsicEXsdPath());
-            settings.Schemas.Add(Navnerom.Ns11, XAdESXsdPath());
-            settings.Schemas.Add(Navnerom.Ns5, XmlDsigCoreSchema());
+            var signaturXml = Arkiv.Signatur.Xml();
+            var signaturValidering = new Signaturvalidator();
+            var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
 
-            settings.ValidationType = ValidationType.Schema;
-            settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
-            settings.ValidationEventHandler += ValidationEventHandler;
-            
-            try
-            {
-                var reader = XmlReader.Create(new MemoryStream(Signatur.Bytes), settings);
-                var document = new XmlDocument();
-                document.Load(reader);
-                Assert.IsFalse(_harFeilet);
-            }
-            catch (Exception e)
-            {
-                var message = String.Format("Validering feilet: {0} Indre feilmelding: {1}", e.Message, e.InnerException);
-                Assert.Fail(message);
-            }
-        }
-
-        private static void ValidationEventHandler(object sender, ValidationEventArgs e)
-        {
-            if (e.Severity == XmlSeverityType.Warning)
-                Console.WriteLine("\tWarning: Matching schema not found.  No validation occurred. " + e.Message);
-            else if (e.Severity == XmlSeverityType.Error)
-                Console.WriteLine("\tValidation error: " + e.Message);
-            _harFeilet = true;
-        }
-
-        private string AsicEXsdPath()
-        {
-            return XsdPath(@"w3/ts_102918v010201.xsd");
-        }
-
-        private string XmlDsigCoreSchema()
-        {
-            return XsdPath(@"w3/xmldsig-core-schema.xsd");
-        }
-
-        private string XAdESXsdPath()
-        {
-            return XsdPath(@"w3/XAdES.xsd");
-        }
-
-        private string XsdPath(string filnavn)
-        {
-            return Path.Combine(TestDataMappe, "xsd", filnavn);
+            Assert.IsTrue(validerer, signaturValidering.ValideringsVarsler);
         }
     }
 }
