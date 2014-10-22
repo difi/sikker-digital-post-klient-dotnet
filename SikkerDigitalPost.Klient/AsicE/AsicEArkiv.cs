@@ -13,7 +13,7 @@ namespace SikkerDigitalPost.Klient.AsicE
         public Manifest Manifest { get; private set; }
         public Signatur Signatur { get; private set; }
         private readonly Dokumentpakke _dokumentpakke;
-        private Forsendelse _forsendelse;
+        private readonly Forsendelse _forsendelse;
 
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;

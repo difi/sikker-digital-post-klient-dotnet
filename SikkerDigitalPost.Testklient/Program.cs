@@ -1,6 +1,6 @@
-﻿using System;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
+using KontaktregisteretGateway;
+using KontaktregisteretGateway.Difi;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -30,6 +30,21 @@ namespace SikkerDigitalPost.Testklient
             //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse, postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
+            var service = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/idporten-ver2.difi.no-v2.crt", "changeit");
+            var client = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/WcfClient.pfx", "changeit");
+            var settings = new DifiGatewaySettings(client, service);
+
+            var _kontaktregisteretGateway = new KontaktregisteretGateway.KontaktregisteretGateway(settings);
+
+            //Hent person fra difi! 
+            var request = new HentPersonerForespoersel();
+            request.informasjonsbehov = new informasjonsbehov[1];
+            request.informasjonsbehov[0] = informasjonsbehov.Kontaktinfo;
+            request.personidentifikator = new string[1];
+            request.personidentifikator[0] = postkasseInnstillinger.Personnummer;
+
+            var personer = _kontaktregisteretGateway.HentPersoner(request);
+
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel");
 
@@ -56,7 +71,8 @@ namespace SikkerDigitalPost.Testklient
                 if (kvittering == null)
                 {
                     kjør = false;
-                   // throw new Exception("Denne meldingskøen er tom.");
+                    break;
+                    // throw new Exception("Denne meldingskøen er tom.");
                 }
                 
                 if (kvittering.GetType() == typeof(Feilmelding))
