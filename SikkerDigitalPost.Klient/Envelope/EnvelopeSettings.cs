@@ -13,7 +13,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         public Forretningskvittering ForrigeKvittering { get; private set; }
         internal AsicEArkiv AsicEArkiv { get; private set; }
         internal GuidHandler GuidHandler { get; private set; }
-
+        internal Klientkonfigurasjon Konfigurasjon { get; private set; }
         /// <summary>
         /// Settings for KvitteringsEnvelope
         /// </summary>
@@ -27,12 +27,13 @@ namespace SikkerDigitalPost.Klient.Envelope
         /// <summary>
         /// Settings for DigitalPostForsendelse
         /// </summary>
-        public EnvelopeSettings(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidHandler guidHandler)
+        public EnvelopeSettings(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidHandler guidHandler, Klientkonfigurasjon konfigurasjon)
         {
             Forsendelse = forsendelse;
             AsicEArkiv = asicEArkiv;
             Databehandler = databehandler;
             GuidHandler = guidHandler;
+            Konfigurasjon = konfigurasjon;
         }
         
         /// <summary>

@@ -62,7 +62,7 @@ namespace SikkerDigitalPost.Klient
         {
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _konfigurasjon));
 
             try
             {
