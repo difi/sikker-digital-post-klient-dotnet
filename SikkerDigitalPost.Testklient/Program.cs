@@ -76,12 +76,12 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender);
 
-           // Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
-
+            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            
             //Hent kvittering
             var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
             Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
-
+            
             if (kvittering == null)
             {
                 throw new Exception("Denne meldingskøen er tom.");
@@ -89,7 +89,7 @@ namespace SikkerDigitalPost.Testklient
 
             if (kvittering.GetType() == typeof (Feilmelding))
             {
-                throw new Exception("Du fikk en feiletkvittering, men det er ikke sikkert du genererte den nå nettopp.");
+                //throw new Exception("Du fikk en feiletkvittering, men det er ikke sikkert du genererte den nå nettopp.");
             }
 
             //Bekreft mottak av kvittering. 
