@@ -60,7 +60,8 @@ namespace SikkerDigitalPost.Testklient
             var orgnummerDatabehandler = orgnummerPosten;
             var orgnummerBehandlingsansvarlig = orgnummerPosten;
             var orgnummerPostkasse = "996460320";
-            var mottakerPersonnummer = "01043100358";
+            //var mottakerPersonnummer = "01043100358";
+            var mottakerPersonnummer = "02018090301";
             var mottakerPostkasse = "0000485509";
 
             return new PostkasseInnstillinger(tekniskAvsenderSertifikat, mottakerSertifikat, orgnummerBehandlingsansvarlig, orgnummerDatabehandler, orgnummerPostkasse, mottakerPersonnummer, mottakerPostkasse);
