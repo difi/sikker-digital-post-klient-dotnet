@@ -14,7 +14,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
         /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
         public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, DigitalPost digitalPost,
-            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string språkkode = "NO", string mpcId = "")
+            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
         {
             Behandlingsansvarlig = behandlingsansvarlig;
             DigitalPost = digitalPost;
@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// Unik ID opprettet og definert i en initiell melding og siden brukt i alle tilhørende kvitteringer knyttet til den opprinnelige meldingen.
         /// Skal være unik for en avsender.
         /// </summary>
-        public readonly string KonversasjonsId = Guid.NewGuid().ToString();
+        public readonly Guid KonversasjonsId = Guid.NewGuid();
 
         /// <summary>
         /// Setter forsendelsens prioritet. Standard er Prioritet.Normal

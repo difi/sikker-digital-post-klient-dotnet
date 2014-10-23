@@ -96,7 +96,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 action.InnerText = "FormidleDigitalPost";
 
                 XmlElement conversationId = collaborationInfo.AppendChildElement("ConversationId", "eb", Navnerom.eb, Context);
-                conversationId.InnerText = Settings.Forsendelse.KonversasjonsId;
+                conversationId.InnerText = Settings.Forsendelse.KonversasjonsId.ToString();
             }
             return collaborationInfo;
         }

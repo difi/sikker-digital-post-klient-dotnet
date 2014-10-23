@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using SikkerDigitalPost.Domene.Entiteter;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -42,10 +43,12 @@ namespace SikkerDigitalPost.Klient
         /// </summary>
         public int TimeoutIMillisekunder { get; set; }
         
+        public Action<TraceEventType, Guid?, string, string> Logger { get; set; }
+
         /// <summary>
         /// Indikerer om proxy skal benyttes for oppkoblingen mot meldingsformidleren.
         /// </summary>
-        public bool UseProxy
+        public bool BrukProxy
         {
             get
             {

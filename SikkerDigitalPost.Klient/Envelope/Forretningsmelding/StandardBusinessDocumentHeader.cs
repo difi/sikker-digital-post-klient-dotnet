@@ -91,7 +91,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                     type.InnerText = "ConversationId";
 
                     XmlElement instanceIdentifier = scope.AppendChildElement("InstanceIdentifier", "ns3", Navnerom.Ns3, Context);
-                    instanceIdentifier.InnerText = Settings.Forsendelse.KonversasjonsId;
+                    instanceIdentifier.InnerText = Settings.Forsendelse.KonversasjonsId.ToString();
 
                     XmlElement identifier = scope.AppendChildElement("Identifier", "ns3", Navnerom.Ns3, Context);
                     identifier.InnerText = SdpVersion;

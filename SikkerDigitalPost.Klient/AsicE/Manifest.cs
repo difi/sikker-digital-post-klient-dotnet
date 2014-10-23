@@ -66,7 +66,9 @@ namespace SikkerDigitalPost.Klient.AsicE
             {
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
-            
+
+            Logging.Log(System.Diagnostics.TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke\r\n" + _manifestXml.OuterXml);
+
             return _manifestXml;
         }
 

@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Klient", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Testklient", "SikkerDigitalPost.Testklient\SikkerDigitalPost.Testklient.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KontaktregisteretGateway", "..\kontaktregisteret-klient\kontaktinfo-dotNet-sample\KontaktregisteretGateway\KontaktregisteretGateway.csproj", "{A1B43303-F113-412F-9F47-A703C54356F6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1B43303-F113-412F-9F47-A703C54356F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1B43303-F113-412F-9F47-A703C54356F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1B43303-F113-412F-9F47-A703C54356F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1B43303-F113-412F-9F47-A703C54356F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
