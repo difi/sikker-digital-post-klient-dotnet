@@ -26,6 +26,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             responseMgr.AddNamespace("wsse", Navnerom.wsse);
             responseMgr.AddNamespace("ds", Navnerom.ds);
             responseMgr.AddNamespace("eb", Navnerom.eb);
+            responseMgr.AddNamespace("wsu", Navnerom.wsu);
 
             var signatureNode = (XmlElement)responseRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", responseMgr);
             var signed = new SignedXmlWithAgnosticId(document);
@@ -75,9 +76,9 @@ namespace SikkerDigitalPost.Klient.XmlValidering
                     throw new Exception(string.Format("Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.", elementXPath, nodes.Count));
 
                 // Sørg for at det finnes en refereanse til node i signatur element
-                var elementId = nodes[0].Attributes["Id"].Value;
+                var elementId = nodes[0].Attributes["wsu:Id"].Value;
 
-                var references = signature.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[URI='@{0}']", elementId), nsmgr);
+                var references = signature.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId), nsmgr);
                 if (references == null || references.Count == 0)
                     throw new Exception(string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.", elementXPath));
                 if (references.Count > 1)
