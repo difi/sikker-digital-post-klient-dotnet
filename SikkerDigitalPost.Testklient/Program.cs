@@ -27,7 +27,8 @@ namespace SikkerDigitalPost.Testklient
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
 
-            var mottaker = HentMottaker(postkasseInnstillinger, false);
+            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, åpningskvittering: false);
@@ -105,21 +106,7 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
-
-        private static Mottaker HentMottaker(PostkasseInnstillinger postkasseInnstillinger, bool hentFraKontaktregisteret = true)
-        {
-            Mottaker mottaker;
-            if (hentFraKontaktregisteret)
-            {
-                mottaker = Kontaktregisteret.HentPersoner(new[] {postkasseInnstillinger.Personnummer}).ElementAt(0);
-            }
-            else
-            {
-                mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
-            }
-            return mottaker;
-        }
+        
     }
 }
 
