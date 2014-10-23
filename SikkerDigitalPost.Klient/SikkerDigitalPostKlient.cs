@@ -30,9 +30,10 @@ namespace SikkerDigitalPost.Klient
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler) : this (databehandler,new Klientkonfigurasjon())
+        public SikkerDigitalPostKlient(Databehandler databehandler)
+            : this(databehandler, new Klientkonfigurasjon())
         {
-            
+
         }
 
         /// <param name="databehandler">
@@ -67,11 +68,13 @@ namespace SikkerDigitalPost.Klient
 
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler));
 
+            Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Evelope for forsendelse\r\n" + forretningsmeldingEnvelope.Xml().OuterXml);
+
             try
             {
                 var validering = new ForretningsmeldingEnvelopeValidering();
                 var validert = validering.ValiderDokumentMotXsd(forretningsmeldingEnvelope.Xml().OuterXml);
-                if(!validert)
+                if (!validert)
                     throw new Exception(validering.ValideringsVarsler);
 
                 var mValidering = new ManifestValidering();
@@ -89,20 +92,22 @@ namespace SikkerDigitalPost.Klient
                 throw new Exception("Envelope xml validerer ikke mot xsd:\n" + e.Message);
             }
 
-            var soapContainer = new SoapContainer {Envelope = forretningsmeldingEnvelope, Action = "\"\""};
+            var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
             soapContainer.Vedlegg.Add(arkiv);
 
             var response = SendSoapContainer(soapContainer);
 
+            Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Kvittering for forsendelse\r\n" + response);
+
             FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
 
-            if(!ValiderSignatur(response))
+            if (!ValiderSignatur(response))
                 throw new SendException("Signatur av respons fra Meldingsformidler var ikke gyldig.");
 
-            if(!ValiderDigests(response, forretningsmeldingEnvelope.Xml(), guidHandler))
+            if (!ValiderDigests(response, forretningsmeldingEnvelope.Xml(), guidHandler))
                 throw new SendException("Hash av body og/eller dokumentpakke er ikke lik for sendte og mottatte dokumenter.");
-            
+
             return KvitteringFactory.GetTransportkvittering(response);
         }
 
@@ -120,7 +125,7 @@ namespace SikkerDigitalPost.Klient
         /// </list>
         /// </remarks>
         public Forretningskvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
-        {            
+        {
             return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
 
@@ -145,13 +150,19 @@ namespace SikkerDigitalPost.Klient
             {
                 Bekreft(forrigeKvittering);
             }
-            
+
+            Logging.Log(TraceEventType.Verbose, "Henter kvittering for " + kvitteringsforespørsel.Mpc);
+
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, new GuidHandler());
             var kvitteringsenvelope = new KvitteringsEnvelope(envelopeSettings);
 
-            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+            Logging.Log(TraceEventType.Verbose, "Envelope for Kvitteringsforespørsel\r\n" + kvitteringsenvelope.Xml().OuterXml);
 
+            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+            
             var kvittering = SendSoapContainer(soapContainer);
+
+            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringssvar\r\n" + kvittering);
 
             FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
             FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
@@ -178,15 +189,19 @@ namespace SikkerDigitalPost.Klient
             var kvitteringMottattEnvelope = new KvitteringMottattEnvelope(envelopeSettings);
             FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
 
+            Logging.Log(TraceEventType.Verbose, "Envelope for bekreftelse av kvittering\r\n" + kvitteringMottattEnvelope.Xml().OuterXml);
+
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
-            SendSoapContainer(soapContainer);
+            var response = SendSoapContainer(soapContainer);
+
+            Logging.Log(TraceEventType.Verbose, "Svar på bekreftelse av kvittering\r\n" + response);
         }
 
         private string SendSoapContainer(SoapContainer soapContainer)
         {
             string data = String.Empty;
 
-            var request = (HttpWebRequest) WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            var request = (HttpWebRequest)WebRequest.Create("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
 
             soapContainer.Send(request);
             try
@@ -253,7 +268,7 @@ namespace SikkerDigitalPost.Klient
                 envelopeMgr.AddNamespace("env", Navnerom.env);
                 envelopeMgr.AddNamespace("wsse", Navnerom.wsse);
                 envelopeMgr.AddNamespace(String.Empty, Navnerom.Ns5);
-                
+
                 var envelopeBodyDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = '#" + guidHandler.BodyId + "']", envelopeMgr).InnerText;
                 var envelopeAsicDigest = envelopeRot.SelectSingleNode("//*[namespace-uri()='" + Navnerom.ds + "' and local-name()='Reference'][@URI = 'cid:" + guidHandler.DokumentpakkeId + "']", envelopeMgr).InnerText;
 

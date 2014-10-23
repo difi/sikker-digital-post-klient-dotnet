@@ -12,7 +12,7 @@ namespace SikkerDigitalPost.Klient
     {
         private static TraceSource _traceSource = null;
 
-        private static Action<TraceEventType, Guid, string, string> _logAction = null;
+        private static Action<TraceEventType, Guid?, string, string> _logAction = null;
 
         internal static void Initialize(Klientkonfigurasjon konfigurasjon)
         {
@@ -21,15 +21,20 @@ namespace SikkerDigitalPost.Klient
             else
             {
                 _traceSource = new TraceSource(typeof(SikkerDigitalPostKlient).Assembly.FullName);
-                
+
                 _logAction = (severity, koversasjonsId, caller, message) =>
                 {
                     _traceSource.TraceEvent(severity, 1, "[{0}, {1}] {2}", konfigurasjon.ToString(), caller, message);
                 };
             }
         }
-        
-        internal static void Log(TraceEventType severity, Guid koversasjonsId, string message, [CallerMemberName] string callerMember = null)
+
+        internal static void Log(TraceEventType severity, string message, [CallerMemberName] string callerMember = null)
+        {
+            Log(severity, null, message, callerMember);
+        }
+
+        internal static void Log(TraceEventType severity, Guid? koversasjonsId, string message, [CallerMemberName] string callerMember = null)
         {
             if (_logAction == null)
                 return;

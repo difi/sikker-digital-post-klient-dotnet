@@ -9,9 +9,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
         protected readonly XmlDocument EnvelopeXml;
-        protected readonly EnvelopeSettings Settings; 
+        protected readonly EnvelopeSettings Settings;
         protected AbstractHeader Header;
-        
+
         private bool _isXmlGenerated = false;
         private byte[] _bytes;
         private string _contentId;
@@ -21,7 +21,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
             Settings = settings;
             EnvelopeXml = LagXmlRotnode();
         }
-        
+
         public string Filnavn
         {
             get { return "envelope.xml"; }
@@ -71,7 +71,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
             }
             catch (Exception e)
             {
-                throw new XmlParseException(String.Format("Kunne ikke bygge Xml for {0} (av type AbstractEnvelope).",GetType()),e);
+                throw new XmlParseException(String.Format("Kunne ikke bygge Xml for {0} (av type AbstractEnvelope).", GetType()), e);
             }
 
             return EnvelopeXml;

@@ -21,7 +21,7 @@ namespace SikkerDigitalPost.Klient
 
         public double ConnectionRequestTimeoutInMillis { get; set; }
 
-        public Action<TraceEventType, Guid, string, string> Logger { get; set; }
+        public Action<TraceEventType, Guid?, string, string> Logger { get; set; }
 
         public bool UseProxy
         {
