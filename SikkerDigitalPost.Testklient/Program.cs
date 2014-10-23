@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using KontaktregisteretGateway;
-using KontaktregisteretGateway.Difi;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -11,7 +7,6 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.Utilities;
-using Person = SikkerDigitalPost.Domene.Entiteter.Aktører.Person;
 
 namespace SikkerDigitalPost.Testklient
 {
@@ -25,23 +20,14 @@ namespace SikkerDigitalPost.Testklient
              * identiske. 
              */
 
-            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
+            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetEboks();
 
             //Avsender
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
 
-            Mottaker mottaker;
-            bool hentFraKontaktregisteret = true;
-            if (hentFraKontaktregisteret)
-            {
-                mottaker = Kontaktregisteret.HentPersoner(new[] {postkasseInnstillinger.Personnummer}).ElementAt(0);
-            }
-            else
-            {
-                mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse, postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
-            }
+            var mottaker = HentMottaker(postkasseInnstillinger, false);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, åpningskvittering: false);
@@ -69,7 +55,7 @@ namespace SikkerDigitalPost.Testklient
                 Console.WriteLine(" > OK! En transportkvittering ble hentet og alt gikk fint.");
             }
 
-            if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
+           if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
             {
                 var feiletkvittering = (TransportFeiletKvittering) transportkvittering;
                 Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad, feiletkvittering.Beskrivelse);
@@ -78,8 +64,7 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine();
             Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
 
-            var kjør = true;
-            while (kjør)
+            while (true)
             {
                 Console.WriteLine(" > Henter kvittering ...");
 
@@ -90,7 +75,6 @@ namespace SikkerDigitalPost.Testklient
                 if (kvittering == null)
                 {
                     Console.WriteLine( "  - Tom kvitteringskø. Stopper å hente meldinger. ");
-                    kjør = false;
                     break;
                 }
 
@@ -99,29 +83,39 @@ namespace SikkerDigitalPost.Testklient
                     Console.WriteLine("  - En leveringskvittering ble hentet!");
                 }
 
-                if (kvittering.GetType() == typeof(Feilmelding))
+                if (kvittering.GetType() == typeof (Åpningskvittering))
                 {
-                    Console.WriteLine("  - En feilmelding ble hentet!");
+                    Console.WriteLine("  - Har du sett. Noen har åpnet et brev. Moro.");
                 }
 
-
                 if (kvittering.GetType() == typeof(Feilmelding))
                 {
-                  Console.WriteLine("  - Du fikk en feiletkvittering, men det er ikke sikkert du genererte den nå nettopp.");
+                    Console.WriteLine("  - En feilmelding ble hentet, men den kan være gammel ...");
                 }
                 
-                //Bekreft mottak av kvittering.
-                if (kjør)
-                {
-                    Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                    sikkerDigitalPostKlient.Bekreft(kvittering);
-                    Console.WriteLine("   - Kvittering sendt.");
-                }
+                Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
+                sikkerDigitalPostKlient.Bekreft(kvittering);
+                Console.WriteLine("   - Kvittering sendt.");
             }
 
             Console.WriteLine();
             Console.WriteLine("--- FERDIG Å SENDE MELDING OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
+        }
+
+        private static Mottaker HentMottaker(PostkasseInnstillinger postkasseInnstillinger, bool hentFraKontaktregisteret = true)
+        {
+            Mottaker mottaker;
+            if (hentFraKontaktregisteret)
+            {
+                mottaker = Kontaktregisteret.HentPersoner(new[] {postkasseInnstillinger.Personnummer}).ElementAt(0);
+            }
+            else
+            {
+                mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+            }
+            return mottaker;
         }
     }
 }
