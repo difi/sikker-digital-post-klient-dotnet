@@ -146,6 +146,7 @@ namespace SikkerDigitalPost.Klient.Security
                 {
                     XmlNamespaceManager mgr = new XmlNamespaceManager(keyinfo.OwnerDocument.NameTable);
                     mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+                    mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
                     var reference = keyinfo.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", mgr);
                     if (reference != null)
                     {
