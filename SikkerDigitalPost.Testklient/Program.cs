@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -26,7 +27,6 @@ namespace SikkerDigitalPost.Testklient
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
-
             var mottaker = HentMottaker(postkasseInnstillinger, false);
 
             //Digital Post
@@ -44,6 +44,10 @@ namespace SikkerDigitalPost.Testklient
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            klientkonfigurasjon.Logger = (severity, konversasjonsid, metode, melding) =>
+            {
+                Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
+            };
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender,klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");

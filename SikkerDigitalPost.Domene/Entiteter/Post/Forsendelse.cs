@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// Unik ID opprettet og definert i en initiell melding og siden brukt i alle tilhørende kvitteringer knyttet til den opprinnelige meldingen.
         /// Skal være unik for en avsender.
         /// </summary>
-        public readonly string KonversasjonsId = Guid.NewGuid().ToString();
+        public readonly Guid KonversasjonsId = Guid.NewGuid();
 
         /// <summary>
         /// Setter forsendelsens prioritet. Standard er Prioritet.Normal
