@@ -73,7 +73,6 @@ namespace SikkerDigitalPost.Testklient
                 
                 if (kvittering == null)
                 {
-                    kjør = false;
                     break;
                     // throw new Exception("Denne meldingskøen er tom.");
                 }

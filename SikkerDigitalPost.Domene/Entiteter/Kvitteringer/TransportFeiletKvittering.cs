@@ -62,5 +62,10 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         }
 
 
+        public override string ToString()
+        {
+            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
+                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingsId);
+        }
     }
 }
