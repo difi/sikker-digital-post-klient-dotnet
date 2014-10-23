@@ -29,20 +29,22 @@ namespace SikkerDigitalPost.Klient.AsicE
             _idTeller = 0;
         }
 
-        public string Filnavn {
-            get { return "META-INF/signatures.xml"; } 
+        public string Filnavn
+        {
+            get { return "META-INF/signatures.xml"; }
         }
 
         public byte[] Bytes
         {
             get
             {
-                return Encoding.UTF8.GetBytes(Xml().OuterXml); 
+                return Encoding.UTF8.GetBytes(Xml().OuterXml);
             }
-            
+
         }
 
-        public string Innholdstype {
+        public string Innholdstype
+        {
             get { return "application/xml"; }
         }
 
@@ -53,12 +55,13 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         public XmlDocument Xml()
         {
+            if (_xml != null)
+            {
+                return _xml;
+            }
+
             try
             {
-                if (_xml != null)
-                {
-                    return _xml;
-                }
                 _xml = OpprettXmlDokument();
 
                 var signaturnode = Signaturnode();
@@ -75,12 +78,14 @@ namespace SikkerDigitalPost.Klient.AsicE
             }
             catch (Exception e)
             {
-                throw new XmlParseException("Kunne ikke bygge Xml for signatur.",e);
+                throw new XmlParseException("Kunne ikke bygge Xml for signatur.", e);
             }
+
+            Logging.Log(System.Diagnostics.TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke\r\n" + _xml.OuterXml);
 
             return _xml;
         }
-        
+
         private static Sha256Reference SignedPropertiesReferanse()
         {
             var signedPropertiesReference = new Sha256Reference("#SignedProperties")

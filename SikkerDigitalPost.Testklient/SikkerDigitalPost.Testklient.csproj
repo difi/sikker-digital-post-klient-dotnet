@@ -50,10 +50,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\kontaktregisteret-klient\kontaktinfo-dotNet-sample\KontaktregisteretGateway\KontaktregisteretGateway.csproj">
-      <Project>{a1b43303-f113-412f-9f47-a703c54356f6}</Project>
-      <Name>KontaktregisteretGateway</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
       <Project>{C7666E57-D563-40A5-AE3C-B36E29824E87}</Project>
       <Name>SikkerDigitalPost.Domene</Name>
