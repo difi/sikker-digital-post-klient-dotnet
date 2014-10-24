@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.ServiceModel.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -22,9 +16,9 @@ namespace SikkerDigitalPost.Testklient
     {
         private static int AntallBrev = 10;
 
-        private SikkerDigitalPostKlient _klient;
-        private PostkasseInnstillinger _postkasseInnstillinger;
-        private Behandlingsansvarlig _behandlingsansvarlig;
+        private readonly SikkerDigitalPostKlient _klient;
+        private readonly PostkasseInnstillinger _postkasseInnstillinger;
+        private readonly Behandlingsansvarlig _behandlingsansvarlig;
 
         public Tråder(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
@@ -67,15 +61,6 @@ namespace SikkerDigitalPost.Testklient
 
             var tasks = alleForsendelser.Select(p => new Action(() => sendMeldingAction(p))).ToArray();
             await Task.Run(() => Parallel.Invoke(_opts, tasks));
-
-            //while (alleForsendelser.Count > 0)
-            //{
-            //    var forsendelse = alleForsendelser.Take();
-                
-            //    //var e = Task.Factory.StartNew(()
-            //    //    => sendMeldingAction(forsendelse)
-            //    //    );
-            //}
         }
 
         private readonly ParallelOptions _opts = new ParallelOptions() { MaxDegreeOfParallelism = 12};

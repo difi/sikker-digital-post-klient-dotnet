@@ -105,7 +105,9 @@ namespace SikkerDigitalPost.Tester
         {
             var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             storeMy.Open(OpenFlags.ReadOnly);
-            return storeMy.Certificates[0];
+            var sertifikat = storeMy.Certificates[0];
+            storeMy.Close();
+            return sertifikat;
         }
 
     }
