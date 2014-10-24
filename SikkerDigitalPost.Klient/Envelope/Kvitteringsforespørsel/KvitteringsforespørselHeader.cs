@@ -1,14 +1,28 @@
+ï»¿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
+namespace SikkerDigitalPost.Klient.Envelope.KvitteringsforespÃ¸rsel
 {
-    internal class KvitteringsforespørselHeader : AbstractHeader
+    internal class KvitteringsforespÃ¸rselHeader : AbstractHeader
     {
 
-        public KvitteringsforespørselHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public KvitteringsforespÃ¸rselHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }
 
@@ -19,7 +33,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 
         protected override XmlNode MessagingElement()
         {
-            var messaging = new KvitteringsforespørselMessaging(Settings, Context).Xml();
+            var messaging = new KvitteringsforespÃ¸rselMessaging(Settings, Context).Xml();
             return messaging;
         }
 
