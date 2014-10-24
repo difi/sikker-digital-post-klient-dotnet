@@ -14,7 +14,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentsti">Stien som viser til hvor dokumentet ligger på disk.</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/Dokumentformat/. </param>
+        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
         public Dokument(string tittel, string dokumentsti, string innholdstype, string språkkode = null, string filnavn = null)
@@ -24,7 +24,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentstrøm">Dokumentet representert som en strøm.</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/Dokumentformat/. </param>
+        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
         public Dokument(string tittel, Stream dokumentstrøm, string innholdstype, string språkkode = null, string filnavn = null)
@@ -34,7 +34,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentbytes">Dokumentet representert som byte[].</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/Dokumentformat/. </param>
+        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
         public Dokument(string tittel, byte[] dokumentbytes, string innholdstype, string språkkode = null, string filnavn = null)

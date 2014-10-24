@@ -61,8 +61,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
                 {
                     XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
                     {
-                        XmlNode reference = Settings.ForrigeKvittering.BodyReference;
-                        
+                        XmlNode reference = Settings.ForrigeKvittering.BodyReference;                        
                         messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));
                     }
                 }

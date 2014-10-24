@@ -4,8 +4,7 @@ using SikkerDigitalPost.Klient.Envelope.Abstract;
 namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingEnvelope : AbstractEnvelope
-    {
-        
+    {        
         public ForretningsmeldingEnvelope(EnvelopeSettings settings) : base (settings)
         {
         }
@@ -20,7 +19,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             var body = new ForretningsmeldingBody(Settings, EnvelopeXml);
             return body.Xml();
-        }
-       
+        }       
     }
 }

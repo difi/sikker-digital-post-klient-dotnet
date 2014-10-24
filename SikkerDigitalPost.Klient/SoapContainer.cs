@@ -34,18 +34,18 @@ namespace SikkerDigitalPost.Klient
             request.Method = "POST";
             request.Accept = "*/*";
 
-            var stream = new StreamWriter(request.GetRequestStream());
-
-            WriteAttachment(stream, Envelope, true);
-
-            foreach (var item in Vedlegg)
+            using (var stream = new StreamWriter(request.GetRequestStream()))
             {
-                WriteAttachment(stream, item, false);
-            }
+                WriteAttachment(stream, Envelope, true);
 
-            stream.Write("\r\n--" + _boundary + "--");
-            stream.Flush();
-            stream.Close();
+                foreach (var item in Vedlegg)
+                {
+                    WriteAttachment(stream, item, false);
+                }
+
+                stream.Write("\r\n--" + _boundary + "--");
+                stream.Flush();
+            }
         }
 
         private void WriteAttachment(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)

@@ -103,7 +103,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlElement PayloadInfoElement()
         {
-            //Mer info på http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/PayloadInfo
+            // Mer info på http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/PayloadInfo
 
             XmlElement payloadInfo = Context.CreateElement("eb", "PayloadInfo", Navnerom.eb);
             {
