@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceModel.Configuration;
 using System.Threading;
@@ -13,46 +14,44 @@ using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Testklient
 {
     public class Tråder
     {
-        private static int MaxThreads = 10;
+        private static int AntallBrev = 10;
 
         private SikkerDigitalPostKlient _klient;
         private PostkasseInnstillinger _postkasseInnstillinger;
         private Behandlingsansvarlig _behandlingsansvarlig;
-        private Databehandler _tekniskAvsender;
 
         public Tråder(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
             _klient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
             _postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
             _behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(_postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
-            _tekniskAvsender = databehandler;
         }
 
         public void SendMelding(Forsendelse forsendelse)
         {
+            Console.WriteLine("Tråd {0} SENDER forsendelse {1} til {2}...", Thread.CurrentThread.Name, forsendelse.Dokumentpakke.Hoveddokument.Tittel, forsendelse.DigitalPost.Mottaker.Postkasseadresse);
             var transportkvittering = _klient.Send(forsendelse);
+            Console.WriteLine("Tråd {0} er FERDIG med forsendelse {1} og fikk en {2}", Thread.CurrentThread.Name, forsendelse.Dokumentpakke.Hoveddokument.Tittel, transportkvittering.GetType().Name);
         }
 
-        internal void SendMeldinger(BlockingCollection<AsicEArkiv> arkiver )
+        internal async void SendMeldinger()
         {
-            Action<Forsendelse> sendMeldingAction = s => SendMelding(s);
+            Action<Forsendelse> sendMeldingAction = (s) => SendMelding(s);
 
-
-            var dangfart = new Mottaker("01043100358", "dangfart.utnes#97VW", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
-            var forsendelserTilDangfart = GetForsendelser("DangTråd", 10, dangfart, "Dangfart", "DangBrev");
+            var marit = new Mottaker("25053700003", "marit.kjesnes#19BD", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
+            var forsendelserTilDangfart = GetForsendelser("MaritTråd", AntallBrev, marit, "Marit", "MaritBrev");
 
             var joni = new Mottaker("13013500002", "joni.sneve#0VAS", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
-            var forsendelserTilJoni = GetForsendelser("JoniTråd", 10, joni, "Joni", "JoniBrev");
+            var forsendelserTilJoni = GetForsendelser("JoniTråd", AntallBrev, joni, "Joni", "JoniBrev");
 
             var jarand = new Mottaker("01013300001", "jarand.bjarte.t.k.grindheim#6KMG", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
-            var forsendelserTilJarandBjarte = GetForsendelser("Jarand-BjarteTråd", 10, jarand, "Jarand", "Jarand-BjarteBrev");
+            var forsendelserTilJarandBjarte = GetForsendelser("Jarand-BjarteTråd", AntallBrev, jarand, "Jarand", "Jarand-BjarteBrev");
 
             BlockingCollection<Forsendelse> alleForsendelser = new BlockingCollection<Forsendelse>();
 
@@ -66,14 +65,20 @@ namespace SikkerDigitalPost.Testklient
                 alleForsendelser.Add(forsendelserTilJarandBjarte.Take());
             }
 
-            while (alleForsendelser.Count > 0)
-            {
-                var forseendelse = alleForsendelser.Take();
-                Task.Factory.StartNew(()
-                    => sendMeldingAction(forseendelse)
-                    );
-            }
+            var tasks = alleForsendelser.Select(p => new Action(() => sendMeldingAction(p))).ToArray();
+            await Task.Run(() => Parallel.Invoke(_opts, tasks));
+
+            //while (alleForsendelser.Count > 0)
+            //{
+            //    var forsendelse = alleForsendelser.Take();
+                
+            //    //var e = Task.Factory.StartNew(()
+            //    //    => sendMeldingAction(forsendelse)
+            //    //    );
+            //}
         }
+
+        private readonly ParallelOptions _opts = new ParallelOptions() { MaxDegreeOfParallelism = 12};
 
         public BlockingCollection<Forsendelse> GetForsendelser(string trådnavn, int count, Mottaker mottaker, string fornavn, string tittel)
         {
@@ -89,7 +94,7 @@ namespace SikkerDigitalPost.Testklient
         public Forsendelse GetForsendelse(Mottaker mottaker, string fornavn, string tittel, int løpenummer)
         {
             //Digital Post
-            var digitalPost = new DigitalPost(mottaker, String.Format("{0} {1} ({2})", fornavn, tittel, løpenummer), Sikkerhetsnivå.Nivå4, åpningskvittering: false);
+            var digitalPost = new DigitalPost(mottaker, String.Format("{0} {1} ({2})", fornavn, tittel, løpenummer), Sikkerhetsnivå.Nivå3, åpningskvittering: false);
             
             //Forsendelse
             string mpcId = "hest";
