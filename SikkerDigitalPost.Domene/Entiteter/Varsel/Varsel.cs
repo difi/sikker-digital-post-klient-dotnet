@@ -25,19 +25,19 @@ namespace SikkerDigitalPost.Domene.Entiteter.Varsel
         /// Angir hvor langt tid det skal ta (i dager) fra en postforsendelse er sendt til mottaker skal varsles.
         /// </summary>
         public readonly IEnumerable<int> VarselEtterDager;
-        
-        protected Varsel(string varslingstekst, IEnumerable<int> varselEtterDager) 
+
+        protected Varsel(string varslingstekst, IEnumerable<int> varselEtterDager)
         {
             if (!varselEtterDager.Any())
             {
-                varselEtterDager = new List<int> {0};
+                varselEtterDager = new List<int> { 0 };
             }
             else
             {
-                VarselEtterDager = varselEtterDager;    
+                VarselEtterDager = varselEtterDager;
             }
+
             Varslingstekst = varslingstekst;
-            
         }
     }
 }

@@ -15,6 +15,7 @@ namespace SikkerDigitalPost.Klient.Envelope
         internal AsicEArkiv AsicEArkiv { get; private set; }
         internal GuidHandler GuidHandler { get; private set; }
         internal Klientkonfigurasjon Konfigurasjon { get; private set; }
+        
         /// <summary>
         /// Settings for KvitteringsEnvelope
         /// </summary>

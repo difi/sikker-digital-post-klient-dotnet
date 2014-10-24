@@ -4,7 +4,7 @@ namespace SikkerDigitalPost.Domene.Exceptions
 {
     public class SikkerDigitalPostException : Exception
     {
-        public SikkerDigitalPostException(){
+        public SikkerDigitalPostException() {
             
         }
 

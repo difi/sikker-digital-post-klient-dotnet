@@ -7,7 +7,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselHeader : AbstractHeader
     {
-
         public KvitteringsforespørselHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }

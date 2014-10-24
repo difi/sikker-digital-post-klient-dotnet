@@ -69,7 +69,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             sbd.LoadXml(standardBusinessDocument.OuterXml);
 
             var signed = new SignedXmlWithAgnosticId(sbd);
-            var signatureNode = (XmlElement)sbd.SelectSingleNode("//difi:kvittering/ds:Signature", nsMgr);
+            var signatureNode = (XmlElement)sbd.SelectSingleNode("//ds:Signature", nsMgr);
 
             ValiderSignaturOgSertifikat(signed, signatureNode, "./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
         }

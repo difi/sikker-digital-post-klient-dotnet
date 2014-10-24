@@ -11,7 +11,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
     {
         private readonly SHA256Managed _managedSha256;
 
-        public DigitalPostElement(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public DigitalPostElement(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
             _managedSha256 = new SHA256Managed();
         }
@@ -27,7 +28,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             }
             return digitalPostElement;
         }
-        
+
         private XmlElement AvsenderElement()
         {
             XmlElement avsender = Context.CreateElement("ns9", "avsender", Navnerom.Ns9);
@@ -77,16 +78,13 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
                 XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, Context);
                 {
-                    if (Settings.Forsendelse.DigitalPost.SmsVarsel != null || Settings.Forsendelse.DigitalPost.EpostVarsel != null)
+                    if (Settings.Forsendelse.DigitalPost.EpostVarsel != null)
                     {
-                        if (Settings.Forsendelse.DigitalPost.EpostVarsel != null)
-                        {
-                            varsler.AppendChild(EpostVarselElement());
-                        }
-                        if (Settings.Forsendelse.DigitalPost.SmsVarsel != null)
-                        {
-                            varsler.AppendChild(SmsVarselElement());
-                        }
+                        varsler.AppendChild(EpostVarselElement());
+                    }
+                    if (Settings.Forsendelse.DigitalPost.SmsVarsel != null)
+                    {
+                        varsler.AppendChild(SmsVarselElement());
                     }
                 }
             }
@@ -111,7 +109,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 XmlElement kontakt = varsel.AppendChildElement(kontakttype, "ns9", Navnerom.Ns9, Context);
                 kontakt.InnerText = kontaktinfo;
-                
+
                 XmlElement varseltekst = varsel.AppendChildElement("varslingsTekst", "ns9", Navnerom.Ns9, Context);
                 varseltekst.SetAttribute("lang", Settings.Forsendelse.Språkkode.ToUpper());
                 varseltekst.InnerText = varslingstekst;

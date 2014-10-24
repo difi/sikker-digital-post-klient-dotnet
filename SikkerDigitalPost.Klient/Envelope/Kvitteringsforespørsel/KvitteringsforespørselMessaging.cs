@@ -56,6 +56,5 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
             pullRequest.SetAttribute("mpc", Settings.Kvitteringsforespørsel.Mpc);
             return pullRequest;
         }
-
     }
 }

@@ -8,7 +8,6 @@ namespace SikkerDigitalPost.Klient.Envelope
 {
     internal class Security : EnvelopeXmlPart
     {
-
         public Security(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
         }

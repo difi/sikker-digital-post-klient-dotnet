@@ -5,7 +5,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselEnvelope : AbstractEnvelope
     {
-
         public KvitteringsforespørselEnvelope(EnvelopeSettings settings) : base(settings)
         {
         }
@@ -15,7 +14,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
             Header = new KvitteringsforespørselHeader(Settings, EnvelopeXml);
             return Header.Xml();
         }
-
 
         protected override XmlNode BodyElement()
         {

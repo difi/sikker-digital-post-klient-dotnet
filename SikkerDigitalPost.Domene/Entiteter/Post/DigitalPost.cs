@@ -9,7 +9,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
     {
         /// <param name="mottaker">Mottaker av digital post.</param>
         /// <param name="ikkeSensitivTittel">Ikke-sensitiv tittel på brevet. Denne tittelen vil være synlig under transport av meldingen, og kan vises i mottakerens postkasse.</param>
-        /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4</param>
+        /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4.</param>
         /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
         public DigitalPost(Mottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
         {

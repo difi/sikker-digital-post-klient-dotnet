@@ -99,7 +99,7 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
         {
-            Logging.Log(TraceEventType.Verbose, Manifest.Forsendelse.KonversasjonsId, string.Format("Legger til '{0}' på {1} bytes til dokumentpakke.", filename, data.Length));
+            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Legger til '{0}' på {1} bytes til dokumentpakke.", filename, data.Length));
 
             var entry = archive.CreateEntry(filename, CompressionLevel.Optimal);
             using (Stream s = entry.Open())
@@ -111,7 +111,7 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private byte[] KrypterteBytes(byte[] bytes)
         {
-            Logging.Log(TraceEventType.Verbose, Manifest.Forsendelse.KonversasjonsId, "Krypterer dokumentpakke med sertifikat " + _krypteringssertifikat.Thumbprint);
+            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Krypterer dokumentpakke med sertifikat {0}.", _krypteringssertifikat.Thumbprint));
 
             var contentInfo = new ContentInfo(bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            

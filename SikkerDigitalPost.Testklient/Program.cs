@@ -44,6 +44,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
+            LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
             klientkonfigurasjon.Logger = (severity, konversasjonsid, metode, melding) =>
             {
@@ -111,6 +112,14 @@ namespace SikkerDigitalPost.Testklient
             Console.ReadKey();
         }
 
+        private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
+        {
+            // Legger til logging til output vinduet
+            klientkonfigurasjon.Logger = (severity, konversasjonsId, metode, melding) =>
+            {
+                System.Diagnostics.Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
+            };
+        }
     }
 }
 

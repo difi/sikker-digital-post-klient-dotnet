@@ -7,7 +7,6 @@ namespace SikkerDigitalPost.Klient
 {
     internal class KvitteringFactory
     {
-
         public static Forretningskvittering GetForretningskvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
@@ -38,7 +37,7 @@ namespace SikkerDigitalPost.Klient
             {
                 Rådata = xml
             };
-            
+
             throw ingenKvitteringstypeFunnetException;
         }
 

@@ -11,7 +11,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     {
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
-        
+
         /// <summary>
         /// Tidspunktet da kvitteringen ble sendt.
         /// </summary>
@@ -20,7 +20,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
-        public string KonversasjonsId { get; private set; }
+        public Guid KonversasjonsId { get; private set; }
 
         /// <summary>
         /// Unik identifikator for kvitteringen.
@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
         /// </summary>
         public string RefToMessageId { get; private set; }
-        
+
         internal XmlNode BodyReference { get; set; }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
         /// </summary>
         public override abstract string ToString();
-        
+
         protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
             try
@@ -52,7 +52,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                 _namespaceManager = namespaceManager;
 
                 Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
-                KonversasjonsId = DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText;
+                KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
                 MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
                 RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
                 BodyReference = BodyReferenceNode();
@@ -62,7 +62,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
             {
                 throw new XmlParseException(
                     String.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
-                    ,GetType()), e);
+                    , GetType()), e);
             }
         }
 
@@ -82,7 +82,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                     , GetType()), e);
             }
         }
-        
+
         protected XmlNode BodyReferenceNode()
         {
             XmlNode bodyReferenceNode;
