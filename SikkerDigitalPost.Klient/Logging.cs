@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Klient
 
         internal static Action<TraceEventType, Guid?, string, string> TraceLogger()
         {
-            TraceSource _traceSource = new TraceSource(typeof(SikkerDigitalPostKlient).Assembly.FullName);
+            TraceSource _traceSource = new TraceSource("SikkerDigitalPost.Klient");
             return (severity, koversasjonsId, caller, message) =>
             {
                 _traceSource.TraceEvent(severity, 1, "[{0}, {1}] {2}", koversasjonsId.GetValueOrDefault(), caller, message);
