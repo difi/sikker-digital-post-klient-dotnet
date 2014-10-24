@@ -95,8 +95,9 @@ namespace SikkerDigitalPost.Klient
             
             try
             {
-                var valideringAvRespons = new Responsvalidator();
-                valideringAvRespons.ValiderRespons(response, forretningsmeldingEnvelope.Xml(), guidHandler);
+                var valideringAvRespons = new Responsvalidator(response, forretningsmeldingEnvelope.Xml());
+                valideringAvRespons.ValiderHeaderSignatur();
+                valideringAvRespons.ValiderDigest(guidHandler);
             }
             catch (Exception e)
             {
@@ -169,9 +170,9 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                var valideringAvResponsSignatur = new Responsvalidator();
-                if (!valideringAvResponsSignatur.ValiderSignatur(kvittering))
-                    throw new Exception("Signaturen på kvitteringen du har mottatt validerer ikke.\n");
+                var valideringAvResponsSignatur = new Responsvalidator(kvittering, kvitteringsenvelope.Xml());
+                valideringAvResponsSignatur.ValiderHeaderSignatur();
+                valideringAvResponsSignatur.ValiderKvitteringSignatur();
             }
             catch (Exception e)
             {
@@ -193,7 +194,7 @@ namespace SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlValidationException("Kvitteringsforespørsel  validerer ikke mot xsd:" + e.Message);
+                throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
             }
             
         }

@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using KontaktregisteretGateway;
+using KontaktregisteretGateway.Difi;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -21,14 +22,29 @@ namespace SikkerDigitalPost.Testklient
              * identiske. 
              */
 
-            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetEboks();
+            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
-            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+            //Mottaker
+            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse, postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+
+            //var service = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/idporten-ver2.difi.no-v2.crt", "changeit");
+            //var client = new X509Certificate2(@"../../../Kontaktregisteretsertifikater/WcfClient.pfx", "changeit");
+            //var settings = new DifiGatewaySettings(client, service);
+
+            //var _kontaktregisteretGateway = new KontaktregisteretGateway.KontaktregisteretGateway(settings);
+
+            ////Hent person fra difi! 
+            //var request = new HentPersonerForespoersel();
+            //request.informasjonsbehov = new informasjonsbehov[1];
+            //request.informasjonsbehov[0] = informasjonsbehov.Kontaktinfo;
+            //request.personidentifikator = new string[1];
+            //request.personidentifikator[0] = postkasseInnstillinger.Personnummer;
+
+            //var personer = _kontaktregisteretGateway.HentPersoner(request);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, åpningskvittering: false);
@@ -37,80 +53,41 @@ namespace SikkerDigitalPost.Testklient
             string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
             
             //Forsendelse
-            string mpcId = "hest";
             var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,mpcId,"NO");
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert,"NO");
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.Logger = (severity, konversasjonsid, metode, melding) =>
-            {
-                Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
-            };
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender,klientkonfigurasjon);
 
-            Console.WriteLine("--- STARTER Å SENDE POST ---");
-
             Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
-            Console.WriteLine(" > Post sendt. Status er ...");
 
-            if (transportkvittering.GetType() == typeof (TransportOkKvittering))
+            var kjør = true;
+            while (kjør)
             {
-                Console.WriteLine(" > OK! En transportkvittering ble hentet og alt gikk fint.");
-            }
-
-           if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
-            {
-                var feiletkvittering = (TransportFeiletKvittering) transportkvittering;
-                Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad, feiletkvittering.Beskrivelse);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
-
-            Console.WriteLine(" > Starter å hente kvitteringer ...");
-            
-            while (true)
-            {
-                var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
-                Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
-
+                //Hent kvittering
+                var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert);
                 Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
-
+                
                 if (kvittering == null)
                 {
-                    Console.WriteLine( "  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
+                    kjør = false;
                     break;
-                }
-
-                if (kvittering.GetType() == typeof (Leveringskvittering))
-                {
-                    Console.WriteLine("  - En leveringskvittering ble hentet!");
-                }
-
-                if (kvittering.GetType() == typeof (Åpningskvittering))
-                {
-                    Console.WriteLine("  - Har du sett. Noen har åpnet et brev. Moro.");
-                }
-
-                if (kvittering.GetType() == typeof(Feilmelding))
-                {
-                    Console.WriteLine("  - En feilmelding ble hentet, men den kan være gammel ...");
+                    // throw new Exception("Denne meldingskøen er tom.");
                 }
                 
-                Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                sikkerDigitalPostKlient.Bekreft(kvittering);
-                Console.WriteLine("   - Kvittering sendt.");
+                if (kvittering.GetType() == typeof(Feilmelding))
+                {
+                  // throw new Exception("Du fikk en feiletkvittering, men det er ikke sikkert du genererte den nå nettopp.");
+                }
+                
+                //Bekreft mottak av kvittering.
+                if(kjør)
+                    sikkerDigitalPostKlient.Bekreft(kvittering);
             }
-
-
-            Console.WriteLine();
-            Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
-            Console.ReadKey();
         }
-        
     }
 }
 

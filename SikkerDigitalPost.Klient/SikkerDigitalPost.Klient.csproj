@@ -76,6 +76,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Sertifikater.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sertifikater.resx</DependentUpon>
+    </Compile>
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="KlientKonfigurasjon.cs">
@@ -112,6 +117,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Sertifikater.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sertifikater.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -192,6 +201,12 @@
     <EmbeddedResource Include="XmlValidering\xsd\w3\xlink.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BPClass3CA3.cer" />
+    <None Include="Resources\Buypass_Class_3_Test4_CA_3.cer" />
+    <None Include="Resources\commfidesenterprise-sha256.crt" />
+    <None Include="Resources\cpn enterprise sha256 class 3.crt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
