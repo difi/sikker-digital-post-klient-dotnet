@@ -48,7 +48,7 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 9.  Sertifikatet skal legges til i _Trusted People_
 10. _Next_ og _Finish_
 
-### Logging
+## Logging
 
 Klientbiblioteket har støtte for logging av informasjon rundt generering av meldingen som skal sendes samt svarene som motas fra meldingsformidleren. Ut av boksen så logges dette til en TraceSource med navn "SikkerDigitalPost.Klient". For å få frem denne kan man legge til litt xml i applikasjonens app- eller web.config.
 
@@ -92,3 +92,13 @@ var klientkonfigurasjon = new Klientkonfigurasjon
 ```
 
 I tillegg så kan man få logging av alt som dreier seg om signering da klientbiblioteket benytter .NET sin innebygde SignedXml som implementerer logging gjennom en trace source med navn "System.Security.Cryptography.Xml.SignedXml".
+
+## Ytelse
+
+Klientbiblioteket benytter en HttpWebRequest for å kommunisere med meldingsformidleren. I en console applikasjon er denne begrenset til maks to samtidige forbindelser om gangen, mens den i en asp.net applikasjon er begrenset til ti. Dersom du ønsker å sende fler brev samtidig kan denne verdien endres f.eks til 20 gjennom:
+
+```c#
+System.Net.ServicePointManager.DefaultConnectionLimit = 20;
+```
+
+Se [ServicePointManager.DefaultConnectionLimit](http://msdn.microsoft.com/en-us/library/system.net.servicepointmanager.defaultconnectionlimit(v=vs.110).aspx) for mer info.
