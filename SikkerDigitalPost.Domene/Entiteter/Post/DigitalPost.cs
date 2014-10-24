@@ -1,4 +1,18 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Enums;
@@ -9,7 +23,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
     {
         /// <param name="mottaker">Mottaker av digital post.</param>
         /// <param name="ikkeSensitivTittel">Ikke-sensitiv tittel på brevet. Denne tittelen vil være synlig under transport av meldingen, og kan vises i mottakerens postkasse.</param>
-        /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4</param>
+        /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4.</param>
         /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
         public DigitalPost(Mottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
         {

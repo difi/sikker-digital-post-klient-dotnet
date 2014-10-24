@@ -1,4 +1,18 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -6,6 +20,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Klient.AsicE;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -27,6 +42,21 @@ namespace SikkerDigitalPost.Tester
         {
             Assert.AreEqual(Vedleggsstier.Length, Dokumentpakke.Vedlegg.Count);
             Assert.IsNotNull(Dokumentpakke.Hoveddokument);
+        }
+
+        [TestMethod]
+        public void LeggTilVedleggOgSjekkIdNummer()
+        {
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] { 0x00 }, "text/plain"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] { 0x00 }, "text/plain"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 3", new byte[] { 0x00 }, "text/plain"), new Dokument("Dokument 4", new byte[] { 0x00 }, "text/plain"));
+
+            Assert.AreEqual(Dokumentpakke.Hoveddokument.Id, "Id_2");
+            for (int i = 0; i < Dokumentpakke.Vedlegg.Count; i++)
+            {
+                var vedlegg = Dokumentpakke.Vedlegg[i];
+                Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
+            }
         }
 
         [TestMethod]
@@ -105,7 +135,9 @@ namespace SikkerDigitalPost.Tester
         {
             var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             storeMy.Open(OpenFlags.ReadOnly);
-            return storeMy.Certificates[0];
+            var sertifikat = storeMy.Certificates[0];
+            storeMy.Close();
+            return sertifikat;
         }
 
     }

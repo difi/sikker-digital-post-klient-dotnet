@@ -1,10 +1,25 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Extensions;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -15,18 +30,20 @@ namespace SikkerDigitalPost.Klient.AsicE
         public Behandlingsansvarlig Avsender { get; private set; }
         public Forsendelse Forsendelse { get; private set; }
 
-        
+
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
             Avsender = forsendelse.Behandlingsansvarlig;
         }
-        
-        public string Filnavn {
+
+        public string Filnavn
+        {
             get { return "manifest.xml"; }
         }
-        
-        public string Innholdstype {
+
+        public string Innholdstype
+        {
             get { return "application/xml"; }
         }
 
@@ -67,7 +84,7 @@ namespace SikkerDigitalPost.Klient.AsicE
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
             }
 
-            Logging.Log(System.Diagnostics.TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke\r\n" + _manifestXml.OuterXml);
+            Logging.Log(TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke" + Environment.NewLine + _manifestXml.OuterXml);
 
             return _manifestXml;
         }

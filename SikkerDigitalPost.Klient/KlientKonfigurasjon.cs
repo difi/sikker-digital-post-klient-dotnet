@@ -1,4 +1,18 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.Configuration;
 using SikkerDigitalPost.Domene.Entiteter;
 using System.Diagnostics;
@@ -42,7 +56,11 @@ namespace SikkerDigitalPost.Klient
         /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:TimeoutIMillisekunder'.
         /// </summary>
         public int TimeoutIMillisekunder { get; set; }
-        
+
+        /// <summary>
+        /// Eksponerer et grensesnitt for logging hvor brukere kan integrere sin egen loggefunksjonalitet eller en tredjepartsløsning som f.eks log4net. For bruk, angi en annonym funksjon med 
+        /// følgende parametre: severity, konversasjonsid, metode, melding. Som default benyttes trace logging med navn 'SikkerDigitalPost.Klient' som kan aktiveres i applikasjonens konfigurasjonsfil. 
+        /// </summary>
         public Action<TraceEventType, Guid?, string, string> Logger { get; set; }
 
         /// <summary>
@@ -72,8 +90,8 @@ namespace SikkerDigitalPost.Klient
             MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
             ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
             ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
-
             TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
+            Logger = Logging.TraceLogger();
         }
 
         private T SetFromAppConfig<T>(string key, T @default)

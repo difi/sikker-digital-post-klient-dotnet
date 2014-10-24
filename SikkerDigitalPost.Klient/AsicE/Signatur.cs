@@ -1,4 +1,18 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -10,6 +24,7 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.Security;
 using Sha256Reference = SikkerDigitalPost.Domene.Sha256Reference;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -19,14 +34,12 @@ namespace SikkerDigitalPost.Klient.AsicE
         private readonly Manifest _manifest;
         private readonly X509Certificate2 _sertifikat;
         private XmlDocument _xml;
-        private int _idTeller; 
 
         public Signatur(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat)
         {
             _forsendelse = forsendelse;
             _manifest = manifest;
             _sertifikat = sertifikat;
-            _idTeller = 0;
         }
 
         public string Filnavn
@@ -40,7 +53,6 @@ namespace SikkerDigitalPost.Klient.AsicE
             {
                 return Encoding.UTF8.GetBytes(Xml().OuterXml);
             }
-
         }
 
         public string Innholdstype
@@ -81,7 +93,7 @@ namespace SikkerDigitalPost.Klient.AsicE
                 throw new XmlParseException("Kunne ikke bygge Xml for signatur.", e);
             }
 
-            Logging.Log(System.Diagnostics.TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke\r\n" + _xml.OuterXml);
+            Logging.Log(TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke" + Environment.NewLine + _xml.OuterXml);
 
             return _xml;
         }
@@ -134,7 +146,6 @@ namespace SikkerDigitalPost.Klient.AsicE
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.Ns10));
             signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.Ns11);
-
 
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;

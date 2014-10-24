@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Package</id>
-    <version>0.9-testnuspec</version>
+    <id>sikker-digital-post-net-klient</id>
+    <version>1.0.5410.26227</version>
     <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
-    <owners>Posten Norge AS </owners>    
+    <owners>Posten Norge AS</owners>    
     <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Klientbibliotek for </description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor </description>    
     <copyright>Copyright 2014</copyright>
-    <tags>Posten SikkerDigitalPost Sikker Post</tags>
+    <tags>Posten SikkerDigitalPost Sikker Post eBoks Digipost Difi</tags>
   </metadata>
   <files>
     <file src ="SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />   

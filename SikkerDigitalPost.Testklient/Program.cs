@@ -1,6 +1,19 @@
-﻿using System;
+﻿/** 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.Diagnostics;
-using System.Linq;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -17,16 +30,16 @@ namespace SikkerDigitalPost.Testklient
         {
             /*
               * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
-              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. Derfor er alle organisasjonsnummer
-              * identiske. 
+              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
               */
 
-            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetEboks();
+            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
+            //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
@@ -44,11 +57,13 @@ namespace SikkerDigitalPost.Testklient
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
+            LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
             klientkonfigurasjon.Logger = (severity, konversasjonsid, metode, melding) =>
             {
                 Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
             };
+
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
@@ -110,7 +125,14 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
-
+        private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
+        {
+            // Legger til logging til output vinduet
+            klientkonfigurasjon.Logger = (severity, konversasjonsId, metode, melding) =>
+            {
+                Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
+            };
+        }
     }
 }
 
