@@ -58,8 +58,15 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         public void ValiderKvitteringSignatur()
         {
             // Signaturer i //difi elementer har kontekst av standard business document. Kjører derfor valideringen på et subset av originaldokumentet.
+
+            var standardBusinessDocument =
+                responseDocument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
+
+            if (standardBusinessDocument == null)
+                return;
+
             XmlDocument sbd = new XmlDocument();
-            sbd.LoadXml(responseDocument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr).OuterXml);
+            sbd.LoadXml(standardBusinessDocument.OuterXml);
 
             var signed = new SignedXmlWithAgnosticId(sbd);
             var signatureNode = (XmlElement)sbd.SelectSingleNode("//difi:kvittering/ds:Signature", nsMgr);
