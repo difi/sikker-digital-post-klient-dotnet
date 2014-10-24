@@ -6,23 +6,11 @@ namespace SikkerDigitalPost.Klient
 {
     internal class Logging
     {
-        private static TraceSource _traceSource = null;
-
         private static Action<TraceEventType, Guid?, string, string> _logAction = null;
 
         internal static void Initialize(Klientkonfigurasjon konfigurasjon)
         {
-            if (konfigurasjon != null && konfigurasjon.Logger != null)
-                _logAction = konfigurasjon.Logger;
-            else
-            {
-                _traceSource = new TraceSource(typeof(SikkerDigitalPostKlient).Assembly.FullName);
-
-                _logAction = (severity, koversasjonsId, caller, message) =>
-                {
-                    _traceSource.TraceEvent(severity, 1, "[{0}, {1}] {2}", konfigurasjon.ToString(), caller, message);
-                };
-            }
+            _logAction = konfigurasjon.Logger;
         }
 
         internal static void Log(TraceEventType severity, string message, [CallerMemberName] string callerMember = null)
@@ -39,6 +27,15 @@ namespace SikkerDigitalPost.Klient
                 callerMember = new StackFrame(1).GetMethod().Name;
 
             _logAction(severity, conversationId, callerMember, message);
+        }
+
+        internal static Action<TraceEventType, Guid?, string, string> TraceLogger()
+        {
+            TraceSource _traceSource = new TraceSource(typeof(SikkerDigitalPostKlient).Assembly.FullName);
+            return (severity, koversasjonsId, caller, message) =>
+            {
+                _traceSource.TraceEvent(severity, 1, "[{0}, {1}] {2}", koversasjonsId.GetValueOrDefault(), caller, message);
+            };
         }
     }
 }

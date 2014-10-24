@@ -10,6 +10,7 @@ using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.Security;
 using Sha256Reference = SikkerDigitalPost.Domene.Sha256Reference;
+using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -81,7 +82,7 @@ namespace SikkerDigitalPost.Klient.AsicE
                 throw new XmlParseException("Kunne ikke bygge Xml for signatur.", e);
             }
 
-            Logging.Log(System.Diagnostics.TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke\r\n" + _xml.OuterXml);
+            Logging.Log(TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke" + Environment.NewLine + _xml.OuterXml);
 
             return _xml;
         }
