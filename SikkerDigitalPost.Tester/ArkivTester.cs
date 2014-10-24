@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Klient.AsicE;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -27,6 +28,21 @@ namespace SikkerDigitalPost.Tester
         {
             Assert.AreEqual(Vedleggsstier.Length, Dokumentpakke.Vedlegg.Count);
             Assert.IsNotNull(Dokumentpakke.Hoveddokument);
+        }
+
+        [TestMethod]
+        public void LeggTilVedleggOgSjekkIdNummer()
+        {
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] { 0x00 }, "text/plain"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] { 0x00 }, "text/plain"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 3", new byte[] { 0x00 }, "text/plain"), new Dokument("Dokument 4", new byte[] { 0x00 }, "text/plain"));
+
+            Assert.AreEqual(Dokumentpakke.Hoveddokument.Id, "Id_2");
+            for (int i = 0; i < Dokumentpakke.Vedlegg.Count; i++)
+            {
+                var vedlegg = Dokumentpakke.Vedlegg[i];
+                Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
+            }
         }
 
         [TestMethod]
