@@ -101,10 +101,10 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Vedlegg.Add(arkiv);
             var response = SendSoapContainer(soapContainer);
 #if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
-            FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "Signatur.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "Manifest.xml");
+            //FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
+            //FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
+            //FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "Signatur.xml");
+            //FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "Manifest.xml");
 #endif
 
             try
@@ -179,8 +179,8 @@ namespace SikkerDigitalPost.Klient
 
             Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringssvar" + Environment.NewLine + kvittering);
 #if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+            //FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
+            //FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
 #endif
 
             try
@@ -249,7 +249,7 @@ namespace SikkerDigitalPost.Klient
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
 #if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
+            //FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
 #endif
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
@@ -280,13 +280,10 @@ namespace SikkerDigitalPost.Klient
                     {
                         XDocument soap = XDocument.Load(errorStream);
                         data = soap.ToString();
-
-#if DEBUG
-                        var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
-                        FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
+#if DEBUG               
+                        //var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
+                        //FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
 #endif
-
-
                     }
                 }
             }

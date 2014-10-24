@@ -14,7 +14,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Linq;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -40,6 +39,7 @@ namespace SikkerDigitalPost.Testklient
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
+            //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
@@ -63,6 +63,7 @@ namespace SikkerDigitalPost.Testklient
             {
                 Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
             };
+
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
@@ -124,13 +125,12 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
-
         private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
         {
             // Legger til logging til output vinduet
             klientkonfigurasjon.Logger = (severity, konversasjonsId, metode, melding) =>
             {
-                System.Diagnostics.Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
+                Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
             };
         }
     }

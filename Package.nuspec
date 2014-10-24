@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Package</id>
-    <version>0.7-testnuget</version>
+    <version>0.9-testnuspec</version>
     <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
     <owners>Posten Norge AS </owners>    
     <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
@@ -13,7 +13,6 @@
     <tags>Posten SikkerDigitalPost Sikker Post</tags>
   </metadata>
   <files>
-    <file src ="SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />
-    <file src ="SikkerDigitalPost.Klient\XmlValidering\xsd\*" target="content\xsd"/>
+    <file src ="SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />   
   </files>
 </package>
