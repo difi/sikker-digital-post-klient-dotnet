@@ -37,18 +37,15 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
         {
-            Dokument nåværendeDokument;
+            int startId = Vedlegg.Count();
             for (int i = 0; i < dokumenter.Count(); i++)
             {
-                nåværendeDokument = dokumenter.ElementAt(i);
-                if (nåværendeDokument.Bytes.Length == 0)
-                {
-                    throw new KonfigurasjonsException("Du prøver å legge til et vedlegg som er tomt. Dette er ikke tillatt.");
-                }
-                nåværendeDokument.Id = String.Format("Id_{0}", i + 3);
+                var dokument = dokumenter.ElementAt(i);
+                if (dokument.Bytes.Length == 0)
+                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.", dokument.Filnavn));
+                dokument.Id = string.Format("Id_{0}", i + 3 + startId);
+                Vedlegg.Add(dokument);
             }
-
-            Vedlegg.AddRange(dokumenter);
         }
     }
 }
