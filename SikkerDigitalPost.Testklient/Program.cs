@@ -17,9 +17,8 @@ namespace SikkerDigitalPost.Testklient
         {
             /*
               * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
-              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. Derfor er alle organisasjonsnummer
-              * identiske. 
-              */
+              * Posten som er teknisk avsender, og det er Digipostkassen eller E-boks som skal motta meldingen. 
+            */
 
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetEboks();
 
@@ -49,6 +48,7 @@ namespace SikkerDigitalPost.Testklient
             {
                 Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
             };
+            
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
