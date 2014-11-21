@@ -34,17 +34,17 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
-        public Guid KonversasjonsId { get; private set; }
+        public Guid KonversasjonsId { get; protected set; }
 
         /// <summary>
         /// Unik identifikator for kvitteringen.
         /// </summary>
-        public string MeldingsId { get; private set; }
+        public string MeldingsId { get; protected set; }
 
         /// <summary>
         /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
         /// </summary>
-        public string RefToMessageId { get; private set; }
+        public string RefToMessageId { get; protected set; }
 
         internal XmlNode BodyReference { get; set; }
 
@@ -58,6 +58,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// </summary>
         public override abstract string ToString();
 
+        protected Forretningskvittering() { }
         protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
             try

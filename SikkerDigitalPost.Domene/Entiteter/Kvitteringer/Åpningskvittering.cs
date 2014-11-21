@@ -27,8 +27,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Tidspunkt for når borger åpnet posten i sin postkasse.
         /// </summary>
-        public DateTime Åpningstidspunkt { get; private set; }
-
+        public DateTime Åpningstidspunkt { get; protected set; }
+        public Åpningskvittering() { }
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
             try

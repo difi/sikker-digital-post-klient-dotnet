@@ -50,6 +50,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
         /// </summary>
         public abstract override string ToString();
+        protected Transportkvittering()
+        { }
 
         protected Transportkvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {

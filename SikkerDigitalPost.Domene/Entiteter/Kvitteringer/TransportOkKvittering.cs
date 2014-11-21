@@ -22,6 +22,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     /// </summary>
     public class TransportOkKvittering : Transportkvittering
     {
+        public TransportOkKvittering()
+        { }
         public TransportOkKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
         }

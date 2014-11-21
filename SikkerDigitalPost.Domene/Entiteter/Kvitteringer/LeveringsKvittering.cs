@@ -24,6 +24,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
     /// </summary>
     public class Leveringskvittering : Forretningskvittering
     {
+        public Leveringskvittering() { }
         internal Leveringskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager) : base(xmlDocument,namespaceManager)
         {
         }
