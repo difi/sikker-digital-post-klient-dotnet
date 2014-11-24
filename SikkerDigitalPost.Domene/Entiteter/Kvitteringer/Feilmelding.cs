@@ -28,12 +28,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Beskriver hvor feilen ligger. Enten Klient eller Server.
         /// </summary>
-        public Feiltype Skyldig { get; private set; }
+        public Feiltype Skyldig { get; protected set; }
 
-        public string Detaljer { get; private set; }
+        public string Detaljer { get; protected set; }
 
-        public DateTime TidspunktFeilet { get; private set; }
-
+        public DateTime TidspunktFeilet { get; protected set; }
+        public Feilmelding() { }
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
             try
