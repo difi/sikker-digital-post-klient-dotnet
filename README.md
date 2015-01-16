@@ -34,6 +34,8 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 4.  Skriv inn passord for privatekey og velg _Mark this key as exportable ..._, trykk _Next_
 5.  Velg _Automatically select the certificate store based on the type of certificate_
 6.  _Next_ og _Finish_
+7.  Får du spørsmål om å godta sertifikatet så gjør det.
+8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_
 
 
 ### Legg inn mottakersertifikat i certificate store
