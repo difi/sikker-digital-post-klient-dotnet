@@ -50,6 +50,7 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 8.  Finn mottaker-sertifikatet og legg det til. Trykk _Next_
 9.  Sertifikatet skal legges til i _Trusted People_
 10. _Next_ og _Finish_
+11. Du skal da få en dialog som sier at importeringen var vellykket. Trykk Ok
 
 ## Logging
 
