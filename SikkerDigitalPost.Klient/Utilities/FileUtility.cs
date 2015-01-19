@@ -23,7 +23,6 @@ namespace SikkerDigitalPost.Klient.Utilities
         enum Bruker
         {
             Aleksander,
-            Marius
         }
 
         private static Bruker CurrentBruker
@@ -33,11 +32,6 @@ namespace SikkerDigitalPost.Klient.Utilities
                 if (Environment.MachineName.Contains("LEK"))
                 {
                     return Bruker.Aleksander;
-                }
-
-                if (Environment.MachineName.Contains("LOK"))
-                {
-                    return Bruker.Marius;
                 }
 
                 throw new ArgumentException("Kunne ikke finne ut hvilken bruker du er! Legg deg selv til i listen.");
@@ -53,12 +47,7 @@ namespace SikkerDigitalPost.Klient.Utilities
             {
                 if (CurrentBruker == Bruker.Aleksander)
                 {
-                    return @"Z:\Development\Digipost\sdp-data";
-                }
-
-                if (CurrentBruker == Bruker.Marius)
-                {
-                    return @"C:\Prosjekt\DigiPost\Temp\";
+                    return @"C:\Develop\Digipost\sdp-data";
                 }
 
                 throw new Exception("Kunne ikke finne ut hvilken bruker du er! Legg deg selv til i listen.");

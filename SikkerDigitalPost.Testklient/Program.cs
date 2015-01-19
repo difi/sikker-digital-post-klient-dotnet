@@ -44,26 +44,22 @@ namespace SikkerDigitalPost.Testklient
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
             //Digital Post
-            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå4, åpningskvittering: false);
+            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
 
-            string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "hoveddokument.txt");
-            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "Vedlegg.txt");
+            string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "253014_1_P.docx.pdf");
+            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "253014_1_P.docx1.pdf");
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "EN"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain", "NO", "253014_1_P.docx.pdf"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "253014_1_P.docx1.pdf"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.Logger = (severity, konversasjonsid, metode, melding) =>
-            {
-                Debug.WriteLine("Feil skjedde i {0}, \n {1}", metode, melding);
-            };
-
+            
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
@@ -73,7 +69,7 @@ namespace SikkerDigitalPost.Testklient
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
             {
-                Console.WriteLine(" > OK! En transportkvittering ble hentet og alt gikk fint.");
+                WriteToConsoleWithColor(" > OK! En transportkvittering ble hentet og alt gikk fint.");
             }
 
             if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
@@ -102,17 +98,18 @@ namespace SikkerDigitalPost.Testklient
 
                 if (kvittering.GetType() == typeof(Leveringskvittering))
                 {
-                    Console.WriteLine("  - En leveringskvittering ble hentet!");
+
+                    WriteToConsoleWithColor("  - En leveringskvittering ble hentet!");
                 }
 
                 if (kvittering.GetType() == typeof(Åpningskvittering))
                 {
-                    Console.WriteLine("  - Har du sett. Noen har åpnet et brev. Moro.");
+                    WriteToConsoleWithColor("  - Har du sett. Noen har åpnet et brev. Moro.");
                 }
 
                 if (kvittering.GetType() == typeof(Feilmelding))
                 {
-                    Console.WriteLine("  - En feilmelding ble hentet, men den kan være gammel ...");
+                    WriteToConsoleWithColor("  - En feilmelding ble hentet, men den kan være gammel ...", true);
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
@@ -125,9 +122,17 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
+
+        private static void WriteToConsoleWithColor(string message, bool isError = false)
+        {
+            Console.ForegroundColor = isError ? ConsoleColor.Red : ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
         private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
         {
-            // Legger til logging til output vinduet
+            // Legger til logging til outputvinduet
             klientkonfigurasjon.Logger = (severity, konversasjonsId, metode, melding) =>
             {
                 Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
