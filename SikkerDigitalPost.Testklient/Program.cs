@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
@@ -82,6 +83,7 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
 
             Console.WriteLine(" > Starter å hente kvitteringer ...");
+
 
             while (true)
             {

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -99,16 +100,33 @@ namespace SikkerDigitalPost.Tester
         {
             var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             storeMy.Open(OpenFlags.ReadOnly);
-            AvsenderSertifikat = storeMy.Certificates
-                .Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
+
+            try
+            {
+                AvsenderSertifikat = storeMy.Certificates
+                    .Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
+            }
+            catch (Exception e)
+            {
+                throw new InstanceNotFoundException("Kunne ikke finne avsendersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-avsendersertifikat-i-certificate-store) ", e);
+            }
             storeMy.Close();
+
 
             var storeTrusted = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
             storeTrusted.Open(OpenFlags.ReadOnly);
-            MottakerSertifikat =
-                storeTrusted.Certificates
-                .Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
+            try
+            {
+                MottakerSertifikat =
+                    storeTrusted.Certificates
+                    .Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
+            }
+            catch (Exception e)
+            {
+                throw new InstanceNotFoundException("Kunne ikke finne mottakersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-mottakersertifikat-i-certificate-store) ", e);
+            }
             storeTrusted.Close();
+            
         }
 
         private static Dokument GenererHoveddokument()
