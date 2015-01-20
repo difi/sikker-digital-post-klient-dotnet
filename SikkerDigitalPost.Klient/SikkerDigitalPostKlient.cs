@@ -101,10 +101,10 @@ namespace SikkerDigitalPost.Klient
             soapContainer.Vedlegg.Add(arkiv);
             var response = SendSoapContainer(soapContainer);
 #if DEBUG
-            //FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "Forretningsmelding.xml");
-            //FileUtility.WriteXmlToFileInBasePath(response, "ForrigeKvittering.xml");
-            //FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "Signatur.xml");
-            //FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "Manifest.xml");
+            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "SENDT", "Forretningsmelding.xml");
+            FileUtility.WriteXmlToFileInBasePath(response, "SENDT", "ForrigeKvittering.xml");
+            FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "SENDT", "Signatur.xml");
+            FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "SENDT", "Manifest.xml");
 #endif
 
             try

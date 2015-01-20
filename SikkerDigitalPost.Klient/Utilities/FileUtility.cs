@@ -47,7 +47,7 @@ namespace SikkerDigitalPost.Klient.Utilities
             {
                 if (CurrentBruker == Bruker.Aleksander)
                 {
-                    return @"C:\Develop\Digipost\sdp-data";
+                    return @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data";
                 }
 
                 throw new Exception("Kunne ikke finne ut hvilken bruker du er! Legg deg selv til i listen.");

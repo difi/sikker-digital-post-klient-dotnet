@@ -21,7 +21,7 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.Utilities;
+
 
 namespace SikkerDigitalPost.Testklient
 {
@@ -34,26 +34,26 @@ namespace SikkerDigitalPost.Testklient
               * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
               */
 
-            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
+            Postkasseinnstillinger postkasseinnstillinger = Postkasseinnstillinger.GetPosten();
 
             //Avsender
-            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
+            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseinnstillinger.OrgNummerBehandlingsansvarlig));
+            var tekniskAvsender = new Databehandler(postkasseinnstillinger.OrgNummerDatabehandler, postkasseinnstillinger.Avsendersertifikat);
 
             //Mottaker
-            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+            var mottaker = new Mottaker(postkasseinnstillinger.Personnummer, postkasseinnstillinger.Postkasseadresse,
+                    postkasseinnstillinger.Mottakersertifikat, postkasseinnstillinger.OrgnummerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
 
-            string hoveddokument = FileUtility.AbsolutePath("testdata", "hoveddokument", "253014_1_P.docx.pdf");
-            string vedlegg = FileUtility.AbsolutePath("testdata", "vedlegg", "253014_1_P.docx1.pdf");
+            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokumentæøå.txt";
+            string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", hoveddokument, "text/plain", "NO", "253014_1_P.docx.pdf"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "253014_1_P.docx1.pdf"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Tirsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokumentæ"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "253014_1_P.docx1.pdf"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
             //Send
@@ -84,6 +84,7 @@ namespace SikkerDigitalPost.Testklient
 
             Console.WriteLine(" > Starter å hente kvitteringer ...");
 
+            Thread.Sleep(5000);
 
             while (true)
             {
