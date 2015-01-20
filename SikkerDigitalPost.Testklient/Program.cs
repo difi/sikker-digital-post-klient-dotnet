@@ -34,25 +34,25 @@ namespace SikkerDigitalPost.Testklient
               * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
               */
 
-            Postkasseinnstillinger postkasseinnstillinger = Postkasseinnstillinger.GetPosten();
+            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
-            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseinnstillinger.OrgNummerBehandlingsansvarlig));
-            var tekniskAvsender = new Databehandler(postkasseinnstillinger.OrgNummerDatabehandler, postkasseinnstillinger.Avsendersertifikat);
+            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
+            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
 
             //Mottaker
-            var mottaker = new Mottaker(postkasseinnstillinger.Personnummer, postkasseinnstillinger.Postkasseadresse,
-                    postkasseinnstillinger.Mottakersertifikat, postkasseinnstillinger.OrgnummerPostkasse);
+            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
 
-            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokumentæøå.txt";
+            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument .txt";
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Tirsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokumentæ"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument med mellomrom", hoveddokumentsti, "text/plain", "NO"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "253014_1_P.docx1.pdf"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 

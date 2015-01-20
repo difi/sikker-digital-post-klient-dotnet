@@ -56,8 +56,13 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
             Tittel = tittel;
             Bytes = dokumentbytes;
             Innholdstype = innholdstype;
-            Filnavn = filnavn ?? Path.GetRandomFileName();
+            Filnavn = UrlEncode(filnavn ?? Path.GetRandomFileName());
             Språkkode = språkkode;
+        }
+
+        private string UrlEncode(string raw)
+        {
+            return raw.Replace(" ", "%20");
         }
     }
 }
