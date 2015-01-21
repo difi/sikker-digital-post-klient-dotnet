@@ -60,11 +60,19 @@ namespace SikkerDigitalPost.Tester
 
         [TestMethod]
         [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
-        public void LeggTilDokumenterMedSammeFilnavnKasterException()
+        public void LeggTilVedleggSammeFilnavnKasterException()
         {
-            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));
-            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));   
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));   
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
+        public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
+        {
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Hoveddokument.Filnavn));
+        }
+
 
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()

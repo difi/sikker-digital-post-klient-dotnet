@@ -56,10 +56,11 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
             {
                 var dokument = dokumenter.ElementAt(i);
 
-                var likeVedlegg = Vedlegg.Where(v => v.Filnavn == dokument.Filnavn);
-                if (likeVedlegg.Any())
+                var likeFiler = Vedlegg.Any(v => dokument.Filnavn == v.Filnavn) || dokument.Filnavn == Hoveddokument.Filnavn;
+                
+                if (likeFiler)
                 {
-                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til, eksisterer allerede med samme filnavn. Det er ikke tillatt å sende to med samme filnavn.", dokument.Filnavn));
+                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til, eksisterer allerede med samme filnavn. Det er ikke tillatt å ha likt filnavn på to vedlegg, eller vedlegg med samme filnavn som hoveddokument.", dokument.Filnavn));
                 }
 
                 if (dokument.Bytes.Length == 0)
