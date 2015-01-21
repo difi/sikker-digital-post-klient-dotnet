@@ -14,6 +14,8 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -29,38 +31,47 @@ namespace SikkerDigitalPost.Testklient
     {
         static void Main(string[] args)
         {
+            SendPost();
+        }
+
+        private static bool SendPost()
+        {
+            bool isSent = true;
             /*
-              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
-              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
-              */
+             * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
+             * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
+             */
 
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
-            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
+            var behandlingsansvarlig =
+                new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
+            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler,
+                postkasseInnstillinger.Avsendersertifikat);
 
             //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+                postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
 
-            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument .txt";
+            string hoveddokumentsti =
+                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
-            string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument med mellomrom", hoveddokumentsti, "text/plain", "NO"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "253014_1_P.docx1.pdf"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
+            string mpcId = "hestemann";
+            var dokumentpakke = new Dokumentpakke(new Dokument("Tegntest ons" + DateTime.Now.ToString("g"), hoveddokumentsti, "text/plain", "NO", "Hoveddokument []#,..d \"-.<>"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain"));
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId);
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            
+
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
@@ -76,7 +87,8 @@ namespace SikkerDigitalPost.Testklient
             if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
             {
                 var feiletkvittering = (TransportFeiletKvittering)transportkvittering;
-                Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad, feiletkvittering.Beskrivelse);
+                Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
+                    feiletkvittering.Beskrivelse);
             }
 
             Console.WriteLine();
@@ -84,7 +96,7 @@ namespace SikkerDigitalPost.Testklient
 
             Console.WriteLine(" > Starter å hente kvitteringer ...");
 
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
 
             while (true)
             {
@@ -101,7 +113,6 @@ namespace SikkerDigitalPost.Testklient
 
                 if (kvittering.GetType() == typeof(Leveringskvittering))
                 {
-
                     WriteToConsoleWithColor("  - En leveringskvittering ble hentet!");
                 }
 
@@ -113,6 +124,7 @@ namespace SikkerDigitalPost.Testklient
                 if (kvittering.GetType() == typeof(Feilmelding))
                 {
                     WriteToConsoleWithColor("  - En feilmelding ble hentet, men den kan være gammel ...", true);
+                    isSent = false;
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
@@ -124,6 +136,7 @@ namespace SikkerDigitalPost.Testklient
             Console.WriteLine();
             Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
+            return isSent;
         }
 
         private static void WriteToConsoleWithColor(string message, bool isError = false)

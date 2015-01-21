@@ -12,8 +12,13 @@
  * limitations under the License.
  */
 
+using System;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
+using SikkerDigitalPost.Domene.Extensions;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Post
 {
@@ -25,6 +30,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         public string Innholdstype { get; private set; }
         public string Id { get; set; }
         public string Språkkode { get; private set; }
+        internal string FilnavnRådata { get; set; }
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentsti">Stien som viser til hvor dokumentet ligger på disk.</param>
@@ -53,16 +59,23 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
         public Dokument(string tittel, byte[] dokumentbytes, string innholdstype, string språkkode = null, string filnavn = null)
         {
+            filnavn = filnavn ?? Path.GetRandomFileName();
+            var vasketFilnavn = filnavn.RemoveIllegalCharacters();
+
             Tittel = tittel;
             Bytes = dokumentbytes;
             Innholdstype = innholdstype;
-            Filnavn = UrlEncode(filnavn ?? Path.GetRandomFileName());
+            Filnavn = UrlEncode(filnavn.RemoveIllegalCharacters());
+            FilnavnRådata = vasketFilnavn;
             Språkkode = språkkode;
         }
 
         private string UrlEncode(string raw)
-        {
-            return raw.Replace(" ", "%20");
+        {            
+            var result = HttpUtility.UrlEncode(raw, new UTF8Encoding());
+            result = Regex.Replace(result, "%[a-z0-9]{2}", (m) => m.Value.ToUpperInvariant());
+            return result;
         }
+
     }
 }
