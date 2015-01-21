@@ -34,7 +34,7 @@ namespace SikkerDigitalPost.Testklient
               * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
               */
 
-            Postkasseinnstillinger postkasseinnstillinger = Postkasseinnstillinger.GetPosten();
+            PostkasseInnstillinger postkasseinnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseinnstillinger.OrgNummerBehandlingsansvarlig));

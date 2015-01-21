@@ -55,6 +55,13 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
             for (int i = 0; i < dokumenter.Count(); i++)
             {
                 var dokument = dokumenter.ElementAt(i);
+
+                var likeVedlegg = Vedlegg.Where(v => v.Filnavn == dokument.Filnavn);
+                if (likeVedlegg.Any())
+                {
+                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til, eksisterer allerede med samme filnavn. Det er ikke tillatt å sende to med samme filnavn.", dokument.Filnavn));
+                }
+
                 if (dokument.Bytes.Length == 0)
                     throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.", dokument.Filnavn));
                 dokument.Id = string.Format("Id_{0}", i + 3 + startId);
