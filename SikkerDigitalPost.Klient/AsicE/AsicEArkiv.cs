@@ -100,14 +100,19 @@ namespace SikkerDigitalPost.Klient.AsicE
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
-                LeggFilTilArkiv(archive, _dokumentpakke.Hoveddokument.Filnavn, _dokumentpakke.Hoveddokument.Bytes);
+                LeggFilTilArkiv(archive, _dokumentpakke.Hoveddokument.FilnavnRådata, _dokumentpakke.Hoveddokument.Bytes);
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
                 LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
 
                 foreach (var dokument in _dokumentpakke.Vedlegg)
-                    LeggFilTilArkiv(archive, dokument.Filnavn, dokument.Bytes);
+                    LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
 
             }
+
+            byte[] ziparray = stream.ToArray();
+
+            File.WriteAllBytes(@"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\SENDT\AsicEArkiv.zip", ziparray);
+            
             return stream.ToArray();
         }
 

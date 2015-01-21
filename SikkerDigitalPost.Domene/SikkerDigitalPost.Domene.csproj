@@ -76,6 +76,7 @@
     <Compile Include="Exceptions\SikkerDigitalPostException.cs" />
     <Compile Include="Exceptions\XmlParseException.cs" />
     <Compile Include="Exceptions\XmlValidationException.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entiteter\Aktører\Databehandler.cs" />

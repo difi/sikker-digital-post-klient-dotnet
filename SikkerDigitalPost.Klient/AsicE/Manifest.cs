@@ -131,7 +131,7 @@ namespace SikkerDigitalPost.Klient.AsicE
         private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
         {
             XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.Ns9);
-            dokumentXml.SetAttribute("href", dokument.Filnavn);
+            dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
             dokumentXml.SetAttribute("mime", dokument.Innholdstype);
             {
                 XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.Ns9, _manifestXml);
