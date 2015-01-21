@@ -12,15 +12,14 @@
  * limitations under the License.
  */
 
-using System;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Domene.Entiteter.Post;
+using SikkerDigitalPost.Domene.Exceptions;
+using SikkerDigitalPost.Klient.AsicE;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -58,6 +57,22 @@ namespace SikkerDigitalPost.Tester
                 Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
+        public void LeggTilVedleggSammeFilnavnKasterException()
+        {
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));   
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
+        public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
+        {
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Hoveddokument.Filnavn));
+        }
+
 
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()

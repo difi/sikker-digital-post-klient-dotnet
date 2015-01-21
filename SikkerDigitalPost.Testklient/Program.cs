@@ -42,6 +42,7 @@ namespace SikkerDigitalPost.Testklient
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
 
+
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
@@ -62,10 +63,10 @@ namespace SikkerDigitalPost.Testklient
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
-            string mpcId = "hestemann";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Tegntest ons" + DateTime.Now.ToString("g"), hoveddokumentsti, "text/plain", "NO", "Hoveddokument []#,..d \"-.<>"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId);
+            string mpcId = "hest";
+            var dokumentpakke = new Dokumentpakke(new Dokument("Tirsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
+            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();
