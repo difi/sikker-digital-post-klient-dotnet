@@ -110,9 +110,6 @@ namespace SikkerDigitalPost.Klient.AsicE
             }
 
             byte[] ziparray = stream.ToArray();
-
-            File.WriteAllBytes(@"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\SENDT\AsicEArkiv.zip", ziparray);
-            
             return stream.ToArray();
         }
 
