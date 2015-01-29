@@ -34,7 +34,7 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// </summary>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         /// <param name="data">Data som skal skrives.</param>
-        public static void WriteXmlToFileInBasePath(string xml, params string[] pathRelativeToBase)
+        public static void WriteXmlToBasePath(string xml, params string[] pathRelativeToBase)
         {
             if (String.IsNullOrEmpty(xml))
                 return;
@@ -52,7 +52,7 @@ namespace SikkerDigitalPost.Klient.Utilities
         public static void WriteToBasePath(string data, params string[] pathRelativeToBase)
         {
             var absolutePath = AbsolutePath(pathRelativeToBase);
-            Write(data, absolutePath);;
+            Write(data, absolutePath);
         }
 
         public static void WriteToBasePath(byte[] data, params string[] pathRelativeToBase)

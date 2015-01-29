@@ -101,23 +101,17 @@ namespace SikkerDigitalPost.Klient
 
             var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
             soapContainer.Vedlegg.Add(arkiv);
-            var response = SendSoapContainer(soapContainer);
+            var meldingsformidlerRespons = SendSoapContainer(soapContainer);
 
-            //var soapPath = FileUtility.AbsolutePath("SENDT", "SOAP.xml");
-            //File.WriteAllBytes(soapPath, soapContainer.SisteBytesSendt);
-#if DEBUG
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true, "SOAPContainer - Sendt.txt");
-
-            FileUtility.WriteToBasePath(soapContainer.SisteBytesSendt, "SENDT", "SoapContainerSendt.txt");
-            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "SENDT", "ForretningsmeldingSendt.xml");
-            FileUtility.WriteXmlToFileInBasePath(response, "SENDT", "ForrigeKvittering.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "SENDT", "Signatur.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "SENDT", "Manifest.xml");
-#endif
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true,false, "SOAPContainer - Sendt.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "ForretningsmeldingEnvelope - Sendt.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Meldingsformidlerespons - Mottatt kvittering.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Signatur - Sendt.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Manifest.Xml().OuterXml, true, true, "Manifest - Sendt.xml");
 
             try
             {
-                var valideringAvRespons = new Responsvalidator(response, forretningsmeldingEnvelope.Xml());
+                var valideringAvRespons = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope.Xml());
                 valideringAvRespons.ValiderHeaderSignatur();
                 valideringAvRespons.ValiderDigest(guidHandler);
             }
@@ -126,9 +120,9 @@ namespace SikkerDigitalPost.Klient
                 throw new SendException("Validering av respons fra meldingsformidler feilet. Se inner exception for detaljer.\n", e);
             }
 
-            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + response);
+            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + meldingsformidlerRespons);
 
-            return KvitteringFactory.GetTransportkvittering(response);
+            return KvitteringFactory.GetTransportkvittering(meldingsformidlerRespons);
         }
 
 
@@ -187,8 +181,8 @@ namespace SikkerDigitalPost.Klient
 
             Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringssvar" + Environment.NewLine + kvittering);
 #if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+            FileUtility.WriteXmlToBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
+            FileUtility.WriteXmlToBasePath(kvittering, "Kvittering.xml");
 #endif
 
             try
@@ -257,7 +251,7 @@ namespace SikkerDigitalPost.Klient
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
 #if DEBUG
-            //FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
+            //FileUtility.WriteXmlToBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
 #endif
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
@@ -290,7 +284,7 @@ namespace SikkerDigitalPost.Klient
                         data = soap.ToString();
 #if DEBUG               
                         //var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
-                        //FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
+                        //FileUtility.WriteXmlToBasePath(data, "FeilVedSending", errorFileName);
 #endif
                     }
                 }
@@ -316,7 +310,7 @@ namespace SikkerDigitalPost.Klient
                 throw new Exception(signaturValidering.ValideringsVarsler);
         }
 
-        private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, string filnavn, params string[] filsti)
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
         {
             string[] fullFilsti = new string[filsti.Length + 1];
             for (int i = 0; i < filsti.Length; i ++ )
@@ -330,16 +324,19 @@ namespace SikkerDigitalPost.Klient
 
             if (_klientkonfigurasjon.DebugLoggTilFil && filnavn!= null)
             {
-                FileUtility.WriteToBasePath(melding, filnavn);
+                if (isXml)
+                    FileUtility.WriteXmlToBasePath(melding, filnavn);
+                else
+                    FileUtility.WriteToBasePath(melding, filnavn);
             }
 
             Logging.Log(viktighet, konversasjonsId, melding);
         }
 
-        private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, string filnavn, params string[] filsti)
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
         {
             string data = System.Text.Encoding.UTF8.GetString(melding);
-            Logg(viktighet, konversasjonsId, data,true,filnavn,filsti);
+            Logg(viktighet, konversasjonsId, data,datoPrefiks,isXml,filnavn,filsti);
         }
     }
 }
