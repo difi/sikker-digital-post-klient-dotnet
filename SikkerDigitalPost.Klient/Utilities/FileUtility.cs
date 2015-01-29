@@ -85,6 +85,16 @@ namespace SikkerDigitalPost.Klient.Utilities
             File.WriteAllText(absolutePath, data);
         }
 
+        public static void WriteToFileInBasePath(byte[] data, params string[] pathRelativeToBase)
+        {
+            if (data.Length == 0)
+                return;
+
+            var absolutePath = AbsolutePath(pathRelativeToBase);
+            CreateDirectory(absolutePath);
+            File.WriteAllBytes(absolutePath, data);
+        }
+
         /// <summary>
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt". Legg er tekst til allerede eksisterende tekst.
