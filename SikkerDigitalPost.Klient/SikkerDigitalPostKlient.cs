@@ -179,8 +179,8 @@ namespace SikkerDigitalPost.Klient
 
             Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringssvar" + Environment.NewLine + kvittering);
 #if DEBUG
-            //FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-            //FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
+            FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
+            FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
 #endif
 
             try

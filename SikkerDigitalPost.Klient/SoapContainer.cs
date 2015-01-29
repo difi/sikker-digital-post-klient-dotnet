@@ -14,10 +14,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Exceptions;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -36,7 +39,7 @@ namespace SikkerDigitalPost.Klient
             Vedlegg = new List<ISoapVedlegg>();
         }
 
-        public void Send(HttpWebRequest request)
+        public void SendOld(HttpWebRequest request)
         {
             if (Envelope == null)
                 throw new SendException("Kan ikke sende en Soap-melding uten en envelope.");
@@ -60,6 +63,61 @@ namespace SikkerDigitalPost.Klient
                 stream.Write("\r\n--" + _boundary + "--");
                 stream.Flush();
             }
+        }
+
+        public void Send(HttpWebRequest request)
+        {
+            if (Envelope == null)
+                throw new SendException("Kan ikke sende en Soap-melding uten en envelope.");
+
+            if (!string.IsNullOrWhiteSpace(Action))
+                request.Headers.Add("SOAPAction", Action);
+
+            request.ContentType = string.Format("Multipart/Related; boundary=\"{0}\"; type=\"application/soap+xml\"; start=\"<{1}>\"", _boundary, Envelope.ContentId);
+            request.Method = "POST";
+            request.Accept = "*/*";
+
+            //Åpner memorystream for mellomlagring.
+            using (var mem = new MemoryStream())
+            {
+                //Hiv inn i mem
+                using (var stream = new StreamWriter(mem))
+                {
+                    WriteAttachment(stream, Envelope, true);
+
+                    foreach (var item in Vedlegg)
+                    {
+                        WriteAttachment(stream, item, false);
+                    }
+                   
+                    stream.Write("\r\n--" + _boundary + "--");
+                    stream.Flush();
+
+                    mem.Position = 0;
+
+                    //Skriv mem til fil
+                    var soapPath = FileUtility.AbsolutePath("SENDT", "SOAP-UTF8.xml");
+                    string data = null;
+                    using (var fileWriter = new StreamWriter(soapPath))
+                    {
+                        data = Encoding.UTF8.GetString(mem.ToArray());
+                        fileWriter.Write(data);
+                    }
+                    
+                    Debug.WriteLine(data);
+                    
+                    //Send data til MF
+                    using (var reqStream = request.GetRequestStream())
+                    {
+                        var bytes = mem.ToArray();
+                        reqStream.Write(bytes, 0, bytes.Length);
+                        reqStream.Flush();
+                    }
+
+                } //End Streamwriter SOAP-data
+
+            } //End memorystream
+       
         }
 
         private void WriteAttachment(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)

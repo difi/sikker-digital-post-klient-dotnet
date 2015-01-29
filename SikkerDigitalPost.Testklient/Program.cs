@@ -64,7 +64,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Tirsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Torsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
