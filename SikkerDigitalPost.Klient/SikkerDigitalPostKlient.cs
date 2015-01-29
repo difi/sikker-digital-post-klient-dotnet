@@ -35,7 +35,8 @@ namespace SikkerDigitalPost.Klient
     public class SikkerDigitalPostKlient
     {
         private readonly Databehandler _databehandler;
-        private readonly Klientkonfigurasjon _konfigurasjon;
+        private readonly Klientkonfigurasjon _klientkonfigurasjon;
+
 
 
         /// <param name="databehandler">
@@ -60,17 +61,18 @@ namespace SikkerDigitalPost.Klient
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
         /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
         /// </param>
-        /// <param name="konfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
+        /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
         /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
             _databehandler = databehandler;
-            _konfigurasjon = konfigurasjon;
-            Logging.Initialize(konfigurasjon);
+            _klientkonfigurasjon = klientkonfigurasjon;
+            Logging.Initialize(klientkonfigurasjon);
+            FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
 
 
@@ -84,7 +86,7 @@ namespace SikkerDigitalPost.Klient
 
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _konfigurasjon));
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _klientkonfigurasjon));
 
             Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Envelope for forsendelse" + Environment.NewLine + forretningsmeldingEnvelope.Xml().OuterXml);
 
@@ -100,8 +102,14 @@ namespace SikkerDigitalPost.Klient
             var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
             soapContainer.Vedlegg.Add(arkiv);
             var response = SendSoapContainer(soapContainer);
+
+            //var soapPath = FileUtility.AbsolutePath("SENDT", "SOAP.xml");
+            //File.WriteAllBytes(soapPath, soapContainer.SisteBytesSendt);
 #if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "SENDT", "Forretningsmelding.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true, "SOAPContainer - Sendt.txt");
+
+            FileUtility.WriteToBasePath(soapContainer.SisteBytesSendt, "SENDT", "SoapContainerSendt.txt");
+            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "SENDT", "ForretningsmeldingSendt.xml");
             FileUtility.WriteXmlToFileInBasePath(response, "SENDT", "ForrigeKvittering.xml");
             FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "SENDT", "Signatur.xml");
             FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "SENDT", "Manifest.xml");
@@ -260,11 +268,11 @@ namespace SikkerDigitalPost.Klient
         private string SendSoapContainer(SoapContainer soapContainer)
         {
             var data = String.Empty;
-            var request = (HttpWebRequest)WebRequest.Create(_konfigurasjon.MeldingsformidlerUrl);
-            if (_konfigurasjon.BrukProxy)
-                request.Proxy = new WebProxy(new UriBuilder(_konfigurasjon.ProxyScheme, _konfigurasjon.ProxyHost, _konfigurasjon.ProxyPort).Uri);
+            var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
+            if (_klientkonfigurasjon.BrukProxy)
+                request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
 
-            request.Timeout = _konfigurasjon.TimeoutIMillisekunder;
+            request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
 
             soapContainer.Send(request);
             try
@@ -306,6 +314,32 @@ namespace SikkerDigitalPost.Klient
             var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
             if (!signaturValidert)
                 throw new Exception(signaturValidering.ValideringsVarsler);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, string filnavn, params string[] filsti)
+        {
+            string[] fullFilsti = new string[filsti.Length + 1];
+            for (int i = 0; i < filsti.Length; i ++ )
+            {
+                var sti = filsti[i];
+                fullFilsti[i] = sti;
+            }
+
+            filnavn = datoPrefiks ? String.Format("{0} - {1}", DateUtility.DateForFile(), filnavn) : filnavn;
+            fullFilsti[filsti.Length] = filnavn;
+
+            if (_klientkonfigurasjon.DebugLoggTilFil && filnavn!= null)
+            {
+                FileUtility.WriteToBasePath(melding, filnavn);
+            }
+
+            Logging.Log(viktighet, konversasjonsId, melding);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, string filnavn, params string[] filsti)
+        {
+            string data = System.Text.Encoding.UTF8.GetString(melding);
+            Logg(viktighet, konversasjonsId, data,true,filnavn,filsti);
         }
     }
 }

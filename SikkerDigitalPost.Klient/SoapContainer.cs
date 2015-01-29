@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
@@ -32,6 +33,7 @@ namespace SikkerDigitalPost.Klient
         public string ContentLocation { get; set; }
         public IList<ISoapVedlegg> Vedlegg { get; set; }
         public ISoapVedlegg Envelope { get; set; }
+        public byte[] SisteBytesSendt { get; private set; }
 
         public SoapContainer()
         {
@@ -53,11 +55,11 @@ namespace SikkerDigitalPost.Klient
 
             using (var stream = new StreamWriter(request.GetRequestStream()))
             {
-                WriteAttachment(stream, Envelope, true);
+                SkrivVedlegg(stream, Envelope, true);
 
                 foreach (var item in Vedlegg)
                 {
-                    WriteAttachment(stream, item, false);
+                    SkrivVedlegg(stream, item, false);
                 }
 
                 stream.Write("\r\n--" + _boundary + "--");
@@ -77,50 +79,33 @@ namespace SikkerDigitalPost.Klient
             request.Method = "POST";
             request.Accept = "*/*";
 
-            //Åpner memorystream for mellomlagring.
-            using (var mem = new MemoryStream())
+            using (var cachedResponseStream = new MemoryStream())
             {
-                //Hiv inn i mem
-                using (var stream = new StreamWriter(mem))
+                using (var cachedResponseWriter = new StreamWriter(cachedResponseStream))
                 {
-                    WriteAttachment(stream, Envelope, true);
+                    SkrivVedlegg(cachedResponseWriter, Envelope, true);
 
                     foreach (var item in Vedlegg)
                     {
-                        WriteAttachment(stream, item, false);
+                        SkrivVedlegg(cachedResponseWriter, item, false);
                     }
                    
-                    stream.Write("\r\n--" + _boundary + "--");
-                    stream.Flush();
+                    cachedResponseWriter.Write("\r\n--" + _boundary + "--");
+                    cachedResponseWriter.Flush();
 
-                    mem.Position = 0;
-
-                    //Skriv mem til fil
-                    var soapPath = FileUtility.AbsolutePath("SENDT", "SOAP-UTF8.xml");
-                    string data = null;
-                    using (var fileWriter = new StreamWriter(soapPath))
-                    {
-                        data = Encoding.UTF8.GetString(mem.ToArray());
-                        fileWriter.Write(data);
-                    }
+                    var cachedResponseBytes = cachedResponseStream.ToArray();
                     
-                    Debug.WriteLine(data);
-                    
-                    //Send data til MF
                     using (var reqStream = request.GetRequestStream())
                     {
-                        var bytes = mem.ToArray();
-                        reqStream.Write(bytes, 0, bytes.Length);
-                        reqStream.Flush();
+                        reqStream.Write(cachedResponseBytes, 0, cachedResponseBytes.Length);
                     }
-
-                } //End Streamwriter SOAP-data
-
-            } //End memorystream
-       
+                    
+                    SisteBytesSendt = cachedResponseBytes;
+                }
+            }
         }
 
-        private void WriteAttachment(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)
+        private void SkrivVedlegg(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)
         {
             if (!isFirst)
                 stream.Write("\r\n\r\n");

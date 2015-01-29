@@ -16,6 +16,7 @@ using System;
 using System.Configuration;
 using SikkerDigitalPost.Domene.Entiteter;
 using System.Diagnostics;
+using System.IO;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -81,6 +82,13 @@ namespace SikkerDigitalPost.Klient
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
         /// <summary>
+        /// Setter om logging skal gjøres til fil for alle meldinger som går mellom Klientbibliotek og Meldingsformidler
+        /// </summary>
+        public bool DebugLoggTilFil { get; set; }
+
+        public string StandardLoggSti { get; set; }
+
+        /// <summary>
         /// Klientkonfigurasjon som brukes ved oppsett av <see cref="SikkerDigitalPostKlient"/>.  Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler.
         /// </summary>
@@ -92,6 +100,8 @@ namespace SikkerDigitalPost.Klient
             ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
             TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
             Logger = Logging.TraceLogger();
+            DebugLoggTilFil = SetFromAppConfig<bool>("SDP:DebugLoggTilFil", false);
+            StandardLoggSti = SetFromAppConfig<string>("SDP:StandardLoggSti", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost", "Logg"));
         }
 
         private T SetFromAppConfig<T>(string key, T @default)
