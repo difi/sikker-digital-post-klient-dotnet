@@ -26,7 +26,7 @@ Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net
 
 ##Hvordan legge til signering og kryptering
 
-### Legg inn avsendersertifikat i certificate store
+### Legg inn databehandlersertifikat i certificate store
 
 1.  Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
 2.  Velg at sertifikatet skal lagres i _Current User_ og trykk _Next_
