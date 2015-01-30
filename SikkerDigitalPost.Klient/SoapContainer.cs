@@ -83,11 +83,11 @@ namespace SikkerDigitalPost.Klient
             {
                 using (var cachedResponseWriter = new StreamWriter(cachedResponseStream))
                 {
-                    SkrivVedlegg(cachedResponseWriter, Envelope, true);
+                    SkrivVedlegg(cachedResponseWriter, Envelope, isFirst: true);
 
                     foreach (var item in Vedlegg)
                     {
-                        SkrivVedlegg(cachedResponseWriter, item, false);
+                        SkrivVedlegg(cachedResponseWriter, item, isFirst: false);
                     }
                    
                     cachedResponseWriter.Write("\r\n--" + _boundary + "--");
