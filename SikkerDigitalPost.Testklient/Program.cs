@@ -41,8 +41,7 @@ namespace SikkerDigitalPost.Testklient
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
-
-
+            
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
@@ -64,7 +63,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Tirsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Torsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
@@ -72,6 +71,8 @@ namespace SikkerDigitalPost.Testklient
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            //klientkonfigurasjon.DebugLoggTilFil = true;
+            //klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
 
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 

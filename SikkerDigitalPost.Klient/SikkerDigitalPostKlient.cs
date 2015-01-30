@@ -35,8 +35,7 @@ namespace SikkerDigitalPost.Klient
     public class SikkerDigitalPostKlient
     {
         private readonly Databehandler _databehandler;
-        private readonly Klientkonfigurasjon _konfigurasjon;
-
+        private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
         /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
@@ -53,27 +52,26 @@ namespace SikkerDigitalPost.Klient
 
         }
 
-
         /// <param name="databehandler">
         /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
         /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
         /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
         /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
         /// </param>
-        /// <param name="konfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
+        /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
         /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon konfigurasjon)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
             _databehandler = databehandler;
-            _konfigurasjon = konfigurasjon;
-            Logging.Initialize(konfigurasjon);
+            _klientkonfigurasjon = klientkonfigurasjon;
+            Logging.Initialize(klientkonfigurasjon);
+            FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
-
-
+        
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
@@ -84,9 +82,7 @@ namespace SikkerDigitalPost.Klient
 
             var guidHandler = new GuidHandler();
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _konfigurasjon));
-
-            Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Envelope for forsendelse" + Environment.NewLine + forretningsmeldingEnvelope.Xml().OuterXml);
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _klientkonfigurasjon));
 
             try
             {
@@ -99,17 +95,17 @@ namespace SikkerDigitalPost.Klient
 
             var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
             soapContainer.Vedlegg.Add(arkiv);
-            var response = SendSoapContainer(soapContainer);
-#if DEBUG
-            FileUtility.WriteXmlToFileInBasePath(forretningsmeldingEnvelope.Xml().OuterXml, "SENDT", "Forretningsmelding.xml");
-            FileUtility.WriteXmlToFileInBasePath(response, "SENDT", "ForrigeKvittering.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Signatur.Xml().OuterXml, "SENDT", "Signatur.xml");
-            FileUtility.WriteXmlToFileInBasePath(arkiv.Manifest.Xml().OuterXml, "SENDT", "Manifest.xml");
-#endif
+            var meldingsformidlerRespons = SendSoapContainer(soapContainer);
+
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true,false, "Sendt - SOAPContainer.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt -Signatur.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Mottatt - Meldingsformidlerespons.txt");
 
             try
             {
-                var valideringAvRespons = new Responsvalidator(response, forretningsmeldingEnvelope.Xml());
+                var valideringAvRespons = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope.Xml());
                 valideringAvRespons.ValiderHeaderSignatur();
                 valideringAvRespons.ValiderDigest(guidHandler);
             }
@@ -118,11 +114,10 @@ namespace SikkerDigitalPost.Klient
                 throw new SendException("Validering av respons fra meldingsformidler feilet. Se inner exception for detaljer.\n", e);
             }
 
-            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + response);
+            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + meldingsformidlerRespons);
 
-            return KvitteringFactory.GetTransportkvittering(response);
+            return KvitteringFactory.GetTransportkvittering(meldingsformidlerRespons);
         }
-
 
         /// <summary>
         /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
@@ -141,8 +136,7 @@ namespace SikkerDigitalPost.Klient
         {
             return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
-
-
+        
         /// <summary>
         /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
         /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
@@ -177,11 +171,7 @@ namespace SikkerDigitalPost.Klient
             var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
             var kvittering = SendSoapContainer(soapContainer);
 
-            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringssvar" + Environment.NewLine + kvittering);
-#if DEBUG
-            //FileUtility.WriteXmlToFileInBasePath(kvitteringsenvelope.Xml().InnerXml, "Kvitteringsforespørsel.xml");
-            //FileUtility.WriteXmlToFileInBasePath(kvittering, "Kvittering.xml");
-#endif
+            Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsenvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
             try
             {
@@ -214,7 +204,6 @@ namespace SikkerDigitalPost.Klient
 
         }
 
-
         /// <summary>
         /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
         /// <list type="bullet">
@@ -234,9 +223,7 @@ namespace SikkerDigitalPost.Klient
 
             var envelopeSettings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidHandler());
             var kvitteringMottattEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
-
-            Logging.Log(TraceEventType.Verbose, "Envelope for bekreftelse av kvittering" + Environment.NewLine + kvitteringMottattEnvelope.Xml().OuterXml);
-
+            
             try
             {
                 var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidering();
@@ -248,23 +235,23 @@ namespace SikkerDigitalPost.Klient
             {
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
-#if DEBUG
-            //FileUtility.WriteXmlToFileInBasePath(kvitteringMottattEnvelope.Xml().OuterXml, "kvitteringMottattEnvelope.xml");
-#endif
+
+            string filnavn = forrigeKvittering.GetType().Name + ".xml";
+            Logg(TraceEventType.Verbose, forrigeKvittering.KonversasjonsId, forrigeKvittering, true, true, filnavn);
+
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
             SendSoapContainer(soapContainer);
         }
 
-
         private string SendSoapContainer(SoapContainer soapContainer)
         {
             var data = String.Empty;
-            var request = (HttpWebRequest)WebRequest.Create(_konfigurasjon.MeldingsformidlerUrl);
-            if (_konfigurasjon.BrukProxy)
-                request.Proxy = new WebProxy(new UriBuilder(_konfigurasjon.ProxyScheme, _konfigurasjon.ProxyHost, _konfigurasjon.ProxyPort).Uri);
+            var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
+            if (_klientkonfigurasjon.BrukProxy)
+                request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
 
-            request.Timeout = _konfigurasjon.TimeoutIMillisekunder;
+            request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
 
             soapContainer.Send(request);
             try
@@ -280,10 +267,8 @@ namespace SikkerDigitalPost.Klient
                     {
                         XDocument soap = XDocument.Load(errorStream);
                         data = soap.ToString();
-#if DEBUG               
-                        //var errorFileName = String.Format("{0} - SendSoapContainerFeilet.xml", DateUtility.DateForFile());
-                        //FileUtility.WriteXmlToFileInBasePath(data, "FeilVedSending", errorFileName);
-#endif
+               
+                        Logg(TraceEventType.Critical, Guid.Empty, data, true, true, "Sendt - SoapException.xml");
                     }
                 }
             }
@@ -306,6 +291,40 @@ namespace SikkerDigitalPost.Klient
             var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
             if (!signaturValidert)
                 throw new Exception(signaturValidering.ValideringsVarsler);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
+        {
+            string[] fullFilsti = new string[filsti.Length + 1];
+            for (int i = 0; i < filsti.Length; i ++ )
+            {
+                var sti = filsti[i];
+                fullFilsti[i] = sti;
+            }
+
+            filnavn = datoPrefiks ? String.Format("{0} - {1}", DateUtility.DateForFile(), filnavn) : filnavn;
+            fullFilsti[filsti.Length] = filnavn;
+
+            if (_klientkonfigurasjon.DebugLoggTilFil && filnavn!= null)
+            {
+                if (isXml)
+                    FileUtility.WriteXmlToBasePath(melding, filnavn);
+                else
+                    FileUtility.WriteToBasePath(melding, filnavn);
+            }
+
+            Logging.Log(viktighet, konversasjonsId, melding);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
+        {
+            string data = System.Text.Encoding.UTF8.GetString(melding);
+            Logg(viktighet, konversasjonsId, data,datoPrefiks,isXml,filnavn,filsti);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, Forretningskvittering kvittering, bool datoPrefiks, bool isXml, params string[] filsti)
+        {
+            Logg(viktighet,konversasjonsId,kvittering.Rådata, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name);
         }
     }
 }

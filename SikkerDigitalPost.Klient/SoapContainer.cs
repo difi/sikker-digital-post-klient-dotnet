@@ -14,10 +14,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Exceptions;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient
 {
@@ -29,6 +33,7 @@ namespace SikkerDigitalPost.Klient
         public string ContentLocation { get; set; }
         public IList<ISoapVedlegg> Vedlegg { get; set; }
         public ISoapVedlegg Envelope { get; set; }
+        public byte[] SisteBytesSendt { get; private set; }
 
         public SoapContainer()
         {
@@ -48,21 +53,33 @@ namespace SikkerDigitalPost.Klient
             request.Method = "POST";
             request.Accept = "*/*";
 
-            using (var stream = new StreamWriter(request.GetRequestStream()))
+            using (var cachedResponseStream = new MemoryStream())
             {
-                WriteAttachment(stream, Envelope, true);
-
-                foreach (var item in Vedlegg)
+                using (var cachedResponseWriter = new StreamWriter(cachedResponseStream))
                 {
-                    WriteAttachment(stream, item, false);
-                }
+                    SkrivVedlegg(cachedResponseWriter, Envelope, isFirst: true);
 
-                stream.Write("\r\n--" + _boundary + "--");
-                stream.Flush();
+                    foreach (var item in Vedlegg)
+                    {
+                        SkrivVedlegg(cachedResponseWriter, item, isFirst: false);
+                    }
+                   
+                    cachedResponseWriter.Write("\r\n--" + _boundary + "--");
+                    cachedResponseWriter.Flush();
+
+                    var cachedResponseBytes = cachedResponseStream.ToArray();
+                    
+                    using (var reqStream = request.GetRequestStream())
+                    {
+                        reqStream.Write(cachedResponseBytes, 0, cachedResponseBytes.Length);
+                    }
+                    
+                    SisteBytesSendt = cachedResponseBytes;
+                }
             }
         }
 
-        private void WriteAttachment(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)
+        private void SkrivVedlegg(StreamWriter stream, ISoapVedlegg attachment, bool isFirst)
         {
             if (!isFirst)
                 stream.Write("\r\n\r\n");

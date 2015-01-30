@@ -20,39 +20,13 @@ namespace SikkerDigitalPost.Klient.Utilities
 {
     internal class FileUtility
     {
-        enum Bruker
+        private static string _basePath;
+        public static String BasePath
         {
-            Aleksander,
+            get { return _basePath ?? Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); }
+            set { _basePath = value; }
         }
 
-        private static Bruker CurrentBruker
-        {
-            get
-            {
-                if (Environment.MachineName.Contains("LEK"))
-                {
-                    return Bruker.Aleksander;
-                }
-
-                throw new ArgumentException("Kunne ikke finne ut hvilken bruker du er! Legg deg selv til i listen.");
-            }
-        }
-
-        /// <summary>
-        /// Returnerer base-sti basert på nåværede bruker.
-        /// </summary>
-        public static string BasePath
-        {
-            get
-            {
-                if (CurrentBruker == Bruker.Aleksander)
-                {
-                    return @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data";
-                }
-
-                throw new Exception("Kunne ikke finne ut hvilken bruker du er! Legg deg selv til i listen.");
-            }
-        }
 
         /// <summary>
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
@@ -60,29 +34,49 @@ namespace SikkerDigitalPost.Klient.Utilities
         /// </summary>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         /// <param name="data">Data som skal skrives.</param>
-        public static void WriteXmlToFileInBasePath(string xml, params string[] pathRelativeToBase)
+        public static void WriteXmlToBasePath(string xml, params string[] pathRelativeToBase)
         {
             if (String.IsNullOrEmpty(xml))
                 return;
 
             var doc = XDocument.Parse(xml);
-            WriteToFileInBasePath(doc.ToString(), pathRelativeToBase);
+            WriteToBasePath(doc.ToString(), pathRelativeToBase);
         }
 
         /// <summary>
-        /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        /// Hvis BasePath er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt".
         /// </summary>
         /// <param name="data">Data som skal skrives.</param>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
-        public static void WriteToFileInBasePath(string data, params string[] pathRelativeToBase)
+        public static void WriteToBasePath(string data, params string[] pathRelativeToBase)
+        {
+            var absolutePath = AbsolutePath(pathRelativeToBase);
+            Write(data, absolutePath);
+        }
+
+        public static void WriteToBasePath(byte[] data, params string[] pathRelativeToBase)
+        {
+            var absolutePath = AbsolutePath(pathRelativeToBase);
+            Write(data,absolutePath);
+        }
+        
+        public static void Write(string data, string absolutePath)
         {
             if (String.IsNullOrEmpty(data))
                 return;
-
-            var absolutePath = AbsolutePath(pathRelativeToBase);
+            
             CreateDirectory(absolutePath);
             File.WriteAllText(absolutePath, data);
+        }
+
+        public static void Write(byte[] data, string absolutePath)
+        {
+            if (data.Length == 0)
+                return;
+
+            CreateDirectory(absolutePath);
+            File.WriteAllBytes(absolutePath, data);
         }
 
         /// <summary>
