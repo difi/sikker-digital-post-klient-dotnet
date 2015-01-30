@@ -84,8 +84,6 @@ namespace SikkerDigitalPost.Klient
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _klientkonfigurasjon));
 
-            Logging.Log(TraceEventType.Verbose, forsendelse.KonversasjonsId, "Envelope for forsendelse" + Environment.NewLine + forretningsmeldingEnvelope.Xml().OuterXml);
-
             try
             {
                 ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(), arkiv.Signatur.Xml());
@@ -239,7 +237,7 @@ namespace SikkerDigitalPost.Klient
             }
 
             string filnavn = forrigeKvittering.GetType().Name + ".xml";
-            LoggKvittering(TraceEventType.Verbose, forrigeKvittering.KonversasjonsId, forrigeKvittering, true, true, filnavn);
+            Logg(TraceEventType.Verbose, forrigeKvittering.KonversasjonsId, forrigeKvittering, true, true, filnavn);
 
 
             var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
@@ -318,15 +316,15 @@ namespace SikkerDigitalPost.Klient
             Logging.Log(viktighet, konversasjonsId, melding);
         }
 
-        private void LoggKvittering(TraceEventType viktighet, Guid konversasjonsId, Forretningskvittering kvittering, bool datoPrefiks, bool isXml, params string[] filsti)
-        {
-            Logg(viktighet,konversasjonsId,kvittering.Rådata, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name);
-        }
-
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
         {
             string data = System.Text.Encoding.UTF8.GetString(melding);
             Logg(viktighet, konversasjonsId, data,datoPrefiks,isXml,filnavn,filsti);
+        }
+
+        private void Logg(TraceEventType viktighet, Guid konversasjonsId, Forretningskvittering kvittering, bool datoPrefiks, bool isXml, params string[] filsti)
+        {
+            Logg(viktighet,konversasjonsId,kvittering.Rådata, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name);
         }
     }
 }
