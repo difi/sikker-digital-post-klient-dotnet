@@ -41,32 +41,6 @@ namespace SikkerDigitalPost.Klient
             Vedlegg = new List<ISoapVedlegg>();
         }
 
-        public void SendOld(HttpWebRequest request)
-        {
-            if (Envelope == null)
-                throw new SendException("Kan ikke sende en Soap-melding uten en envelope.");
-
-            if (!string.IsNullOrWhiteSpace(Action))
-                request.Headers.Add("SOAPAction", Action);
-
-            request.ContentType = string.Format("Multipart/Related; boundary=\"{0}\"; type=\"application/soap+xml\"; start=\"<{1}>\"", _boundary, Envelope.ContentId);
-            request.Method = "POST";
-            request.Accept = "*/*";
-
-            using (var stream = new StreamWriter(request.GetRequestStream()))
-            {
-                SkrivVedlegg(stream, Envelope, true);
-
-                foreach (var item in Vedlegg)
-                {
-                    SkrivVedlegg(stream, item, false);
-                }
-
-                stream.Write("\r\n--" + _boundary + "--");
-                stream.Flush();
-            }
-        }
-
         public void Send(HttpWebRequest request)
         {
             if (Envelope == null)
