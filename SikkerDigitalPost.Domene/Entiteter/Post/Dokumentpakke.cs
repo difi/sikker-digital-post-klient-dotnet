@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using SikkerDigitalPost.Domene.Exceptions;
 
@@ -22,7 +23,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
     public class Dokumentpakke
     {
         public Dokument Hoveddokument { get; private set; }
-        public List<Dokument> Vedlegg { get; private set; }
+
+        private List<Dokument> _vedlegg;
+        public IReadOnlyList<Dokument> Vedlegg
+        {
+            get { return new ReadOnlyCollection<Dokument>(_vedlegg); }
+        }
 
         /// <param name="hoveddokument">Dokumentpakkens hoveddokument</param>
         public Dokumentpakke(Dokument hoveddokument)
@@ -31,7 +37,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
             {
                 throw new KonfigurasjonsException("Du prøver å legge til et hoveddokument som er tomt. Dette er ikke tillatt.");
             }
-            Vedlegg = new List<Dokument>();
+            _vedlegg = new List<Dokument>();
             Hoveddokument = hoveddokument;
             Hoveddokument.Id = "Id_2";
         }
@@ -66,7 +72,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
                 if (dokument.Bytes.Length == 0)
                     throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.", dokument.Filnavn));
                 dokument.Id = string.Format("Id_{0}", i + 3 + startId);
-                Vedlegg.Add(dokument);
+                _vedlegg.Add(dokument);
             }
         }
     }
