@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>sikker-digital-post-net-klient</id>
-    <version>1.0.5410.26227</version>
+    <version>1.0.2.26227-alpha</version>
     <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
     <owners>Posten Norge AS</owners>    
     <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
