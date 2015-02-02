@@ -75,7 +75,7 @@ namespace SikkerDigitalPost.Tester
             
             SettSertifikater();
 
-            //Avsender og mottaker
+            //Avsender og mottaker 
             OrgNrAvsender = new Organisasjonsnummer("984661185");
             Behandlingsansvarlig = new Behandlingsansvarlig(OrgNrAvsender);
             Databehandler = new Databehandler(OrgNrAvsender, AvsenderSertifikat);
