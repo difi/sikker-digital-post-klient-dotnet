@@ -139,3 +139,5 @@ Status API Training Shop Blog About © 2014 GitHub, Inc. Terms Privacy Security C
 #KontaktregisteretSertifikat
 Kontaktregisteretsertifikater/
 
+#Inkludere test-dller for TeamCity
+!SikkerDigitalPost.Tester/bin/Release/*.dll

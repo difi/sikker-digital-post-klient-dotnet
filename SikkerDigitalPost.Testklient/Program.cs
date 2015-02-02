@@ -50,7 +50,7 @@ namespace SikkerDigitalPost.Testklient
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler,
                 postkasseInnstillinger.Avsendersertifikat);
 
-            //Mottaker
+            //MottakerF
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
                 postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
@@ -72,7 +72,7 @@ namespace SikkerDigitalPost.Testklient
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
             //klientkonfigurasjon.DebugLoggTilFil = true;
-            //klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
+            klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
 
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
