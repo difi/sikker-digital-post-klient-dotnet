@@ -14,9 +14,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -65,11 +67,14 @@ namespace SikkerDigitalPost.Tester
         {
             //Dokumentpakke
             TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
-            VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
-            HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
+            
+            //VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
+            //HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
 
-            Vedleggsstier = Directory.GetFiles(VedleggsMappe);
-            _hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
+            Vedleggsstier = ResourceUtility.GetFiles(VedleggsMappe).ToArray();
+            //Vedleggsstier = Directory.GetFiles(VedleggsMappe);
+            _hoveddokument = ResourceUtility.GetFiles(HoveddokumentMappe).ElementAt(0);
+            //_hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
             
             Dokumentpakke = GenererDokumentpakke();
             
@@ -131,14 +136,16 @@ namespace SikkerDigitalPost.Tester
 
         private static Dokument GenererHoveddokument()
         {
-            return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
+            return Hoveddokument = new Dokument("Hoveddokument", ResourceUtility.FileToBytes(false,_hoveddokument),"text/xml");
+            //return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
         }
 
         private static IEnumerable<Dokument> GenererVedlegg()
         {
+            int count = 0;
             return Vedlegg = new List<Dokument>(
                     Vedleggsstier.Select(
-                        v => new Dokument(Path.GetFileNameWithoutExtension(v), v, "text/" + Path.GetExtension(_hoveddokument))));
+                        v => new Dokument("Vedlegg" + count++, ResourceUtility.FileToBytes(false,v), "text/" + Path.GetExtension(_hoveddokument))));
         }
 
         private static Dokumentpakke GenererDokumentpakke()
