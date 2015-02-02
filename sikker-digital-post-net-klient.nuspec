@@ -2,12 +2,12 @@
 <package >
   <metadata>
     <id>sikker-digital-post-net-klient</id>
-    <version>1.0.5410.26227</version>
+    <version>1.0.6.26227-alpha</version>
     <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
     <owners>Posten Norge AS</owners>    
     <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor </description>    
+    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor. </description>    
     <copyright>Copyright 2014</copyright>
     <tags>Posten SikkerDigitalPost Sikker Post eBoks Digipost Difi</tags>
   </metadata>
