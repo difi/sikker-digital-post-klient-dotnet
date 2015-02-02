@@ -7,7 +7,7 @@
     <owners>Posten Norge AS</owners>    
     <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor </description>    
+    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor. </description>    
     <copyright>Copyright 2014</copyright>
     <tags>Posten SikkerDigitalPost Sikker Post eBoks Digipost Difi</tags>
   </metadata>
