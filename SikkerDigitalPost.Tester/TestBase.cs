@@ -113,7 +113,7 @@ namespace SikkerDigitalPost.Tester
             }
             catch (Exception e)
             {
-                throw new InstanceNotFoundException("Kunne ikke finne avsendersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-avsendersertifikat-i-certificate-store) ", e);
+                throw new InstanceNotFoundException("Count:" + storeMy.Certificates.Count+"Kunne ikke finne avsendersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-avsendersertifikat-i-certificate-store) ", e);
             }
             storeMy.Close();
 
@@ -128,7 +128,7 @@ namespace SikkerDigitalPost.Tester
             }
             catch (Exception e)
             {
-                throw new InstanceNotFoundException("Kunne ikke finne mottakersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-mottakersertifikat-i-certificate-store) ", e);
+                throw new InstanceNotFoundException("Count:" + storeMy.Certificates.Count + "Kunne ikke finne mottakersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-mottakersertifikat-i-certificate-store) ", e);
             }
             storeTrusted.Close();
             
