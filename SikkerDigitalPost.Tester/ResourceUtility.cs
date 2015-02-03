@@ -55,7 +55,7 @@ namespace SikkerDigitalPost.Tester
 
         }
 
-        public static string GetFileName(string resource, bool withExtension)
+        public static string GetFileName(string resource, bool withExtension=true)
         {
             var parts = resource.Split('.');
             var filename = parts[parts.Length - 2];

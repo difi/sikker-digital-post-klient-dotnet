@@ -113,8 +113,7 @@ namespace SikkerDigitalPost.Tester
             }
             catch (Exception e)
             {
-                var v = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                throw new InstanceNotFoundException(v + "Kunne ikke finne avsendersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-avsendersertifikat-i-certificate-store) ", e);
+                throw new InstanceNotFoundException("Kunne ikke finne avsendersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-avsendersertifikat-i-certificate-store) ", e);
             }
             storeMy.Close();
 
@@ -129,16 +128,22 @@ namespace SikkerDigitalPost.Tester
             }
             catch (Exception e)
             {
-                var v = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                throw new InstanceNotFoundException(v + "Kunne ikke finne mottakersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-mottakersertifikat-i-certificate-store) ", e);
+                throw new InstanceNotFoundException("Kunne ikke finne mottakersertifikat for testing. Har du lagt det til slik guiden tilsier? (https://github.com/difi/sikker-digital-post-net-klient#legg-inn-mottakersertifikat-i-certificate-store) ", e);
             }
             storeTrusted.Close();
             
         }
 
+        private static Dokumentpakke GenererDokumentpakke()
+        {
+            var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
+            dokumentpakke.LeggTilVedlegg(GenererVedlegg());
+            return dokumentpakke;
+        }
+
         private static Dokument GenererHoveddokument()
         {
-            return Hoveddokument = new Dokument("Hoveddokument", ResourceUtility.FileToBytes(false,_hoveddokument),"text/xml");
+            return Hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(false,_hoveddokument),"text/xml", ResourceUtility.GetFileName(_hoveddokument));
             //return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
         }
 
@@ -147,14 +152,7 @@ namespace SikkerDigitalPost.Tester
             int count = 0;
             return Vedlegg = new List<Dokument>(
                     Vedleggsstier.Select(
-                        v => new Dokument("Vedlegg" + count++, ResourceUtility.FileToBytes(false,v), "text/" + Path.GetExtension(_hoveddokument))));
-        }
-
-        private static Dokumentpakke GenererDokumentpakke()
-        {
-            var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
-            dokumentpakke.LeggTilVedlegg(GenererVedlegg());
-            return dokumentpakke;
+                        v => new Dokument("Vedlegg" + count++, ResourceUtility.ReadAllBytes(false,v), "text/" + Path.GetExtension(_hoveddokument), "NO", ResourceUtility.GetFileName(v))));
         }
     }
 }
