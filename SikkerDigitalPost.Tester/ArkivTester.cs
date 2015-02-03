@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
+using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {

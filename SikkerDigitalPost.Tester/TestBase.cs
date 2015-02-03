@@ -29,6 +29,7 @@ using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
