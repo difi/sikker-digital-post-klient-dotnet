@@ -58,7 +58,7 @@ namespace SikkerDigitalPost.Tester
             //throw new Exception(arr);
 
             var lowercaseThumbprint = _certificate.Thumbprint;
-            var certList = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true);
+            var certList = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, false);
             var cert = certList[0];
             //throw new Exception("Count:" + certFound.Count);
 
