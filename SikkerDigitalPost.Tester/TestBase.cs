@@ -68,13 +68,8 @@ namespace SikkerDigitalPost.Tester
             //Dokumentpakke
             TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
             
-            //VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
-            //HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
-
             Vedleggsstier = ResourceUtility.GetFiles(VedleggsMappe).ToArray();
-            //Vedleggsstier = Directory.GetFiles(VedleggsMappe);
             _hoveddokument = ResourceUtility.GetFiles(HoveddokumentMappe).ElementAt(0);
-            //_hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
             
             Dokumentpakke = GenererDokumentpakke();
             
@@ -143,8 +138,9 @@ namespace SikkerDigitalPost.Tester
 
         private static Dokument GenererHoveddokument()
         {
-            return Hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(false,_hoveddokument),"text/xml", ResourceUtility.GetFileName(_hoveddokument));
-            //return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
+            var bytes = ResourceUtility.ReadAllBytes(false,_hoveddokument);
+            var fileName = ResourceUtility.GetFileName(_hoveddokument);
+            return Hoveddokument = new Dokument("Hoveddokument", bytes,"text/xml","NO", fileName);
         }
 
         private static IEnumerable<Dokument> GenererVedlegg()
