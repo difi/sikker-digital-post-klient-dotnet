@@ -56,12 +56,11 @@ namespace SikkerDigitalPost.Tester
             {
                 arr += String.Format(" [{0}],", cert.Thumbprint);
             }
-
+            throw new Exception(arr);
+            
             var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
             var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
 
-
-            throw new Exception(arr);
 
             Assert.AreEqual(_certificate, certificate);
         }
