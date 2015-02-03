@@ -107,7 +107,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, ResourceUtility.GetFileName(Arkiv.Manifest.Filnavn, true), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, ResourceUtility.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }
@@ -125,24 +125,24 @@ namespace SikkerDigitalPost.Tester
             Assert.AreEqual(originalData.ToString(), dekrypterteData.ToString());
         }
         
-        private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
+        private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] sjekksum1, out byte[] sjekksum2)
         {
             var bytes = ResourceUtility.ReadAllBytes(false,filstiPåDisk);
-            GenererSjekksum(zip, bytes, entryNavnIArkiv, out hash1, out hash2);
+            GenererSjekksum(zip, bytes, entryNavnIArkiv, out sjekksum1, out sjekksum2);
         }
 
-        private void GenererSjekksum(ZipArchive zip, byte[] fil, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
+        private void GenererSjekksum(ZipArchive zip, byte[] fil, string entryNavnIArkiv, out byte[] sjekksum1, out byte[] sjekksum2)
         {
             using (var md5 = MD5.Create())
             {
                 using (var stream = new MemoryStream(fil))
                 {
-                    hash1 = md5.ComputeHash(stream);
+                    sjekksum1 = md5.ComputeHash(stream);
                 }
 
                 using (var stream = zip.GetEntry(entryNavnIArkiv).Open())
                 {
-                    hash2 = md5.ComputeHash(stream);
+                    sjekksum2 = md5.ComputeHash(stream);
                 }
             }
         }

@@ -33,7 +33,6 @@ namespace SikkerDigitalPost.Tester
         {
             var manifestXml = Arkiv.Manifest.Xml();
             var manifestValidering = new ManifestValidering();
-            var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
 
             //Endre navn på hoveddokument til å være for kort
             var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -44,7 +43,7 @@ namespace SikkerDigitalPost.Tester
             var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
             hoveddokumentNode.Attributes["href"].Value = "abc";
 
-            validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+            var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
             Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
 
             hoveddokumentNode.Attributes["href"].Value = gammelVerdi;

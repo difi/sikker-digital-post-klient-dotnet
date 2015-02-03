@@ -30,14 +30,11 @@ namespace SikkerDigitalPost.Tester
             _store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             _store.Open(OpenFlags.ReadOnly);
 
-            try
-            {
-                _certificate = _store.Certificates[0];
-
-            }
+            try { _certificate = _store.Certificates[0]; }
             catch
             {
-                Assert.Fail("Klarte ikke å finne noen sertifikater til å gjøre tester på. Dette er nok fordi du ikke har noen sertifikater i CurrentUser.My.");
+                Assert.Fail("Klarte ikke å finne noen sertifikater til å gjøre tester på. " +
+                            "Dette er nok fordi du ikke har noen sertifikater i CurrentUser.My.");
             }
         }
 
@@ -51,9 +48,11 @@ namespace SikkerDigitalPost.Tester
         public void TestLowercaseThumbprint()
         {
             string lowercaseThumbprint = _certificate.Thumbprint.ToLower();
-            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, false)[0];
+            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, 
+                lowercaseThumbprint, false)[0];
 
-            Assert.IsTrue(_certificate.Equals(certificateFound), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
+            Assert.IsTrue(_certificate.Equals(certificateFound), 
+                "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
 
         [TestMethod]
@@ -70,8 +69,11 @@ namespace SikkerDigitalPost.Tester
                 randomSpacingThumb += _certificate.Thumbprint[i];
             }
             
-            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, false)[0];
-            Assert.IsTrue(_certificate.Equals(certificateFound), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
+            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, 
+                randomSpacingThumb, false)[0];
+            
+            Assert.IsTrue(_certificate.Equals(certificateFound), 
+                "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
     }
 }

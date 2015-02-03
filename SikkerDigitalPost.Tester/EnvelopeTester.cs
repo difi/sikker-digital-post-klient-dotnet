@@ -44,7 +44,6 @@ namespace SikkerDigitalPost.Tester
         {
            var forretningsmeldingEnvelopeXml = Envelope.Xml();
             var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
-            var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
 
             //Endre til ugyldig forretningsmeldingenvelope
             var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
@@ -62,7 +61,7 @@ namespace SikkerDigitalPost.Tester
             var gammelVerdi = securityNode.Attributes["mustUnderstand"].Value;
             securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
-            validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
             Assert.IsFalse(validert, envelopeValidator.ValideringsVarsler);
 
             securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
