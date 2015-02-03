@@ -39,7 +39,7 @@ namespace SikkerDigitalPost.Tester
             return String.Join(".", BasePath, String.Join(".", path));
         }
 
-        public static byte[] FileToBytes(bool isRelative, params string[] path)
+        public static byte[] ReadAllBytes(bool isRelative, params string[] path)
         {
             var fullpath = isRelative ? GetFullPath(path) : String.Join(".", path);
 
@@ -53,6 +53,20 @@ namespace SikkerDigitalPost.Tester
                 return bytes;
             }
 
+        }
+
+        public static string GetFileName(string resource, bool withExtension)
+        {
+            var parts = resource.Split('.');
+            var filename = parts[parts.Length - 2];
+
+            if (withExtension)
+            {
+                var extension = parts[parts.Length - 1];
+                filename = String.Format("{0}.{1}", filename, extension);
+            }
+
+            return filename;
         }
 
     }
