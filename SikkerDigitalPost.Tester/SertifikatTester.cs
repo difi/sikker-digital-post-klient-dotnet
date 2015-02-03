@@ -58,10 +58,9 @@ namespace SikkerDigitalPost.Tester
             //throw new Exception(arr);
 
             var lowercaseThumbprint = _certificate.Thumbprint;
-            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
+            var certFound = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
 
-
-            Assert.AreEqual(_certificate, certificate);
+            Assert.IsTrue(certFound.Equals(_certificate), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
 
         [TestMethod]
