@@ -73,8 +73,9 @@ namespace SikkerDigitalPost.Tester
         public void GetPublicKey()
         {            
             XmlDocument doc = new XmlDocument { PreserveWhitespace = false };
-            var path = Path.Combine(TestDataMappe, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
-            doc.Load(path);
+            //var path = Path.Combine(TestDataMappe, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
+            byte[] xmlBytes = ResourceUtility.ReadAllBytes(true, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
+            doc.LoadXml(Encoding.UTF8.GetString(xmlBytes));
 
             var mgr = new XmlNamespaceManager(doc.NameTable);
             mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");

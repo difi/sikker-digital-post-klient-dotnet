@@ -50,19 +50,10 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void TestLowercaseThumbprint()
         {
-            //string arr = String.Format("StoreCert: [{0}]", _certificate.Thumbprint);
-            //foreach (var cert in _store.Certificates)
-            //{
-            //    arr += String.Format(" [{0}],", cert.Thumbprint);
-            //}
-            //throw new Exception(arr);
-
             string lowercaseThumbprint = _certificate.Thumbprint.ToLower();
-            X509Certificate2Collection certList = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, false);
-            X509Certificate2 cert = certList[0];
-            //throw new Exception("Count:" + certFound.Count);
+            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, false)[0];
 
-            Assert.IsTrue(cert.Equals(_certificate), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
+            Assert.IsTrue(_certificate.Equals(certificateFound), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
 
         [TestMethod]
@@ -79,8 +70,8 @@ namespace SikkerDigitalPost.Tester
                 randomSpacingThumb += _certificate.Thumbprint[i];
             }
             
-            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, false)[0];
-            Assert.IsTrue(certificate.Equals(_certificate));
+            var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, false)[0];
+            Assert.IsTrue(_certificate.Equals(certificateFound), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
     }
 }
