@@ -79,7 +79,8 @@ namespace SikkerDigitalPost.Tester
                 randomSpacingThumb += _certificate.Thumbprint[i];
             }
             
-            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, true)[0];
+            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, false);
+
             Assert.IsTrue(certificate.Equals(_certificate));
         }
     }
