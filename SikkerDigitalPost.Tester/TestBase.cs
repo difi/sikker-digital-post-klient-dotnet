@@ -14,9 +14,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter;
@@ -27,6 +29,7 @@ using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -36,7 +39,6 @@ namespace SikkerDigitalPost.Tester
         private static string _hoveddokument;
         
         protected static string[] Vedleggsstier;
-        protected static string TestDataMappe = "testdata";
         protected static string VedleggsMappe = "vedlegg";
         protected static string HoveddokumentMappe = "hoveddokument";
 
@@ -64,16 +66,11 @@ namespace SikkerDigitalPost.Tester
         public static void Initialiser()
         {
             //Dokumentpakke
-            TestDataMappe = Path.Combine(path1: Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), path2: TestDataMappe);
-            VedleggsMappe = Path.Combine(TestDataMappe, VedleggsMappe);
-            HoveddokumentMappe = Path.Combine(TestDataMappe, HoveddokumentMappe);
-
-            Vedleggsstier = Directory.GetFiles(VedleggsMappe);
-            _hoveddokument = Directory.GetFiles(HoveddokumentMappe)[0];
+            Vedleggsstier = ResourceUtility.GetFiles(VedleggsMappe).ToArray();
+            _hoveddokument = ResourceUtility.GetFiles(HoveddokumentMappe).ElementAt(0);
             
             Dokumentpakke = GenererDokumentpakke();
-            
-            SettSertifikater();
+            HentSertifikater(out AvsenderSertifikat, out MottakerSertifikat);
 
             //Avsender og mottaker
             OrgNrAvsender = new Organisasjonsnummer("984661185");
@@ -84,10 +81,12 @@ namespace SikkerDigitalPost.Tester
             Mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", MottakerSertifikat, OrgNrMottaker.Iso6523());
             
             //DigitalPost og forsendelse
-            DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel");
-            DigitalPost.EpostVarsel = new EpostVarsel("epost@sjafjell.no", "Dette er et epostvarsel. En trojansk ... hest.", 0, 7);
-            DigitalPost.SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel. En trojansk ... telefon..", 3, 14);
-            
+            DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel")
+            {
+                EpostVarsel = new EpostVarsel("tull@ball.no", "Dette er et epostvarsel. En trojansk ... hest.", 0, 7),
+                SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel. En trojansk ... telefon..", 3, 14)
+            };
+
             Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
             
             //Guids, AsicEArkiv og Envelope
@@ -96,14 +95,14 @@ namespace SikkerDigitalPost.Tester
             Envelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(Forsendelse, Arkiv, Databehandler, GuidHandler, new Klientkonfigurasjon()));
         }
 
-        private static void SettSertifikater()
+        private static void HentSertifikater(out X509Certificate2 avsenderSertifikat, out X509Certificate2 mottakerSertifkat)
         {
             var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             storeMy.Open(OpenFlags.ReadOnly);
 
             try
             {
-                AvsenderSertifikat = storeMy.Certificates
+                avsenderSertifikat = storeMy.Certificates
                     .Find(X509FindType.FindByThumbprint, "8702F5E55217EC88CF2CCBADAC290BB4312594AC", true)[0];
             }
             catch (Exception e)
@@ -117,7 +116,7 @@ namespace SikkerDigitalPost.Tester
             storeTrusted.Open(OpenFlags.ReadOnly);
             try
             {
-                MottakerSertifikat =
+                mottakerSertifkat =
                     storeTrusted.Certificates
                     .Find(X509FindType.FindByThumbprint, "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", true)[0];
             }
@@ -129,23 +128,26 @@ namespace SikkerDigitalPost.Tester
             
         }
 
-        private static Dokument GenererHoveddokument()
-        {
-            return Hoveddokument = new Dokument(Path.GetFileName(_hoveddokument), _hoveddokument, "text/xml");
-        }
-
-        private static IEnumerable<Dokument> GenererVedlegg()
-        {
-            return Vedlegg = new List<Dokument>(
-                    Vedleggsstier.Select(
-                        v => new Dokument(Path.GetFileNameWithoutExtension(v), v, "text/" + Path.GetExtension(_hoveddokument))));
-        }
-
         private static Dokumentpakke GenererDokumentpakke()
         {
             var dokumentpakke = new Dokumentpakke(GenererHoveddokument());
             dokumentpakke.LeggTilVedlegg(GenererVedlegg());
             return dokumentpakke;
+        }
+
+        private static Dokument GenererHoveddokument()
+        {
+            var bytes = ResourceUtility.ReadAllBytes(false,_hoveddokument);
+            var fileName = ResourceUtility.GetFileName(_hoveddokument);
+            return Hoveddokument = new Dokument("Hoveddokument", bytes,"text/xml","NO", fileName);
+        }
+
+        private static IEnumerable<Dokument> GenererVedlegg()
+        {
+            int count = 0;
+            return Vedlegg = new List<Dokument>(
+                    Vedleggsstier.Select(
+                        v => new Dokument("Vedlegg" + count++, ResourceUtility.ReadAllBytes(false,v), "text/" + Path.GetExtension(_hoveddokument), "NO", ResourceUtility.GetFileName(v))));
         }
     }
 }

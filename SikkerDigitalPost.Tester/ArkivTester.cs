@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
+using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -73,7 +74,6 @@ namespace SikkerDigitalPost.Tester
             Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Hoveddokument.Filnavn));
         }
 
-
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
@@ -89,7 +89,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, filsti, Path.GetFileName(filsti), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, filsti, ResourceUtility.GetFileName(filsti), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -107,7 +107,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, Path.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, ResourceUtility.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }
@@ -125,23 +125,24 @@ namespace SikkerDigitalPost.Tester
             Assert.AreEqual(originalData.ToString(), dekrypterteData.ToString());
         }
         
-        private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
+        private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] sjekksum1, out byte[] sjekksum2)
         {
-            GenererSjekksum(zip, File.ReadAllBytes(filstiPåDisk), entryNavnIArkiv, out hash1, out hash2);
+            var bytes = ResourceUtility.ReadAllBytes(false,filstiPåDisk);
+            GenererSjekksum(zip, bytes, entryNavnIArkiv, out sjekksum1, out sjekksum2);
         }
 
-        private void GenererSjekksum(ZipArchive zip, byte[] fil, string entryNavnIArkiv, out byte[] hash1, out byte[] hash2)
+        private void GenererSjekksum(ZipArchive zip, byte[] fil, string entryNavnIArkiv, out byte[] sjekksum1, out byte[] sjekksum2)
         {
             using (var md5 = MD5.Create())
             {
                 using (var stream = new MemoryStream(fil))
                 {
-                    hash1 = md5.ComputeHash(stream);
+                    sjekksum1 = md5.ComputeHash(stream);
                 }
 
                 using (var stream = zip.GetEntry(entryNavnIArkiv).Open())
                 {
-                    hash2 = md5.ComputeHash(stream);
+                    sjekksum2 = md5.ComputeHash(stream);
                 }
             }
         }

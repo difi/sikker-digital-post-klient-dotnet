@@ -41,6 +41,10 @@ namespace SikkerDigitalPost.Testklient
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
+
+            var v = String.Format("Name:{0}", System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+
+
             
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 

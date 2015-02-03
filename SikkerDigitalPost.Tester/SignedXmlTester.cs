@@ -12,18 +12,16 @@
  * limitations under the License.
  */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klient.Security;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SikkerDigitalPost.Klient.Security;
+using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -73,8 +71,9 @@ namespace SikkerDigitalPost.Tester
         public void GetPublicKey()
         {            
             XmlDocument doc = new XmlDocument { PreserveWhitespace = false };
-            var path = Path.Combine(TestDataMappe, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
-            doc.Load(path);
+            //var path = Path.Combine(TestDataMappe, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
+            byte[] xmlBytes = ResourceUtility.ReadAllBytes(true, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
+            doc.LoadXml(Encoding.UTF8.GetString(xmlBytes));
 
             var mgr = new XmlNamespaceManager(doc.NameTable);
             mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
@@ -82,7 +81,7 @@ namespace SikkerDigitalPost.Tester
 
             // Find key
             var token = doc.SelectSingleNode("//wsse:BinarySecurityToken", mgr);
-            var key = new X509Certificate2(System.Convert.FromBase64String(token.InnerText));
+            var key = new X509Certificate2(Convert.FromBase64String(token.InnerText));
 
             var signed = new SignedXmlWithAgnosticId(doc);
             var signatureNode = (XmlElement)doc.SelectSingleNode("//ds:Signature", mgr);
@@ -92,7 +91,5 @@ namespace SikkerDigitalPost.Tester
 
             Assert.AreEqual(result.ToXmlString(false), key.PublicKey.Key.ToXmlString(false));
         }
-
-
     }
 }

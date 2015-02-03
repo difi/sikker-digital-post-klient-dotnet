@@ -12,10 +12,7 @@
  * limitations under the License.
  */
 
-using System;
-using System.IO;
 using System.Xml;
-using System.Xml.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.XmlValidering;
@@ -36,8 +33,7 @@ namespace SikkerDigitalPost.Tester
         {
             var signaturXml = Arkiv.Signatur.Xml();
             var signaturvalidator = new Signaturvalidator();
-            var validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
-
+            
             //Endre id på hoveddokument til å starte på et tall
             var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
             namespaceManager.AddNamespace("ds", Navnerom.ds);
@@ -50,7 +46,7 @@ namespace SikkerDigitalPost.Tester
             var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
             hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
 
-            validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
+            var validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
             Assert.IsFalse(validerer, signaturvalidator.ValideringsVarsler);
 
             hoveddokumentReferanseNode.Attributes["Id"].Value = gammelVerdi;
