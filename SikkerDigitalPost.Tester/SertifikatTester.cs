@@ -80,8 +80,7 @@ namespace SikkerDigitalPost.Tester
             }
             
             var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, randomSpacingThumb, true)[0];
-            Assert.AreEqual(_certificate, certificate);
-            
+            Assert.IsTrue(certificate.Equals(_certificate));
         }
     }
 }
