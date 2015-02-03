@@ -50,18 +50,19 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void TestLowercaseThumbprint()
         {
-            string arr = String.Format("StoreCert: [{0}]", _certificate.Thumbprint);
-            foreach (var cert in _store.Certificates)
-            {
-                arr += String.Format(" [{0}],", cert.Thumbprint);
-            }
-            throw new Exception(arr);
+            //string arr = String.Format("StoreCert: [{0}]", _certificate.Thumbprint);
+            //foreach (var cert in _store.Certificates)
+            //{
+            //    arr += String.Format(" [{0}],", cert.Thumbprint);
+            //}
+            //throw new Exception(arr);
 
             var lowercaseThumbprint = _certificate.Thumbprint;
-            var certFound = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true);
-            throw new Exception("Count:" + certFound.Count);
+            var certList = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true);
+            var cert = certList[0];
+            //throw new Exception("Count:" + certFound.Count);
 
-            Assert.IsTrue(certFound.Equals(_certificate), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
+            Assert.IsTrue(cert.Equals(_certificate), "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
         }
 
         [TestMethod]
