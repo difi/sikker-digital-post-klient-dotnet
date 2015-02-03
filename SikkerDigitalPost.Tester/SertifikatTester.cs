@@ -51,15 +51,16 @@ namespace SikkerDigitalPost.Tester
         [TestMethod]
         public void TestLowercaseThumbprint()
         {
-            var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
-            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
-
             string arr = String.Format("StoreCert: [{0}]", _certificate.Thumbprint);
             foreach (var cert in _store.Certificates)
             {
                 arr += String.Format(" [{0}],", cert.Thumbprint);
             }
-            
+
+            var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
+            var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
+
+
             throw new Exception(arr);
 
             Assert.AreEqual(_certificate, certificate);
