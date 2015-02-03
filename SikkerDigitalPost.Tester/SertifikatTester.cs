@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,6 +53,15 @@ namespace SikkerDigitalPost.Tester
         {
             var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
             var certificate = _store.Certificates.Find(X509FindType.FindByThumbprint, lowercaseThumbprint, true)[0];
+
+            string arr = String.Format("StoreCert: [{0}]", _certificate.Thumbprint);
+            foreach (var cert in _store.Certificates)
+            {
+                arr += String.Format(" [{0}],", cert.Thumbprint);
+            }
+            
+            throw new Exception(arr);
+
             Assert.AreEqual(_certificate, certificate);
         }
 
