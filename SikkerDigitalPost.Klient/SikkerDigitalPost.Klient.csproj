@@ -68,6 +68,7 @@
     <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseEnvelope.cs" />
     <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Navnerom.cs" />

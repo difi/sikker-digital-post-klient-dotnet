@@ -39,14 +39,18 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         public Mottaker Mottaker { get; set; }
 
         /// <summary>
-        /// Når brevet tilgjengeliggjøres for mottaker.
+        /// Dato og tidspunkt for når en melding skal tilgjengeliggjøres for Innbygger i Innbygger sin postkasse. 
+        /// Forsendelsen vil leveres til postkassen før dette tidspunkt, men ikke være synlig/tilgjengelig for innbygger.
         /// 
         /// Standardverdi er nå.
         /// </summary>
-        public DateTime Virkningsdato = DateTime.Now;
+        public DateTime Virkningstidspunkt = DateTime.Now;
         
         /// <summary>
-        /// Ønskes kvittering når brevet blir åpnet av mottaker?
+        /// Ønskes kvittering når brevet blir åpnet av mottaker? Mottaker må akseptere at det sendes en åpningskvittering
+        /// til avsender for å få lest den digitale posten. Mangel på åpningskvittering betyr at mottaker ikke har lest posten.
+        /// Bruk av åpningskvittering er priset for avsender. Se mer info på 
+        /// dhttp://begrep.difi.no/SikkerDigitalPost/1.2.0.RC1/meldinger/AapningsKvittering.
         /// 
         /// Standard er false.
         /// </summary>

@@ -49,7 +49,6 @@ namespace SikkerDigitalPost.Tester.Utilities
                 fileStream.Read(bytes, 0, bytes.Length);
                 return bytes;
             }
-
         }
 
         private static string GetFullPath(params string[] path)
