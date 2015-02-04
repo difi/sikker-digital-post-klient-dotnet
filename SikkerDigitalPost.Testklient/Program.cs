@@ -41,8 +41,6 @@ namespace SikkerDigitalPost.Testklient
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
-            var v = DateUtility.UtcWithOffset(DateTime.Now);
-
             //Avsender
             var behandlingsansvarlig =
                 new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
@@ -55,7 +53,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
-            digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(2);
+            digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(1);
 
             string hoveddokumentsti =
                 @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
