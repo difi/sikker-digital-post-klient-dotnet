@@ -4,13 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TeamCityBuild>false</TeamCityBuild>
     <ProjectGuid>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SikkerDigitalPost.Klient</RootNamespace>
     <AssemblyName>SikkerDigitalPost.Klient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <FileAlignment>512</FileAlignment>    
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TEAMCITY_BUILD_PROPERTIES_FILE)' != ''">
+    <TeamCityBuild>true</TeamCityBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -216,4 +220,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="TeamCity" AfterTargets="Build" Condition=" '$(TeamCityBuild)'=='true'">
+     <GetAssemblyIdentity AssemblyFiles="bin\$(ConfigurationName)\$(TargetFileName)">
+       <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
+     </GetAssemblyIdentity>
+     <Message Text="##teamcity[buildNumber '%(AssemblyIdentity.Version)']" />
+   </Target>
 </Project>
