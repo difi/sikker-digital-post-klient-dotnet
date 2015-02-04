@@ -79,7 +79,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             XmlElement digitalPostInfo = Context.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
             {
                 XmlElement virkningstidspunkt = digitalPostInfo.AppendChildElement("virkningstidspunkt", "ns9", Navnerom.Ns9, Context);
-                virkningstidspunkt.InnerText = Settings.Forsendelse.DigitalPost.Virkningstidspunkt.ToString(DateUtility.DateFormat);
+                virkningstidspunkt.InnerText = DateUtility.UtcWithOffset(Settings.Forsendelse.DigitalPost.Virkningstidspunkt);
 
                 XmlElement aapningskvittering = digitalPostInfo.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, Context);
                 aapningskvittering.InnerText = Settings.Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();

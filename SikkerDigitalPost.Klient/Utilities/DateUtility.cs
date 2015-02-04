@@ -13,12 +13,30 @@
  */
 
 using System;
+using System.Runtime.Remoting.Messaging;
 
 namespace SikkerDigitalPost.Klient.Utilities
 {
     internal static class DateUtility
     {
         public const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffZ";
+
+        private const string DateFormatUtcStart = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff";
+
+        public static string UtcWithOffset(DateTime dateTime)
+        {
+            string date = dateTime.ToString(DateFormatUtcStart);
+
+            TimeZoneInfo timeZone = TimeZoneInfo.Local;
+            TimeSpan offset = timeZone.GetUtcOffset(dateTime);
+
+            var format = @"hh':'mm";
+            var fortegn = offset.CompareTo(TimeSpan.Zero) > 0 ? "'+'" : "'-'";
+            format = String.Format("{0}{1}", fortegn, format);
+
+            return dateTime.ToString(String.Format("{0}{1}", date, offset.ToString(format)));
+            
+        }
 
         public static string DateForFile()
         {
