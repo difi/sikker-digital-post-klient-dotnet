@@ -14,8 +14,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -23,7 +21,7 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
-
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Testklient
 {
@@ -41,11 +39,6 @@ namespace SikkerDigitalPost.Testklient
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
-
-            var v = String.Format("Name:{0}", System.Security.Principal.WindowsIdentity.GetCurrent().Name);
-
-
-            
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
 
             //Avsender
@@ -60,6 +53,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
+            digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(1);
 
             string hoveddokumentsti =
                 @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
@@ -67,7 +61,7 @@ namespace SikkerDigitalPost.Testklient
 
             //Forsendelse
             string mpcId = "hest";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Torsdagstest", hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
@@ -75,7 +69,7 @@ namespace SikkerDigitalPost.Testklient
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            //klientkonfigurasjon.DebugLoggTilFil = true;
+            klientkonfigurasjon.DebugLoggTilFil = true;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
 
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);

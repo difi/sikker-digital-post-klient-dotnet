@@ -7,6 +7,7 @@
 	<xsd:include schemaLocation="sdp-felles.xsd"/>
 	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="w3/xmldsig-core-schema.xsd"/>
 
+
 	<xsd:element name="kvittering" type="Kvittering"/>
 	<xsd:complexType name="Kvittering">
 		<xsd:complexContent>
@@ -14,22 +15,34 @@
 				<xsd:sequence>
 					<xsd:element name="tidspunkt" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
 					<xsd:choice>
+						<xsd:element name="mottak" type="Mottak"/>
 						<xsd:element name="levering" type="Levering"/>
 						<xsd:element name="aapning" type="Aapning"/>
 						<xsd:element name="varslingfeilet" type="Varslingfeilet"/>
+						<xsd:element name="returpost" type="Returpost"/>
 					</xsd:choice>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+    <xsd:complexType name="Mottak">
+        <xsd:annotation>
+            <xsd:documentation>
+                Postkasseleverandøren eller utskrift og forsendelsestjenesten har mottatt og validert brevet.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:complexType>
+
 	<xsd:complexType name="Levering">
 		<xsd:annotation>
 			<xsd:documentation>
-				Postkasseleverandøren garanterer at brevet har eller vil bli levert
-				til mottakers digitale postkasse.
+				For digital post: Postkasseleverandøren har levert brevet til mottakers digitale postkasse.
+				For fysisk post : Utskrift og forsendelsestjenesten har printet og levert brevet til Posten for distribusjon.
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:complexType>
+
 	<xsd:complexType name="Aapning">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -38,6 +51,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:complexType>
+
 
 	<xsd:complexType name="Varslingfeilet">
 		<xsd:annotation>
@@ -56,10 +70,18 @@
 			<xsd:enumeration value="EPOST"/>
 		</xsd:restriction>
 	</xsd:simpleType>
-
 	<xsd:simpleType name="Beskrivelse">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="1000"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+
+    <xsd:complexType name="Returpost">
+        <xsd:annotation>
+            <xsd:documentation>
+				Utskrift og forsendelsestjenesten har mottatt brevet i retur og makulert det.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:complexType>
+
 </xsd:schema>

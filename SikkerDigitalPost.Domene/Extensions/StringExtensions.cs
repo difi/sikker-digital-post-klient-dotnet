@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace SikkerDigitalPost.Domene.Extensions
 {
@@ -10,7 +6,7 @@ namespace SikkerDigitalPost.Domene.Extensions
     {
         public static string RemoveIllegalCharacters(this string illegalString)
         {
-            string illegalChars = "\"<>\\^`{}|~!#$&'()+,/:;=?@][";
+            const string illegalChars = "\"<>\\^`{}|~!#$&'()+,/:;=?@][";
             illegalString = illegalString.Replace(" ", "_");
             return illegalChars.Aggregate(illegalString, (current, c) => current.Replace(c.ToString(), ""));
         }

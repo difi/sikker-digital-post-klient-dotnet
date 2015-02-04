@@ -18,6 +18,8 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
+using SikkerDigitalPost.Klient.Extensions;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
@@ -77,8 +79,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             XmlElement digitalPostInfo = Context.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
             {
-                XmlElement virkningsdato = digitalPostInfo.AppendChildElement("virkningsdato", "ns9", Navnerom.Ns9, Context);
-                virkningsdato.InnerText = Settings.Forsendelse.DigitalPost.Virkningsdato.ToString("yyyy-MM-dd");
+                XmlElement virkningstidspunkt = digitalPostInfo.AppendChildElement("virkningstidspunkt", "ns9", Navnerom.Ns9, Context);
+                virkningstidspunkt.InnerText = Settings.Forsendelse.DigitalPost.Virkningstidspunkt.ToStringWithUtcOffset();
 
                 XmlElement aapningskvittering = digitalPostInfo.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, Context);
                 aapningskvittering.InnerText = Settings.Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();
