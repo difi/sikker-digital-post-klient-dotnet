@@ -14,9 +14,9 @@ namespace SikkerDigitalPost.Klient.Extensions
             TimeSpan offset = timeZone.GetUtcOffset(dateTime);
 
             var format = @"hh':'mm";
-            var fortegn = offset.CompareTo(TimeSpan.Zero) > 0 ? "'+'" : "'-'";
+            var fortegn = offset.CompareTo(TimeSpan.Zero) >= 0 ? "'+'" : "'-'";
             format = String.Format("{0}{1}", fortegn, format);
-
+            
             return dateTime.ToString(String.Format("{0}{1}", date, offset.ToString(format)));
         }
 
