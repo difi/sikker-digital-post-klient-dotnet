@@ -53,6 +53,13 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
 
+                var avsenderIdentifikator = Settings.Forsendelse.Behandlingsansvarlig.Avsenderidentifikator;
+                if(avsenderIdentifikator != String.Empty){
+                    XmlElement avsenderidentifikator = 
+                        avsender.AppendChildElement("avsenderidentifikator", "ns9", Navnerom.Ns9, Context);
+                    avsenderidentifikator.InnerText = avsenderIdentifikator;
+                }
+
                 XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", "ns9", Navnerom.Ns9, Context);
                 fakturaReferanse.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Fakturareferanse;
             }
