@@ -17,7 +17,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
 {
     /// <summary>
     /// En feilmelding fra postkasseleverandør med informasjon om en forretningsfeil knyttet til en digital post forsendelse.

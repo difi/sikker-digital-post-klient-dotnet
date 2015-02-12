@@ -15,7 +15,7 @@
 using System;
 using System.Xml;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
 {
     /// <summary>
     /// En kvittering som Behandlingsansvarlig kan oppbevare som garanti på at posten er levert til Mottaker. 
