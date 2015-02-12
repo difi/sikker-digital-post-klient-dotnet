@@ -46,8 +46,9 @@ namespace SikkerDigitalPost.Testklient
                 new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler,
                 postkasseInnstillinger.Avsendersertifikat);
+            behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
-            //MottakerF
+            //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
                 postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
