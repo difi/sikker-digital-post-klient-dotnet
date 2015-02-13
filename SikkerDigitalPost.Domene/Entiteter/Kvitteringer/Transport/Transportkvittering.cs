@@ -27,26 +27,6 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
         private readonly XmlNamespaceManager _namespaceManager;
 
         /// <summary>
-        /// Tidspunktet da kvitteringen ble sendt.
-        /// </summary>
-        //public DateTime Tidspunkt { get; protected set; }
-
-        /// <summary>
-        /// Unik identifikator for kvitteringen.
-        /// </summary>
-        //public string MeldingsId { get; protected set; }
-
-        /// <summary>
-        /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
-        /// </summary>
-        public string ReferanseTilMeldingsId { get; protected set; }
-
-        /// <summary>
-        /// Kvitteringen presentert som tekststreng.
-        /// </summary>
-        //public string Rådata { get; protected set; }
-
-        /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
         /// </summary>
         public abstract override string ToString();
@@ -61,16 +41,6 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
             {
                 _document = document;
                 _namespaceManager = namespaceManager;
-                //Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
-                //MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
-
-                //var refToMessageIdNode = DocumentNode("//ns6:RefToMessageId");
-                //if (refToMessageIdNode != null)
-                //{
-                //    ReferanseTilMeldingsId = refToMessageIdNode.InnerText;
-                //}
-
-                //Rådata = document.OuterXml;
             }
             catch (Exception e)
             {
@@ -79,22 +49,5 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
                    , GetType()), e);
             }
         }
-
-        //protected XmlNode DocumentNode(string xPath)
-        //{
-        //    try
-        //    {
-        //        var rot = _document.DocumentElement;
-        //        var targetNode = rot.SelectSingleNode(xPath, _namespaceManager);
-
-        //        return targetNode;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new XmlParseException(
-        //            String.Format("Feil under henting av dokumentnode i {0} (av type Transportkvittering). Klarte ikke finne alle felter i xml."
-        //            , GetType()), e);
-        //    }
-        //}
     }
 }

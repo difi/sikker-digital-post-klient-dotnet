@@ -35,23 +35,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
         public Guid KonversasjonsId { get; protected set; }
-
-        /// <summary>
-        /// Unik identifikator for kvitteringen.
-        /// </summary>
-        //public string MeldingsId { get; protected set; }
-
-        /// <summary>
-        /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
-        /// </summary>
-        //public string ReferanseTilMeldingId { get; protected set; }
-
+        
         internal XmlNode BodyReference { get; set; }
 
-        /// <summary>
-        /// Kvitteringen presentert som tekststreng.
-        /// </summary>
-        //public readonly string Rådata;
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
@@ -67,12 +53,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
                 _document = document;
                 _namespaceManager = namespaceManager;
 
-                //Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
                 KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
-                //MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
-                //ReferanseTilMeldingId = DocumentNode("//ns6:RefToMessageId").InnerText;
                 BodyReference = BodyReferenceNode();
-                //Rådata = document.OuterXml;
             }
             catch (Exception e)
             {
