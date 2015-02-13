@@ -39,19 +39,19 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
         /// <summary>
         /// Unik identifikator for kvitteringen.
         /// </summary>
-        public string MeldingsId { get; protected set; }
+        //public string MeldingsId { get; protected set; }
 
         /// <summary>
         /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
         /// </summary>
-        public string ReferanseTilMeldingId { get; protected set; }
+        //public string ReferanseTilMeldingId { get; protected set; }
 
         internal XmlNode BodyReference { get; set; }
 
         /// <summary>
         /// Kvitteringen presentert som tekststreng.
         /// </summary>
-        public readonly string Rådata;
+        //public readonly string Rådata;
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
