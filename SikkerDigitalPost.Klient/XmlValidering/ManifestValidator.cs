@@ -13,11 +13,10 @@
  */
 
 using System.Xml.Schema;
-using SikkerDigitalPost.Klient.Envelope;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ManifestValidering : Xmlvalidator
+    internal class ManifestValidator : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

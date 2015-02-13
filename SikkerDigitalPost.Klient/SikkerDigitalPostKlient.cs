@@ -88,11 +88,12 @@ namespace SikkerDigitalPost.Klient
 
             try
             {
-                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(), arkiv.Signatur.Xml());
+                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(),
+                    arkiv.Signatur.Xml());
             }
             catch (Exception e)
             {
-                throw new XmlValidationException("Envelope xml validerer ikke mot xsd:", e);
+                throw new Exception("Sending av forsendelse feilet under validering. Feilmelding: " + e.GetBaseException(), e.InnerException);
             }
 
             var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
@@ -205,7 +206,7 @@ namespace SikkerDigitalPost.Klient
         {
             try
             {
-                var kvitteringForespørselEnvelopeValidering = new KvitteringForespørselEnvelopeValidering();
+                var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
                 var kvitteringForespørselEnvelopeValidert =
                     kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
                 if (!kvitteringForespørselEnvelopeValidert)
@@ -291,20 +292,24 @@ namespace SikkerDigitalPost.Klient
 
         private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml, XmlDocument manifestXml, XmlDocument signaturXml)
         {
+            const string preMessage = "Envelope validerer ikke: ";
+
             var envelopeValidering = new ForretningsmeldingEnvelopeValidator();
             var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
             if (!envelopeValidert)
-                throw new Exception(envelopeValidering.ValideringsVarsler);
+                throw new XmlValidationException(preMessage + envelopeValidering.ValideringsVarsler);
 
-            var manifestValidering = new ManifestValidering();
+            var manifestValidering = new ManifestValidator();
             var manifestValidert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
             if (!manifestValidert)
-                throw new Exception(manifestValidering.ValideringsVarsler);
+                throw new XmlValidationException(preMessage + manifestValidering.ValideringsVarsler);
 
             var signaturValidering = new Signaturvalidator();
             var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
             if (!signaturValidert)
-                throw new Exception(signaturValidering.ValideringsVarsler);
+                throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);           
+
+            
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)

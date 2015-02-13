@@ -18,20 +18,20 @@ namespace SikkerDigitalPost.Domene.Exceptions
 {
     public class XmlValidationException : KonfigurasjonsException
     {
-        private const string Ekstrainfo = " Validering av Xml feilet. Se inner exception for mer info.";
+        private const string StartAvMelding = " Validering av Xml feilet: ";
 
         public XmlValidationException()
         {
             
         }
 
-        public XmlValidationException(string message) : base(message + Ekstrainfo)
+        public XmlValidationException(string message) : base(StartAvMelding + message)
         {
             
         }
 
         public XmlValidationException(string message, Exception inner) 
-            : base (message + Ekstrainfo, inner)
+            : base (message + StartAvMelding, inner)
         {
             
         }

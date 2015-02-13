@@ -77,7 +77,7 @@ namespace SikkerDigitalPost.Testklient
 
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
-            //Console.WriteLine("--- STARTER Å SENDE POST ---");
+            Console.WriteLine("--- STARTER Å SENDE POST ---");
 
             Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
@@ -90,8 +90,8 @@ namespace SikkerDigitalPost.Testklient
             if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
             {
                 var feiletkvittering = (TransportFeiletKvittering)transportkvittering;
-                Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
-                    feiletkvittering.Beskrivelse);
+                WriteToConsoleWithColor(String.Format(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
+                    feiletkvittering.Beskrivelse), true);
             }
 
             Console.WriteLine();

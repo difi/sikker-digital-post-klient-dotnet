@@ -108,10 +108,10 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
-    <Compile Include="XmlValidering\KvitteringForespørselEnvelopeValidering.cs" />
+    <Compile Include="XmlValidering\KvitteringsforespørselEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
-    <Compile Include="XmlValidering\ManifestValidering.cs" />
+    <Compile Include="XmlValidering\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
     <Compile Include="XmlValidering\Xmlvalidator.cs" />

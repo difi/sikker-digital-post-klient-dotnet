@@ -32,7 +32,7 @@ namespace SikkerDigitalPost.Tester
         public void UgyldigNavnPåHoveddokumentValidererIkke()
         {
             var manifestXml = Arkiv.Manifest.Xml();
-            var manifestValidering = new ManifestValidering();
+            var manifestValidering = new ManifestValidator();
 
             //Endre navn på hoveddokument til å være for kort
             var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -54,7 +54,7 @@ namespace SikkerDigitalPost.Tester
         {
             var manifestXml = Arkiv.Manifest.Xml();
 
-            var manifestValidering = new ManifestValidering();
+            var manifestValidering = new ManifestValidator();
             var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
             Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
         }
