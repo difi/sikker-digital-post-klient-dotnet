@@ -11,7 +11,7 @@
     <RootNamespace>SikkerDigitalPost.Klient</RootNamespace>
     <AssemblyName>SikkerDigitalPost.Klient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>    
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TEAMCITY_BUILD_PROPERTIES_FILE)' != ''">
     <TeamCityBuild>true</TeamCityBuild>
@@ -102,7 +102,7 @@
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
     <Compile Include="XmlValidering\KvitteringForespørselEnvelopeValidering.cs" />
-    <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidering.cs" />
+    <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ManifestValidering.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
@@ -222,9 +222,9 @@
   </Target>
   -->
   <Target Name="TeamCity" AfterTargets="Build" Condition=" '$(TeamCityBuild)'=='true'">
-     <GetAssemblyIdentity AssemblyFiles="bin\$(ConfigurationName)\$(TargetFileName)">
-       <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
-     </GetAssemblyIdentity>
-     <Message Text="##teamcity[buildNumber '%(AssemblyIdentity.Version)']" />
-   </Target>
+    <GetAssemblyIdentity AssemblyFiles="bin\$(ConfigurationName)\$(TargetFileName)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
+    </GetAssemblyIdentity>
+    <Message Text="##teamcity[buildNumber '%(AssemblyIdentity.Version)']" />
+  </Target>
 </Project>
