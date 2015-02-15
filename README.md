@@ -105,4 +105,4 @@ Klientbiblioteket benytter en HttpWebRequest for å kommunisere med meldingsform
 System.Net.ServicePointManager.DefaultConnectionLimit = 20;
 ```
 
-Se [ServicePointManager.DefaultConnectionLimit](http://msdn.microsoft.com/en-us/library/system.net.servicepointmanager.defaultconnectionlimit(v=vs.110).aspx) for mer info.
+Se [ServicePointManager.DefaultConnectionLimit](http://msdn.microsoft.com/en-us/library/system.net.servicepointmanager.defaultconnectionlimit(v=vs.110).aspx) for mer informasjon.
