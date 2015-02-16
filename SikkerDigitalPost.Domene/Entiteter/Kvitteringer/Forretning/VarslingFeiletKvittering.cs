@@ -17,7 +17,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// Sendes fra Postkasse til Avsender dersom Postkasse opplever problemer med å utføre varslingen som spesifisert i meldingen.
@@ -57,7 +57,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nVarslingskanal: {3}. \nBeskrivelse: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
-                GetType().Name, MeldingsId, Tidspunkt, Varslingskanal, Beskrivelse, KonversasjonsId, RefToMessageId);
+                GetType().Name, MeldingsId, Tidspunkt, Varslingskanal, Beskrivelse, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

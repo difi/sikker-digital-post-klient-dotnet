@@ -15,7 +15,7 @@
 using System;
 using System.Xml;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// En kvittering som Behandlingsansvarlig kan oppbevare som garanti på at posten er levert til Mottaker. 
@@ -32,7 +32,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}", 
-                GetType().Name, MeldingsId, Tidspunkt, KonversasjonsId, RefToMessageId);
+                GetType().Name, MeldingsId, Tidspunkt, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

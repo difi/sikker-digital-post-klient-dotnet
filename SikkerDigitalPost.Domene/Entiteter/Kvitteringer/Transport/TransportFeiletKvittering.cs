@@ -17,7 +17,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
 {
     /// <summary>
     /// Transportkvittering som indikerer at noe har gått galt ved sending av en melding. 
@@ -83,7 +83,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
-                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingsId);
+                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingId);
         }
     }
 }

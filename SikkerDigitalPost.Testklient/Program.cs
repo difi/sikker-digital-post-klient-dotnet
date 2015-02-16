@@ -18,6 +18,8 @@ using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
@@ -61,7 +63,7 @@ namespace SikkerDigitalPost.Testklient
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
-            string mpcId = "hest";
+            string mpcId = "ku";
             var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
@@ -88,8 +90,8 @@ namespace SikkerDigitalPost.Testklient
             if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
             {
                 var feiletkvittering = (TransportFeiletKvittering)transportkvittering;
-                Console.WriteLine(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
-                    feiletkvittering.Beskrivelse);
+                WriteToConsoleWithColor(String.Format(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
+                    feiletkvittering.Beskrivelse), true);
             }
 
             Console.WriteLine();
@@ -104,7 +106,7 @@ namespace SikkerDigitalPost.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Forretningskvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                Kvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
                 if (kvittering == null)
                 {
@@ -112,24 +114,31 @@ namespace SikkerDigitalPost.Testklient
                     break;
                 }
 
-                if (kvittering.GetType() == typeof(Leveringskvittering))
+                if (kvittering is TransportFeiletKvittering)
+                {
+                    var feil = ((TransportFeiletKvittering) kvittering).Beskrivelse;
+                    WriteToConsoleWithColor("En feil skjedde under transport. Melding ikke godtatt fra Meldingsformidler: " + feil, isError: true);
+                    break;
+                }
+
+                if (kvittering is Leveringskvittering)
                 {
                     WriteToConsoleWithColor("  - En leveringskvittering ble hentet!");
                 }
 
-                if (kvittering.GetType() == typeof(Åpningskvittering))
+                if (kvittering is Åpningskvittering)
                 {
                     WriteToConsoleWithColor("  - Har du sett. Noen har åpnet et brev. Moro.");
                 }
 
-                if (kvittering.GetType() == typeof(Feilmelding))
+                if (kvittering is Feilmelding)
                 {
                     WriteToConsoleWithColor("  - En feilmelding ble hentet, men den kan være gammel ...", true);
                     isSent = false;
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                sikkerDigitalPostKlient.Bekreft(kvittering);
+                sikkerDigitalPostKlient.Bekreft((Forretningskvittering) kvittering);
                 Console.WriteLine("   - Kvittering sendt.");
             }
 

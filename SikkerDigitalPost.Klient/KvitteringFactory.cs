@@ -14,7 +14,8 @@
 
 using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
 using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Klient
@@ -42,10 +43,12 @@ namespace SikkerDigitalPost.Klient
             {
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
+
             if (IsTomKøKvittering(xmlDocument))
             {
                 return null;
             }
+
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
@@ -100,6 +103,11 @@ namespace SikkerDigitalPost.Klient
         private static bool IsTomKøKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns6:Error[@shortDescription = 'EmptyMessagePartitionChannel']");
+        }
+
+        private static bool IsTransportError(XmlDocument document)
+        {
+            return DocumentHasNode(document, "ns6:Error");
         }
 
         private static bool IsTransportOkKvittering(XmlDocument document)

@@ -16,7 +16,7 @@ using System.Xml.Schema;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class KvitteringForespørselEnvelopeValidering : Xmlvalidator
+    internal class KvitteringsforespørselEnvelopeValidator : Xmlvalidator
     {
         protected override XmlSchemaSet GenererSchemaSet()
         {

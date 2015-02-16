@@ -15,7 +15,7 @@
 using System;
 using System.Xml;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transportkvittering
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
 {
     /// <summary>
     /// Kvittering fra meldingsformidler som indikerer at denne har overtatt ansvaret for videre formidling av meldingen.
@@ -31,7 +31,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transportkvittering
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
-                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingsId);
+                GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingId);
         }
     }
 }

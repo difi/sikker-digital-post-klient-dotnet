@@ -46,20 +46,21 @@
     </Compile>
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Feilmelding.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretningskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\TransportFeiletKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transportkvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\TransportOkKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\Forretningskvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Kvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Transport\Transportkvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvittering.cs" />
     <Compile Include="Entiteter\Post\DigitalPost.cs" />
     <Compile Include="Entiteter\Post\Dokument.cs" />
     <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
     <Compile Include="Entiteter\Interface\PMode.cs" />
     <Compile Include="Entiteter\Kvitteringer\Kvitteringsforespørsel.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Leveringskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\VarslingFeiletKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Åpningskvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\Leveringskvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\Åpningskvittering.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
     <Compile Include="Enums\Feiltype.cs" />
     <Compile Include="Enums\Sikkerhetsnivå.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Entiteter\Aktører\Person.cs" />
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\KonfigurasjonsException.cs" />
+    <Compile Include="Exceptions\SdpSecurityException.cs" />
     <Compile Include="Exceptions\SendException.cs" />
     <Compile Include="Exceptions\SikkerDigitalPostException.cs" />
     <Compile Include="Exceptions\XmlParseException.cs" />

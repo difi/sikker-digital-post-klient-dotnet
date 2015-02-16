@@ -17,7 +17,7 @@ using System.Xml;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// En feilmelding fra postkasseleverandør med informasjon om en forretningsfeil knyttet til en digital post forsendelse.
@@ -56,7 +56,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nTidspunkt feilet: {3}. \nSkyldig: {4}. \nDetaljer: {5}. \nKonversasjonsId: {6}. \nRefererer til melding med id: {7}", 
-                GetType().Name, MeldingsId, Tidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, RefToMessageId);
+                GetType().Name, MeldingsId, Tidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

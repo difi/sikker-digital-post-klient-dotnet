@@ -16,12 +16,12 @@ using System;
 using System.Xml;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// Abstrakt klasse for forretningskvitteringer.
     /// </summary>
-    public abstract class Forretningskvittering
+    public abstract class Forretningskvittering : Kvittering
     {
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
@@ -35,23 +35,9 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
         public Guid KonversasjonsId { get; protected set; }
-
-        /// <summary>
-        /// Unik identifikator for kvitteringen.
-        /// </summary>
-        public string MeldingsId { get; protected set; }
-
-        /// <summary>
-        /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
-        /// </summary>
-        public string RefToMessageId { get; protected set; }
-
+        
         internal XmlNode BodyReference { get; set; }
 
-        /// <summary>
-        /// Kvitteringen presentert som tekststreng.
-        /// </summary>
-        public readonly string Rådata;
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
@@ -59,41 +45,21 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
         public override abstract string ToString();
 
         protected Forretningskvittering() { }
-        protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
+
+        protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
             try
             {
                 _document = document;
                 _namespaceManager = namespaceManager;
 
-                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
                 KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
-                MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
-                RefToMessageId = DocumentNode("//ns6:RefToMessageId").InnerText;
                 BodyReference = BodyReferenceNode();
-                Rådata = document.OuterXml;
             }
             catch (Exception e)
             {
                 throw new XmlParseException(
                     String.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
-                    , GetType()), e);
-            }
-        }
-
-        protected XmlNode DocumentNode(string xPath)
-        {
-            try
-            {
-                var rot = _document.DocumentElement;
-                var targetNode = rot.SelectSingleNode(xPath, _namespaceManager);
-
-                return targetNode;
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException(
-                    String.Format("Feil under henting av dokumentnode i {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
                     , GetType()), e);
             }
         }
@@ -134,5 +100,6 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
 
             return bodyReferenceNode;
         }
+
     }
 }

@@ -16,7 +16,7 @@ using System;
 using System.Xml;
 using SikkerDigitalPost.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// En kvitteringsmelding til Avsender om at Mottaker har åpnet forsendelsen i sin postkasse.
@@ -44,7 +44,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretningskvittering
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nÅpningstidspunkt: {3}. \nKonversasjonsId: {4}. \nRefererer til melding med id: {5}", 
-                GetType().Name, MeldingsId, Tidspunkt, Åpningstidspunkt, KonversasjonsId, RefToMessageId);
+                GetType().Name, MeldingsId, Tidspunkt, Åpningstidspunkt, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

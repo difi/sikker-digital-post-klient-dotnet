@@ -61,7 +61,13 @@ namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
                 _namespaceManager = namespaceManager;
                 Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
                 MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
-                ReferanseTilMeldingsId = DocumentNode("//ns6:RefToMessageId").InnerText;
+
+                var refToMessageIdNode = DocumentNode("//ns6:RefToMessageId");
+                if (refToMessageIdNode != null)
+                {
+                    ReferanseTilMeldingsId = refToMessageIdNode.InnerText;
+                }
+
                 Rådata = document.OuterXml;
             }
             catch (Exception e)
