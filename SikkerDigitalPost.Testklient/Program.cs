@@ -117,7 +117,7 @@ namespace SikkerDigitalPost.Testklient
                 if (kvittering is TransportFeiletKvittering)
                 {
                     var feil = ((TransportFeiletKvittering) kvittering).Beskrivelse;
-                    WriteToConsoleWithColor("En feil skjedde under transport. Melding ikke godtatt fra Meldingsformidler: " + feil, isError: true);
+                    WriteToConsoleWithColor("En feil skjedde under transport. Forespørsel for kvittering ble ikke godtatt av Meldingsformidler: " + feil, isError: true);
                     break;
                 }
 

@@ -35,16 +35,24 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public override XmlNode Xml()
         {
+            bool erFysiskPost = false;
             XmlElement digitalPostElement = Context.CreateElement("ns9", "digitalPost", Navnerom.Ns9);
             {
                 digitalPostElement.AppendChild(AvsenderElement());
-                digitalPostElement.AppendChild(MottakerElement());
-                digitalPostElement.AppendChild(DigitalPostInfoElement());
+                if (!erFysiskPost)
+                {
+                    digitalPostElement.AppendChild(MottakerElement());
+                    digitalPostElement.AppendChild(DigitalPostInfoElement());
+                }
+                else
+                {
+                    digitalPostElement.AppendChild(FysiskPostInfoElement());
+                }
                 digitalPostElement.AppendChild(DokumentpakkeFingeravtrykkElement());
             }
             return digitalPostElement;
         }
-
+        
         private XmlElement AvsenderElement()
         {
             XmlElement avsender = Context.CreateElement("ns9", "avsender", Navnerom.Ns9);
@@ -112,6 +120,12 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 }
             }
             return digitalPostInfo;
+        }
+
+        private XmlNode FysiskPostInfoElement()
+        {
+            var fysiskPost = new FysiskPostInfoElement(Settings, Context);
+            return fysiskPost.Xml();
         }
 
         private XmlElement EpostVarselElement()

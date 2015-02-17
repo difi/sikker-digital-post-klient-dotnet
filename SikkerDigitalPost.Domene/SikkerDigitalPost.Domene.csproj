@@ -45,6 +45,9 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
+    <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs" />
+    <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
+    <Compile Include="Enums\Utskriftsfarge.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Forretningskvittering.cs" />
@@ -63,6 +66,8 @@
     <Compile Include="Entiteter\Kvitteringer\Forretning\Åpningskvittering.cs" />
     <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
     <Compile Include="Enums\Feiltype.cs" />
+    <Compile Include="Enums\Posthåndtering.cs" />
+    <Compile Include="Enums\Posttype.cs" />
     <Compile Include="Enums\Sikkerhetsnivå.cs" />
     <Compile Include="Entiteter\Varsel\Varsel.cs" />
     <Compile Include="Enums\Prioritet.cs" />
