@@ -45,8 +45,11 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
+    <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
+    <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />
+    <Compile Include="Entiteter\Post\PostInfo.cs" />
     <Compile Include="Enums\Utskriftsfarge.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />
@@ -55,7 +58,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\Transportkvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvittering.cs" />
-    <Compile Include="Entiteter\Post\DigitalPost.cs" />
+    <Compile Include="Entiteter\Post\DigitalPostInfo.cs" />
     <Compile Include="Entiteter\Post\Dokument.cs" />
     <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
@@ -73,7 +76,7 @@
     <Compile Include="Enums\Prioritet.cs" />
     <Compile Include="Entiteter\Post\Forsendelse.cs" />
     <Compile Include="Entiteter\Interface\IAsiceVedlegg.cs" />
-    <Compile Include="Entiteter\Aktører\Mottaker.cs" />
+    <Compile Include="Entiteter\Aktører\DigitalPostMottaker.cs" />
     <Compile Include="Enums\Varslingskanal.cs" />
     <Compile Include="Entiteter\Aktører\Person.cs" />
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />

@@ -15,6 +15,8 @@
 using System;
 using System.Security.Cryptography;
 using System.Xml;
+using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Entiteter.Varsel;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -76,15 +78,16 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlElement MottakerElement()
         {
+            var digitalPostMottaker = (DigitalPostMottaker) Settings.Forsendelse.PostInfo.Mottaker;
             XmlElement mottaker = Context.CreateElement("ns9", "mottaker", Navnerom.Ns9);
             {
                 XmlElement person = mottaker.AppendChildElement("person", "ns9", Navnerom.Ns9, Context);
                 {
                     XmlElement personidentifikator = person.AppendChildElement("personidentifikator", "ns9", Navnerom.Ns9, Context);
-                    personidentifikator.InnerText = Settings.Forsendelse.DigitalPost.Mottaker.Personidentifikator;
+                    personidentifikator.InnerText = digitalPostMottaker.Personidentifikator;
 
                     XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", "ns9", Navnerom.Ns9, Context);
-                    postkasseadresse.InnerText = Settings.Forsendelse.DigitalPost.Mottaker.Postkasseadresse;
+                    postkasseadresse.InnerText = digitalPostMottaker.Postkasseadresse;
                 }
             }
             return mottaker;
@@ -92,34 +95,36 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlElement DigitalPostInfoElement()
         {
-            XmlElement digitalPostInfo = Context.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
+            var digitalPostInfo = (DigitalPostInfo) Settings.Forsendelse.PostInfo;
+
+            XmlElement digitalPostInfoElement = Context.CreateElement("ns9", "digitalPostInfo", Navnerom.Ns9);
             {
-                XmlElement virkningstidspunkt = digitalPostInfo.AppendChildElement("virkningstidspunkt", "ns9", Navnerom.Ns9, Context);
-                virkningstidspunkt.InnerText = Settings.Forsendelse.DigitalPost.Virkningstidspunkt.ToStringWithUtcOffset();
+                XmlElement virkningstidspunkt = digitalPostInfoElement.AppendChildElement("virkningstidspunkt", "ns9", Navnerom.Ns9, Context);
+                virkningstidspunkt.InnerText = digitalPostInfo.Virkningstidspunkt.ToStringWithUtcOffset();
 
-                XmlElement aapningskvittering = digitalPostInfo.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, Context);
-                aapningskvittering.InnerText = Settings.Forsendelse.DigitalPost.Åpningskvittering.ToString().ToLower();
+                XmlElement aapningskvittering = digitalPostInfoElement.AppendChildElement("aapningskvittering", "ns9", Navnerom.Ns9, Context);
+                aapningskvittering.InnerText = digitalPostInfo.Åpningskvittering.ToString().ToLower();
 
-                XmlElement sikkerhetsnivaa = digitalPostInfo.AppendChildElement("sikkerhetsnivaa", "ns9", Navnerom.Ns9, Context);
-                sikkerhetsnivaa.InnerText = ((int)Settings.Forsendelse.DigitalPost.Sikkerhetsnivå).ToString();
+                XmlElement sikkerhetsnivaa = digitalPostInfoElement.AppendChildElement("sikkerhetsnivaa", "ns9", Navnerom.Ns9, Context);
+                sikkerhetsnivaa.InnerText = ((int)digitalPostInfo.Sikkerhetsnivå).ToString();
 
-                XmlElement ikkeSensitivTittel = digitalPostInfo.AppendChildElement("ikkeSensitivTittel", "ns9", Navnerom.Ns9, Context);
+                XmlElement ikkeSensitivTittel = digitalPostInfoElement.AppendChildElement("ikkeSensitivTittel", "ns9", Navnerom.Ns9, Context);
                 ikkeSensitivTittel.SetAttribute("lang", Settings.Forsendelse.Språkkode.ToLower());
-                ikkeSensitivTittel.InnerText = Settings.Forsendelse.DigitalPost.IkkeSensitivTittel;
+                ikkeSensitivTittel.InnerText = digitalPostInfo.IkkeSensitivTittel;
 
-                XmlElement varsler = digitalPostInfo.AppendChildElement("varsler", "ns9", Navnerom.Ns9, Context);
+                XmlElement varsler = digitalPostInfoElement.AppendChildElement("varsler", "ns9", Navnerom.Ns9, Context);
                 {
-                    if (Settings.Forsendelse.DigitalPost.EpostVarsel != null)
+                    if (digitalPostInfo.EpostVarsel != null)
                     {
                         varsler.AppendChild(EpostVarselElement());
                     }
-                    if (Settings.Forsendelse.DigitalPost.SmsVarsel != null)
+                    if (digitalPostInfo.SmsVarsel != null)
                     {
                         varsler.AppendChild(SmsVarselElement());
                     }
                 }
             }
-            return digitalPostInfo;
+            return digitalPostInfoElement;
         }
 
         private XmlNode FysiskPostInfoElement()
@@ -130,13 +135,15 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlElement EpostVarselElement()
         {
-            var epostVarsel = Settings.Forsendelse.DigitalPost.EpostVarsel;
+            var digitalPostInfo = (DigitalPostInfo) Settings.Forsendelse.PostInfo;
+            var epostVarsel = digitalPostInfo.EpostVarsel;
             return VarselElement(epostVarsel, "epostVarsel", "epostadresse", epostVarsel.Epostadresse, epostVarsel.Varslingstekst);
         }
 
         private XmlElement SmsVarselElement()
         {
-            var smsVarsel = Settings.Forsendelse.DigitalPost.SmsVarsel;
+            var digitalPostInfo = (DigitalPostInfo)Settings.Forsendelse.PostInfo;
+            var smsVarsel = digitalPostInfo.SmsVarsel;
             return VarselElement(smsVarsel, "smsVarsel", "mobiltelefonnummer", smsVarsel.Mobilnummer, smsVarsel.Varslingstekst);
         }
 

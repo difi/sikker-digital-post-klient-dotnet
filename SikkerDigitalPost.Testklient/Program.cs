@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
@@ -50,13 +51,27 @@ namespace SikkerDigitalPost.Testklient
                 postkasseInnstillinger.Avsendersertifikat);
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
-            //Mottaker
-            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
-            //Digital Post
-            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
-            digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(1);
+            bool digital = true;
+            PostMottaker mottaker;
+            PostInfo postInfo;
+            if (digital)
+            {
+                //Mottaker
+                mottaker = new DigitalPostMottaker(postkasseInnstillinger.Personnummer,
+                    postkasseInnstillinger.Postkasseadresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+
+                //Digital Post
+                postInfo = new DigitalPostInfo((DigitalPostMottaker) mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
+                ((DigitalPostInfo) postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(1);
+
+            }
+            else
+            {
+                //mottaker = new FysiskPostMottaker();
+                postInfo = new FysiskPostInfo();
+            }
 
             string hoveddokumentsti =
                 @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
@@ -66,7 +81,7 @@ namespace SikkerDigitalPost.Testklient
             string mpcId = "ku";
             var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
+            var forsendelse = new Forsendelse(behandlingsansvarlig,postInfo, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
             //Send
             var klientkonfigurasjon = new Klientkonfigurasjon();

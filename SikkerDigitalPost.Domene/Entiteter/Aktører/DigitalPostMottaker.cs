@@ -19,10 +19,10 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
     /// <summary>
     /// Mottaker av en digital postmelding.
     /// </summary>
-    public class Mottaker : Person
+    public class DigitalPostMottaker : PostMottaker
     {
-        public X509Certificate2 Sertifikat { get; internal set; }
-        public Organisasjonsnummer OrganisasjonsnummerPostkasse { get; private set; }
+        public string Personidentifikator { get; set; }
+        public string Postkasseadresse { get; set; }
 
         /// <summary>
         /// Informasjon om mottaker. Vil vanligvis være hentet fra http://begrep.difi.no/Oppslagstjenesten/.
@@ -30,14 +30,17 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
         /// <param name="personidentifikator">Identifikator (fødselsnummer eller D-nummer) til mottaker av brevet.</param>
         /// <param name="postkasseadresse">Mottakerens adresse hos postkasseleverandøren.</param>
         /// <param name="sertifikat">Mottakerens sertifikat.</param>
-        /// <param name="organisasjonsnummerPostkasse">Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i meldingsprosessen.</param>
-        public Mottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, Organisasjonsnummer organisasjonsnummerPostkasse) : base(personidentifikator, postkasseadresse)
+        /// <param name="organisasjonsnummerPostkasse">Identifikator (organisasjonsnummer) 
+        /// til virksomheten som er sluttmottaker i meldingsprosessen.</param>
+        public DigitalPostMottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, 
+            Organisasjonsnummer organisasjonsnummerPostkasse)
         {
+            Personidentifikator = personidentifikator;
+            Postkasseadresse = postkasseadresse;
             Sertifikat = sertifikat;
             OrganisasjonsnummerPostkasse = organisasjonsnummerPostkasse;
         }
 
-
         /// <summary>
         /// Informasjon om mottaker. Vil vanligvis være hentet fra http://begrep.difi.no/Oppslagstjenesten/.
         /// </summary>
@@ -45,7 +48,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
         /// <param name="postkasseadresse">Mottakerens adresse hos postkasseleverandøren.</param>
         /// <param name="sertifikat">Mottakerens sertifikat.</param>
         /// <param name="organisasjonsnummerPostkasse">Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i meldingsprosessen.</param>
-        public Mottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, string organisasjonsnummerPostkasse)
+        public DigitalPostMottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, string organisasjonsnummerPostkasse)
             : this(personidentifikator,postkasseadresse,sertifikat,new Organisasjonsnummer(organisasjonsnummerPostkasse))
         {
         }

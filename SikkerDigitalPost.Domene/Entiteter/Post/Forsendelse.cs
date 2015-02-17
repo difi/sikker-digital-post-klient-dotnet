@@ -22,16 +22,16 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
     {
 
         /// <param name="behandlingsansvarlig">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
-        /// <param name="digitalPost">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
+        /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
         /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
-        public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, DigitalPost digitalPost,
+        public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo,
             Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
         {
             Behandlingsansvarlig = behandlingsansvarlig;
-            DigitalPost = digitalPost;
+            PostInfo = postInfo;
             Dokumentpakke = dokumentpakke;
             Prioritet = prioritet;
             Språkkode = språkkode;
@@ -46,7 +46,12 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <summary>
         /// Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.
         /// </summary>
-        public DigitalPost DigitalPost { get; set; }
+        //public DigitalPostInfo DigitalPostInfo { get; set; }
+
+        /// <summary>
+        /// Informasjon som brukes av postkasseleverandør for å behandle posten
+        /// </summary>
+        public PostInfo PostInfo { get; set; }
 
         /// <summary>
         /// Pakke med hoveddokument og ev. vedlegg som skal sendes.

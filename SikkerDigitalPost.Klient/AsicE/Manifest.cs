@@ -91,15 +91,17 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement MottakerNode()
         {
+            var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
+
             var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);
 
             XmlElement person = _manifestXml.CreateElement("person", Navnerom.Ns9);
             {
                 XmlElement personidentifikator = person.AppendChildElement("personidentifikator", Navnerom.Ns9, _manifestXml);
-                personidentifikator.InnerText = Forsendelse.DigitalPost.Mottaker.Personidentifikator;
+                personidentifikator.InnerText = digitalMottaker.Personidentifikator;
 
                 XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", Navnerom.Ns9, _manifestXml);
-                postkasseadresse.InnerText = Forsendelse.DigitalPost.Mottaker.Postkasseadresse;
+                postkasseadresse.InnerText = digitalMottaker.Postkasseadresse;
             }
 
             mottaker.AppendChild(person);
