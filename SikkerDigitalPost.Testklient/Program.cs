@@ -53,7 +53,7 @@ namespace SikkerDigitalPost.Testklient
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
 
-            bool digital = true;
+            bool digital = false;
             PostMottaker mottaker;
             PostInfo postInfo;
             if (digital)
@@ -83,12 +83,12 @@ namespace SikkerDigitalPost.Testklient
             }
 
             string hoveddokumentsti =
-                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\253014_1_P.docx.pdf";
+                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\paaminnelseHpvNnPapirCon.pdf";
             //string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
             string mpcId = "ku";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "OWASP TOP 10.pdf"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "application/pdf", "NO", "OWASP TOP 10.pdf"));
             //dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig,postInfo, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
@@ -157,7 +157,8 @@ namespace SikkerDigitalPost.Testklient
 
                 if (kvittering is Feilmelding)
                 {
-                    WriteToConsoleWithColor("  - En feilmelding ble hentet, men den kan være gammel ...", true);
+                    var feil = (Feilmelding) kvittering;
+                    WriteToConsoleWithColor("  - En feilmelding ble hentet :" + feil.Detaljer, true);
                     isSent = false;
                 }
 

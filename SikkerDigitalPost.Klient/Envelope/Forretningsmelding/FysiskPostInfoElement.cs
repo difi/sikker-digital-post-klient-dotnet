@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
@@ -94,7 +95,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             var adresseLinjeData = adresse.AdresseLinje(adresseLinjeNr);
 
-            if (adresseLinjeData == string.Empty)
+            if (String.IsNullOrEmpty(adresseLinjeData))
                 return;
 
             string adresselinje = "adresselinje" + adresseLinjeNr;
