@@ -13,14 +13,13 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Extensions;
-using System.Diagnostics;
-using System.Runtime.Serialization;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -96,12 +95,7 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement MottakerNode()
         {
-            if (Forsendelse.PostInfo is FysiskPostInfo)
-            {
-                return null;
-            }
-
-            var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
+           var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
 
             var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);
 

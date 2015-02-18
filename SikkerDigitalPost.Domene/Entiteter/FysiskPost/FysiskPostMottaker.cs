@@ -1,6 +1,8 @@
-﻿namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
+﻿using SikkerDigitalPost.Domene.Entiteter.Aktører;
+
+namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
 {
-    public class FysiskPostMottaker
+    public class FysiskPostMottaker : PostMottaker
     {
         public string Navn { get; set; }
 

@@ -10,7 +10,7 @@ namespace SikkerDigitalPost.Domene.Enums
 
     internal static class UtskriftsfargeHelper
     {
-        internal static string ToString(Utskriftsfarge utskriftsfarge)
+        internal static string EnumToString(Utskriftsfarge utskriftsfarge)
         {
             switch (utskriftsfarge)
             {
