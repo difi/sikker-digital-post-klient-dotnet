@@ -20,6 +20,7 @@ using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Extensions;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -73,7 +74,11 @@ namespace SikkerDigitalPost.Klient.AsicE
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
 
-            _manifestXml.DocumentElement.AppendChild(MottakerNode());
+            if (Forsendelse.ErDigitalPost)
+            {
+                _manifestXml.DocumentElement.AppendChild(MottakerNode());
+            }
+
             _manifestXml.DocumentElement.AppendChild(AvsenderNode());
 
             var hoveddokument = Forsendelse.Dokumentpakke.Hoveddokument;
@@ -91,6 +96,11 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement MottakerNode()
         {
+            if (Forsendelse.PostInfo is FysiskPostInfo)
+            {
+                return null;
+            }
+
             var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
 
             var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);

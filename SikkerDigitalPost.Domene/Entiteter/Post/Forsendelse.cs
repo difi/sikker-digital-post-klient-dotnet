@@ -53,6 +53,23 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// </summary>
         public PostInfo PostInfo { get; set; }
 
+        private bool? _erDigitalPost;
+        /// <summary>
+        /// Angir om post skal sendes digitalt.
+        /// </summary>
+        public bool ErDigitalPost
+        {
+            get
+            {
+                if (_erDigitalPost == null)
+                {
+                    _erDigitalPost = PostInfo is DigitalPostInfo;
+                }
+                return (bool) _erDigitalPost;
+            }
+                        
+        }
+
         /// <summary>
         /// Pakke med hoveddokument og ev. vedlegg som skal sendes.
         /// </summary>
