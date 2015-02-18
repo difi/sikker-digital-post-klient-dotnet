@@ -45,6 +45,16 @@ namespace SikkerDigitalPost.Klient
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
             }
 
+            if (IsMottakKvittering(xmlDocument))
+            {
+                throw new Exception("");
+            }
+
+            if (IsReturpost(xmlDocument))
+            {
+                throw new Exception("");
+            }
+
             if (IsTomKøKvittering(xmlDocument))
             {
                 return null;
@@ -119,6 +129,16 @@ namespace SikkerDigitalPost.Klient
         private static bool IsTransportFeiletKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "env:Fault");
+        }
+
+        private static bool IsMottakKvittering(XmlDocument document)
+        {
+            return DocumentHasNode(document, "ns9:mottak");
+        }
+
+        private static bool IsReturpost(XmlDocument document)
+        {
+            return DocumentHasNode(document, "ns9:returpost");
         }
 
         private static bool DocumentHasNode(XmlDocument document, string node)
