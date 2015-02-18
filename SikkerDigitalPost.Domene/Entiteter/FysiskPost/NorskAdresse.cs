@@ -25,11 +25,11 @@ namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
             }
         }
 
-        public int Postnummer { get; set; }
+        public string Postnummer { get; set; }
 
         public string Poststed { get; set; }
 
-        public NorskAdresse(int postnummer, string poststed)
+        public NorskAdresse(string postnummer, string poststed)
         {
             Postnummer = postnummer;
             Poststed = poststed;

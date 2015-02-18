@@ -16,6 +16,7 @@ using System;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
+using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Klient

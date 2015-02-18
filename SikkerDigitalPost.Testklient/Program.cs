@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -64,23 +65,31 @@ namespace SikkerDigitalPost.Testklient
 
                 //Digital Post
                 postInfo = new DigitalPostInfo((DigitalPostMottaker) mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
-                ((DigitalPostInfo) postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(1);
+                ((DigitalPostInfo) postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
 
             }
             else
             {
-                //mottaker = new FysiskPostMottaker();
-                postInfo = new FysiskPostInfo();
+                mottaker = new FysiskPostMottaker("Rolf Rolfsen", new NorskAdresse("0566", "Oslo"),
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+
+
+                var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))
+                {
+                    NorskAdresse = {Adresselinje1 = "Søppelveien 33"}
+                };
+
+                postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
             }
 
             string hoveddokumentsti =
-                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
-            string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
+                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\253014_1_P.docx.pdf";
+            //string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
             //Forsendelse
             string mpcId = "ku";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
+            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "OWASP TOP 10.pdf"));
+            //dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(behandlingsansvarlig,postInfo, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
 
             //Send

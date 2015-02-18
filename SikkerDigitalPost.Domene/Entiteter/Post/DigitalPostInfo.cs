@@ -26,8 +26,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4.</param>
         /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
         public DigitalPostInfo(DigitalPostMottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
+            :base(mottaker)
         {
-            Mottaker = mottaker;
             IkkeSensitivTittel = ikkeSensitivTittel;
             Sikkerhetsnivå = sikkerhetsnivå;
             Åpningskvittering = åpningskvittering;

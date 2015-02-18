@@ -37,11 +37,11 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public override XmlNode Xml()
         {
-            bool erFysiskPost = false;
             XmlElement digitalPostElement = Context.CreateElement("ns9", "digitalPost", Navnerom.Ns9);
             {
                 digitalPostElement.AppendChild(AvsenderElement());
-                if (!erFysiskPost)
+                
+                if (Settings.Forsendelse.ErDigitalPost)
                 {
                     digitalPostElement.AppendChild(MottakerElement());
                     digitalPostElement.AppendChild(DigitalPostInfoElement());
