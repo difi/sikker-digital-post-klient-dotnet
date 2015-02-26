@@ -155,6 +155,12 @@ namespace SikkerDigitalPost.Testklient
                     WriteToConsoleWithColor("  - Har du sett. Noen har åpnet et brev. Moro.");
                 }
 
+                if(kvittering is ReturpostKvittering)
+                    WriteToConsoleWithColor("  - Du har fått en returpostkvittering for fysisk post.");
+
+                if(kvittering is MottaksKvittering)
+                    WriteToConsoleWithColor("  - Kvittering på sending av fysisk post mottatt.");
+
                 if (kvittering is Feilmelding)
                 {
                     var feil = (Feilmelding) kvittering;

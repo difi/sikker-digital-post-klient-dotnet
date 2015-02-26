@@ -16,7 +16,6 @@ using System;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
-using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Klient
@@ -29,36 +28,25 @@ namespace SikkerDigitalPost.Klient
             xmlDocument.LoadXml(xml);
 
             if (IsLeveringskvittering(xmlDocument))
-            {
                 return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
-            }
+            
             if (IsVarslingFeiletkvittering(xmlDocument))
-            {
                 return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
-            }
+               
             if (IsFeilmelding(xmlDocument))
-            {
                 return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
-            }
+            
             if (IsÅpningskvittering(xmlDocument))
-            {
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
-            }
 
-            if (IsMottakKvittering(xmlDocument))
-            {
-                throw new Exception("");
-            }
+            if (IsMottaksKvittering(xmlDocument))
+                return new MottaksKvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsReturpost(xmlDocument))
-            {
-                throw new Exception("");
-            }
+                return new ReturpostKvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsTomKøKvittering(xmlDocument))
-            {
                 return null;
-            }
 
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
@@ -75,15 +63,13 @@ namespace SikkerDigitalPost.Klient
             xmlDocument.LoadXml(xml);
 
             if (IsTransportOkKvittering(xmlDocument))
-            {
                 return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
-            }
-            if (IsTransportFeiletKvittering(xmlDocument))
-            {
-                return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
-            }
 
-            var exception = new XmlParseException("Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+            if (IsTransportFeiletKvittering(xmlDocument))
+                return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            var exception = new XmlParseException(
+                "Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
                 Rådata = xml
             };
@@ -115,12 +101,7 @@ namespace SikkerDigitalPost.Klient
         {
             return DocumentHasNode(document, "ns6:Error[@shortDescription = 'EmptyMessagePartitionChannel']");
         }
-
-        private static bool IsTransportError(XmlDocument document)
-        {
-            return DocumentHasNode(document, "ns6:Error");
-        }
-
+        
         private static bool IsTransportOkKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns6:Receipt");
@@ -131,7 +112,7 @@ namespace SikkerDigitalPost.Klient
             return DocumentHasNode(document, "env:Fault");
         }
 
-        private static bool IsMottakKvittering(XmlDocument document)
+        private static bool IsMottaksKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns9:mottak");
         }
