@@ -23,12 +23,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             XmlElement fysiskPostInfoElement = Context.CreateElement("ns9", "fysiskPostInfo", Navnerom.Ns9);
             {
-                //XmlElement mottaker = fysiskPostInfoElement.AppendChildElement("mottaker", "ns9", Navnerom.Ns9, Context);
-                //{
-                    var fysiskPostMottaker = (FysiskPostMottaker) _fysiskPostInfo.Mottaker;
-                    var mottakerElement = MottakerElement(fysiskPostMottaker.Navn, fysiskPostMottaker.NorskAdresse); 
-                    fysiskPostInfoElement.AppendChild(mottakerElement);
-                //}
+                var fysiskPostMottaker = (FysiskPostMottaker) _fysiskPostInfo.Mottaker;
+                var mottakerElement = MottakerElement(fysiskPostMottaker.Navn, fysiskPostMottaker.NorskAdresse); 
+                fysiskPostInfoElement.AppendChild(mottakerElement);
 
                 XmlElement posttype = fysiskPostInfoElement.AppendChildElement("posttype", "ns9", Navnerom.Ns9, Context);
                 posttype.InnerText = _fysiskPostInfo.Posttype.ToString();

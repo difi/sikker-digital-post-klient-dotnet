@@ -6,7 +6,7 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
     {
         public PostMottaker Mottaker { get; set; }
 
-        public PostInfo(PostMottaker mottaker)
+        protected PostInfo(PostMottaker mottaker)
         {
             Mottaker = mottaker;
         }
