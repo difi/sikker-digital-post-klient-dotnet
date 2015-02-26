@@ -68,7 +68,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 XmlElement identifier = receiver.AppendChildElement("Identifier", "ns3", Navnerom.Ns3, Context);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
-                identifier.InnerText = Settings.Forsendelse.DigitalPost.Mottaker.OrganisasjonsnummerPostkasse.Iso6523();
+                identifier.InnerText = Settings.Forsendelse.PostInfo.Mottaker.OrganisasjonsnummerPostkasse.Iso6523();
             }
             return receiver;
         }

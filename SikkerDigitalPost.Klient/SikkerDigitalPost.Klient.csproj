@@ -64,6 +64,7 @@
     <Compile Include="Envelope\Abstract\AbstractHeader.cs" />
     <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingBody.cs" />
     <Compile Include="Envelope\Forretningsmelding\DigitalPostElement.cs" />
+    <Compile Include="Envelope\Forretningsmelding\FysiskPostInfoElement.cs" />
     <Compile Include="Envelope\UtenInnholdBody.cs" />
     <Compile Include="Envelope\Forretningsmelding\StandardBusinessDocument.cs" />
     <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingEnvelope.cs" />

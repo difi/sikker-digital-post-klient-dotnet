@@ -29,7 +29,7 @@ namespace SikkerDigitalPost.Testklient
 
         public void SendMelding(Forsendelse forsendelse)
         {
-            Console.WriteLine("Tråd {0} SENDER forsendelse {1} til {2}...", Thread.CurrentThread.Name, forsendelse.Dokumentpakke.Hoveddokument.Tittel, forsendelse.DigitalPost.Mottaker.Postkasseadresse);
+            //Console.WriteLine("Tråd {0} SENDER forsendelse {1} til {2}...", Thread.CurrentThread.Name, forsendelse.Dokumentpakke.Hoveddokument.Tittel, forsendelse.DigitalPostInfo.Mottaker.Postkasseadresse);
             var transportkvittering = _klient.Send(forsendelse);
             Console.WriteLine("Tråd {0} er FERDIG med forsendelse {1} og fikk en {2}", Thread.CurrentThread.Name, forsendelse.Dokumentpakke.Hoveddokument.Tittel, transportkvittering.GetType().Name);
         }
@@ -38,13 +38,13 @@ namespace SikkerDigitalPost.Testklient
         {
             Action<Forsendelse> sendMeldingAction = (s) => SendMelding(s);
 
-            var marit = new Mottaker("25053700003", "marit.kjesnes#19BD", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
+            var marit = new DigitalPostMottaker("25053700003", "marit.kjesnes#19BD", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
             var forsendelserTilDangfart = GetForsendelser("MaritTråd", AntallBrev, marit, "Marit", "MaritBrev");
 
-            var joni = new Mottaker("13013500002", "joni.sneve#0VAS", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
+            var joni = new DigitalPostMottaker("13013500002", "joni.sneve#0VAS", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
             var forsendelserTilJoni = GetForsendelser("JoniTråd", AntallBrev, joni, "Joni", "JoniBrev");
 
-            var jarand = new Mottaker("01013300001", "jarand.bjarte.t.k.grindheim#6KMG", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
+            var jarand = new DigitalPostMottaker("01013300001", "jarand.bjarte.t.k.grindheim#6KMG", _postkasseInnstillinger.Mottakersertifikat, _postkasseInnstillinger.OrgnummerPostkasse);
             var forsendelserTilJarandBjarte = GetForsendelser("Jarand-BjarteTråd", AntallBrev, jarand, "Jarand", "Jarand-BjarteBrev");
 
             BlockingCollection<Forsendelse> alleForsendelser = new BlockingCollection<Forsendelse>();
@@ -65,21 +65,21 @@ namespace SikkerDigitalPost.Testklient
 
         private readonly ParallelOptions _opts = new ParallelOptions() { MaxDegreeOfParallelism = 12};
 
-        public BlockingCollection<Forsendelse> GetForsendelser(string trådnavn, int count, Mottaker mottaker, string fornavn, string tittel)
+        public BlockingCollection<Forsendelse> GetForsendelser(string trådnavn, int count, DigitalPostMottaker digitalPostMottaker, string fornavn, string tittel)
         {
             BlockingCollection<Forsendelse> forsendelser = new BlockingCollection<Forsendelse>();
 
             for (int i = 0; i < count; i++)
             {
-                forsendelser.Add(GetForsendelse(mottaker, fornavn, tittel, i));
+                forsendelser.Add(GetForsendelse(digitalPostMottaker, fornavn, tittel, i));
             }
             return forsendelser;
         }
 
-        public Forsendelse GetForsendelse(Mottaker mottaker, string fornavn, string tittel, int løpenummer)
+        public Forsendelse GetForsendelse(DigitalPostMottaker digitalPostMottaker, string fornavn, string tittel, int løpenummer)
         {
             //Digital Post
-            var digitalPost = new DigitalPost(mottaker, String.Format("{0} {1} ({2})", fornavn, tittel, løpenummer), Sikkerhetsnivå.Nivå3, åpningskvittering: false);
+            var digitalPost = new DigitalPostInfo(digitalPostMottaker, String.Format("{0} {1} ({2})", fornavn, tittel, løpenummer), Sikkerhetsnivå.Nivå3, åpningskvittering: false);
             
             //Forsendelse
             string mpcId = "hest";

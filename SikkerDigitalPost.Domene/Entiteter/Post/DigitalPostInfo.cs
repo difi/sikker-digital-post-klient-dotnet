@@ -19,24 +19,19 @@ using SikkerDigitalPost.Domene.Enums;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Post
 {
-    public class DigitalPost
+    public class DigitalPostInfo : PostInfo
     {
         /// <param name="mottaker">Mottaker av digital post.</param>
         /// <param name="ikkeSensitivTittel">Ikke-sensitiv tittel på brevet. Denne tittelen vil være synlig under transport av meldingen, og kan vises i mottakerens postkasse.</param>
         /// <param name="sikkerhetsnivå">Nødvendig autentiseringsnivå som kreves av mottaker i postkassen for å åpne brevet. Standardverdi er Nivå4.</param>
         /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
-        public DigitalPost(Mottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
+        public DigitalPostInfo(DigitalPostMottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
+            :base(mottaker)
         {
-            Mottaker = mottaker;
             IkkeSensitivTittel = ikkeSensitivTittel;
             Sikkerhetsnivå = sikkerhetsnivå;
             Åpningskvittering = åpningskvittering;
         }
-
-        /// <summary>
-        /// Mottaker av digital post.
-        /// </summary>
-        public Mottaker Mottaker { get; set; }
 
         /// <summary>
         /// Dato og tidspunkt for når en melding skal tilgjengeliggjøres for Innbygger i Innbygger sin postkasse. 

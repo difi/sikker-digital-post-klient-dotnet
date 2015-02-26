@@ -34,7 +34,7 @@ namespace SikkerDigitalPost.Tester
         {
             Initialiser();
             //Overkjør arkiv i Base for å bruke et sertifikat vi har privatekey til.
-            Mottaker.Sertifikat = Mottakersertifikat();
+            DigitalPostMottaker.Sertifikat = Mottakersertifikat();
         }
 
         [TestMethod]
