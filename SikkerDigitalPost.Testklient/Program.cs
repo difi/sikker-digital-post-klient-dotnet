@@ -42,18 +42,26 @@ namespace SikkerDigitalPost.Testklient
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
+<<<<<<< Updated upstream
 
             //Avsender
             var behandlingsansvarlig =
                 new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler,
                 postkasseInnstillinger.Avsendersertifikat);
+=======
+            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: false, erNorskMottaker: false);
+            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
+            
+            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
+>>>>>>> Stashed changes
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
             //Mottaker
             var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
                 postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
+<<<<<<< Updated upstream
             //Digital Post
             var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
             digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(1);
@@ -61,6 +69,15 @@ namespace SikkerDigitalPost.Testklient
             string hoveddokumentsti =
                 @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
+=======
+            /**
+             * SEND POST OG MOTTA KVITTERINGER
+             */
+            SendPost(sikkerDigitalPostKlient, forsendelse);
+
+            Console.WriteLine();
+            Console.WriteLine("--- HENTER KVITTERINGER ---");
+>>>>>>> Stashed changes
 
             //Forsendelse
             string mpcId = "ku";
@@ -94,9 +111,14 @@ namespace SikkerDigitalPost.Testklient
                     feiletkvittering.Beskrivelse), true);
             }
 
+<<<<<<< Updated upstream
             Console.WriteLine();
             Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
 
+=======
+        private static void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
+        {
+>>>>>>> Stashed changes
             Console.WriteLine(" > Starter å hente kvitteringer ...");
 
             Thread.Sleep(3000);
@@ -164,6 +186,45 @@ namespace SikkerDigitalPost.Testklient
                 Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
             };
         }
+<<<<<<< Updated upstream
+=======
+
+        private static PostInfo GenererPostInfo(PostkasseInnstillinger postkasseInnstillinger, bool erDigitalPostMottaker, bool erNorskMottaker)
+        {
+            PostInfo postInfo;
+            PostMottaker mottaker;
+
+            if (erDigitalPostMottaker)
+            {
+                mottaker = new DigitalPostMottaker(postkasseInnstillinger.Personnummer,
+                    postkasseInnstillinger.Postkasseadresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+                
+                postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
+                ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
+            }
+            else
+            {
+                Adresse adresse;
+
+                if (erNorskMottaker)
+                    adresse = new NorskAdresse("0566", "Oslo");
+                else
+                    adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
+
+                mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
+                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+
+                var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))
+                {
+                    Adresse = { Adresselinje1 = "Søppelveien 33" }
+                };
+
+                postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
+            }
+            return postInfo;
+        }
+>>>>>>> Stashed changes
     }
 }
 

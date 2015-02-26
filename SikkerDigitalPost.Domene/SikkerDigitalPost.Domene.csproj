@@ -45,6 +45,19 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
+<<<<<<< Updated upstream
+=======
+    <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
+    <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
+    <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs" />
+    <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
+    <Compile Include="Entiteter\FysiskPost\UtenlandskAdresse.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\MottaksKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostKvittering.cs" />
+    <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />
+    <Compile Include="Entiteter\Post\PostInfo.cs" />
+    <Compile Include="Enums\Utskriftsfarge.cs" />
+>>>>>>> Stashed changes
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Forretningskvittering.cs" />
