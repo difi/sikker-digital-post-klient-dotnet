@@ -50,7 +50,7 @@ namespace SikkerDigitalPost.Testklient
              * SETT OPP MOTTAKER OG INNSTILLINGER
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
-            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: true);
+            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: false, erNorskBrev: false);
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
 
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
@@ -193,7 +193,7 @@ namespace SikkerDigitalPost.Testklient
             };
         }
 
-        private static PostInfo GenererPostInfo(PostkasseInnstillinger postkasseInnstillinger, bool erDigitalPostMottaker)
+        private static PostInfo GenererPostInfo(PostkasseInnstillinger postkasseInnstillinger, bool erDigitalPostMottaker, bool erNorskBrev)
         {
             PostInfo postInfo;
             PostMottaker mottaker;
@@ -209,7 +209,13 @@ namespace SikkerDigitalPost.Testklient
             }
             else
             {
-                mottaker = new FysiskPostMottaker("Rolf Rolfsen", new NorskAdresse("0566", "Oslo"),
+                Adresse adresse;
+                if (erNorskBrev)
+                    adresse = new NorskAdresse("0566", "Oslo");
+                else
+                    adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
+
+                mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
                 var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))

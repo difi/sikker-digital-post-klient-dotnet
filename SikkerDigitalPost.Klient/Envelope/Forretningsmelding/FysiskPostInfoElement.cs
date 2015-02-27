@@ -123,9 +123,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             string adresseLinjeData = "";
 
             if (adresse is NorskAdresse)
-                adresse.AdresseLinje(adresseLinjeNr);
+                adresseLinjeData =  adresse.AdresseLinje(adresseLinjeNr);
             else
-                ((UtenlandskAdresse) adresse).AdresseLinje(adresseLinjeNr);
+                adresseLinjeData = ((UtenlandskAdresse) adresse).AdresseLinje(adresseLinjeNr);
 
             if (String.IsNullOrEmpty(adresseLinjeData))
                 return;
