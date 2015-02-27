@@ -54,9 +54,9 @@ namespace SikkerDigitalPost.Tester
         protected static Databehandler Databehandler;
 
         protected static Organisasjonsnummer OrgNrMottaker;
-        protected static Mottaker Mottaker;
+        protected static DigitalPostMottaker DigitalPostMottaker;
 
-        protected static DigitalPost DigitalPost;
+        protected static DigitalPostInfo DigitalPostInfo;
         protected static Forsendelse Forsendelse;
         
         internal static AsicEArkiv Arkiv;
@@ -78,16 +78,16 @@ namespace SikkerDigitalPost.Tester
             Databehandler = new Databehandler(OrgNrAvsender, AvsenderSertifikat);
 
             OrgNrMottaker = new Organisasjonsnummer("984661185");
-            Mottaker = new Mottaker("04036125433", "ove.jonsen#6K5A", MottakerSertifikat, OrgNrMottaker.Iso6523());
+            DigitalPostMottaker = new DigitalPostMottaker("04036125433", "ove.jonsen#6K5A", MottakerSertifikat, OrgNrMottaker.Iso6523());
             
             //DigitalPost og forsendelse
-            DigitalPost = new DigitalPost(Mottaker, "Ikke-sensitiv tittel")
+            DigitalPostInfo = new DigitalPostInfo(DigitalPostMottaker, "Ikke-sensitiv tittel")
             {
                 EpostVarsel = new EpostVarsel("tull@ball.no", "Dette er et epostvarsel. En trojansk ... hest.", 0, 7),
                 SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel. En trojansk ... telefon..", 3, 14)
             };
 
-            Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPost, Dokumentpakke);
+            Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPostInfo, Dokumentpakke);
             
             //Guids, AsicEArkiv og Envelope
             GuidHandler = new GuidHandler();

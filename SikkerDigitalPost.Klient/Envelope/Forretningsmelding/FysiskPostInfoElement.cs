@@ -24,6 +24,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             XmlElement fysiskPostInfoElement = Context.CreateElement("ns9", "fysiskPostInfo", Navnerom.Ns9);
             {
                 var fysiskPostMottaker = (FysiskPostMottaker) _fysiskPostInfo.Mottaker;
+
                 var mottakerElement = MottakerElement(fysiskPostMottaker.Navn, fysiskPostMottaker.Adresse); 
                 fysiskPostInfoElement.AppendChild(mottakerElement);
 
@@ -43,6 +44,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
             return fysiskPostInfoElement;
         }
+
 
         private XmlNode MottakerElement(string mottakerNavn, Adresse adresse)
         {
@@ -72,7 +74,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             
             return returElement;
         }
-
 
         private XmlNode UtenlandskAdresseNode(UtenlandskAdresse adresse)
         {
@@ -129,7 +130,6 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             if (String.IsNullOrEmpty(adresseLinjeData))
                 return;
 
-            
             string adresselinje = "adresselinje" + adresseLinjeNr;
             XmlElement linje = Context.CreateElement("ns9", adresselinje, Navnerom.Ns9);
             linje.InnerText = adresseLinjeData;

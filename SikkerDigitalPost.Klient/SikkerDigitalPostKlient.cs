@@ -278,6 +278,11 @@ namespace SikkerDigitalPost.Klient
             {
                 using (var response = we.Response as HttpWebResponse)
                 {
+                    if (response == null)
+                    {
+                        throw new SendException("Får ikke kontakt med meldingsformidleren. Sjekk tilkoblingsdetaljer og prøv på nytt.");
+                    }
+
                     using (Stream errorStream = response.GetResponseStream())
                     {
                         XDocument soap = XDocument.Load(errorStream);

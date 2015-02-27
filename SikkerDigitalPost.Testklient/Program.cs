@@ -17,85 +17,66 @@ using System.Diagnostics;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Testklient
 {
     class Program
     {
+        private const string MpcId = "queue1";
+
+
         static void Main(string[] args)
         {
             SendPost();
         }
 
-        private static bool SendPost()
+        private static void SendPost()
         {
-            bool isSent = true;
             /*
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
-            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
-<<<<<<< Updated upstream
 
-            //Avsender
-            var behandlingsansvarlig =
-                new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler,
-                postkasseInnstillinger.Avsendersertifikat);
-=======
-            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: false, erNorskMottaker: false);
+            Console.WriteLine("--- STARTER Å SENDE POST ---");
+
+            /*
+             * SETT OPP MOTTAKER OG INNSTILLINGER
+             */
+            PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
+            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: true);
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
-            
+
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
->>>>>>> Stashed changes
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
-            //Mottaker
-            var mottaker = new Mottaker(postkasseInnstillinger.Personnummer, postkasseInnstillinger.Postkasseadresse,
-                postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+            var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
+            var klientkonfigurasjon = SettOppKlientkonfigurasjon();
+            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
 
-<<<<<<< Updated upstream
-            //Digital Post
-            var digitalPost = new DigitalPost(mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
-            digitalPost.Virkningstidspunkt = DateTime.Now.AddMinutes(1);
 
-            string hoveddokumentsti =
-                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.txt";
-            string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
-=======
             /**
              * SEND POST OG MOTTA KVITTERINGER
              */
             SendPost(sikkerDigitalPostKlient, forsendelse);
 
+            Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
+
+            HentKvitteringer(sikkerDigitalPostKlient);
+
             Console.WriteLine();
-            Console.WriteLine("--- HENTER KVITTERINGER ---");
->>>>>>> Stashed changes
+            Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
+            Console.ReadKey();
+        }
 
-            //Forsendelse
-            string mpcId = "ku";
-            var dokumentpakke = new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "text/plain", "NO", "Hoveddokument.txt"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
-            var forsendelse = new Forsendelse(behandlingsansvarlig, digitalPost, dokumentpakke, Prioritet.Prioritert, mpcId, "NO");
-
-            //Send
-            var klientkonfigurasjon = new Klientkonfigurasjon();
-            LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.DebugLoggTilFil = true;
-            klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
-
-            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
-
-            Console.WriteLine("--- STARTER Å SENDE POST ---");
-
+        private static void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        {
             Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
 
@@ -110,22 +91,19 @@ namespace SikkerDigitalPost.Testklient
                 WriteToConsoleWithColor(String.Format(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
                     feiletkvittering.Beskrivelse), true);
             }
+        }
 
-<<<<<<< Updated upstream
-            Console.WriteLine();
-            Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
-
-=======
         private static void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
         {
->>>>>>> Stashed changes
+            Console.WriteLine();
+
             Console.WriteLine(" > Starter å hente kvitteringer ...");
 
             Thread.Sleep(3000);
 
             while (true)
             {
-                var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
+                var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
                 Kvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
@@ -138,8 +116,10 @@ namespace SikkerDigitalPost.Testklient
 
                 if (kvittering is TransportFeiletKvittering)
                 {
-                    var feil = ((TransportFeiletKvittering) kvittering).Beskrivelse;
-                    WriteToConsoleWithColor("En feil skjedde under transport. Melding ikke godtatt fra Meldingsformidler: " + feil, isError: true);
+                    var feil = ((TransportFeiletKvittering)kvittering).Beskrivelse;
+                    WriteToConsoleWithColor(
+                        "En feil skjedde under transport. Forespørsel for kvittering ble ikke godtatt av Meldingsformidler: " +
+                        feil, isError: true);
                     break;
                 }
 
@@ -153,22 +133,48 @@ namespace SikkerDigitalPost.Testklient
                     WriteToConsoleWithColor("  - Har du sett. Noen har åpnet et brev. Moro.");
                 }
 
+                if (kvittering is ReturpostKvittering)
+                    WriteToConsoleWithColor("  - Du har fått en returpostkvittering for fysisk post.");
+
+                if (kvittering is MottaksKvittering)
+                    WriteToConsoleWithColor("  - Kvittering på sending av fysisk post mottatt.");
+
                 if (kvittering is Feilmelding)
                 {
-                    WriteToConsoleWithColor("  - En feilmelding ble hentet, men den kan være gammel ...", true);
-                    isSent = false;
+                    var feil = (Feilmelding)kvittering;
+                    WriteToConsoleWithColor("  - En feilmelding ble hentet :" + feil.Detaljer, true);
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                sikkerDigitalPostKlient.Bekreft((Forretningskvittering) kvittering);
+                sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
                 Console.WriteLine("   - Kvittering sendt.");
             }
+        }
+
+        private static Klientkonfigurasjon SettOppKlientkonfigurasjon()
+        {
+            var klientkonfigurasjon = new Klientkonfigurasjon();
+            LeggTilLogging(klientkonfigurasjon);
+            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            klientkonfigurasjon.DebugLoggTilFil = true;
+            klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
+            return klientkonfigurasjon;
+        }
+
+        private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
+        {
+            string hoveddokumentsti =
+                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\paaminnelseHpvNnPapirCon.pdf";
+            //string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
 
-            Console.WriteLine();
-            Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
-            Console.ReadKey();
-            return isSent;
+            //Forsendelse
+            var dokumentpakke =
+                new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "application/pdf", "NO",
+                    "OWASP TOP 10.pdf"));
+            //dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
+            return new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
+
         }
 
         private static void WriteToConsoleWithColor(string message, bool isError = false)
@@ -186,10 +192,8 @@ namespace SikkerDigitalPost.Testklient
                 Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
             };
         }
-<<<<<<< Updated upstream
-=======
 
-        private static PostInfo GenererPostInfo(PostkasseInnstillinger postkasseInnstillinger, bool erDigitalPostMottaker, bool erNorskMottaker)
+        private static PostInfo GenererPostInfo(PostkasseInnstillinger postkasseInnstillinger, bool erDigitalPostMottaker)
         {
             PostInfo postInfo;
             PostMottaker mottaker;
@@ -199,20 +203,13 @@ namespace SikkerDigitalPost.Testklient
                 mottaker = new DigitalPostMottaker(postkasseInnstillinger.Personnummer,
                     postkasseInnstillinger.Postkasseadresse,
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
-                
+
                 postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
                 ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
             }
             else
             {
-                Adresse adresse;
-
-                if (erNorskMottaker)
-                    adresse = new NorskAdresse("0566", "Oslo");
-                else
-                    adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
-
-                mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
+                mottaker = new FysiskPostMottaker("Rolf Rolfsen", new NorskAdresse("0566", "Oslo"),
                     postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
 
                 var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))
@@ -224,12 +221,5 @@ namespace SikkerDigitalPost.Testklient
             }
             return postInfo;
         }
->>>>>>> Stashed changes
     }
 }
-
-
-
-
-
-

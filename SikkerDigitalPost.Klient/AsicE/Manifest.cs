@@ -13,13 +13,13 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Xml;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Extensions;
-using System.Diagnostics;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -73,7 +73,11 @@ namespace SikkerDigitalPost.Klient.AsicE
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
 
-            _manifestXml.DocumentElement.AppendChild(MottakerNode());
+            if (Forsendelse.ErDigitalPost)
+            {
+                _manifestXml.DocumentElement.AppendChild(MottakerNode());
+            }
+
             _manifestXml.DocumentElement.AppendChild(AvsenderNode());
 
             var hoveddokument = Forsendelse.Dokumentpakke.Hoveddokument;
@@ -91,15 +95,17 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement MottakerNode()
         {
+           var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
+
             var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);
 
             XmlElement person = _manifestXml.CreateElement("person", Navnerom.Ns9);
             {
                 XmlElement personidentifikator = person.AppendChildElement("personidentifikator", Navnerom.Ns9, _manifestXml);
-                personidentifikator.InnerText = Forsendelse.DigitalPost.Mottaker.Personidentifikator;
+                personidentifikator.InnerText = digitalMottaker.Personidentifikator;
 
                 XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", Navnerom.Ns9, _manifestXml);
-                postkasseadresse.InnerText = Forsendelse.DigitalPost.Mottaker.Postkasseadresse;
+                postkasseadresse.InnerText = digitalMottaker.Postkasseadresse;
             }
 
             mottaker.AppendChild(person);

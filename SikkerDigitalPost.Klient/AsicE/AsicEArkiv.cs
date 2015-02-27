@@ -48,7 +48,7 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private X509Certificate2 _krypteringssertifikat 
         {
-            get { return _forsendelse.DigitalPost.Mottaker.Sertifikat; }
+            get { return _forsendelse.PostInfo.Mottaker.Sertifikat; }
         }
         
         public string Filnavn
