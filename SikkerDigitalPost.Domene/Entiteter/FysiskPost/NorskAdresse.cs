@@ -1,7 +1,4 @@
-﻿using System;
-using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
-
-namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
+﻿namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
 {
 
     public class NorskAdresse : Adresse
