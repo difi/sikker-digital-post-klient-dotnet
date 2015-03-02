@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 
-namespace SikkerDigitalPost.Klient
+namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
     public class ReturpostKvittering : Forretningskvittering
     {

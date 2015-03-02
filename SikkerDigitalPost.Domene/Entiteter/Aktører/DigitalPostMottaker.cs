@@ -21,7 +21,14 @@ namespace SikkerDigitalPost.Domene.Entiteter.Aktører
     /// </summary>
     public class DigitalPostMottaker : PostMottaker
     {
+        /// <summary>
+        /// Identifikator (fødselsnummer eller D-nummer) til mottaker av brevet.
+        /// </summary>
         public string Personidentifikator { get; set; }
+        
+        /// <summary>
+        /// Mottakerens adresse hos postkasseleverandøren.
+        /// </summary>
         public string Postkasseadresse { get; set; }
 
        /// <summary>

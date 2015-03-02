@@ -2,15 +2,20 @@
 
 namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
 {
-    public class NorskAdresse
+
+    public class NorskAdresse : Adresse
     {
-        public string Adresselinje1 { get; set; }
+        public string Postnummer { get; set; }
 
-        public string Adresselinje2 { get; set; }
+        public string Poststed { get; set; }
 
-        public string Adresselinje3 { get; set; }
+        public NorskAdresse(string postnummer, string poststed)
+        {
+            Postnummer = postnummer;
+            Poststed = poststed;
+        }
 
-        public string AdresseLinje(int index1)
+        public override string AdresseLinje(int index1)
         {
             switch (index1)
             {
@@ -21,18 +26,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
                 case 3:
                     return Adresselinje3;
                 default:
-                    throw new ArgumentOutOfRangeException("index1", "Postadrese har bare index 1,2 og 3");
+                    throw new ArgumentOutOfRangeException("index1", "Norsk postadrese har bare adresselinje 1, 2 og 3");
             }
-        }
-
-        public string Postnummer { get; set; }
-
-        public string Poststed { get; set; }
-
-        public NorskAdresse(string postnummer, string poststed)
-        {
-            Postnummer = postnummer;
-            Poststed = poststed;
         }
     }
 }
