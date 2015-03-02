@@ -120,13 +120,8 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private void LeggTilAdresselinje(XmlElement norskAdresse, Adresse adresse, int adresseLinjeNr)
         {
-            string adresseLinjeData = "";
-
-            if (adresse is NorskAdresse)
-                adresseLinjeData =  adresse.AdresseLinje(adresseLinjeNr);
-            else
-                adresseLinjeData = ((UtenlandskAdresse) adresse).AdresseLinje(adresseLinjeNr);
-
+            var adresseLinjeData = adresse.AdresseLinje(adresseLinjeNr);
+            
             if (String.IsNullOrEmpty(adresseLinjeData))
                 return;
 

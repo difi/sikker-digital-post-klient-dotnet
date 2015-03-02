@@ -30,6 +30,8 @@ namespace SikkerDigitalPost.Testklient
     class Program
     {
         private const string MpcId = "queue1";
+        private const bool ErDigitalPostMottaker = false;
+        private const bool ErNorskBrev = false;
 
 
         static void Main(string[] args)
@@ -50,7 +52,7 @@ namespace SikkerDigitalPost.Testklient
              * SETT OPP MOTTAKER OG INNSTILLINGER
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
-            var postInfo = GenererPostInfo(postkasseInnstillinger, erDigitalPostMottaker: false, erNorskBrev: false);
+            var postInfo = GenererPostInfo(postkasseInnstillinger, ErDigitalPostMottaker, ErNorskBrev);
             var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
 
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
@@ -165,14 +167,14 @@ namespace SikkerDigitalPost.Testklient
         {
             string hoveddokumentsti =
                 @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\paaminnelseHpvNnPapirCon.pdf";
-            //string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
+            string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
 
             //Forsendelse
             var dokumentpakke =
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
-            //dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedleggsti, "text/plain", "NO", "Vedlegg.txt"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", hoveddokumentsti, "application/pdf", "NO", "Vedlegg.txt"));
             return new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
 
         }

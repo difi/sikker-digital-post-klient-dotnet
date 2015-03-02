@@ -24,15 +24,21 @@ namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
             Adresselinje1 = adresselinje1;
         }
 
-        public string AdresseLinje(int index1)
+        public override string AdresseLinje(int index1)
         {
-            if(index1 > 4)
-                throw new ArgumentOutOfRangeException("index1", "Utenlandsk postadresse har bare indeks 1, 2, 3 og 4");
-
-            if (index1 == 4)
-                return Adresselinje4;
-
-            return base.AdresseLinje(index1);
+            switch (index1)
+            {
+                case 1:
+                    return Adresselinje1;
+                case 2:
+                    return Adresselinje2;
+                case 3:
+                    return Adresselinje3;
+                case 4:
+                    return Adresselinje4;
+                default:
+                    throw new ArgumentOutOfRangeException("index1", "Utenlandsk postadrese har bare adresselinje 1, 2, 3 og 4");
+            }
         }
 
     }
