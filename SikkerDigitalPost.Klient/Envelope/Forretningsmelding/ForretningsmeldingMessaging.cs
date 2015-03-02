@@ -14,6 +14,7 @@
 
 using System;
 using System.Xml;
+using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Domene.Extensions;
 using SikkerDigitalPost.Klient.Envelope.Abstract;
 using SikkerDigitalPost.Klient.Utilities;
@@ -100,14 +101,20 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             XmlElement collaborationInfo = Context.CreateElement("eb", "CollaborationInfo", Navnerom.eb);
             {
+                PMode currPmode = Settings.Forsendelse.ErDigitalPost
+                    ? PMode.FormidleDigitalPost
+                    : PMode.FormidleFysiskPost;
+                
+                var currPmodeRef = PModeHelper.EnumToRef(currPmode);
+
                 XmlElement agreementRef = collaborationInfo.AppendChildElement("AgreementRef","eb",Navnerom.eb,Context);
-                agreementRef.InnerText = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
+                agreementRef.InnerText = currPmodeRef;
 
                 XmlElement service = collaborationInfo.AppendChildElement("Service", "eb", Navnerom.eb, Context);
                 service.InnerText = "SDP";
 
                 XmlElement action = collaborationInfo.AppendChildElement("Action", "eb", Navnerom.eb, Context);
-                action.InnerText = "FormidleDigitalPost";
+                action.InnerText = currPmode.ToString();
 
                 XmlElement conversationId = collaborationInfo.AppendChildElement("ConversationId", "eb", Navnerom.eb, Context);
                 conversationId.InnerText = Settings.Forsendelse.KonversasjonsId.ToString();

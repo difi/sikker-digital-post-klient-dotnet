@@ -66,7 +66,7 @@
     <Compile Include="Entiteter\Post\Dokument.cs" />
     <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
     <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
-    <Compile Include="Entiteter\Interface\PMode.cs" />
+    <Compile Include="Enums\PMode.cs" />
     <Compile Include="Entiteter\Kvitteringer\Kvitteringsforespørsel.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Leveringskvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvittering.cs" />
