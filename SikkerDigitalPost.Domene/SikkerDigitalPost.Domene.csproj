@@ -54,6 +54,7 @@
     <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostKvittering.cs" />
     <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />
     <Compile Include="Entiteter\Post\PostInfo.cs" />
+    <Compile Include="Enums\Postmetode.cs" />
     <Compile Include="Enums\Utskriftsfarge.cs" />
     <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />

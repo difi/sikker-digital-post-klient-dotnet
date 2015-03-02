@@ -41,7 +41,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 digitalPostElement.AppendChild(AvsenderElement());
                 
-                if (Settings.Forsendelse.ErDigitalPost)
+                if (Settings.Forsendelse.Sendes(Postmetode.Digital))
                 {
                     digitalPostElement.AppendChild(MottakerElement());
                     digitalPostElement.AppendChild(DigitalPostInfoElement());

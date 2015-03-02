@@ -53,23 +53,19 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
         /// </summary>
         public PostInfo PostInfo { get; set; }
 
-        private bool? _erDigitalPost;
-        /// <summary>
-        /// Angir om post skal sendes digitalt.
-        /// </summary>
-        public bool ErDigitalPost
+        public bool Sendes(Postmetode posttype)
         {
-            get
+            switch (posttype)
             {
-                if (_erDigitalPost == null)
-                {
-                    _erDigitalPost = PostInfo is DigitalPostInfo;
-                }
-                return (bool) _erDigitalPost;
+                case Postmetode.Fysisk:
+                    return PostInfo.GetType() == typeof (FysiskPostInfo);
+                case Postmetode.Digital:
+                    return PostInfo.GetType() == typeof(DigitalPostInfo);
+                default:
+                    throw new ArgumentOutOfRangeException("posttype", posttype, "Posttype er ikke gyldig.");
             }
-                        
         }
-
+        
         /// <summary>
         /// Pakke med hoveddokument og ev. vedlegg som skal sendes.
         /// </summary>

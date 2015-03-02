@@ -101,10 +101,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             XmlElement collaborationInfo = Context.CreateElement("eb", "CollaborationInfo", Navnerom.eb);
             {
-                PMode currPmode = Settings.Forsendelse.ErDigitalPost
-                    ? PMode.FormidleDigitalPost
-                    : PMode.FormidleFysiskPost;
-                
+                PMode currPmode = Settings.Forsendelse.PostInfo.PMode();
                 var currPmodeRef = PModeHelper.EnumToRef(currPmode);
 
                 XmlElement agreementRef = collaborationInfo.AppendChildElement("AgreementRef","eb",Navnerom.eb,Context);

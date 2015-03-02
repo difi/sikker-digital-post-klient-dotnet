@@ -30,7 +30,7 @@ namespace SikkerDigitalPost.Testklient
     class Program
     {
         private const string MpcId = "queue1";
-        private const bool ErDigitalPostMottaker = true;
+        private const bool ErDigitalPostMottaker = false;
         private const bool ErNorskBrev = false;
 
 

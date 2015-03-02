@@ -73,7 +73,7 @@ namespace SikkerDigitalPost.Klient.AsicE
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
 
-            if (Forsendelse.ErDigitalPost)
+            if (Forsendelse.Sendes(Postmetode.Digital))
             {
                 _manifestXml.DocumentElement.AppendChild(MottakerNode());
             }
