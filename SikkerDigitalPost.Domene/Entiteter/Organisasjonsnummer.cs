@@ -14,7 +14,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Exceptions;
 
 namespace SikkerDigitalPost.Domene.Entiteter
@@ -22,7 +21,6 @@ namespace SikkerDigitalPost.Domene.Entiteter
     public class Organisasjonsnummer
     {
         public static readonly string Iso6523_Pattern = "^([0-9]{4}:)?([0-9]{9})$";
-        public static string Iso6523_ActorId = PMode.PartyIdType;
         
         /// <summary>
         /// Stringrepresentasjon av organisasjonsnummeret
