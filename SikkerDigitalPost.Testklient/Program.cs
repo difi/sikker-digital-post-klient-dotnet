@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;

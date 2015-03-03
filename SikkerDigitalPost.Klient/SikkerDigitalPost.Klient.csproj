@@ -37,8 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -220,6 +219,7 @@
     <None Include="Resources\Buypass_Class_3_Test4_CA_3.cer" />
     <None Include="Resources\commfidesenterprise-sha256.crt" />
     <None Include="Resources\cpn enterprise sha256 class 3.crt" />
+    <None Include="sikker-digital-post.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,6 +24,8 @@ namespace SikkerDigitalPost.Domene.Entiteter.Post
                 return Enums.PMode.FormidleDigitalPost;
 
             throw new ArgumentOutOfRangeException("postInfo", type, "PostInfo har feil type.");
+
+            
         }
 
 

@@ -8,7 +8,6 @@ SikkerDigitalPost.Net.KlientDemoStandalone/*
 */Content/css/
 *npm-debug.log
 
-
 logs
 
 #################
@@ -138,3 +137,6 @@ Status API Training Shop Blog About © 2014 GitHub, Inc. Terms Privacy Security C
 
 #KontaktregisteretSertifikat
 Kontaktregisteretsertifikater/
+
+#Privatn√∏kler
+*.pfx
