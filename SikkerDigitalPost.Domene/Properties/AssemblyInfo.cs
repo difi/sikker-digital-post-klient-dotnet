@@ -27,9 +27,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("SikkerDigitalPost.Klient")]
-[assembly: InternalsVisibleTo("SikkerDigitalPost.Tester")]
-[assembly: InternalsVisibleTo("SikkerDigitalPost.MFPuller")]
+[assembly: InternalsVisibleTo("SikkerDigitalPost.Klient,PublicKey=0024000004800000940000000602000000240000525341310004000001000100111bd2021943680240d79b70bf8631121bac5b8243ce46fa64a4c99a1ed36a2ac36a834c363f1fbe136e80b77bdcf20429e659e6a76d85897ed27ef13e8153fc4cf7ad1319c30cda58562cfff0fd1d01e2478cecf3c87d1c0fa33133f5f1f293492f2f57fe57eb15ba96597adfe8bd2c6356e0d68b1dd448709ea6d62f345db4")]
+[assembly: InternalsVisibleTo("SikkerDigitalPost.Tester,PublicKey=0024000004800000940000000602000000240000525341310004000001000100111bd2021943680240d79b70bf8631121bac5b8243ce46fa64a4c99a1ed36a2ac36a834c363f1fbe136e80b77bdcf20429e659e6a76d85897ed27ef13e8153fc4cf7ad1319c30cda58562cfff0fd1d01e2478cecf3c87d1c0fa33133f5f1f293492f2f57fe57eb15ba96597adfe8bd2c6356e0d68b1dd448709ea6d62f345db4")]
 
 
 // Setting ComVisible to false makes the types in this assembly not visible 

@@ -35,6 +35,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression" />
@@ -160,6 +166,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\sikker-digital-post.pfx">
+      <Link>sikker-digital-post.pfx</Link>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
