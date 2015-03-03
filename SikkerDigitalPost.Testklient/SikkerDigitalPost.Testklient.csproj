@@ -31,6 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +54,9 @@
     <Compile Include="Tråder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\sikker-digital-post.pfx">
+      <Link>sikker-digital-post.pfx</Link>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
