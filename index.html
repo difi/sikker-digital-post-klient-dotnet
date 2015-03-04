@@ -4,6 +4,15 @@ layout: default
 
 <div class="home">
 
+  <h1 class="page-heading">Sertifikater</h1>
+
+  {% for dok in site.doks %}
+    <li>        
+      <a href="{{ dok.url }}">{{ dok.title }}</a>
+      <p>{{ dok.short-description }}</p>
+    </li>
+  {% endfor %}
+
   <h1 class="page-heading">Posts</h1>
 
   <ul class="post-list">
