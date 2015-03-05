@@ -2,7 +2,7 @@
 title: Sikker-digital-post-net-klient 
 description: > # this means to ignore newlines until "baseurl:"
   .Net klient for integrasjon mot Sikker digital post-tjenesten
-baseurl: "" # the subpath of your site, e.g. /blog/
+baseurl: "/sikker-digital-post-net-klient" # the subpath of your site, e.g. /blog/
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: difi_no
 github_username:  difi/sikker-digital-post-net-klient
