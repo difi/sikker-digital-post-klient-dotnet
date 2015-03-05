@@ -18,7 +18,7 @@ short-description: "For å sende sikker digital post trenger du å installere se
 7.  Får du spørsmål om å godta sertifikatet så gjør det.
 8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_
 
-{% highlight text %}
+{% highlight c# %}
 apt-get install ruby ruby-dev
 gem install bundler
 git clone git@github.com:mistic100/jekyll-bootstrap-doc
