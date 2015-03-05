@@ -18,6 +18,10 @@ short-description: "For å sende sikker digital post trenger du å installere se
 7.  Får du spørsmål om å godta sertifikatet så gjør det.
 8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_
 
+{% highlight text %}
+{{ "{% highlight html " }}%}
+<div>Some <b>HTML</b></div>
+{{ "{% endhighlight " }}%}
 
 ### Legg inn mottakersertifikat i certificate store
 
