@@ -12,6 +12,7 @@ markdown: kramdown
 
 # Code highlighting
 pygments:true
+highlighter: pygments
 
 collections:
   doks:
