@@ -6,7 +6,7 @@ layout: default
 
   {% for dok in site.doks %}
     <li>        
-      <a href="{{ dok.url }}">{{ dok.title }}</a>
+      <a href="{{ dok.url | prepend: site.baseurl }}">{{ dok.title }}</a>
       <p>{{ dok.short-description }}</p>
     </li>
   {% endfor %}
