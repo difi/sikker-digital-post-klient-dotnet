@@ -19,9 +19,13 @@ short-description: "For å sende sikker digital post trenger du å installere se
 8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_
 
 {% highlight text %}
-{{ "{% highlight html " }}%}
-<div>Some <b>HTML</b></div>
-{{ "{% endhighlight " }}%}
+apt-get install ruby ruby-dev
+gem install bundler
+git clone git@github.com:mistic100/jekyll-bootstrap-doc
+bundle install
+bundle exec jekyll serve
+{% endhighlight %}
+
 
 ### Legg inn mottakersertifikat i certificate store
 
