@@ -1,7 +1,7 @@
 # name of the software
-name: Jekyll Bootstrap Doc
+name: Sikker Digital Post .NET
 # current version of the software
-version: 1.0.1
+version: 1.2.5540.26013
 # url of the download button
 downloadUrl: https://github.com/mistic100/jekyll-bootstrap-doc
 # licence of the software
@@ -15,14 +15,14 @@ collections:
 # list of additional links on the right of the top menu
 headerLinks:
   - title: GitHub
-    url: https://github.com/mistic100/jekyll-bootstrap-doc
+    url: https://github.com/difi/sikker-digital-post-net-klient
 
 # list if additional links on the footer
 footerLinks:
   - title: GitHub
-    url: https://github.com/mistic100/jekyll-bootstrap-doc
+    url: https://github.com/difi/sikker-digital-post-net-klient
   - title: Issues
-    url: https://github.com/mistic100/jekyll-bootstrap-doc/issues?state=open
+    url: https://github.com/difi/sikker-digital-post-net-klient/issues
 
 # header
 header:
@@ -32,19 +32,19 @@ header:
 
 # github buttons
 githubButton:
-  user: mistic100
-  repo: jekyll-bootstrap-doc
+  user: difi
+  repo: sikker-digital-post-net-klient
 
 # twitter buttons
 twitter:
-  enabled: true
+  enabled: false
   via:
   hash:
   account:
 
 # facebook buttons
 facebook:
-  enabled: true
+  enabled: false
   profileUrl:
 
 # google analytics
