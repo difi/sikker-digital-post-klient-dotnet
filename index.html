@@ -5,10 +5,9 @@ description: .NET-klient for integrasjon mot Sikker digital post-tjenesten
 isHome: true
 ---
 
-  {% for dok in site.doks %}
-    <section class="bs-docs-section">  
-      <h1 id="{{ dok.title }}" class="page-header">{{ dok.title}}</h1>
-      {{dok.content}}      
-    </section>
-    
-  {% endfor %}
+{% for dok in site.doks %}
+	<section class="bs-docs-section">  
+  		<h1 id="{{ dok.title }}" class="page-header">{{ dok.title}}</h1>
+  		{{dok.content}}      
+	</section>
+{% endfor %}
