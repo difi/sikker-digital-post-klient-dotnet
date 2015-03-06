@@ -18,7 +18,7 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     colorator (0.1)
-    execjs (2.3.0)
+    execjs (2.4.0)
     fast-stemmer (1.0.2)
     ffi (1.9.6)
     gemoji (2.1.0)
