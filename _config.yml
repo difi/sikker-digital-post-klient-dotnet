@@ -11,8 +11,8 @@ github_username:  difi/sikker-digital-post-net-klient
 markdown: kramdown
 
 # Code highlighting
-pygments: true
-highlighter: pygments
+kramdown:
+  syntax_highlighter: rouge
 
 collections:
   doks:
