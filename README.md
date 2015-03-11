@@ -1,4 +1,4 @@
-#ONLINE DOKUMENTASJON#
+#Online Dokumentasjon#
 [DOKUMENTASJON FINNER DU HER](http://difi.github.io/sikker-digital-post-net-klient)
 
 #Sikker Digital Post .NET klient
