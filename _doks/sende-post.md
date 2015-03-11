@@ -2,6 +2,7 @@
 title: Sende post
 layout: default
 description: Hvordan sende fysisk og digital post
+index: 1
 isHome: false
 ---
 
