@@ -19,12 +19,6 @@ For å installere NuGet-pakken, gjør følgende:
 3. Siden NuGet-pakken for dette prosjektet er en pre-release, må du sørge for at det står "Include Prerelease" i drop-down menyen rett over søkeresuløtatene (der det står "Stable Only").
 4. Velg "Sikker Digital Post Klientbibliotek" og trykk "Install".
 
-##Eksempelkode
-
-Det er satt opp et eksempelprosjekt som viser bruk av klienten til å definere de ulike entitetene som må opprettes før sending av digital post. 
-Dette prosjektet finner du [her](https://github.com/difi/sikker-digital-post-net-klient-demo). Per dags dato er det kun Program.cs som er i bruk i eksempelprosjektet.
-
-
 ##Hvordan legge til signering og kryptering
 
 ### Legg inn databehandlersertifikat i certificate store
