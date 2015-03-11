@@ -53,7 +53,7 @@ namespace SikkerDigitalPost.Testklient
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
             var postInfo = GenererPostInfo(postkasseInnstillinger, ErDigitalPostMottaker, ErNorskBrev);
-            var behandlingsansvarlig = new Behandlingsansvarlig(new Organisasjonsnummer(postkasseInnstillinger.OrgNummerBehandlingsansvarlig));
+            var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
             behandlingsansvarlig.Avsenderidentifikator = "digipost";

@@ -3,9 +3,9 @@ using System.Xml;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
-    public class ReturpostKvittering : Forretningskvittering
+    public class Returpostkvittering : Forretningskvittering
     {
-        internal ReturpostKvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
+        internal Returpostkvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
             : base(xmlDocument, namespaceManager)
         {
         }
