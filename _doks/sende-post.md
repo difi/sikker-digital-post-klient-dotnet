@@ -9,8 +9,7 @@ I disse eksempler er det Posten som er den som produserer informasjon/brev/post 
 
 _Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere_ 
 
-
-## PostInfo for digital post
+<h3 id="postinfodigital">PostInfo for digital post</h3>
 
 Først, lag en motaker av type `DigitalPostMottaker`:
 
@@ -23,7 +22,7 @@ Opprett så en `DigitalPostInfo`:
 postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå, åpningskvittering)
 {% endhighlight%}
 
-## PostInfo for fysisk post
+<h3 id="postinfofysisk">PostInfo for fysisk post</h3>
 
 Skal du sende fysisk post må du først lage en `FysiskPostMottaker`:
 {% highlight csharp %}
@@ -38,7 +37,7 @@ Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet
 postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
 {% endhighlight%}
 
-## Oppsett før sending
+<h3 id="oppsettfoersending">Oppsett før sending</h3>
 
 Lag en behandlingsansvarlig og en teknisk avsender:
 {% highlight csharp %}
@@ -48,8 +47,7 @@ behandlingsansvarlig.Avsenderidentifikator = "Digipost";
 tekniskAvsender = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
 {% endhighlight%}
 
-
-##Opprette forsendelse
+<h3 id="oppretteforsendelse">Opprette forsendelse</h3>
 Deretter, opprett forsendelse. Forsendelsen inneholder de dokumentene som skal til mottakeren:
 {% highlight csharp %}
 var hoveddokumentSti = "/Dokumenter/Hoveddokument.pdf";

@@ -7,7 +7,7 @@ isHome: false
 
 For å sende sikker digital post trenger du å installere sertifikater. En enkel oppsettsguide finner du her.   
 
-### Legg inn databehandlersertifikat i certificate store
+<h3 id="databehandlersertifikat">Legg inn databehandlersertifikat i certificate store</h3>
 
 1.  Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)
 2.  Velg at sertifikatet skal lagres i _Current User_ og trykk _Next_
@@ -18,7 +18,7 @@ For å sende sikker digital post trenger du å installere sertifikater. En enkel
 7.  Får du spørsmål om å godta sertifikatet så gjør det.
 8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_
 
-### Legg inn mottakersertifikat i certificate store
+<h3 id="mottakersertifikat">Legg inn mottakersertifikat i certificate store</h3>
 
 1.  Start mmc.exe (Trykk windowstast og skriv _mmc.exe_)
 2.  Velg _File_ -> _Add/Remove Snap-in..._ 
