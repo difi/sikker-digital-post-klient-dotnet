@@ -4,9 +4,11 @@ Dette er en .NET-klient for sending av sikker digital post for det offentlige. F
 som må utføres av avsendervirksomheter. For mer informasjon om sikker digital post, se [her](http://begrep.difi.no/SikkerDigitalPost/).
 
 #Online Dokumentasjon#
-[DOKUMENTASJON FINNER DU HER](http://difi.github.io/sikker-digital-post-net-klient)
+[ONLINE DOKUMENTASJON FINNER DU HER](http://difi.github.io/sikker-digital-post-net-klient)
 
 #Hvordan komme i gang
+
+Først må du gå gjennom stegene under (_NuGet-pakke_ og _Hvordan legge til signering og kryptering_). Når du har gjort det, kan det være lurt å starte [her](http://difi.github.io/sikker-digital-post-net-klient/#Sende%20post) for å komme i gang.
 
 ##NuGet-pakke
 
