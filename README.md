@@ -1,3 +1,6 @@
+#ONLINE DOKUMENTASJON#
+[DOKUMENTASJON FINNER DU HER](http://difi.github.io/sikker-digital-post-net-klient)
+
 #Sikker Digital Post .NET klient
 
 Dette er en .NET-klient for sending av sikker digital post for det offentlige. Formålet for klienten er å forenkle integrasjonen 
