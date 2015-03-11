@@ -2,7 +2,6 @@
 title: Hvordan komme i gang
 layout: default
 description: En liten oppstart for å komme i gang.
-index: 4
 isHome: true
 ---
 

@@ -2,7 +2,6 @@
 title: Sende post
 layout: default
 description: Hvordan sende fysisk og digital post
-index: 1
 isHome: false
 ---
 
@@ -50,6 +49,7 @@ tekniskAvsender = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
 
 <h3 id="oppretteforsendelse">Opprette forsendelse</h3>
 Deretter, opprett forsendelse. Forsendelsen inneholder de dokumentene som skal til mottakeren:
+
 {% highlight csharp %}
 var hoveddokumentSti = "/Dokumenter/Hoveddokument.pdf";
 var hoveddokument = new Dokument(tittel, hoveddokumentsti, "application/pdf", "NO", "filnavn");
@@ -57,10 +57,16 @@ var hoveddokument = new Dokument(tittel, hoveddokumentsti, "application/pdf", "N
 var dokumentpakke = new Dokumentpakke(hoveddokument);
 
 var vedleggssti = "/Dokumenter/Vedlegg.pdf";
-var vedlegg = new Dokument("Vedlegg", vedleggsti, "application/pdf", "NO", "filnavn");
+var vedlegg = new Dokument("tittel", vedleggsti, "application/pdf", "NO", "filnavn");
 
 dokumentpakke.LeggTilVedlegg(vedlegg);
 {% endhighlight %}
+
+<blockquote>
+	<b>Viktig å huske på</b>: <code>Dokument.Tittel</code> brukes bare for hoveddokument ved sending digitalt og vises bare i innboksen om du har satt sikkerhetsnivå til <code>Sikekrhetsnivå.Nivå3</code>. Ved <code>Sikkerhetsnivå.Nivå4</code> vil tittelen være <i>Konfidensielt brev</i>.
+	<code>Dokument.Filnavn</code> er visningsnavn for filen i digital postkasse. Merk at filnavn trenger ikke ha filendelse. Ved nedlasting av fil vil filnavn være en kombinasjon av dato og <code>Dokument.Filnavn</code>. 
+</blockquote>
+
 
 Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo` eller `FysiskPostInfo`). 
 
