@@ -9,7 +9,7 @@ license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
 
 #baseurl: "/sikker-digital-post-net-klient" # the subpath of your site, e.g. /blog/
-
+coreUrl: "/sikker-digital-post-net-klient"
 collections:
   doks:
     output: true
