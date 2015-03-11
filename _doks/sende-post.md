@@ -41,7 +41,7 @@ postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Po
 
 Lag en behandlingsansvarlig og en teknisk avsender:
 {% highlight csharp %}
-behandlingsansvarlig = new Behandlingsansvarlig(orgnummerBehandlingsansvarlig)
+behandlingsansvarlig = new Behandlingsansvarlig(orgnummerBehandlingsansvarlig);
 behandlingsansvarlig.Avsenderidentifikator = "Digipost";
 
 tekniskAvsender = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
@@ -55,11 +55,71 @@ var hoveddokument = new Dokument(tittel, hoveddokumentsti, "application/pdf", "N
 
 var dokumentpakke = new Dokumentpakke(hoveddokument);
 
-var vedleggssti = "/Dokumenter/Vedlegg.pdf":
+var vedleggssti = "/Dokumenter/Vedlegg.pdf";
 var vedlegg = new Dokument("Vedlegg", vedleggsti, "application/pdf", "NO", "filnavn");
 
 dokumentpakke.LeggTilVedlegg(vedlegg);
-
-
-
 {% endhighlight %}
+
+Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo` eller `FysiskPostInfo`). 
+
+{% highlight csharp %}
+var forsendelse = new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Normal, mpcId, "NO");
+{% endhighlight %}
+
+<h3 id="opprettKlient">Opprette klient og sende post </h3>
+Siste steg er å opprette en `SikkerDigitalPostKlient`:
+
+{% highlight csharp %}
+var sdpKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon)
+
+var transportkvittering = sdpKlient.Send(forsendelse)
+{% endhighlight %}
+
+Transportkvitteringen kan enten være av type `TransportOkKvittering` eller `TransportFeiletKvittering`. For sistnevnte er `Alvorlighetsgrad` og `Beskrivelse` nyttige felter når det går galt.
+
+{% highlight csharp %}
+if(transportkvittering.GetType() == typeof(TransportOkKvittering))
+{
+	//Gjør logikk når alt går fint	
+}
+
+if(transportkvittering.GetType() == typeof(TransportOkKvittering))
+{
+	//Gjør logikk når det går galt	
+}
+{% endhighlight %}
+
+Transportkvitteringen får du tilbake umiddelbart; den trenger du ikke å polle for å få. 
+
+<h3 id="henteKvitteringer"> Hente kvitteringer</h3>
+For å hente kvitteringer må du sende en kvitteringsforespørsel:
+
+{% highlight csharp %}
+var kvitteringsforespørsel = new Kvitteringsforespørsel(Prioritet, MpcId)
+
+var kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
+{% endhighlight %}
+
+<blockquote>
+Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende.
+</blockquote>
+
+{%highlight csharp%}
+sdpKlient.Bekreft((Forretningskvittering)kvittering);
+{% endhighlight%}
+
+Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: `Leveringskvittering`,`Åpningskvittering`, `Returpostkvittering`, `Mottakskvittering` eller `Feilmelding`. Kvittering kan også være av typen`TransportFeiletKvittering`. Dette kan skje når selve kvitteringsforespørselen er feilformatert.
+
+<blockquote>
+Husk at hvis kvitteringen er <code>null</code> så er køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code>.
+</blockquote>
+
+Et eksempel på sjekk om kvittering er `Åpningskvittering`:
+{%highlight csharp%}
+if(kvittering is Åpningskvittering)
+{
+	Console.WriteLine("Åpningskvittering mottatt!")
+}
+{% endhighlight%}
+
