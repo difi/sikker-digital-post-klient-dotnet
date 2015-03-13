@@ -3,9 +3,9 @@ using System.Xml;
 
 namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
 {
-    public class MottaksKvittering : Forretningskvittering
+    public class Mottakskvittering : Forretningskvittering
     {
-        internal MottaksKvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
+        internal Mottakskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
         }
 

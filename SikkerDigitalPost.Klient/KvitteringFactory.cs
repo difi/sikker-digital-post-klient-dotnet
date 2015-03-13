@@ -40,10 +40,10 @@ namespace SikkerDigitalPost.Klient
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsMottaksKvittering(xmlDocument))
-                return new MottaksKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return new Mottakskvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsReturpost(xmlDocument))
-                return new ReturpostKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsTomKøKvittering(xmlDocument))
                 return null;
