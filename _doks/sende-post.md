@@ -94,6 +94,7 @@ if(transportkvittering.GetType() == typeof(TransportOkKvittering))
 if(transportkvittering.GetType() == typeof(TransportFeiletKvittering))
 {
 	//Gjør logikk når det går galt	
+	 var feil = ((TransportFeiletKvittering)kvittering).Beskrivelse;
 }
 {% endhighlight %}
 
