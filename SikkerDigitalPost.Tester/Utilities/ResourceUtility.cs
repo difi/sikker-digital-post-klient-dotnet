@@ -51,7 +51,7 @@ namespace SikkerDigitalPost.Tester.Utilities
             }
         }
 
-        private static string GetFullPath(params string[] path)
+        internal static string GetFullPath(params string[] path)
         {
             return String.Join(".", BasePath, String.Join(".", path));
         }

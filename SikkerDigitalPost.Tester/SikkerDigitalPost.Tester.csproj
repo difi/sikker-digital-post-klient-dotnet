@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -64,6 +65,7 @@
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArkivTester.cs" />
+    <Compile Include="SendDigitalPostTester.cs" />
     <Compile Include="Utilities\ResourceUtility.cs" />
     <Compile Include="SignaturTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
@@ -171,6 +173,17 @@
     <None Include="..\sikker-digital-post.pfx">
       <Link>sikker-digital-post.pfx</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testdata\integrasjon\digitalpost.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
