@@ -3,9 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
+using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
 using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
@@ -50,7 +53,7 @@ namespace SikkerDigitalPost.Tester
                 var postInfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3,
                     false);
                 var behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
-                behandlingsansvarlig.Avsenderidentifikator = "Digipost";
+                behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
                 var databehandler = new Databehandler(OrgnummerPosten,
                     AvsenderSertifkat("8702F5E55217EC88CF2CCBADAC290BB4312594AC"));
@@ -63,8 +66,9 @@ namespace SikkerDigitalPost.Tester
                     MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
                 });
 
-                var forsendelse = new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Normal,
-                    "testerqueue");
+                var mpcId = "testerqueue-"+Guid.NewGuid();
+                var forsendelse = new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Prioritert,
+                    mpcId);
                 var transportkvittering = sdpKlient.Send(forsendelse);
 
                 //Assert
@@ -73,13 +77,63 @@ namespace SikkerDigitalPost.Tester
                     var feil = ((TransportFeiletKvittering) transportkvittering).Beskrivelse;
                     Assert.Fail(feil);
                 }
+
+                HentKvitteringOgBekreft(sdpKlient, beskrivelse, mpcId, forsendelse);
             }
             catch (Exception e)
             {
                 Assert.Fail(String.Format("Feilet for '{0}', feilmelding: {1}, {2}", beskrivelse, e.Message, e.StackTrace));
-                    
             }
 
+        }
+
+        private static void HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string beskrivelse, string mpcId,
+            Forsendelse forsendelse)
+        {
+            bool hentKvitteringPåNytt = true;
+
+            while (hentKvitteringPåNytt)
+            {
+                Thread.Sleep(500);
+                var kvitteringsforespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
+                var kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
+
+                if (kvittering == null)
+                {
+                    continue;
+                }
+
+                if (kvittering != null)
+                {
+                    hentKvitteringPåNytt = false;
+                }
+
+                Guid konversasjonsId = Guid.Empty;
+
+                if (kvittering is Feilmelding)
+                {
+                    var feilmelding = (Feilmelding) kvittering;
+                    konversasjonsId = feilmelding.KonversasjonsId;
+                    Assert.Fail(String.Format("Test '{0}' feilet. Feilmelding fra Meldingsformidler: {1}", beskrivelse,
+                        feilmelding.Detaljer));
+                }
+
+                if (kvittering is Leveringskvittering)
+                {
+                    var leveringskvittering = (Leveringskvittering) kvittering;
+                    konversasjonsId = leveringskvittering.KonversasjonsId;
+                }
+
+                if (konversasjonsId.ToString() != forsendelse.KonversasjonsId.ToString())
+                {
+                    throw new FieldAccessException(
+                        String.Format(
+                            "Fikk ikke til å hente kvittering for test '{0}', køen er tom. Var du for rask å hente, " +
+                            "eller har noe skjedd galt med hvilken kø du henter fra?", beskrivelse));
+                }
+
+                sdpKlient.Bekreft((Forretningskvittering) kvittering);
+            }
         }
 
         private string GetFirstFile(string path)

@@ -175,6 +175,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
     <None Include="testdata\integrasjon\digitalpost.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -187,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\vedlegg\Vedlegg2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
