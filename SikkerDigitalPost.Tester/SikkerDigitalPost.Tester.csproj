@@ -185,6 +185,9 @@
   <ItemGroup>
     <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="testdata\vedlegg\Vedlegg2.txt" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

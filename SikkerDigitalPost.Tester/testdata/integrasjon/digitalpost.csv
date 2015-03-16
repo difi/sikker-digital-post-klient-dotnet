@@ -1,0 +1,4 @@
+beskrivelse,personnummer,postkasseadresse,hoveddokumenttype,hoveddokument,vedlegg1type,vedlegg1,vedlegg2type,vedlegg2
+Digitalt brev (.docx) med txt-vedlegg,04036125433,ove.jonsen#6K5A,text/docx,hoveddokument.Hoveddokument.docx,text/plain,vedlegg.Vedlegg.txt,
+Digitalt brev (.docx) med .pdf-vedlegg,04036125433,ove.jonsen#6K5A,text/docx,hoveddokument.Hoveddokument.docx,application/pdf,vedlegg.VedleggsHjelm.pdf,
+Digitalt brev (.docx) med 2 txt-vedlegg,04036125433,ove.jonsen#6K5A,text/docx,hoveddokument.Hoveddokument.docx,text/plain,vedlegg.Vedlegg.txt,vedlegg.Vedlegg2.txt
