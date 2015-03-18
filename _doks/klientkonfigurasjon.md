@@ -2,7 +2,7 @@
 title: Klientkonfigurasjon
 layout: default
 description: Sette opp klientkonfigurasjon
-isHome: true
+isHome: false
 ---
 
 Klientkonfigurasjon brukes for å sette opp koblingsspesifikke innstillinger mot meldingsformidleren, som `ProxyHost`, `ProxyScheme` og `TimeoutMillisekunder`. Denne må sendes med som innparameter til `SikkerDigitalPostKlient`.
