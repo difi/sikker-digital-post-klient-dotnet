@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,13 +20,24 @@ namespace SikkerDigitalPost.Tester
 {
 
     [TestClass]
-    public class SendDigitalPostTester
+    public class IntegrasjonSendPostTester
     {
         private const string OrgnummerPosten = "984661185";
         private const string MottakersertifikatThumbprint =  "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD";
-
         public TestContext TestContext { get; set; }
+       
+        private string _mpcId;
+        private Behandlingsansvarlig _behandlingsansvarlig;
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            _mpcId = "Integrasjonstest-" + Guid.NewGuid();
+            
+            _behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
+            _behandlingsansvarlig.Avsenderidentifikator = "digipost";
+        }
+        
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", @"|DataDirectory|\testdata\integrasjon\digitalpost.csv", "digitalpost#csv", DataAccessMethod.Sequential)]
         [TestMethod]
         public void SendDigitalPostIntegrasjon()
@@ -41,14 +54,11 @@ namespace SikkerDigitalPost.Tester
                 //Act
                 var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, SertifikatUtility.MottakerSertifikat(MottakersertifikatThumbprint), OrgnummerPosten);
                 var postinfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3, false);
-                var behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
-                behandlingsansvarlig.Avsenderidentifikator = "digipost";
-                var mpcId = "digitalpostintegrasjon-" + Guid.NewGuid();
-                
+               
                 //Assert
                 SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(behandlingsansvarlig, postinfo, mpcId, out sdpKlient);
-                HentKvitteringOgBekreft(sdpKlient, beskrivelse, mpcId, forsendelse);
+                var forsendelse = ByggDokumentpakkeOgSend(_behandlingsansvarlig, postinfo, _mpcId, out sdpKlient);
+                HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
             {
@@ -78,20 +88,16 @@ namespace SikkerDigitalPost.Tester
                 var mottaker = new FysiskPostMottaker(mottakernavn, mottakerAdresse, SertifikatUtility.MottakerSertifikat(MottakersertifikatThumbprint), OrgnummerPosten);
                 var returmottaker = new FysiskPostMottaker("Returkongen", returAdresse);
                 var postinfo = new FysiskPostInfo(mottaker, posttype, utskriftsfarge, posthåndtering, returmottaker);
-                var behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
-                behandlingsansvarlig.Avsenderidentifikator = "digipost";
-                var mpcId = "fysiskpostintegrasjon-" + Guid.NewGuid();
-
+                
                 //Assert
                 SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(behandlingsansvarlig, postinfo, mpcId, out sdpKlient);
-                HentKvitteringOgBekreft(sdpKlient, beskrivelse, mpcId, forsendelse);
+                var forsendelse = ByggDokumentpakkeOgSend(_behandlingsansvarlig, postinfo, _mpcId, out sdpKlient);
+                HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
             {
                 Assert.Fail("Feilet for '{0}', feilmelding: {1}, {2}", beskrivelse, e.Message, e.StackTrace);
             }
-
         }
 
         private Forsendelse ByggDokumentpakkeOgSend(Behandlingsansvarlig behandlingsansvarlig,
@@ -129,7 +135,7 @@ namespace SikkerDigitalPost.Tester
             return forsendelse;
         }
 
-        private static void HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string beskrivelse, string mpcId,
+        private void HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse, string mpcId,
             Forsendelse forsendelse)
         {
             bool hentKvitteringPåNytt = true;
@@ -141,6 +147,8 @@ namespace SikkerDigitalPost.Tester
                 var kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
+                
+                sdpKlient.Bekreft((Forretningskvittering)kvittering);
 
                 hentKvitteringPåNytt = false;
 
@@ -151,7 +159,7 @@ namespace SikkerDigitalPost.Tester
                     var feilmelding = (Feilmelding)kvittering;
                     konversasjonsId = feilmelding.KonversasjonsId;
                     Assert.Fail("Test '{0}' feilet. Feilmelding fra Meldingsformidler: {1}", 
-                        beskrivelse,
+                        testBeskrivelse,
                         feilmelding.Detaljer);
                 }
 
@@ -171,11 +179,9 @@ namespace SikkerDigitalPost.Tester
                 {
                     throw new FieldAccessException(
                         String.Format(
-                            "Fikk ikke til å hente kvittering for test '{0}', køen er tom. Var du for rask å hente, " +
-                            "eller har noe skjedd galt med hvilken kø du henter fra?", beskrivelse));
-                }
-
-                sdpKlient.Bekreft((Forretningskvittering)kvittering);
+                            "Fikk ikke til å hente kvittering for test '{0}' -- det ble hentet feil kvittering eller ingen kvittering. Var du for rask å hente, " +
+                            "eller har noe skjedd galt med hvilken kø du henter fra?", testBeskrivelse));
+                }                
             }
         }
 
@@ -192,7 +198,7 @@ namespace SikkerDigitalPost.Tester
             return elements.ElementAt(0);
         }
 
-        private static Dokumentpakke GetDokumentpakke(string hoveddokumentsti, string hoveddoktype, string vedlegg1Sti,
+        private Dokumentpakke GetDokumentpakke(string hoveddokumentsti, string hoveddoktype, string vedlegg1Sti,
             string vedlegg1Type, string vedlegg2Sti, string vedlegg2Type)
         {
             var hoveddokumentBytes = ResourceUtility.ReadAllBytes(false, hoveddokumentsti);
@@ -206,7 +212,7 @@ namespace SikkerDigitalPost.Tester
             return dokumentpakke;
         }
 
-        private static void LeggVedleggTilDokumentpakke(Dokumentpakke dokumentpakke, string tittel, string sti, string innholdstype, string språkkode, string filnavn)
+        private void LeggVedleggTilDokumentpakke(Dokumentpakke dokumentpakke, string tittel, string sti, string innholdstype, string språkkode, string filnavn)
         {
             if (String.IsNullOrEmpty(sti) || String.IsNullOrEmpty(innholdstype))
                 return;
