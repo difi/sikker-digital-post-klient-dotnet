@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -53,7 +51,7 @@ namespace SikkerDigitalPost.Tester
    
                 //Act
                 var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, SertifikatUtility.MottakerSertifikat(MottakersertifikatThumbprint), OrgnummerPosten);
-                var postinfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3, false);
+                var postinfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3);
                
                 //Assert
                 SikkerDigitalPostKlient sdpKlient;
@@ -62,7 +60,7 @@ namespace SikkerDigitalPost.Tester
             }
             catch (Exception e)
             {
-                Assert.Fail(String.Format("Feilet for '{0}', feilmelding: {1}, {2}", beskrivelse, e.Message, e.StackTrace));
+                Assert.Fail("Feilet for '{0}', feilmelding: {1}, {2}", beskrivelse, e.Message, e.StackTrace);
             }
 
         }
