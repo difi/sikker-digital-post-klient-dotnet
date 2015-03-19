@@ -1,5 +1,6 @@
 ---
 title: Installere sertifikater
+id: installeresertifikater
 layout: default
 description: Installere sertifikater for signering og kryptering av post
 isHome: false

@@ -1,5 +1,6 @@
 ---
 title: Ytelse
+id: ytelse
 layout: default
 description: Hvordan øke ytelsen på biblioteket
 isHome: false

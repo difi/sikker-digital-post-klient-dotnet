@@ -1,5 +1,6 @@
 ---
 title: Klientkonfigurasjon
+id: klientkonfigurasjon
 layout: default
 description: Sette opp klientkonfigurasjon
 isHome: true

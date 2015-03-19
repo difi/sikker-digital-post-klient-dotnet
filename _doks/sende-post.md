@@ -1,5 +1,6 @@
 ---
 title: Sende post
+id: sendepost
 layout: default
 description: Hvordan sende fysisk og digital post
 isHome: false

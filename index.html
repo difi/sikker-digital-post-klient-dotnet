@@ -7,7 +7,7 @@ isHome: true
 
 {% for dok in site.doks %}
 	<section class="bs-docs-section">  
-  		<h1 id="{{ dok.title }}" class="page-header">{{ dok.title}}</h1>
+  		<h1 id="{{ dok.id }}" class="page-header">{{ dok.title}}</h1>
   		{{dok.content}}      
 	</section>
 {% endfor %}

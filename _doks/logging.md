@@ -1,5 +1,6 @@
 ---
 title: Logging
+id: logging
 layout: default
 description: Integrer SDP.NET mot din loggplattform
 isHome: true
