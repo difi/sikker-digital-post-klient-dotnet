@@ -20,7 +20,7 @@ var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, mottakers
 
 Opprett så en `DigitalPostInfo`:
 {% highlight csharp %}
-postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå, åpningskvittering)
+var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå, åpningskvittering)
 {% endhighlight%}
 
 <h3 id="postinfofysisk">PostInfo for fysisk post</h3>
@@ -35,14 +35,14 @@ Her er adressen av type `NorskAdresse` eller `UtenlandskAdresse`.
 Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til `Posthåndtering.MakuleringMedMelding`. Oppretting av en FysiskPostInfo vil da se slik ut:
 
 {% highlight csharp %}
-postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
+var postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
 {% endhighlight%}
 
 <h3 id="oppsettfoersending">Oppsett før sending</h3>
 
 Lag en behandlingsansvarlig og en teknisk avsender:
 {% highlight csharp %}
-behandlingsansvarlig = new Behandlingsansvarlig(orgnummerBehandlingsansvarlig);
+var behandlingsansvarlig = new Behandlingsansvarlig(orgnummerBehandlingsansvarlig);
 behandlingsansvarlig.Avsenderidentifikator = "Digipost";
 
 tekniskAvsender = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
@@ -92,9 +92,10 @@ if(transportkvittering.GetType() == typeof(TransportOkKvittering))
 	//Gjør logikk når alt går fint	
 }
 
-if(transportkvittering.GetType() == typeof(TransportOkKvittering))
+if(transportkvittering.GetType() == typeof(TransportFeiletKvittering))
 {
 	//Gjør logikk når det går galt	
+	 var feil = ((TransportFeiletKvittering)kvittering).Beskrivelse;
 }
 {% endhighlight %}
 
