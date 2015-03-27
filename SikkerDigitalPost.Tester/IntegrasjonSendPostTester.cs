@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using DigipostApiClientShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
@@ -12,7 +14,6 @@ using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Enums;
 using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -22,6 +23,7 @@ namespace SikkerDigitalPost.Tester
     {
         private const string OrgnummerPosten = "984661185";
         private const string MottakersertifikatThumbprint =  "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD";
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
         public TestContext TestContext { get; set; }
        
         private string _mpcId;
@@ -35,6 +37,7 @@ namespace SikkerDigitalPost.Tester
             _behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
             _behandlingsansvarlig.Avsenderidentifikator = "digipost";
         }
+
         
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", @"|DataDirectory|\testdata\integrasjon\digitalpost.csv", "digitalpost#csv", DataAccessMethod.Sequential)]
         [TestMethod]
@@ -185,7 +188,7 @@ namespace SikkerDigitalPost.Tester
 
         private string GetFirstFile(string path)
         {
-            var elements = ResourceUtility.GetFiles(path).ToList();
+            var elements = _resourceUtility.GetFiles(path).ToList();
 
             if (!elements.Any())
             {
@@ -199,7 +202,7 @@ namespace SikkerDigitalPost.Tester
         private Dokumentpakke GetDokumentpakke(string hoveddokumentsti, string hoveddoktype, string vedlegg1Sti,
             string vedlegg1Type, string vedlegg2Sti, string vedlegg2Type)
         {
-            var hoveddokumentBytes = ResourceUtility.ReadAllBytes(false, hoveddokumentsti);
+            var hoveddokumentBytes = _resourceUtility.ReadAllBytes(false, hoveddokumentsti);
             var hoveddokument = new Dokument(DateTime.Now.ToString("G") + " - Hoveddokument", hoveddokumentBytes,
                 hoveddoktype, "NO", "filnavn");
             var dokumentpakke = new Dokumentpakke(hoveddokument);
@@ -210,12 +213,12 @@ namespace SikkerDigitalPost.Tester
             return dokumentpakke;
         }
 
-        private void LeggVedleggTilDokumentpakke(Dokumentpakke dokumentpakke, string tittel, string sti, string innholdstype, string språkkode, string filnavn)
+        private void LeggVedleggTilDokumentpakke(Dokumentpakke dokumentpakke, string tittel, string sti, string innholdstype, string språkkode, string filnavn = "null")
         {
             if (String.IsNullOrEmpty(sti) || String.IsNullOrEmpty(innholdstype))
                 return;
 
-            var bytes = ResourceUtility.ReadAllBytes(false, sti);
+            var bytes = _resourceUtility.ReadAllBytes(false, sti);
             var vedlegg = new Dokument(tittel, bytes, innholdstype, språkkode, filnavn);
             dokumentpakke.LeggTilVedlegg(vedlegg);
         }
