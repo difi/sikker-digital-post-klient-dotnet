@@ -12,13 +12,7 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Instrumentation;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using SikkerDigitalPost.Tester;
 
 namespace SikkerDigitalPost.Testklient
