@@ -14,13 +14,14 @@
 
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using DigipostApiClientShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;
 using SikkerDigitalPost.Klient.AsicE;
-using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
@@ -28,6 +29,8 @@ namespace SikkerDigitalPost.Tester
     public class ArkivTester : TestBase
     {
         public TestContext TestContext { get; set; }
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
@@ -89,7 +92,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, filsti, ResourceUtility.GetFileName(filsti), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, filsti, _resourceUtility.GetFileName(filsti), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
 
@@ -107,7 +110,7 @@ namespace SikkerDigitalPost.Tester
                     byte[] sjekksum1;
                     byte[] sjekksum2;
 
-                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, ResourceUtility.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
+                    GenererSjekksum(zip, Arkiv.Manifest.Bytes, _resourceUtility.GetFileName(Arkiv.Manifest.Filnavn), out sjekksum1, out sjekksum2);
                     Assert.AreEqual(sjekksum1.ToString(), sjekksum2.ToString());
                 }
             }
@@ -127,7 +130,7 @@ namespace SikkerDigitalPost.Tester
         
         private void GenererSjekksum(ZipArchive zip, string filstiPåDisk, string entryNavnIArkiv, out byte[] sjekksum1, out byte[] sjekksum2)
         {
-            var bytes = ResourceUtility.ReadAllBytes(false,filstiPåDisk);
+            var bytes = _resourceUtility.ReadAllBytes(false,filstiPåDisk);
             GenererSjekksum(zip, bytes, entryNavnIArkiv, out sjekksum1, out sjekksum2);
         }
 

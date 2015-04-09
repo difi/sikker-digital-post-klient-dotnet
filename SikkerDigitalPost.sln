@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Klient", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikkerDigitalPost.Testklient", "SikkerDigitalPost.Testklient\SikkerDigitalPost.Testklient.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0D2CB855-84B9-4032-8096-E769E64C0646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
