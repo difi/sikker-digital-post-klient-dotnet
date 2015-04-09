@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using DigipostApiClientShared;
+using DigipostApiClientShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
@@ -53,7 +54,7 @@ namespace SikkerDigitalPost.Tester
                 var postkasseadresse = GetTestContextColumnData("postkasseadresse");
    
                 //Act
-                var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, SertifikatUtility.MottakerSertifikat(MottakersertifikatThumbprint), OrgnummerPosten);
+                var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse,  CertificateUtility.ReceiverCertificate(MottakersertifikatThumbprint,Language.Norwegian), OrgnummerPosten);
                 var postinfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3);
                
                 //Assert
@@ -86,7 +87,7 @@ namespace SikkerDigitalPost.Tester
                 var posthåndtering = (Posthåndtering)Enum.Parse(typeof(Posthåndtering), GetTestContextColumnData("posthandtering"), ignoreCase: true);
 
                 //Act
-                var mottaker = new FysiskPostMottaker(mottakernavn, mottakerAdresse, SertifikatUtility.MottakerSertifikat(MottakersertifikatThumbprint), OrgnummerPosten);
+                var mottaker = new FysiskPostMottaker(mottakernavn, mottakerAdresse, CertificateUtility.ReceiverCertificate(MottakersertifikatThumbprint,Language.Norwegian), OrgnummerPosten);
                 var returmottaker = new FysiskPostMottaker("Returkongen", returAdresse);
                 var postinfo = new FysiskPostInfo(mottaker, posttype, utskriftsfarge, posthåndtering, returmottaker);
                 
@@ -114,7 +115,7 @@ namespace SikkerDigitalPost.Tester
 
             //Act
             var databehandler = new Databehandler(OrgnummerPosten,
-                SertifikatUtility.AvsenderSertifkat("8702F5E55217EC88CF2CCBADAC290BB4312594AC"));
+                CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian));
             var dokumentpakke = GetDokumentpakke(hoveddokumentsti, hoveddoktype, vedlegg1Sti, vedlegg1Type, vedlegg2Sti,
                 vedlegg2Type);
 

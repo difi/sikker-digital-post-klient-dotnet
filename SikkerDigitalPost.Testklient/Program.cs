@@ -166,7 +166,7 @@ namespace SikkerDigitalPost.Testklient
         private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
         {
             string hoveddokumentsti =
-                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\paaminnelseHpvNnPapirCon.pdf";
+                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\OWASP_Top_10_ 2013.pdf";
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
 
 
