@@ -13,7 +13,8 @@
  */
 
 using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Tester;
+using DigipostApiClientShared;
+using DigipostApiClientShared.Enums;
 
 namespace SikkerDigitalPost.Testklient
 {
@@ -48,8 +49,8 @@ namespace SikkerDigitalPost.Testklient
 
         public static PostkasseInnstillinger GetEboks()
         {
-            var tekniskAvsenderSertifikat = SertifikatUtility.AvsenderSertifkat("8702F5E55217EC88CF2CCBADAC290BB4312594AC");
-            var mottakerSertifikat = SertifikatUtility.MottakerSertifikat("7166484C1116D8A32AACD49FD2FB79F06751661D");
+            var tekniskAvsenderSertifikat =  CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            var mottakerSertifikat = CertificateUtility.ReceiverCertificate("7166484C1116D8A32AACD49FD2FB79F06751661D", Language.Norwegian);
 
             var orgnummerPosten = "984661185";
             var orgnummerDatabehandler = orgnummerPosten;
@@ -63,8 +64,8 @@ namespace SikkerDigitalPost.Testklient
 
         public static PostkasseInnstillinger GetPosten()
         {
-            var tekniskAvsenderSertifikat = SertifikatUtility.AvsenderSertifkat("8702F5E55217EC88CF2CCBADAC290BB4312594AC");
-            var mottakerSertifikat = SertifikatUtility.MottakerSertifikat("B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD");
+            var tekniskAvsenderSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            var mottakerSertifikat = CertificateUtility.ReceiverCertificate("B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", Language.Norwegian);
 
             var orgnummerPosten = "984661185";
             var orgnummerDatabehandler = orgnummerPosten;

@@ -19,15 +19,17 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
+using DigipostApiClientShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Klient.Security;
-using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
     [TestClass]
     public class SignedXmlTester : TestBase
-    {        
+    {
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
@@ -71,8 +73,7 @@ namespace SikkerDigitalPost.Tester
         public void GetPublicKey()
         {            
             XmlDocument doc = new XmlDocument { PreserveWhitespace = false };
-            //var path = Path.Combine(TestDataMappe, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
-            byte[] xmlBytes = ResourceUtility.ReadAllBytes(true, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
+            byte[] xmlBytes = _resourceUtility.ReadAllBytes(true, "1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml");
             doc.LoadXml(Encoding.UTF8.GetString(xmlBytes));
 
             var mgr = new XmlNamespaceManager(doc.NameTable);

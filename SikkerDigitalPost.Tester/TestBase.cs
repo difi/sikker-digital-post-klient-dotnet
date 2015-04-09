@@ -14,12 +14,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using DigipostApiClientShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
@@ -29,15 +29,16 @@ using SikkerDigitalPost.Klient;
 using SikkerDigitalPost.Klient.AsicE;
 using SikkerDigitalPost.Klient.Envelope;
 using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
-using SikkerDigitalPost.Tester.Utilities;
 
 namespace SikkerDigitalPost.Tester
 {
     [TestClass]
     public class TestBase
     {
+        static readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+
         private static string _hoveddokument;
-        
+
         protected static string[] Vedleggsstier;
         protected static string VedleggsMappe = "vedlegg";
         protected static string HoveddokumentMappe = "hoveddokument";
@@ -58,16 +59,18 @@ namespace SikkerDigitalPost.Tester
 
         protected static DigitalPostInfo DigitalPostInfo;
         protected static Forsendelse Forsendelse;
-        
+
         internal static AsicEArkiv Arkiv;
         internal static ForretningsmeldingEnvelope Envelope;
         internal static GuidHandler GuidHandler;
 
+
         public static void Initialiser()
         {
+
             //Dokumentpakke
-            Vedleggsstier = ResourceUtility.GetFiles(VedleggsMappe).ToArray();
-            _hoveddokument = ResourceUtility.GetFiles(HoveddokumentMappe).ElementAt(0);
+            Vedleggsstier =  _resourceUtility.GetFiles(VedleggsMappe).ToArray();
+            _hoveddokument = _resourceUtility.GetFiles(HoveddokumentMappe).ElementAt(0);
             
             Dokumentpakke = GenererDokumentpakke();
             HentSertifikater(out AvsenderSertifikat, out MottakerSertifikat);
@@ -137,8 +140,8 @@ namespace SikkerDigitalPost.Tester
 
         private static Dokument GenererHoveddokument()
         {
-            var bytes = ResourceUtility.ReadAllBytes(false,_hoveddokument);
-            var fileName = ResourceUtility.GetFileName(_hoveddokument);
+            var bytes = _resourceUtility.ReadAllBytes(false,_hoveddokument);
+            var fileName = _resourceUtility.GetFileName(_hoveddokument);
             return Hoveddokument = new Dokument("Hoveddokument", bytes,"text/xml","NO", fileName);
         }
 
@@ -147,7 +150,7 @@ namespace SikkerDigitalPost.Tester
             int count = 0;
             return Vedlegg = new List<Dokument>(
                     Vedleggsstier.Select(
-                        v => new Dokument("Vedlegg" + count++, ResourceUtility.ReadAllBytes(false,v), "text/" + Path.GetExtension(_hoveddokument), "NO", ResourceUtility.GetFileName(v))));
+                        v => new Dokument("Vedlegg" + count++, _resourceUtility.ReadAllBytes(false,v), "text/" + Path.GetExtension(_hoveddokument), "NO", _resourceUtility.GetFileName(v))));
         }
     }
 }

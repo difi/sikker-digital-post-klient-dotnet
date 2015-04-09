@@ -38,6 +38,9 @@
     <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DigipostApiClientShared">
+      <HintPath>..\packages\digipost-api-client-shared.1.0.5564.24199\lib\net45\DigipostApiClientShared.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
