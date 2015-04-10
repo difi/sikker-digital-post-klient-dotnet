@@ -2,10 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using DigipostApiClientShared;
-using DigipostApiClientShared.Enums;
+using ApiClientShared;
+using ApiClientShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
