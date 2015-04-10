@@ -13,8 +13,8 @@
  */
 
 using System.Security.Cryptography.X509Certificates;
-using DigipostApiClientShared;
-using DigipostApiClientShared.Enums;
+using ApiClientShared;
+using ApiClientShared.Enums;
 
 namespace SikkerDigitalPost.Testklient
 {
