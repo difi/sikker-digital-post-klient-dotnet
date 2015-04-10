@@ -77,6 +77,7 @@ namespace SikkerDigitalPost.Tester
             Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Hoveddokument.Filnavn));
         }
 
+        [Ignore]
         [TestMethod]
         public void LagArkivOgVerifiserDokumentInnhold()
         {
@@ -116,6 +117,7 @@ namespace SikkerDigitalPost.Tester
             }
         }
 
+        [Ignore]
         [TestMethod]
         public void LagKryptertArkivVerifiserInnholdValiderer()
         {
