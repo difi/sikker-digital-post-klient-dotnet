@@ -14,10 +14,9 @@
 
 using System.IO;
 using System.IO.Compression;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using DigipostApiClientShared;
+using ApiClientShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using SikkerDigitalPost.Domene.Exceptions;

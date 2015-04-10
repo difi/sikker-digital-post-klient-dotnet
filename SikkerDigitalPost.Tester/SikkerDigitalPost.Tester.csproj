@@ -42,9 +42,8 @@
     <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DigipostApiClientShared, Version=1.0.5564.24199, Culture=neutral, PublicKeyToken=6e0e24e0c7886562, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\digipost-api-client-shared.1.0.5564.24199\lib\net45\DigipostApiClientShared.dll</HintPath>
+    <Reference Include="ApiClientShared">
+      <HintPath>..\packages\api-client-shared.1.0.5578.25458\lib\net45\ApiClientShared.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
