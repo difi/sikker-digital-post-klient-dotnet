@@ -56,7 +56,7 @@ namespace SikkerDigitalPost.Testklient
             var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
-            behandlingsansvarlig.Avsenderidentifikator = "digipost";
+            //behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
             var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
@@ -165,11 +165,9 @@ namespace SikkerDigitalPost.Testklient
 
         private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
         {
-            string hoveddokumentsti =
-                @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\OWASP_Top_10_ 2013.pdf";
+            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.pdf";
             string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
-
-
+            
             //Forsendelse
             var dokumentpakke =
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "application/pdf", "NO",
