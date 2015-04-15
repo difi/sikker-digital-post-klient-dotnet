@@ -3,7 +3,7 @@ name: Sikker Digital Post .NET
 # current version of the software
 version: 1.2.5540.26013
 # url of the download button
-downloadUrl: https://github.com/mistic100/jekyll-bootstrap-doc
+downloadUrl: https://github.com/difi/sikker-digital-post-net-klient
 # licence of the software
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
