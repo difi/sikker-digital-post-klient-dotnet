@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
     <id>sikker-digital-post-net-klient</id>
@@ -13,5 +13,6 @@
   </metadata>
   <files>
     <file src ="SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />   
+    <file src ="SikkerDigitalPost.Klient\bin\Release\*.xml" target="lib\net45" /> 
   </files>
 </package>
