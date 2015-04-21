@@ -1,13 +1,20 @@
 ---
 layout: default
-title: Home
-description: .NET-klient for integrasjon mot Sikker digital post-tjenesten
-isHome: true
+title: .NET-klient for integrasjon mot Sikker digital post-tjenesten
 ---
 
+<article class="one-col">
+	<h1 id="top"><span style="opacity: 1; transition: opacity 500ms; -webkit-transition: opacity 500ms;">{{page.title}}</span></h1>
+	<div class="body col-md-9">
 {% for dok in site.doks %}
-	<section class="bs-docs-section">  
-  		<h1 id="{{ dok.id }}" class="page-header">{{ dok.title}}</h1>
-  		{{dok.content}}      
-	</section>
+		<h2 id="{{dok.id}}">{{dok.title}}</h2>
+		<p>{{dok.content}}</p>
 {% endfor %}
+	</div>	
+</article>
+<div class="col-md-3">
+	<div class="bs-docs-sidebar hidden-print">
+	  <ul class="nav bs-docs-sidenav">
+	  </ul>
+	</div>
+</div>
