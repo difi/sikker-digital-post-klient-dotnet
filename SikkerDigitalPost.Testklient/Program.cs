@@ -14,7 +14,9 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
+using ApiClientShared;
 using SikkerDigitalPost.Domene.Entiteter;
 using SikkerDigitalPost.Domene.Entiteter.Aktører;
 using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
@@ -56,7 +58,7 @@ namespace SikkerDigitalPost.Testklient
             var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
             var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
-            //behandlingsansvarlig.Avsenderidentifikator = "digipost";
+            behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
             var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
@@ -158,21 +160,23 @@ namespace SikkerDigitalPost.Testklient
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.DebugLoggTilFil = true;
+            klientkonfigurasjon.DebugLoggTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
 
         private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
         {
-            string hoveddokumentsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\hoveddokument\Hoveddokument.pdf";
-            string vedleggsti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\testdata\vedlegg\Vedlegg.txt";
+            ResourceUtility resourceUtility = new ResourceUtility("SikkerDigitalPost.Testklient.Resources");
+            
+            var hoveddokument = resourceUtility.ReadAllBytes(true, "Hoveddokument.pdf");
+            var vedlegg = resourceUtility.ReadAllBytes(true, "Vedlegg.txt");
             
             //Forsendelse
             var dokumentpakke =
-                new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokumentsti, "application/pdf", "NO",
+                new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", hoveddokumentsti, "application/pdf", "NO", "Vedlegg.txt"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "plain/txt", "NO", "Vedlegg.txt"));
             return new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
 
         }

@@ -61,6 +61,8 @@
       <Link>sikker-digital-post.pfx</Link>
     </None>
     <None Include="App.config" />
+    <EmbeddedResource Include="Resources\Hoveddokument.pdf" />
+    <EmbeddedResource Include="Resources\Vedlegg.pdf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
@@ -71,6 +73,10 @@
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
       <Name>SikkerDigitalPost.Klient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Hoveddokument.txt" />
+    <EmbeddedResource Include="Resources\Vedlegg.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
