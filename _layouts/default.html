@@ -40,13 +40,13 @@
 		<header>
 			<div class="branding sub-portal">
 				<div class="logo">
-					<a href="/"><h1>difi.github.io/difi-sikker-digital-post-klient-dotnet</h1></a>
+					<a href="/"><h1>{{site.siteUrlText}}</h1></a>
 				</div>
 
 				<div class="seperator"></div>
 				<div class="sub-portal">
-					<h1>Sikker Digital Post .NET</h1>
-					<p>difi.github.io/difi-sikker-digital-post-klient-dotnet</p>
+					<h1>{{site.name}}</h1>
+					<p>{{site.siteUrlText}}</p>
 				</div>
 			</div>
 
@@ -54,8 +54,9 @@
 				<div class="menu">
 					<h2>Sekundærmeny</h2>
 					<ul class="links">
-						<li class="first"><a href="about.html" title="">Om sikker digital post</a></li>
-						<li class="last"><a href="https://github.com/difi/sikker-digital-post-net-klient" title="">GitHub</a></li>
+						{% for l in site.headerLinks %}
+							<li {% if forloop.first == true %} class="first" {% endif %}{% if forloop.last == true %} class="last" {% endif %}><a href="{{l.url}}">{{l.title}}</a></li>
+						{% endfor %}
 					</ul>
 				</div>
 
@@ -96,25 +97,7 @@
 					<hr />
 				</div-->
 			</div>
-		</header>
-
-		<nav>
-			<div>
-				<div class="menu-button">Meny</div>
-				<ul class="menu">
-					<li class="first expanded active-trail">
-						<a href="." class="active active-trail">Dokumentasjon</a>
-					</li>
-					<li>
-						<a href="https://github.com/difi/sikker-digital-post-net-klient">Last ned</a>
-					</li>
-				</ul>
-			</div>
-
-			<div class="seperator">
-				<hr />
-			</div>
-		</nav>
+		</header>		
 
 		<div id="main">
 			<section id="content" tabindex="-1">
