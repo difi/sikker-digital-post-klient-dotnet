@@ -5,7 +5,7 @@ siteUrlText: difi.github.io/difi-sikker-digital-post-klient-dotnet
 # current version of the software
 version: 1.2.5540.26013
 # url of the download button
-downloadUrl: https://github.com/difi/difi-sikker-digital-post-klient-dotnet/releases
+downloadUrl: https://www.nuget.org/packages/sikker-digital-post-net-klient/
  
 # licence of the software
 license: MIT License
