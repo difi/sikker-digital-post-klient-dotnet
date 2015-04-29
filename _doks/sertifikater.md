@@ -8,7 +8,7 @@ isHome: false
 
 For å sende sikker digital post trenger du å installere sertifikater. 
 
-<h3 id="databehandlersertifikat">Legg inn databehandlersertifikat i certificate store</h3>
+<h3>Legg inn databehandlersertifikat i certificate store</h3>
 
 <blockquote> Databehandlersertifikat er det sertifikatet du har fått utstedt for å kunne sende post.  </blockquote>
 
@@ -21,7 +21,7 @@ For å sende sikker digital post trenger du å installere sertifikater.
 7.  Får du spørsmål om å godta sertifikatet så gjør det.
 8.  Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_.
 
-<h3 id="mottakersertifikat">Legg inn mottakersertifikat i certificate store</h3>
+<h3>Legg inn mottakersertifikat i certificate store</h3>
 
 <blockquote> Mottakerens sertifikat vil være sertifikatet til Digipost eller E-Boks.</blockquote>
 
@@ -37,7 +37,7 @@ For å sende sikker digital post trenger du å installere sertifikater.
 10. _Next_ og _Finish_
 11. Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_.
 
-<h3 id="mottakersertifikat">Finne installert sertifikat</h3>
+<h3>Finne installert sertifikat</h3>
 
 Som bruker av dette biblioteket er du en Databehandler som har ansvar for sending av meldinger. For å gjøre dette trenger du et sertifikat for å kunne autentisere deg mot Meldingsformidleren. Du kan lese mer om aktørene [her](http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer).
 
