@@ -12,7 +12,7 @@ license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
 
 #baseurl: "/sikker-digital-post-net-klient" # the subpath of your site, e.g. /blog/
-coreUrl: "/difi-sikker-digital-post-klient-dotnet"
+coreUrl: "/sikker-digital-post-klient-dotnet"
 collections:
   doks:
     output: true
