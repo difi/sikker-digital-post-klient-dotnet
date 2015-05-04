@@ -36,9 +36,9 @@ namespace SikkerDigitalPost.Tester
             
             //Endre id på hoveddokument til å starte på et tall
             var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
-            namespaceManager.AddNamespace("ds", Navnerom.ds);
-            namespaceManager.AddNamespace("ns10", Navnerom.Ns10);
-            namespaceManager.AddNamespace("ns11", Navnerom.Ns11);
+            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
+            namespaceManager.AddNamespace("ns10", Navnerom.UriEtsi121);
+            namespaceManager.AddNamespace("ns11", Navnerom.UriEtsi132);
 
             var hoveddokumentReferanseNode = signaturXml.DocumentElement
                 .SelectSingleNode("//ds:Reference[@Id = '" + Hoveddokument.Id + "']", namespaceManager);

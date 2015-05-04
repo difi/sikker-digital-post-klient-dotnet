@@ -25,25 +25,25 @@ namespace SikkerDigitalPost.Klient.XmlValidering
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
 
         public ForretningsmeldingEnvelopeValidator(){
-            LeggTilXsdRessurs(Navnerom.env, HentRessurs("w3.soap-envelope.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns4, HentRessurs("xmlsoap.envelope.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns6, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns9, HentRessurs("sdp-felles.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns9, HentRessurs("sdp-melding.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns5, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.SoapEnvelopeEnv12, HentRessurs("w3.soap-envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.SoapEnvelope, HentRessurs("xmlsoap.envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.EbXmlCore, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-melding.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
             //LeggTilXsdRessurs(Navnerom.enc, HentRessurs("w3.xenc-schema.xsd"));
-            LeggTilXsdRessurs(Navnerom.xml1998, HentRessurs("w3.xml.xsd"));
-            LeggTilXsdRessurs(Navnerom.ec, HentRessurs("w3.exc-c14n.xsd"));
+            LeggTilXsdRessurs(Navnerom.Xml1998, HentRessurs("w3.xml.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlExcC14n, HentRessurs("w3.exc-c14n.xsd"));
 
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.StandardBusinessDocumentHeader.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.DocumentIdentification.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.Manifest.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.Partner.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.BusinessScope.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns3, HentRessurs("SBDH20040506_02.BasicTypes.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.StandardBusinessDocumentHeader.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.DocumentIdentification.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.Manifest.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.Partner.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.BusinessScope.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.BasicTypes.xsd"));
 
-            LeggTilXsdRessurs(Navnerom.wsu, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
-            LeggTilXsdRessurs(Navnerom.wsse, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.WssecurityUtility10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.WssecuritySecext10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
          
         }
 

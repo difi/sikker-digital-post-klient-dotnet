@@ -139,12 +139,12 @@ namespace SikkerDigitalPost.Klient
         private static XmlNamespaceManager NamespaceManager(XmlDocument document)
         {
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
-            manager.AddNamespace("env", Navnerom.env);
-            manager.AddNamespace("eb", Navnerom.eb);
-            manager.AddNamespace("ns3", Navnerom.Ns3);
-            manager.AddNamespace("ns5", Navnerom.Ns5);
-            manager.AddNamespace("ns6", Navnerom.Ns6);
-            manager.AddNamespace("ns9", Navnerom.Ns9);
+            manager.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
+            manager.AddNamespace("eb", Navnerom.EbXmlCore);
+            manager.AddNamespace("ns3", Navnerom.StandardBusinessDocumentHeader);
+            manager.AddNamespace("ns5", Navnerom.XmlDsig);
+            manager.AddNamespace("ns6", Navnerom.EbXmlCore);
+            manager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
             return manager;
         }
     }

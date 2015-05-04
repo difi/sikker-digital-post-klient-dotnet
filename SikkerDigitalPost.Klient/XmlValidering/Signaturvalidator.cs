@@ -26,9 +26,9 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 
         public Signaturvalidator()
         {
-            LeggTilXsdRessurs(Navnerom.Ns10, HentRessurs("w3.ts_102918v010201.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns11, HentRessurs("w3.XAdES.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns5, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.UriEtsi121, HentRessurs("w3.ts_102918v010201.xsd"));
+            LeggTilXsdRessurs(Navnerom.UriEtsi132, HentRessurs("w3.XAdES.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
         }
 
         private XmlReader HentRessurs(string path)

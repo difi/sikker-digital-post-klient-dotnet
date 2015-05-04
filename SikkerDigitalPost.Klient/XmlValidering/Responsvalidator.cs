@@ -42,14 +42,14 @@ namespace SikkerDigitalPost.Klient.XmlValidering
             responseDocument.LoadXml(response);
 
             nsMgr = new XmlNamespaceManager(responseDocument.NameTable);
-            nsMgr.AddNamespace("env", Navnerom.env);
-            nsMgr.AddNamespace("wsse", Navnerom.wsse);
-            nsMgr.AddNamespace("ds", Navnerom.ds);
-            nsMgr.AddNamespace("eb", Navnerom.eb);
-            nsMgr.AddNamespace("wsu", Navnerom.wsu);
-            nsMgr.AddNamespace("ebbp", Navnerom.Ns7);
-            nsMgr.AddNamespace("sbd", Navnerom.Ns3);
-            nsMgr.AddNamespace("difi", Navnerom.Ns9);
+            nsMgr.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
+            nsMgr.AddNamespace("wsse", Navnerom.WssecuritySecext10);
+            nsMgr.AddNamespace("ds", Navnerom.XmlDsig);
+            nsMgr.AddNamespace("eb", Navnerom.EbXmlCore);
+            nsMgr.AddNamespace("wsu", Navnerom.WssecurityUtility10);
+            nsMgr.AddNamespace("ebbp", Navnerom.EbppSignals);
+            nsMgr.AddNamespace("sbd", Navnerom.StandardBusinessDocumentHeader);
+            nsMgr.AddNamespace("difi", Navnerom.DifiSdpSchema10);
 
             _sendtMelding = sendtMelding;
         }

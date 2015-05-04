@@ -25,9 +25,9 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         public override XmlNode Xml()
         {
-            XmlElement body = Context.CreateElement("env", "Body", Navnerom.env);
-            body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BodyId);
+            XmlElement body = Context.CreateElement("env", "Body", Navnerom.SoapEnvelopeEnv12);
+            body.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
+            body.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.BodyId);
             return body;
         }
     }

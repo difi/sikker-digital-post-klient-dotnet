@@ -31,10 +31,10 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public override XmlNode Xml()
         {
-            var standardBusinessDocumentElement = Context.CreateElement("ns3", "StandardBusinessDocument", Navnerom.Ns3);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns3", Navnerom.Ns3);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns5", Navnerom.Ns5);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns9", Navnerom.Ns9);
+            var standardBusinessDocumentElement = Context.CreateElement("ns3", "StandardBusinessDocument", Navnerom.StandardBusinessDocumentHeader);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns3", Navnerom.StandardBusinessDocumentHeader);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns5", Navnerom.XmlDsig);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns9", Navnerom.DifiSdpSchema10);
             Context.AppendChild(standardBusinessDocumentElement);
 
             standardBusinessDocumentElement.AppendChild(StandardBusinessDocumentHeaderElement());

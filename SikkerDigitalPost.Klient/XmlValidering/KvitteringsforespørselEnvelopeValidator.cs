@@ -25,17 +25,17 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 
         public KvitteringsforespørselEnvelopeValidator()
         {
-            LeggTilXsdRessurs(Navnerom.env, HentRessurs("w3.soap-envelope.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns4, HentRessurs("xmlsoap.envelope.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns6, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns7, HentRessurs("ebxml.ebbp-signals-2.0.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns5, HentRessurs("w3.xmldsig-core-schema.xsd"));
-            LeggTilXsdRessurs(Navnerom.enc, HentRessurs("w3.xenc-schema.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns8, HentRessurs("w3.xlink.xsd"));
-            LeggTilXsdRessurs(Navnerom.xml1998, HentRessurs("w3.xml.xsd"));
-            LeggTilXsdRessurs(Navnerom.ec, HentRessurs("w3.exc-c14n.xsd"));
-            LeggTilXsdRessurs(Navnerom.wsu, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
-            LeggTilXsdRessurs(Navnerom.wsse, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.SoapEnvelopeEnv12, HentRessurs("w3.soap-envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.SoapEnvelope, HentRessurs("xmlsoap.envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.EbXmlCore, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
+            LeggTilXsdRessurs(Navnerom.EbppSignals, HentRessurs("ebxml.ebbp-signals-2.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlEnc, HentRessurs("w3.xenc-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.Xlink, HentRessurs("w3.xlink.xsd"));
+            LeggTilXsdRessurs(Navnerom.Xml1998, HentRessurs("w3.xml.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlExcC14n, HentRessurs("w3.exc-c14n.xsd"));
+            LeggTilXsdRessurs(Navnerom.WssecurityUtility10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.WssecuritySecext10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
         }
 
         private XmlReader HentRessurs(string path)

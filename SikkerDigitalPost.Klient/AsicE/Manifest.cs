@@ -70,7 +70,7 @@ namespace SikkerDigitalPost.Klient.AsicE
 
             _manifestXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.Ns9));
+            _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", Navnerom.DifiSdpSchema10));
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
 
             if (Forsendelse.Sendes(Postmetode.Digital))
@@ -97,14 +97,14 @@ namespace SikkerDigitalPost.Klient.AsicE
         {
            var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
 
-            var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.Ns9);
+            var mottaker = _manifestXml.CreateElement("mottaker", Navnerom.DifiSdpSchema10);
 
-            XmlElement person = _manifestXml.CreateElement("person", Navnerom.Ns9);
+            XmlElement person = _manifestXml.CreateElement("person", Navnerom.DifiSdpSchema10);
             {
-                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", Navnerom.Ns9, _manifestXml);
+                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", Navnerom.DifiSdpSchema10, _manifestXml);
                 personidentifikator.InnerText = digitalMottaker.Personidentifikator;
 
-                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", Navnerom.Ns9, _manifestXml);
+                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", Navnerom.DifiSdpSchema10, _manifestXml);
                 postkasseadresse.InnerText = digitalMottaker.Postkasseadresse;
             }
 
@@ -114,20 +114,20 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement AvsenderNode()
         {
-            XmlElement avsender = _manifestXml.CreateElement("avsender", Navnerom.Ns9);
+            XmlElement avsender = _manifestXml.CreateElement("avsender", Navnerom.DifiSdpSchema10);
             {
-                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", Navnerom.Ns9, _manifestXml);
+                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", Navnerom.DifiSdpSchema10, _manifestXml);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Avsender.Organisasjonsnummer.Iso6523();
 
                 var avsenderId = Avsender.Avsenderidentifikator;
                 if (!String.IsNullOrWhiteSpace(avsenderId))
                 {
-                    XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.Ns9, _manifestXml);
+                    XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", Navnerom.DifiSdpSchema10, _manifestXml);
                     avsenderidentifikator.InnerText = Avsender.Avsenderidentifikator;
                 }
 
-                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.Ns9, _manifestXml);
+                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", Navnerom.DifiSdpSchema10, _manifestXml);
                 fakturaReferanse.InnerText = Avsender.Fakturareferanse;
             }
 
@@ -136,11 +136,11 @@ namespace SikkerDigitalPost.Klient.AsicE
 
         private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
         {
-            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.Ns9);
+            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.DifiSdpSchema10);
             dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
             dokumentXml.SetAttribute("mime", dokument.Innholdstype);
             {
-                XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.Ns9, _manifestXml);
+                XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.DifiSdpSchema10, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);
                 tittel.InnerText = innholdstekst;
             }

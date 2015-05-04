@@ -25,9 +25,9 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 
         public ManifestValidator()
         {
-            LeggTilXsdRessurs(Navnerom.Ns9, HentRessurs("sdp-manifest.xsd"));
-            LeggTilXsdRessurs(Navnerom.Ns9, HentRessurs("sdp-felles.xsd"));
-            LeggTilXsdRessurs(Navnerom.ds, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-manifest.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
         }
 
         private XmlReader HentRessurs(string path)
