@@ -145,7 +145,6 @@ namespace SikkerDigitalPost.Klient
             manager.AddNamespace("ns5", Navnerom.Ns5);
             manager.AddNamespace("ns6", Navnerom.Ns6);
             manager.AddNamespace("ns9", Navnerom.Ns9);
-
             return manager;
         }
     }

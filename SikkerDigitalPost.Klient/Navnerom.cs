@@ -90,6 +90,10 @@ namespace SikkerDigitalPost.Klient
         /// http://www.w3.org/2001/04/xmlenc#
         /// </summary>
         public const string enc = "http://www.w3.org/2001/04/xmlenc#";
+        /// <summary>
+        /// http://www.w3.org/XML/1998/namespace
+        /// </summary>
+        public const string xml1998 = "http://www.w3.org/XML/1998/namespace";
 
     }
 }

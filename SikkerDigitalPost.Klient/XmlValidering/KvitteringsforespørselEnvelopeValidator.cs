@@ -12,32 +12,36 @@
  * limitations under the License.
  */
 
-using System.Xml.Schema;
+using System.IO;
+using System.Xml;
+using ApiClientShared;
+using Difi.Felles.Utility;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class KvitteringsforespørselEnvelopeValidator : Xmlvalidator
+    internal class KvitteringsforespørselEnvelopeValidator : XmlValidator
     {
-        protected override XmlSchemaSet GenererSchemaSet()
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+
+        public KvitteringsforespørselEnvelopeValidator()
         {
-            var schemaSet = new XmlSchemaSet();
+            LeggTilXsdRessurs(Navnerom.env, HentRessurs("w3.soap-envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.Ns4, HentRessurs("xmlsoap.envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.Ns6, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
+            LeggTilXsdRessurs(Navnerom.Ns7, HentRessurs("ebxml.ebbp-signals-2.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.Ns5, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.enc, HentRessurs("w3.xenc-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.Ns8, HentRessurs("w3.xlink.xsd"));
+            LeggTilXsdRessurs(Navnerom.xml1998, HentRessurs("w3.xml.xsd"));
+            LeggTilXsdRessurs(Navnerom.ec, HentRessurs("w3.exc-c14n.xsd"));
+            LeggTilXsdRessurs(Navnerom.wsu, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.wsse, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
+        }
 
-            schemaSet.Add(Navnerom.env, SoapEnvelopeXsdPath());
-            schemaSet.Add(Navnerom.Ns4, EnvelopeXsdPath());
-
-            schemaSet.Add(Navnerom.Ns6, EbmsHeaderXsdPath());
-            schemaSet.Add(Navnerom.Ns7, EbmsSignalsXsdPath());
-
-            schemaSet.Add(Navnerom.Ns5, XmlDsigCoreXsdPath());
-            schemaSet.Add(Navnerom.enc, XmlXencXsdPath());
-            schemaSet.Add(Navnerom.Ns8, XlinkXsdPath());
-            schemaSet.Add("http://www.w3.org/XML/1998/namespace", XmlXsdPath());
-            schemaSet.Add("http://www.w3.org/2001/10/xml-exc-c14n#", ExecC14nXsdPath());
-
-            schemaSet.Add(Navnerom.wsu, WsSecurityUtilityXsdPath());
-            schemaSet.Add(Navnerom.wsse, WsSecuritySecExt1_0XsdPath());
-
-            return schemaSet;
+        private XmlReader HentRessurs(string path)
+        {
+            var bytes = ResourceUtility.ReadAllBytes(true, path);
+            return XmlReader.Create(new MemoryStream(bytes));
         }
     }
 }
