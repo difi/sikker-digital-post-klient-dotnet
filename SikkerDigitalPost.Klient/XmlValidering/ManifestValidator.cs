@@ -12,21 +12,28 @@
  * limitations under the License.
  */
 
-using System.Xml.Schema;
+using System.IO;
+using System.Xml;
+using ApiClientShared;
+using Difi.Felles.Utility;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class ManifestValidator : Xmlvalidator
+    internal class ManifestValidator : XmlValidator
     {
-        protected override XmlSchemaSet GenererSchemaSet()
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+
+        public ManifestValidator()
         {
-            var schemaSet = new XmlSchemaSet();
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-manifest.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
+        }
 
-            schemaSet.Add(Navnerom.Ns9, SdpManifestXsdPath());
-            schemaSet.Add(Navnerom.Ns9, FellesXsdPath());
-            schemaSet.Add(Navnerom.Ns5, XmlDsigCoreXsdPath());
-
-            return schemaSet;
+        private XmlReader HentRessurs(string path)
+        {
+            var bytes = ResourceUtility.ReadAllBytes(true, path);
+            return XmlReader.Create(new MemoryStream(bytes));
         }
     }
 }

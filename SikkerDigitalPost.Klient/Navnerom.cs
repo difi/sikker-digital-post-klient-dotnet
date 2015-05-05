@@ -19,77 +19,82 @@ namespace SikkerDigitalPost.Klient
         /// <summary>
         /// http://www.w3.org/2003/05/soap-envelope
         /// </summary>
-        public const string env = "http://www.w3.org/2003/05/soap-envelope";
+        public const string SoapEnvelopeEnv12 = "http://www.w3.org/2003/05/soap-envelope";
+        
         /// <summary>
         /// http://www.w3.org/2001/XMLSchema-instance
         /// </summary>
-        public const string xsi = "http://www.w3.org/2001/XMLSchema-instance";
+        public const string XmlSchemaInstance = "http://www.w3.org/2001/XMLSchema-instance";
 
         /// <summary>
         /// http://schemas.xmlsoap.org/soap/envelope/
         /// </summary>
-        public const string Ns2 = "http://schemas.xmlsoap.org/soap/envelope/";
+        public const string SoapEnvelope = "http://schemas.xmlsoap.org/soap/envelope/";
+       
         /// <summary>
         /// http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader
         /// </summary>
-        public const string Ns3 = "http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader";
-        /// <summary>
-        /// http://schemas.xmlsoap.org/soap/envelope/
-        /// </summary>
-        public const string Ns4 = "http://schemas.xmlsoap.org/soap/envelope/";
+        public const string StandardBusinessDocumentHeader = "http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader";
+       
         /// <summary>
         /// http://www.w3.org/2000/09/xmldsig#
         /// </summary>
-        public const string Ns5 = "http://www.w3.org/2000/09/xmldsig#";
+        public const string XmlDsig = "http://www.w3.org/2000/09/xmldsig#";
+        
         /// <summary>
         /// http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/
         /// </summary>
-        public const string Ns6 = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/";
+        public const string EbXmlCore = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/";
+        
         /// <summary>
         /// http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0
         /// </summary>
-        public const string Ns7 = "http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0";
+        public const string EbppSignals = "http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0";
+        
         /// <summary>
         /// http://www.w3.org/1999/xlink
         /// </summary>
-        public const string Ns8 = "http://www.w3.org/1999/xlink";
+        public const string Xlink = "http://www.w3.org/1999/xlink";
+        
         /// <summary>
         /// http://begrep.difi.no/sdp/schema_v10
         /// </summary>
-        public const string Ns9 = "http://begrep.difi.no/sdp/schema_v10";
+        public const string DifiSdpSchema10 = "http://begrep.difi.no/sdp/schema_v10";
+        
         /// <summary>
         /// http://uri.etsi.org/2918/v1.2.1#
         /// </summary>
-        public const string Ns10 = "http://uri.etsi.org/2918/v1.2.1#";
+        public const string UriEtsi121 = "http://uri.etsi.org/2918/v1.2.1#";
+        
         /// <summary>
         /// http://uri.etsi.org/01903/v1.3.2#
         /// </summary>
-        public const string Ns11 = "http://uri.etsi.org/01903/v1.3.2#";
+        public const string UriEtsi132 = "http://uri.etsi.org/01903/v1.3.2#";
 
         /// <summary>
         /// http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
         /// </summary>
-        public const string wsse = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+        public const string WssecuritySecext10 = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+        
         /// <summary>
         /// http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
         /// </summary>
-        public const string wsu = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
-        /// <summary>
-        /// http://www.w3.org/2000/09/xmldsig#
-        /// </summary>
-        public const string ds = "http://www.w3.org/2000/09/xmldsig#";
+        public const string WssecurityUtility10 = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+        
         /// <summary>
         /// http://www.w3.org/2001/10/xml-exc-c14n#
         /// </summary>
-        public const string ec = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        /// <summary>
-        /// http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/
-        /// </summary>
-        public const string eb = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/";
+        public const string XmlExcC14n = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        
         /// <summary>
         /// http://www.w3.org/2001/04/xmlenc#
         /// </summary>
-        public const string enc = "http://www.w3.org/2001/04/xmlenc#";
+        public const string XmlEnc = "http://www.w3.org/2001/04/xmlenc#";
+        
+        /// <summary>
+        /// http://www.w3.org/XML/1998/namespace
+        /// </summary>
+        public const string Xml1998 = "http://www.w3.org/XML/1998/namespace";
 
     }
 }

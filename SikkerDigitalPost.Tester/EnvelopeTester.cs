@@ -47,14 +47,14 @@ namespace SikkerDigitalPost.Tester
 
             //Endre til ugyldig forretningsmeldingenvelope
             var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
-            namespaceManager.AddNamespace("env", Navnerom.env);
-            namespaceManager.AddNamespace("eb", Navnerom.eb);
-            namespaceManager.AddNamespace("ds", Navnerom.ds);
-            namespaceManager.AddNamespace("wsse", Navnerom.wsse);
-            namespaceManager.AddNamespace("wsu", Navnerom.wsu);
-            namespaceManager.AddNamespace("ns3", Navnerom.Ns3);
-            namespaceManager.AddNamespace("ns9", Navnerom.Ns9);
-            namespaceManager.AddNamespace("ns5", Navnerom.Ns5);
+            namespaceManager.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
+            namespaceManager.AddNamespace("eb", Navnerom.EbXmlCore);
+            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
+            namespaceManager.AddNamespace("wsse", Navnerom.WssecuritySecext10);
+            namespaceManager.AddNamespace("wsu", Navnerom.WssecurityUtility10);
+            namespaceManager.AddNamespace("ns3", Navnerom.StandardBusinessDocumentHeader);
+            namespaceManager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
+            namespaceManager.AddNamespace("ns5", Navnerom.XmlDsig);
 
             var securityNode = forretningsmeldingEnvelopeXml.DocumentElement.SelectSingleNode("//wsse:Security", namespaceManager);
 

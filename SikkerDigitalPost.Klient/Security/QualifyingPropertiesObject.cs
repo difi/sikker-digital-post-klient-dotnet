@@ -62,35 +62,35 @@ namespace SikkerDigitalPost.Klient.Security
             var cloneContext = (XmlElement)clone.DocumentElement;
 
             // Create a 'dummy' signature node where the QualifyingProperties will be positioned.
-            var signature = cloneContext.AppendChild("Signature", Navnerom.Ns5);
+            var signature = cloneContext.AppendChild("Signature", Navnerom.XmlDsig);
 
             // Add the QualifyingProperties node as normal. This node will be set as the Objects Data property.
-            var root = signature.AppendChild("QualifyingProperties", Navnerom.Ns11);
+            var root = signature.AppendChild("QualifyingProperties", Navnerom.UriEtsi132);
             root.SetAttribute("Target", this.Target);
 
             // Create Xml Node List
-            var signedProperties = root.AppendChild("SignedProperties", Navnerom.Ns11);
+            var signedProperties = root.AppendChild("SignedProperties", Navnerom.UriEtsi132);
 
             signedProperties.SetAttribute("Id", "SignedProperties");
 
-            var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", Navnerom.Ns11);
-            signedSignatureProperties.AppendChild("SigningTime", Navnerom.Ns11, DateTime.UtcNow.ToString(DateUtility.DateFormat, CultureInfo.InvariantCulture));
-            var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", Navnerom.Ns11);
+            var signedSignatureProperties = signedProperties.AppendChild("SignedSignatureProperties", Navnerom.UriEtsi132);
+            signedSignatureProperties.AppendChild("SigningTime", Navnerom.UriEtsi132, DateTime.UtcNow.ToString(DateUtility.DateFormat, CultureInfo.InvariantCulture));
+            var signingCertificate = signedSignatureProperties.AppendChild("SigningCertificate", Navnerom.UriEtsi132);
 
-            var cert = signingCertificate.AppendChild("Cert", Navnerom.Ns11);
+            var cert = signingCertificate.AppendChild("Cert", Navnerom.UriEtsi132);
 
-            var certDigest = cert.AppendChild("CertDigest", Navnerom.Ns11);
-            certDigest.AppendChild("DigestMethod", Navnerom.Ns5).SetAttribute("Algorithm", "http://www.w3.org/2000/09/xmldsig#sha1");
-            certDigest.AppendChild("DigestValue", Navnerom.Ns5, Convert.ToBase64String(Certificate.GetCertHash()));
+            var certDigest = cert.AppendChild("CertDigest", Navnerom.UriEtsi132);
+            certDigest.AppendChild("DigestMethod", Navnerom.XmlDsig).SetAttribute("Algorithm", "http://www.w3.org/2000/09/xmldsig#sha1");
+            certDigest.AppendChild("DigestValue", Navnerom.XmlDsig, Convert.ToBase64String(Certificate.GetCertHash()));
 
-            var issuerSerial = cert.AppendChild("IssuerSerial", Navnerom.Ns11);
-            issuerSerial.AppendChild("X509IssuerName", Navnerom.Ns5, Certificate.Issuer);
-            issuerSerial.AppendChild("X509SerialNumber", Navnerom.Ns5, BigInteger.Parse(Certificate.SerialNumber, NumberStyles.HexNumber).ToString());
+            var issuerSerial = cert.AppendChild("IssuerSerial", Navnerom.UriEtsi132);
+            issuerSerial.AppendChild("X509IssuerName", Navnerom.XmlDsig, Certificate.Issuer);
+            issuerSerial.AppendChild("X509SerialNumber", Navnerom.XmlDsig, BigInteger.Parse(Certificate.SerialNumber, NumberStyles.HexNumber).ToString());
 
-            var signedDataObjectProperties = signedProperties.AppendChild("SignedDataObjectProperties", Navnerom.Ns11);
+            var signedDataObjectProperties = signedProperties.AppendChild("SignedDataObjectProperties", Navnerom.UriEtsi132);
             foreach (var item in References)
             {
-                var a = signedDataObjectProperties.AppendChild("DataObjectFormat", Navnerom.Ns11);
+                var a = signedDataObjectProperties.AppendChild("DataObjectFormat", Navnerom.UriEtsi132);
                 a.SetAttribute("ObjectReference", "#" + item.Id);
                 a.AppendChild("MimeType", "http://uri.etsi.org/01903/v1.3.2#", item.Innholdstype);
             }

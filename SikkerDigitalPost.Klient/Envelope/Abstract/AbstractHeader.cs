@@ -27,7 +27,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Abstract
 
         public override XmlNode Xml()
         {
-            var header = Context.CreateElement("env", "Header", Navnerom.env);
+            var header = Context.CreateElement("env", "Header", Navnerom.SoapEnvelopeEnv12);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;

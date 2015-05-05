@@ -28,9 +28,9 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         public override XmlNode Xml()
         {
-            var securityElement = Context.CreateElement("wsse", "Security", Navnerom.wsse);
-            securityElement.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            securityElement.SetAttribute("mustUnderstand", Navnerom.env, "true");
+            var securityElement = Context.CreateElement("wsse", "Security", Navnerom.WssecuritySecext10);
+            securityElement.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
+            securityElement.SetAttribute("mustUnderstand", Navnerom.SoapEnvelopeEnv12, "true");
             securityElement.AppendChild(BinarySecurityTokenElement());
             securityElement.AppendChild(TimestampElement());
             return securityElement;
@@ -38,8 +38,8 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         private XmlElement BinarySecurityTokenElement()
         {
-            XmlElement binarySecurityToken = Context.CreateElement("wsse", "BinarySecurityToken", Navnerom.wsse);
-            binarySecurityToken.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BinarySecurityTokenId);
+            XmlElement binarySecurityToken = Context.CreateElement("wsse", "BinarySecurityToken", Navnerom.WssecuritySecext10);
+            binarySecurityToken.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.BinarySecurityTokenId);
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
             binarySecurityToken.InnerText = Convert.ToBase64String(Settings.Databehandler.Sertifikat.RawData);
@@ -48,19 +48,19 @@ namespace SikkerDigitalPost.Klient.Envelope
 
         private XmlElement TimestampElement()
         {
-            XmlElement timestamp = Context.CreateElement("wsu", "Timestamp", Navnerom.wsu);
+            XmlElement timestamp = Context.CreateElement("wsu", "Timestamp", Navnerom.WssecurityUtility10);
             {
                 var utcNow = DateTime.UtcNow;
-                XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.wsu, Context);
+                XmlElement created = timestamp.AppendChildElement("Created", "wsu", Navnerom.WssecurityUtility10, Context);
                 created.InnerText = utcNow.ToString(DateUtility.DateFormat);
                 
                 // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/WebserviceSecurity
                 // Time-to-live skal være 120 sekunder
-                XmlElement expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.wsu, Context);
+                XmlElement expires = timestamp.AppendChildElement("Expires", "wsu", Navnerom.WssecurityUtility10, Context);
                 expires.InnerText = utcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
             }
 
-            timestamp.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.TimestampId);
+            timestamp.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.TimestampId);
             return timestamp;
         }
     }

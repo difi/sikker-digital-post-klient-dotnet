@@ -12,43 +12,45 @@
  * limitations under the License.
  */
 
+using System.IO;
+using System.Xml;
 using System.Xml.Schema;
-using SikkerDigitalPost.Klient.Envelope;
-using SikkerDigitalPost.Klient.XmlValidering;
+using ApiClientShared;
+using Difi.Felles.Utility;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {
-
-    internal class ForretningsmeldingEnvelopeValidator : Xmlvalidator
+    internal class ForretningsmeldingEnvelopeValidator : XmlValidator
     {
-        protected override XmlSchemaSet GenererSchemaSet()
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+
+        public ForretningsmeldingEnvelopeValidator(){
+            LeggTilXsdRessurs(Navnerom.SoapEnvelopeEnv12, HentRessurs("w3.soap-envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.SoapEnvelope, HentRessurs("xmlsoap.envelope.xsd"));
+            LeggTilXsdRessurs(Navnerom.EbXmlCore, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
+            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-melding.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            //LeggTilXsdRessurs(Navnerom.enc, HentRessurs("w3.xenc-schema.xsd"));
+            LeggTilXsdRessurs(Navnerom.Xml1998, HentRessurs("w3.xml.xsd"));
+            LeggTilXsdRessurs(Navnerom.XmlExcC14n, HentRessurs("w3.exc-c14n.xsd"));
+
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.StandardBusinessDocumentHeader.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.DocumentIdentification.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.Manifest.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.Partner.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.BusinessScope.xsd"));
+            LeggTilXsdRessurs(Navnerom.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.BasicTypes.xsd"));
+
+            LeggTilXsdRessurs(Navnerom.WssecurityUtility10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
+            LeggTilXsdRessurs(Navnerom.WssecuritySecext10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
+         
+        }
+
+        private XmlReader HentRessurs(string path)
         {
-            var schemaSet = new XmlSchemaSet();
-
-            schemaSet.Add(Navnerom.env, SoapEnvelopeXsdPath());
-            schemaSet.Add(Navnerom.Ns4, EnvelopeXsdPath());
-
-            schemaSet.Add(Navnerom.Ns6, EbmsHeaderXsdPath());
-
-            schemaSet.Add(Navnerom.Ns9, FellesXsdPath());
-            schemaSet.Add(Navnerom.Ns9, MeldingXsdPath());
-
-            schemaSet.Add(Navnerom.Ns5, XmlDsigCoreXsdPath());
-            //schemaSet.Add(Navnerom.enc, XmlXencXsdPath());
-            schemaSet.Add("http://www.w3.org/XML/1998/namespace", XmlXsdPath());
-            schemaSet.Add("http://www.w3.org/2001/10/xml-exc-c14n#", ExecC14nXsdPath());
-
-            schemaSet.Add(Navnerom.Ns3, StandardBusinessDocumentHeaderXsdPath());
-            schemaSet.Add(Navnerom.Ns3, DocumentIdentificationXsdPath());
-            schemaSet.Add(Navnerom.Ns3, SbdhManifestXsdPath());
-            schemaSet.Add(Navnerom.Ns3, PartnerXsdPath());
-            schemaSet.Add(Navnerom.Ns3, BusinessScopeXsdPath());
-            schemaSet.Add(Navnerom.Ns3, BasicTypesXsdPath());
-
-            schemaSet.Add(Navnerom.wsu, WsSecurityUtilityXsdPath());
-            schemaSet.Add(Navnerom.wsse, WsSecuritySecExt1_0XsdPath());
-
-            return schemaSet;
+            var bytes = ResourceUtility.ReadAllBytes(true, path);
+            return XmlReader.Create(new MemoryStream(bytes));
         }
     }
 }

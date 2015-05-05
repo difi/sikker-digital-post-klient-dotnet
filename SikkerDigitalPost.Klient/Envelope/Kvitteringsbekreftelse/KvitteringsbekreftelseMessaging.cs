@@ -28,13 +28,13 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 
         public override XmlNode Xml()
         {
-            XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.eb);
-            messaging.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.env);
+            XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.EbXmlCore);
+            messaging.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
+            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.SoapEnvelopeEnv12);
             mustUnderstand.InnerText = "true";
             messaging.Attributes.Append(mustUnderstand);
 
-            messaging.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.EbMessagingId);
+            messaging.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.EbMessagingId);
 
             messaging.AppendChild(SignalMessageElement());
 
@@ -43,7 +43,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 
         private XmlElement SignalMessageElement()
         {
-            XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.eb);
+            XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.EbXmlCore);
 
             signalMessage.AppendChild(MessageInfoElement());
             signalMessage.AppendChild(ReceiptElement());
@@ -53,15 +53,15 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 
         private XmlElement MessageInfoElement()
         {
-            XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.eb);
+            XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.EbXmlCore);
             {
-                XmlElement timestamp = messageInfo.AppendChildElement("Timestamp", "eb", Navnerom.eb, Context);
+                XmlElement timestamp = messageInfo.AppendChildElement("Timestamp", "eb", Navnerom.EbXmlCore, Context);
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
 
-                XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.eb, Context);
+                XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.EbXmlCore, Context);
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
 
-                XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.eb, Context);
+                XmlElement refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", Navnerom.EbXmlCore, Context);
                 refToMessageId.InnerText = Settings.ForrigeKvittering.MeldingsId;
             }
             return messageInfo;
@@ -69,11 +69,11 @@ namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 
         private XmlElement ReceiptElement()
         {
-            XmlElement receipt = Context.CreateElement("eb", "Receipt", Navnerom.eb);
+            XmlElement receipt = Context.CreateElement("eb", "Receipt", Navnerom.EbXmlCore);
             {
-                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.Ns7, Context);
+                XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", Navnerom.EbppSignals, Context);
                 {
-                    XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.Ns7, Context);
+                    XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", Navnerom.EbppSignals, Context);
                     {
                         XmlNode reference = Settings.ForrigeKvittering.BodyReference;                        
                         messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));

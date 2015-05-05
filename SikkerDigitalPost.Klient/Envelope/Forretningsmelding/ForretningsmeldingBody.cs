@@ -25,9 +25,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public override XmlNode Xml()
         {
-            var body = Context.CreateElement("env", "Body", Navnerom.env);
-            body.SetAttribute("xmlns:wsu", Navnerom.wsu);
-            body.SetAttribute("Id", Navnerom.wsu, Settings.GuidHandler.BodyId);
+            var body = Context.CreateElement("env", "Body", Navnerom.SoapEnvelopeEnv12);
+            body.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
+            body.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.BodyId);
             body.AppendChild(Context.ImportNode(StandardBusinessDocumentElement(), true));
             return body;
         }

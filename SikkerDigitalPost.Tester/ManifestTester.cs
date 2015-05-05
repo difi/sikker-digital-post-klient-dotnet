@@ -36,8 +36,8 @@ namespace SikkerDigitalPost.Tester
 
             //Endre navn på hoveddokument til å være for kort
             var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
-            namespaceManager.AddNamespace("ns9", Navnerom.Ns9);
-            namespaceManager.AddNamespace("ds", Navnerom.ds);
+            namespaceManager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
+            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
 
             var hoveddokumentNode = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument", namespaceManager);
             var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;

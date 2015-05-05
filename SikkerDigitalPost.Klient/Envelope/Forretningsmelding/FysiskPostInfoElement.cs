@@ -21,20 +21,20 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         
         public override XmlNode Xml()
         {
-            XmlElement fysiskPostInfoElement = Context.CreateElement("ns9", "fysiskPostInfo", Navnerom.Ns9);
+            XmlElement fysiskPostInfoElement = Context.CreateElement("ns9", "fysiskPostInfo", Navnerom.DifiSdpSchema10);
             {
                 var fysiskPostMottaker = (FysiskPostMottaker) _fysiskPostInfo.Mottaker;
 
                 var mottakerElement = MottakerElement(fysiskPostMottaker.Navn, fysiskPostMottaker.Adresse); 
                 fysiskPostInfoElement.AppendChild(mottakerElement);
 
-                XmlElement posttype = fysiskPostInfoElement.AppendChildElement("posttype", "ns9", Navnerom.Ns9, Context);
+                XmlElement posttype = fysiskPostInfoElement.AppendChildElement("posttype", "ns9", Navnerom.DifiSdpSchema10, Context);
                 posttype.InnerText = _fysiskPostInfo.Posttype.ToString();
 
-                XmlElement utskriftsfarge = fysiskPostInfoElement.AppendChildElement("utskriftsfarge", "ns9", Navnerom.Ns9, Context);
+                XmlElement utskriftsfarge = fysiskPostInfoElement.AppendChildElement("utskriftsfarge", "ns9", Navnerom.DifiSdpSchema10, Context);
                 utskriftsfarge.InnerText = UtskriftsfargeHelper.EnumToString(_fysiskPostInfo.Utskriftsfarge);
 
-                XmlElement retur = Context.CreateElement("ns9", "retur", Navnerom.Ns9);
+                XmlElement retur = Context.CreateElement("ns9", "retur", Navnerom.DifiSdpSchema10);
                 {
                     retur.AppendChild(MottakerElement(_returmottaker.Navn, _returmottaker.Adresse));
                 }
@@ -48,9 +48,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlNode MottakerElement(string mottakerNavn, Adresse adresse)
         {
-            XmlElement mottaker = Context.CreateElement("ns9", "mottaker", Navnerom.Ns9);
+            XmlElement mottaker = Context.CreateElement("ns9", "mottaker", Navnerom.DifiSdpSchema10);
             {
-                XmlElement navn = mottaker.AppendChildElement("navn", "ns9", Navnerom.Ns9, Context);
+                XmlElement navn = mottaker.AppendChildElement("navn", "ns9", Navnerom.DifiSdpSchema10, Context);
                 navn.InnerText = mottakerNavn;
 
                 if (adresse is NorskAdresse)
@@ -64,9 +64,9 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         
         private XmlNode ReturElement()
         {
-            XmlElement returElement = Context.CreateElement("ns9", "retur", Navnerom.Ns9);
+            XmlElement returElement = Context.CreateElement("ns9", "retur", Navnerom.DifiSdpSchema10);
             {
-                XmlElement postHåndtering = returElement.AppendChildElement("postHaandtering", "ns9", Navnerom.Ns9, Context);
+                XmlElement postHåndtering = returElement.AppendChildElement("postHaandtering", "ns9", Navnerom.DifiSdpSchema10, Context);
                 postHåndtering.InnerText = PosthåndteringHelper.EnumToString(_fysiskPostInfo.Posthåndtering);
 
                 returElement.AppendChild(MottakerElement(_returmottaker.Navn, _returmottaker.Adresse));
@@ -77,7 +77,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlNode UtenlandskAdresseNode(UtenlandskAdresse adresse)
         {
-            XmlElement utenlandskAdresseElement = Context.CreateElement("ns9", "utenlandskAdresse", Navnerom.Ns9);
+            XmlElement utenlandskAdresseElement = Context.CreateElement("ns9", "utenlandskAdresse", Navnerom.DifiSdpSchema10);
             {
                 LeggTilAdresselinje(utenlandskAdresseElement, adresse, 1);
                 LeggTilAdresselinje(utenlandskAdresseElement, adresse, 2);
@@ -86,12 +86,12 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
                 if (adresse.Landkode != null)
                 {
-                    XmlElement landKode = utenlandskAdresseElement.AppendChildElement("landkode", "ns9", Navnerom.Ns9, Context);
+                    XmlElement landKode = utenlandskAdresseElement.AppendChildElement("landkode", "ns9", Navnerom.DifiSdpSchema10, Context);
                     landKode.InnerText = adresse.Landkode;
                 }
                 else
                 {
-                    XmlElement landKode = utenlandskAdresseElement.AppendChildElement("land", "ns9", Navnerom.Ns9, Context);
+                    XmlElement landKode = utenlandskAdresseElement.AppendChildElement("land", "ns9", Navnerom.DifiSdpSchema10, Context);
                     landKode.InnerText = adresse.Land;
                 }
                 
@@ -102,16 +102,16 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlNode NorskAdresseNode(NorskAdresse adresse)
         {
-            XmlElement norskAdresseElement = Context.CreateElement("ns9", "norskAdresse", Navnerom.Ns9);
+            XmlElement norskAdresseElement = Context.CreateElement("ns9", "norskAdresse", Navnerom.DifiSdpSchema10);
             {
                 LeggTilAdresselinje(norskAdresseElement, adresse, 1);
                 LeggTilAdresselinje(norskAdresseElement, adresse, 2);
                 LeggTilAdresselinje(norskAdresseElement, adresse, 3);
 
-                XmlElement postnummer = norskAdresseElement.AppendChildElement("postnummer", "ns9", Navnerom.Ns9, Context);
+                XmlElement postnummer = norskAdresseElement.AppendChildElement("postnummer", "ns9", Navnerom.DifiSdpSchema10, Context);
                 postnummer.InnerText = adresse.Postnummer;
 
-                XmlElement poststed = norskAdresseElement.AppendChildElement("poststed", "ns9", Navnerom.Ns9, Context);
+                XmlElement poststed = norskAdresseElement.AppendChildElement("poststed", "ns9", Navnerom.DifiSdpSchema10, Context);
                 poststed.InnerText = adresse.Poststed;
             }
 
@@ -126,7 +126,7 @@ namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 return;
 
             string adresselinje = "adresselinje" + adresseLinjeNr;
-            XmlElement linje = Context.CreateElement("ns9", adresselinje, Navnerom.Ns9);
+            XmlElement linje = Context.CreateElement("ns9", adresselinje, Navnerom.DifiSdpSchema10);
             linje.InnerText = adresseLinjeData;
 
             norskAdresse.AppendChild(linje);

@@ -144,8 +144,8 @@ namespace SikkerDigitalPost.Klient.AsicE
         {
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.Ns10));
-            signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.Ns11);
+            signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.UriEtsi121));
+            signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.UriEtsi132);
 
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;
