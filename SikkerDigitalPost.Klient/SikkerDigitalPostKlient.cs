@@ -73,17 +73,24 @@ namespace SikkerDigitalPost.Klient
             Logging.Initialize(klientkonfigurasjon);
             FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
-        
+
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
-        public Transportkvittering Send(Forsendelse forsendelse)
+        /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
+        public Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
 
             var guidHandler = new GuidHandler();
+            
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
+            if (lagreDokumentpakke)
+            {
+                arkiv.LagreTilDisk(_klientkonfigurasjon.StandardLoggSti, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");                
+            }
+
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _klientkonfigurasjon));
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
@@ -333,9 +340,9 @@ namespace SikkerDigitalPost.Klient
             if (_klientkonfigurasjon.DebugLoggTilFil && filnavn!= null)
             {
                 if (isXml)
-                    FileUtility.WriteXmlToBasePath(melding, filnavn);
+                    FileUtility.WriteXmlToBasePath(melding, "logg", filnavn);
                 else
-                    FileUtility.WriteToBasePath(melding, filnavn);
+                    FileUtility.WriteToBasePath(melding, "logg", filnavn);
             }
 
             Logging.Log(viktighet, konversasjonsId, melding);

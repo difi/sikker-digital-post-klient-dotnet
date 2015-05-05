@@ -22,7 +22,7 @@ namespace SikkerDigitalPost.Klient
 {
     /// <summary>
     /// Inneholder konfigurasjon for sending av digital post.
-    /// </summary>
+    /// </summary> 
     public class Klientkonfigurasjon
     {
         /// <summary>
@@ -101,7 +101,7 @@ namespace SikkerDigitalPost.Klient
             TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
             Logger = Logging.TraceLogger();
             DebugLoggTilFil = SetFromAppConfig<bool>("SDP:DebugLoggTilFil", false);
-            StandardLoggSti = SetFromAppConfig<string>("SDP:LoggSti", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost", "Logg"));
+            StandardLoggSti = SetFromAppConfig<string>("SDP:LoggSti", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost"));
         }
 
         private T SetFromAppConfig<T>(string key, T @default)
