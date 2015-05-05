@@ -172,9 +172,6 @@
     <EmbeddedResource Include="testdata\Post\manifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="testdata\1_response_kvittering_for_mottatt_forretningsmelding_fra_meldingsformidler_til_postavsender.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\sikker-digital-post.pfx">
       <Link>sikker-digital-post.pfx</Link>
     </None>
