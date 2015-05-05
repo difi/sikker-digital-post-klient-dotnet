@@ -20,6 +20,7 @@ using System.Security.Cryptography.X509Certificates;
 using SikkerDigitalPost.Domene.Entiteter.Interface;
 using SikkerDigitalPost.Domene.Entiteter.Post;
 using System.Diagnostics;
+using SikkerDigitalPost.Klient.Utilities;
 
 namespace SikkerDigitalPost.Klient.AsicE
 {
@@ -111,6 +112,11 @@ namespace SikkerDigitalPost.Klient.AsicE
 
             byte[] ziparray = stream.ToArray();
             return stream.ToArray();
+        }
+
+        public void LagreTilDisk(params string[] filsti)
+        {
+            FileUtility.WriteToBasePath(UkrypterteBytes, filsti);
         }
 
         private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
