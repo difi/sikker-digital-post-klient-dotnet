@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Tester
     public class ArkivTester : TestBase
     {
         public TestContext TestContext { get; set; }
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Tester.testdata");
 
 
         [ClassInitialize]

@@ -19,6 +19,7 @@ using SikkerDigitalPost.Klient.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using System.Linq;
+using Difi.SikkerDigitalPost.Klient;
 
 namespace SikkerDigitalPost.Klient.XmlValidering
 {

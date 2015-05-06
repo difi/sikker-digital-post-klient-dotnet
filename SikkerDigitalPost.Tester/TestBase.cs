@@ -34,7 +34,7 @@ namespace SikkerDigitalPost.Tester
     [TestClass]
     public class TestBase
     {
-        static readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        static readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Tester.testdata");
 
         private static string _hoveddokument;
 

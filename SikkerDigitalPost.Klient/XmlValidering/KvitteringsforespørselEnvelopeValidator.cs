@@ -21,7 +21,7 @@ namespace SikkerDigitalPost.Klient.XmlValidering
 {
     internal class KvitteringsforespørselEnvelopeValidator : XmlValidator
     {
-        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
         public KvitteringsforespørselEnvelopeValidator()
         {

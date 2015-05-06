@@ -167,7 +167,7 @@ namespace SikkerDigitalPost.Testklient
 
         private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
         {
-            ResourceUtility resourceUtility = new ResourceUtility("SikkerDigitalPost.Testklient.Resources");
+            ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Testklient.Resources");
             
             var hoveddokument = resourceUtility.ReadAllBytes(true, "Hoveddokument.pdf");
             var vedlegg = resourceUtility.ReadAllBytes(true, "Vedlegg.txt");

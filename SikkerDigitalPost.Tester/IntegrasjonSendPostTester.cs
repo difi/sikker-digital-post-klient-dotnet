@@ -23,7 +23,7 @@ namespace SikkerDigitalPost.Tester
     {
         private const string OrgnummerPosten = "984661185";
         private const string MottakersertifikatThumbprint =  "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD";
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Tester.testdata");
         public TestContext TestContext { get; set; }
        
         private string _mpcId;

@@ -28,7 +28,7 @@ namespace SikkerDigitalPost.Tester
     [TestClass]
     public class SignedXmlTester : TestBase
     {
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Tester.testdata");
 
         [ClassInitialize]
         public static void Initialize(TestContext context)
