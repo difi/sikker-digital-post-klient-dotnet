@@ -123,7 +123,7 @@
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
+    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
     </ProjectReference>
