@@ -12,17 +12,17 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using System.Diagnostics;
-using SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
-namespace SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {

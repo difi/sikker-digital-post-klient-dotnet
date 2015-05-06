@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 
-namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 {
     public class FysiskPostMottaker : PostMottaker
     {

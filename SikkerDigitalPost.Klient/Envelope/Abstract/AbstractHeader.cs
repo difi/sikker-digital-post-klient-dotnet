@@ -13,9 +13,8 @@
  */
 
 using System.Xml;
-using SikkerDigitalPost.Domene;
 
-namespace SikkerDigitalPost.Klient.Envelope.Abstract
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractHeader : EnvelopeXmlPart
     {

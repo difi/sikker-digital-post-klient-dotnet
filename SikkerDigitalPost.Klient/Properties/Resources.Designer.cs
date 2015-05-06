@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SikkerDigitalPost.Klient.Properties {
+namespace Difi.SikkerDigitalPost.Klient.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SikkerDigitalPost.Klient.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SikkerDigitalPost.Klient.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Difi.SikkerDigitalPost.Klient.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

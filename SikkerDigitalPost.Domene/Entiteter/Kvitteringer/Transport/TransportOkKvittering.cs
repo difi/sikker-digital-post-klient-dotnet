@@ -15,7 +15,7 @@
 using System;
 using System.Xml;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 {
     /// <summary>
     /// Kvittering fra meldingsformidler som indikerer at denne har overtatt ansvaret for videre formidling av meldingen.

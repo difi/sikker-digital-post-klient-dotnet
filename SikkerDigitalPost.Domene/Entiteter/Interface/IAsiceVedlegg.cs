@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace SikkerDigitalPost.Domene.Entiteter.Interface
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface
 {
     internal interface IAsiceVedlegg
     {

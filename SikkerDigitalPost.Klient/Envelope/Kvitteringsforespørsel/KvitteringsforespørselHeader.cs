@@ -14,10 +14,10 @@
 
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Security;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselHeader : AbstractHeader
     {

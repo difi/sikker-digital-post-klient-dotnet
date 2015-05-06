@@ -14,9 +14,9 @@
 
 using System;
 using System.Text.RegularExpressions;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
 {
     public class Organisasjonsnummer
     {

@@ -15,7 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     internal class Logging
     {

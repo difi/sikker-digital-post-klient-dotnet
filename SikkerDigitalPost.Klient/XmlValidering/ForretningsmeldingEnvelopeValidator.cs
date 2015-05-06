@@ -14,15 +14,14 @@
 
 using System.IO;
 using System.Xml;
-using System.Xml.Schema;
 using ApiClientShared;
 using Difi.Felles.Utility;
 
-namespace SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     internal class ForretningsmeldingEnvelopeValidator : XmlValidator
     {
-        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
         public ForretningsmeldingEnvelopeValidator(){
             LeggTilXsdRessurs(Navnerom.SoapEnvelopeEnv12, HentRessurs("w3.soap-envelope.xsd"));

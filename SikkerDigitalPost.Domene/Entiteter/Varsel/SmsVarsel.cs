@@ -15,7 +15,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Varsel
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
 {
     public class SmsVarsel : Varsel
     {

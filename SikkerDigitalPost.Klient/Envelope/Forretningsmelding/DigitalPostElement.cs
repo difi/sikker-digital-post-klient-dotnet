@@ -15,15 +15,15 @@
 using System;
 using System.Security.Cryptography;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Domene.Extensions;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
-using SikkerDigitalPost.Klient.Extensions;
-using SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
-namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class DigitalPostElement : EnvelopeXmlPart
     {

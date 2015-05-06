@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Domene.Enums
+namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     /// <summary>
     /// Valg av håndteringmetode for retur post. Dette blir valgt når post sendes til utskrift og avgjør 

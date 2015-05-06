@@ -14,19 +14,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Exceptions;
-using SikkerDigitalPost.Klient.Security;
-using Sha256Reference = SikkerDigitalPost.Domene.Sha256Reference;
-using System.Diagnostics;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Security;
+using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
 
-namespace SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class Signatur : IAsiceVedlegg
     {

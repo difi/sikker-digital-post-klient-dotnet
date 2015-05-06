@@ -13,26 +13,26 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Exceptions;
-using SikkerDigitalPost.Klient.AsicE;
-using SikkerDigitalPost.Klient.Envelope;
-using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
-using SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
-using SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
-using SikkerDigitalPost.Klient.Utilities;
-using SikkerDigitalPost.Klient.XmlValidering;
-using System.Diagnostics;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.AsicE;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Envelope;
+using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
+using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
+using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     public class SikkerDigitalPostKlient
     {
@@ -322,7 +322,6 @@ namespace SikkerDigitalPost.Klient
             if (!signaturValidert)
                 throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);           
 
-            
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)

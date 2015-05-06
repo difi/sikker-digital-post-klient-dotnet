@@ -17,11 +17,11 @@ using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility;
 
-namespace SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     internal class ManifestValidator : XmlValidator
     {
-        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("SikkerDigitalPost.Klient.XmlValidering.xsd");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
         public ManifestValidator()
         {

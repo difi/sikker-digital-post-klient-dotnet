@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace SikkerDigitalPost.Domene.Entiteter.Aktører
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     public class Person
     {

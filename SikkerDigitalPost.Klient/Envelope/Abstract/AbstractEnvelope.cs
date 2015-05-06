@@ -15,10 +15,10 @@
 using System;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Klient.Envelope.Abstract
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {

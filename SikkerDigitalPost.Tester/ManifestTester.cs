@@ -13,11 +13,10 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.XmlValidering;
 
-namespace SikkerDigitalPost.Tester
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
     public class ManifestTester : TestBase

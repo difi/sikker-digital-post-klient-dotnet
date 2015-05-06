@@ -14,7 +14,7 @@
 
 using System.IO;
 
-namespace SikkerDigitalPost.Domene
+namespace Difi.SikkerDigitalPost.Klient.Domene
 {
     /// <summary>
     /// Represents the &lt;reference&gt; element of an Xml Signature with http://www.w3.org/2001/04/xmlenc#sha256 as the digest method.

@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Domene.Entiteter.Post
+﻿namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     public enum Postmetode
     {
