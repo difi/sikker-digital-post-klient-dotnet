@@ -16,7 +16,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
-namespace SikkerDigitalPost.Klient.Utilities
+namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
     internal class FileUtility
     {

@@ -16,7 +16,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SikkerDigitalPost.Tester
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
     public class SertifikatTester

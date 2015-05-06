@@ -19,22 +19,21 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
+using Difi.SikkerDigitalPost.Klient.AsicE;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
+using Difi.SikkerDigitalPost.Klient.Envelope;
+using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Domene.Entiteter;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Entiteter.Varsel;
-using SikkerDigitalPost.Klient;
-using SikkerDigitalPost.Klient.AsicE;
-using SikkerDigitalPost.Klient.Envelope;
-using SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 
-namespace SikkerDigitalPost.Tester
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
     public class TestBase
     {
-        static readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        static readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
 
         private static string _hoveddokument;
 

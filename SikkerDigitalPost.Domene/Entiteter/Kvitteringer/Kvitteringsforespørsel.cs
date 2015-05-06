@@ -13,9 +13,9 @@
  */
 
 using System;
-using SikkerDigitalPost.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
     public class Kvitteringsforespørsel
     {

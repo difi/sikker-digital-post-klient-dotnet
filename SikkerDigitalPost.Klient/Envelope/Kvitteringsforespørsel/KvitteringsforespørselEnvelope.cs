@@ -13,9 +13,9 @@
  */
 
 using System.Xml;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselEnvelope : AbstractEnvelope
     {

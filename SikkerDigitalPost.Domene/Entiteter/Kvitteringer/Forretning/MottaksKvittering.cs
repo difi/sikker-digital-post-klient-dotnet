@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
     public class Mottakskvittering : Forretningskvittering
     {

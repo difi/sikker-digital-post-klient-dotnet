@@ -16,7 +16,7 @@ using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
 
-namespace SikkerDigitalPost.Testklient
+namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
     public class PostkasseInnstillinger
     {

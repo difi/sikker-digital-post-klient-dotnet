@@ -12,13 +12,13 @@
  * limitations under the License.
  */
 
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Klient.AsicE;
-using KvitteringsForespørsel = SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel;
+using Difi.SikkerDigitalPost.Klient.AsicE;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using KvitteringsForespørsel = Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel;
 
-namespace SikkerDigitalPost.Klient.Envelope
+namespace Difi.SikkerDigitalPost.Klient.Envelope
 {
     internal class EnvelopeSettings
     {

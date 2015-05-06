@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Enums;
-using SikkerDigitalPost.Domene.Extensions;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class FysiskPostInfoElement : EnvelopeXmlPart
     {

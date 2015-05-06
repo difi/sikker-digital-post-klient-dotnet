@@ -14,9 +14,9 @@
 
 using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 {
     /// <summary>
     /// Abstrakt klasse for transportkvitteringer.

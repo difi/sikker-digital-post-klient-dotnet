@@ -14,11 +14,11 @@
 
 using System;
 using System.Configuration;
-using SikkerDigitalPost.Domene.Entiteter;
 using System.Diagnostics;
 using System.IO;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     /// <summary>
     /// Inneholder konfigurasjon for sending av digital post.

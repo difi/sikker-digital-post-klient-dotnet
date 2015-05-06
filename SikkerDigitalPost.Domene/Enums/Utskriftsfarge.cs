@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Domene.Enums
+namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     /// <summary>
     /// Utskriftstype avgjør hvilken utskriftsjobb brevet blir en del av. Det er to forskjellige utskriftsjobber, 

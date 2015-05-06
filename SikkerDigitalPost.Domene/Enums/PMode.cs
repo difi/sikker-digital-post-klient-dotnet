@@ -13,9 +13,9 @@
  */
 
 using System;
-using SikkerDigitalPost.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 
-namespace SikkerDigitalPost.Domene.Enums
+namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     internal enum PMode
     {

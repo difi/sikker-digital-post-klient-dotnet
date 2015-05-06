@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     internal static class Navnerom
     {

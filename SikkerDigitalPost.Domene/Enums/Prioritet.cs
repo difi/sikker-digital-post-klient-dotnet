@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace SikkerDigitalPost.Domene.Enums
+namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     /// <summary>
     /// Angir om en melding skal legges i/hentes fra normal eller prioritert kø. 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Domene.Entiteter.FysiskPost
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 {
 
     public class NorskAdresse : Adresse

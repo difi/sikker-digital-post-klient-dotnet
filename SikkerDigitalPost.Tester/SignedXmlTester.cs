@@ -17,18 +17,17 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Xml;
 using ApiClientShared;
+using Difi.SikkerDigitalPost.Klient.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Tester
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
     public class SignedXmlTester : TestBase
     {
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("SikkerDigitalPost.Tester.testdata");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
 
         [ClassInitialize]
         public static void Initialize(TestContext context)

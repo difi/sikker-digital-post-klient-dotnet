@@ -13,9 +13,9 @@
  */
 
 using System.Xml;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 {
     internal class KvitteringsbekreftelseEnvelope : AbstractEnvelope
     {

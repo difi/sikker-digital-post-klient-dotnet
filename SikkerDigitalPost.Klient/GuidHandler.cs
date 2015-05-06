@@ -14,7 +14,7 @@
 
 using System;
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     internal class GuidHandler
     {
