@@ -14,7 +14,7 @@
 
 using System;
 
-namespace SikkerDigitalPost.Klient.Utilities
+namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
     internal static class DateUtility
     {

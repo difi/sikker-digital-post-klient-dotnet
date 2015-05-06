@@ -7,8 +7,8 @@
     <ProjectGuid>{C7666E57-D563-40A5-AE3C-B36E29824E87}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Difi.SikkerDigitalPost.Domene</RootNamespace>
-    <AssemblyName>Difi.SikkerDigitalPost.Domene</AssemblyName>
+    <RootNamespace>Difi.SikkerDigitalPost.Klient.Domene</RootNamespace>
+    <AssemblyName>Difi.SikkerDigitalPost.Klient.Domene</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Domene.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Domene.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -44,10 +44,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

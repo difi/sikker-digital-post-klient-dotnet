@@ -12,15 +12,14 @@
  * limitations under the License.
  */
 
-using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Post
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Dokument : IAsiceVedlegg
     {

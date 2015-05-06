@@ -15,7 +15,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Varsel
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
 {
     /// <summary>
     /// Informasjon om hvordan postkasseleverandør skal varsle Mottaker om den nye posten. 

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace SikkerDigitalPost.Domene.Extensions
+namespace Difi.SikkerDigitalPost.Klient.Domene.Extensions
 {
     internal static class StringExtensions
     {

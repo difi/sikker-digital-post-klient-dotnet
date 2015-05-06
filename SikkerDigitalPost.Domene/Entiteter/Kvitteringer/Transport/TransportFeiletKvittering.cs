@@ -14,10 +14,10 @@
 
 using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Enums;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 {
     /// <summary>
     /// Transportkvittering som indikerer at noe har gått galt ved sending av en melding. 

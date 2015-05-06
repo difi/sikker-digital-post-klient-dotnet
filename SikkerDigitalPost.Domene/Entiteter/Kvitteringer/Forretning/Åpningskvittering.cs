@@ -14,9 +14,9 @@
 
 using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
     /// <summary>
     /// En kvitteringsmelding til Avsender om at Mottaker har åpnet forsendelsen i sin postkasse.

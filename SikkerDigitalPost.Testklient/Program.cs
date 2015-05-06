@@ -14,20 +14,17 @@
 
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using ApiClientShared;
-using SikkerDigitalPost.Domene.Entiteter;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Enums;
-using SikkerDigitalPost.Klient;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
-namespace SikkerDigitalPost.Testklient
+namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
     class Program
     {

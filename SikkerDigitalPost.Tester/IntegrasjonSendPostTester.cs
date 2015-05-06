@@ -5,17 +5,16 @@ using System.Linq;
 using System.Threading;
 using ApiClientShared;
 using ApiClientShared.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.FysiskPost;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Enums;
-using SikkerDigitalPost.Klient;
 
-namespace SikkerDigitalPost.Tester
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
 
     [TestClass]
@@ -23,7 +22,7 @@ namespace SikkerDigitalPost.Tester
     {
         private const string OrgnummerPosten = "984661185";
         private const string MottakersertifikatThumbprint =  "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD";
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Tester.testdata");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
         public TestContext TestContext { get; set; }
        
         private string _mpcId;

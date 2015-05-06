@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SikkerDigitalPost.Klient.Extensions
+namespace Difi.SikkerDigitalPost.Klient.Extensions
 {
     internal static class DateTimeExtensions
     {

@@ -16,12 +16,13 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Entiteter.Interface;
-using SikkerDigitalPost.Domene.Entiteter.Post;
-using SikkerDigitalPost.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
-namespace SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class Manifest : IAsiceVedlegg
     {

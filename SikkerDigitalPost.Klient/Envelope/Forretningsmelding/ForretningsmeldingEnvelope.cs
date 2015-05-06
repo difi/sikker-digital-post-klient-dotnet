@@ -13,9 +13,9 @@
  */
 
 using System.Xml;
-using SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 
-namespace SikkerDigitalPost.Klient.Envelope.Forretningsmelding
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingEnvelope : AbstractEnvelope
     {        

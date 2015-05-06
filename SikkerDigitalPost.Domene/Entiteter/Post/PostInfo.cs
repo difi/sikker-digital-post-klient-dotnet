@@ -1,8 +1,8 @@
 ﻿using System;
-using SikkerDigitalPost.Domene.Entiteter.Aktører;
-using SikkerDigitalPost.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Post
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public abstract class PostInfo
     {

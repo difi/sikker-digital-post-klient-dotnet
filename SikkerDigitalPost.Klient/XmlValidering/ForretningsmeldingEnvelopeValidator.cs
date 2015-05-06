@@ -14,11 +14,10 @@
 
 using System.IO;
 using System.Xml;
-using System.Xml.Schema;
 using ApiClientShared;
 using Difi.Felles.Utility;
 
-namespace SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     internal class ForretningsmeldingEnvelopeValidator : XmlValidator
     {

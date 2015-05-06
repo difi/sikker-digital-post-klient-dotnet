@@ -13,15 +13,13 @@
  */
 
 using System;
-using System.Xml;
-using SikkerDigitalPost.Domene.Exceptions;
-using SikkerDigitalPost.Klient.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
 using System.Linq;
-using Difi.SikkerDigitalPost.Klient;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Security;
 
-namespace SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     /// <summary>
     /// Inneholder funksjonalitet for å validere motatte svar fra meldingsformidleren.

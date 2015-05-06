@@ -1,4 +1,4 @@
-﻿namespace SikkerDigitalPost.Domene.Enums
+﻿namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     /// <summary>
     /// Posttype avgjør fremsendingstiden for brevet. Hver posttype har forskjellig pris.

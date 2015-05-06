@@ -12,13 +12,12 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Post
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Dokumentpakke
     {

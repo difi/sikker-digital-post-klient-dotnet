@@ -17,7 +17,7 @@ using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility;
 
-namespace SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     internal class KvitteringsforespørselEnvelopeValidator : XmlValidator
     {

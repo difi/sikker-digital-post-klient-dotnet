@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Domene.Entiteter.Kvitteringer
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
     public class Kvittering
     {

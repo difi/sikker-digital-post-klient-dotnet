@@ -14,7 +14,7 @@
 
 using System;
 
-namespace SikkerDigitalPost.Domene.Exceptions
+namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
     public class KonfigurasjonsException : SikkerDigitalPostException
     {

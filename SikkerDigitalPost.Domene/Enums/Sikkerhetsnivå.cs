@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace SikkerDigitalPost.Domene.Enums
+namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
 {
     public enum Sikkerhetsnivå
     {

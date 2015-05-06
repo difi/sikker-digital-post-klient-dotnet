@@ -14,7 +14,7 @@
 
 using System.Xml;
 
-namespace SikkerDigitalPost.Klient.Envelope.Abstract
+namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class EnvelopeXmlPart
     {

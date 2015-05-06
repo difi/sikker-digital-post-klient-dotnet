@@ -14,11 +14,11 @@
 
 using System;
 using System.Xml;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Forretning;
-using SikkerDigitalPost.Domene.Entiteter.Kvitteringer.Transport;
-using SikkerDigitalPost.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
-namespace SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient
 {
     internal class KvitteringFactory
     {
