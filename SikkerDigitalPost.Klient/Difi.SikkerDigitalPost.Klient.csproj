@@ -8,8 +8,8 @@
     <ProjectGuid>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SikkerDigitalPost.Klient</RootNamespace>
-    <AssemblyName>SikkerDigitalPost.Klient</AssemblyName>
+    <RootNamespace>Difi.SikkerDigitalPost.Klient</RootNamespace>
+    <AssemblyName>Difi.SikkerDigitalPost.Klient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -26,7 +26,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\SikkerDigitalPost.Klient.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -57,9 +56,6 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +122,9 @@
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Domene\Difi.SikkerDigitalPost.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
-      <Name>SikkerDigitalPost.Domene</Name>
+      <Name>Difi.SikkerDigitalPost.Domene</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

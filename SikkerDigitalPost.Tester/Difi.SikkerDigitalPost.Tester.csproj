@@ -26,7 +26,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,13 +45,9 @@
     <Reference Include="ApiClientShared">
       <HintPath>..\packages\api-client-shared.1.0.5578.25458\lib\net45\ApiClientShared.dll</HintPath>
     </Reference>
-    <Reference Include="Difi.Felles.Utility">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.1.5598.25086\lib\net45\Difi.Felles.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -79,13 +74,13 @@
     <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Domene\SikkerDigitalPost.Domene.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Domene\Difi.SikkerDigitalPost.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
-      <Name>SikkerDigitalPost.Domene</Name>
+      <Name>Difi.SikkerDigitalPost.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Klient\SikkerDigitalPost.Klient.csproj">
+    <ProjectReference Include="..\SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
-      <Name>SikkerDigitalPost.Klient</Name>
+      <Name>Difi.SikkerDigitalPost.Klient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
