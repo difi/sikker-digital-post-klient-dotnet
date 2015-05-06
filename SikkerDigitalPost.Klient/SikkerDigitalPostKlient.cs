@@ -322,7 +322,6 @@ namespace SikkerDigitalPost.Klient
             if (!signaturValidert)
                 throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);           
 
-            
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
