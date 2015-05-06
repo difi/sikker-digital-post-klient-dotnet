@@ -79,11 +79,11 @@
     <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikkerDigitalPost.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
+    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
+    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
       <Name>Difi.SikkerDigitalPost.Klient</Name>
     </ProjectReference>
