@@ -84,7 +84,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <summary>
         /// Setter om logging skal gjøres til fil for alle meldinger som går mellom Klientbibliotek og Meldingsformidler
         /// </summary>
-        public bool DebugLoggTilFil { get; set; }
+        public bool LoggXmlTilFil { get; set; }
 
         public string StandardLoggSti { get; set; }
 
@@ -100,7 +100,7 @@ namespace Difi.SikkerDigitalPost.Klient
             ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
             TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
             Logger = Logging.TraceLogger();
-            DebugLoggTilFil = SetFromAppConfig<bool>("SDP:DebugLoggTilFil", false);
+            LoggXmlTilFil = SetFromAppConfig<bool>("SDP:LoggXmlTilFil", false);
             StandardLoggSti = SetFromAppConfig<string>("SDP:LoggSti", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost"));
         }
 
