@@ -14,6 +14,8 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
+using ApiClientShared;
+using ApiClientShared.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
@@ -42,6 +44,14 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         public Databehandler(String organisasjonsnummer, X509Certificate2 sertifikat): 
             this(new Organisasjonsnummer(organisasjonsnummer), sertifikat )
         {
+        }
+
+        /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
+        /// <param name="sertifikatThumbprint">Thumbprint til sertifikatet. Se guide på http://difi.github.io/sikker-digital-post-klient-dotnet/#databehandlersertifikat </param>
+        public Databehandler(String organisasjonsnummer, string sertifikatThumbprint)
+        {
+            Organisasjonsnummer = new Organisasjonsnummer(organisasjonsnummer);
+            Sertifikat = CertificateUtility.SenderCertificate(sertifikatThumbprint, Language.Norwegian);
         }
     }
 }

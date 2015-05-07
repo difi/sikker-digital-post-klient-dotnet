@@ -54,7 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var postInfo = GenererPostInfo(postkasseInnstillinger, ErDigitalPostMottaker, ErNorskBrev);
             var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
+            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, "8702F5E55217EC88CF2CCBADAC290BB4312594AC");
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
             var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
@@ -157,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.DebugLoggTilFil = false;
+            klientkonfigurasjon.LoggXmlTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
