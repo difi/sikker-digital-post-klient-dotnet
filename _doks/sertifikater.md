@@ -25,7 +25,7 @@ For å sende sikker digital post trenger du å installere sertifikater.
 
 <blockquote> Mottakerens sertifikat vil være sertifikatet til Digipost eller E-Boks og brukes for å validere respons.</blockquote>
 
-Hvis du skal kjøre mot Digiposts testmiljø (https://qaoffentlig.meldingsformidler.digipost.no/api/ebms), så skal du bruke [Test_Digipost.cer](https://github.com/difi/sikker-digital-post-klient-dotnet/tree/gh-pages/cert/). Høyreklikk og lagre til disk.  
+Hvis du skal kjøre mot Digiposts testmiljø (https://qaoffentlig.meldingsformidler.digipost.no/api/ebms), så skal du bruke [Test_Digipost.cer](https://github.com/difi/sikker-digital-post-klient-dotnet/tree/gh-pages/cert/Test_Digipost.cer). Høyreklikk og lagre til disk.  
 
 1.  Start mmc.exe (Trykk windowstast og skriv _mmc.exe_)
 2.  Velg _File_ -> _Add/Remove Snap-in..._ 
