@@ -47,7 +47,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         }
 
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
-        /// <param name="sertifikatThumbprint">Thumbprint til sertifikatet. Se guide på http://difi.github.io/sikker-digital-post-klient-dotnet/#databehandlersertifikat </param>
+        /// <param name="sertifikatThumbprint">Thumbprint til databehandlersertifikatet. Se guide på http://difi.github.io/sikker-digital-post-klient-dotnet/#databehandlersertifikat </param>
         public Databehandler(String organisasjonsnummer, string sertifikatThumbprint)
         {
             Organisasjonsnummer = new Organisasjonsnummer(organisasjonsnummer);
