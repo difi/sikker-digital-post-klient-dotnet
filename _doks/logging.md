@@ -43,13 +43,10 @@ Hvis <code> Klientkonfigurasjon.StandardLoggSti </code> ikke settes, så finner 
 
 <h3 id="dokumentpakkelogger">Lagre dokumentpakke som sendes</h3>
 
-Som avsender kan det være ønskelig å lagre selve pakken med dokumenter som sendes. Denne inneholder også XML som sendes og er den faktiske pakken som krypteres og sendes. For å gjøre dette, setter du følgende på k
+Som avsender kan det være ønskelig å lagre selve pakken med dokumenter som sendes. Denne inneholder også XML som sendes og er den faktiske pakken som krypteres og sendes. For å gjøre dette, setter du følgende på <code>Klientkonfigurasjon</code>:
 
 {% highlight csharp %}
 var transportkvittering = sikkerDigitalPostKlient.Send(forsendelse, lagreDokumentpakke: true);
 {% endhighlight %}
 
 Hvis <code> Klientkonfigurasjon.StandardLoggSti </code> ikke settes, så finner du dokumentpakkene i _%AppData%/Digipost/Dokumentpakke_.
-
-
-klientkonfigurasjon.StandardLoggSti = @"\Loggmappe";
