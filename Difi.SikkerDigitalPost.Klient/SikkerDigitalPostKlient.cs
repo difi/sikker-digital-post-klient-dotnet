@@ -14,8 +14,10 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.AsicE;
@@ -31,6 +33,7 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Microsoft.Win32;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -271,6 +274,9 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             var data = String.Empty;
             var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
+            request.UserAgent = ".NET/" + Environment.Version + " SDP/" + Assembly.GetExecutingAssembly().GetName().Version;
+                      
+
             if (_klientkonfigurasjon.BrukProxy)
                 request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
 
