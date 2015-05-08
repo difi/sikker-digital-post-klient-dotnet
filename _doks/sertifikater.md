@@ -6,7 +6,7 @@ description: Installere sertifikater for signering og kryptering av post
 isHome: false
 ---
 
-For å sende sikker digital post trenger du å installere sertifikater. 
+For å sende sikker digital post trenger du å installere sertifikater. Grunnen til at vi ønsker å installere de er først og fremst sikkerhet. Alle sertifikater har en unik identifikator som kalles thumbprint. Hvis du ikke ønsker å håndtere selv i koden hvordan sertifikatene skal lastes, så kan du følge guiden under, steg for steg. Til slutt gjennomgås det hvordan du kan finne thumbprint til de installerte sertifikatene.
 
 <h3 id="databehandlersertifikat">Legg inn databehandlersertifikat i certificate store</h3>
 
@@ -39,31 +39,23 @@ Hvis du skal kjøre mot Digiposts testmiljø (https://qaoffentlig.meldingsformid
 10. _Next_ og _Finish_
 11. Du skal da få en dialog som sier at importeringen var vellykket. Trykk _Ok_.
 
-<h3 id="installertsertifikat">Finne installert sertifikat</h3>
+<h3 id="finneinstallertsertifikat">Finne installert sertifikat</h3>
+
+For å bruke sertifikatene i kode så må du finne _thumbprint_ til hver av de. Dette gjøres lettest gjennom _Microsoft Management Console_ (mmc.exe).
+
+<code>SikkerDigitalPostKlient</code> har støtte for å ta in _thumbprint_ direkte for <code>Databehandler</code> og <code>PostMottaker</code>. Du finner _thumbprint_ på følgende måte:
+
+1.  Start mmc.exe (Trykk windowstast og skriv _mmc.exe_)
+2.  Velg _File_ -> _Add/Remove Snap-in..._ 
+3.  Merk _Certificates_ og trykk _Add >_
+4.  Velg _My user account_ og trykk _Finish_
+5.	Åpne mappe for sertifikat
+	1. Databehandlersertifikat: Åpne noden _Certificates - Current User - Personal - Certificates_
+	2. Mottakersertifikat: Åpne noden _Certificates - Current User - Trusted People - Certificates_
+6. 	Dobbeltklikk på sertifikatet du installerte
+7.	Velg _Details_, scroll ned til _Thumbprint_ og kopier
+8.	VIKTIG: Hvis du får problemer i kode med at sertifikat ikke finnes, så kan det hende du får med en usynling _BOM_(Byte Order Mark). Slett derfor denne med å sette peker før første tegn i thumbprint i en teksteditor og trykk backspace. Hvis det var en BOM der så forsvant ikke det første synlige tegnet i thumbprint. 
+
+Ønsker du å sende inn sertifikater du har allerede har initialisert, kan du kalle konstruktøren som tar inn <code> X509Certificate2</code>.
 
 Som bruker av dette biblioteket er du en Databehandler som har ansvar for sending av meldinger. For å gjøre dette trenger du et sertifikat for å kunne autentisere deg mot Meldingsformidleren. Du kan lese mer om aktørene [her](http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer).
-
-
-De installerte sertifikatene kan hentes inn vha. thumbprint. Dette finner du ved å åpne sertifikatet i Explorer og kopier verdien _Thumbprint_.
-
-Sertifikatene kan hentes på følgende måte:
-{% highlight csharp %}
-//Sertifikat for databehandler
-X509Store storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-X509Certificate2 databehandlersertifikat;
-storeMy.Open(OpenFlags.ReadOnly);
-databehandlersertifikat = storeMy.Certificates.Find(
-	X509FindType.FindByThumbprint, hash, true)[0];
-storeMy.Close();
-
- //Sertifikat for mottaker
- var storeTrusted = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser);
- X509Certificate2 mottakerSertifikat;
- storeTrusted.Open(OpenFlags.ReadOnly);
- mottakerSertifikat = storeTrusted.Certificates.Find(
- 	X509FindType.FindByThumbprint, hash, true)[0];
- storeTrusted.Close();
-{% endhighlight %}
-
-
-
