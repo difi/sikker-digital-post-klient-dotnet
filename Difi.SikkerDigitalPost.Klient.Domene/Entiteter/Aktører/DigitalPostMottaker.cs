@@ -44,5 +44,19 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
            Personidentifikator = personidentifikator;
            Postkasseadresse = postkasseadresse;
        }
+
+        /// <summary>
+        /// Informasjon om mottaker. Vil vanligvis være hentet fra http://begrep.difi.no/Oppslagstjenesten/.
+        /// </summary>
+        /// <param name="personidentifikator">Identifikator (fødselsnummer eller D-nummer) til mottaker av brevet.</param>
+        /// <param name="postkasseadresse">Mottakerens adresse hos postkasseleverandøren.</param>
+        /// <param name="sertifikatThumbprint">Thumbprint til mottakersertifikatet. Se guide på http://difi.github.io/sikker-digital-post-klient-dotnet/#mottakersertifikat </param>
+        /// <param name="organisasjonsnummerPostkasse">Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i meldingsprosessen.</param>
+        public DigitalPostMottaker(string personidentifikator, string postkasseadresse, string sertifikatThumbprint, string organisasjonsnummerPostkasse)
+            : base(sertifikatThumbprint, organisasjonsnummerPostkasse)
+        {
+            Personidentifikator = personidentifikator;
+            Postkasseadresse = postkasseadresse;
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var postInfo = GenererPostInfo(postkasseInnstillinger, ErDigitalPostMottaker, ErNorskBrev);
             var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, postkasseInnstillinger.Avsendersertifikat);
+            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, "8702F5E55217EC88CF2CCBADAC290BB4312594AC");
             behandlingsansvarlig.Avsenderidentifikator = "digipost";
 
             var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
@@ -157,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            klientkonfigurasjon.DebugLoggTilFil = false;
+            klientkonfigurasjon.LoggXmlTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
@@ -199,11 +199,16 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             PostInfo postInfo;
             PostMottaker mottaker;
 
+            var mottakerSertifikatThumbprint = "B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD";
+
             if (erDigitalPostMottaker)
             {
-                mottaker = new DigitalPostMottaker(postkasseInnstillinger.Personnummer,
-                    postkasseInnstillinger.Postkasseadresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+                mottaker = new DigitalPostMottaker(
+                    personidentifikator: postkasseInnstillinger.Personnummer, 
+                    postkasseadresse: postkasseInnstillinger.Postkasseadresse, 
+                    sertifikatThumbprint: mottakerSertifikatThumbprint, 
+                    organisasjonsnummerPostkasse: postkasseInnstillinger.OrgnummerPostkasse
+                    );
 
                 postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
                 ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
@@ -217,7 +222,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
 
                 mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
-                    postkasseInnstillinger.Mottakersertifikat, postkasseInnstillinger.OrgnummerPostkasse);
+                    mottakerSertifikatThumbprint, postkasseInnstillinger.OrgnummerPostkasse);
 
                 var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))
                 {
