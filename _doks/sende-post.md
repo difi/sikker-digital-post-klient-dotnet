@@ -8,7 +8,7 @@ isHome: false
 
 I disse eksempler er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig) og Posten som er teknisk avsender.
 
-_Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere_ 
+<blockquote>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere</blockquote>
 
 <h3 id="postinfodigital">PostInfo for digital post</h3>
 
@@ -17,6 +17,8 @@ Først, lag en motaker av type `DigitalPostMottaker`:
 {% highlight csharp %}
 var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, mottakersertifikat, orgnummerPostkasse)
 {% endhighlight%}
+
+Organisasjonsnummer til postkassen vil være 984661185 hvis det er Posten som har postkassen, og 996460320 hvis det er EBoks.
 
 Opprett så en `DigitalPostInfo`:
 {% highlight csharp %}
