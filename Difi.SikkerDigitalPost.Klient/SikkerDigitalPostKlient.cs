@@ -14,10 +14,8 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.AsicE;
@@ -33,7 +31,6 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.Win32;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -274,9 +271,6 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             var data = String.Empty;
             var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
-            request.UserAgent = ".NET/" + Environment.Version + " SDP/" + Assembly.GetExecutingAssembly().GetName().Version;
-                      
-
             if (_klientkonfigurasjon.BrukProxy)
                 request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
 
@@ -342,7 +336,7 @@ namespace Difi.SikkerDigitalPost.Klient
             filnavn = datoPrefiks ? String.Format("{0} - {1}", DateUtility.DateForFile(), filnavn) : filnavn;
             fullFilsti[filsti.Length] = filnavn;
 
-            if (_klientkonfigurasjon.DebugLoggTilFil && filnavn!= null)
+            if (_klientkonfigurasjon.LoggXmlTilFil && filnavn!= null)
             {
                 if (isXml)
                     FileUtility.WriteXmlToBasePath(melding, "logg", filnavn);
