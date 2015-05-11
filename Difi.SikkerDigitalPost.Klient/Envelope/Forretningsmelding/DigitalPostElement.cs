@@ -61,9 +61,9 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 XmlElement organisasjon = avsender.AppendChildElement("organisasjon", "ns9", Navnerom.DifiSdpSchema10, Context);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
-                organisasjon.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
+                organisasjon.InnerText = Settings.Forsendelse.Avsender.Organisasjonsnummer.Iso6523();
 
-                var avsenderIdentifikator = Settings.Forsendelse.Behandlingsansvarlig.Avsenderidentifikator;
+                var avsenderIdentifikator = Settings.Forsendelse.Avsender.Avsenderidentifikator;
                 if(avsenderIdentifikator != String.Empty){
                     XmlElement avsenderidentifikator = 
                         avsender.AppendChildElement("avsenderidentifikator", "ns9", Navnerom.DifiSdpSchema10, Context);
@@ -71,7 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 }
 
                 XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", "ns9", Navnerom.DifiSdpSchema10, Context);
-                fakturaReferanse.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Fakturareferanse;
+                fakturaReferanse.InnerText = Settings.Forsendelse.Avsender.Fakturareferanse;
             }
             return avsender;
         }

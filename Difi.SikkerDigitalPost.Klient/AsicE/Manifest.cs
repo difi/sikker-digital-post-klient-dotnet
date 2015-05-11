@@ -28,14 +28,14 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-        public Behandlingsansvarlig Avsender { get; private set; }
+        public Avsender Avsender { get; private set; }
         public Forsendelse Forsendelse { get; private set; }
 
 
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
-            Avsender = forsendelse.Behandlingsansvarlig;
+            Avsender = forsendelse.Avsender;
         }
 
         public string Filnavn
@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             get { return "manifest.xml"; }
         }
 
-        public string Innholdstype
+        public string MimeType
         {
             get { return "application/xml"; }
         }
@@ -139,7 +139,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         {
             XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.DifiSdpSchema10);
             dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
-            dokumentXml.SetAttribute("mime", dokument.Innholdstype);
+            dokumentXml.SetAttribute("mime", dokument.MimeType);
             {
                 XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.DifiSdpSchema10, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);

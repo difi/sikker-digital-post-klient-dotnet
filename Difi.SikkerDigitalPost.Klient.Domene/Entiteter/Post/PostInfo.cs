@@ -4,6 +4,10 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
+    /// <summary>
+    /// Abstrakt klasse for informasjon knyttet til en forsendelse. Kan instansieres
+    /// som FysiskPostInfo og DigitalPostInfo.
+    /// </summary>
     public abstract class PostInfo
     {
         public PostMottaker Mottaker { get; set; }

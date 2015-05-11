@@ -26,15 +26,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public TestContext TestContext { get; set; }
        
         private string _mpcId;
-        private Behandlingsansvarlig _behandlingsansvarlig;
+        private Avsender _avsender;
 
         [TestInitialize]
         public void Initialize()
         {
             _mpcId = "Integrasjonstest-" + Guid.NewGuid();
             
-            _behandlingsansvarlig = new Behandlingsansvarlig(OrgnummerPosten);
-            _behandlingsansvarlig.Avsenderidentifikator = "digipost";
+            _avsender = new Avsender(OrgnummerPosten);
+            _avsender.Avsenderidentifikator = "digipost";
         }
 
         
@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                
                 //Assert
                 SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(_behandlingsansvarlig, postinfo, _mpcId, out sdpKlient);
+                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, out sdpKlient);
                 HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
@@ -91,7 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 
                 //Assert
                 SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(_behandlingsansvarlig, postinfo, _mpcId, out sdpKlient);
+                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, out sdpKlient);
                 HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
@@ -100,7 +100,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        private Forsendelse ByggDokumentpakkeOgSend(Behandlingsansvarlig behandlingsansvarlig,
+        private Forsendelse ByggDokumentpakkeOgSend(Avsender avsender,
             PostInfo postinfo, string mpcId, out SikkerDigitalPostKlient sdpKlient)
         {
             //Arrange
@@ -123,7 +123,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             });
 
             //Assert
-            var forsendelse = new Forsendelse(behandlingsansvarlig, postinfo, dokumentpakke, Prioritet.Prioritert, mpcId);
+            var forsendelse = new Forsendelse(avsender, postinfo, dokumentpakke, Prioritet.Prioritert, mpcId);
             var transportkvittering = sdpKlient.Send(forsendelse);
 
             if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))

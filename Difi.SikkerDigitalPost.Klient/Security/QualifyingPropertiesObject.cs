@@ -92,7 +92,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             {
                 var a = signedDataObjectProperties.AppendChild("DataObjectFormat", Navnerom.UriEtsi132);
                 a.SetAttribute("ObjectReference", "#" + item.Id);
-                a.AppendChild("MimeType", "http://uri.etsi.org/01903/v1.3.2#", item.Innholdstype);
+                a.AppendChild("MimeType", "http://uri.etsi.org/01903/v1.3.2#", item.MimeType);
             }
 
             return root.SelectNodes(".");

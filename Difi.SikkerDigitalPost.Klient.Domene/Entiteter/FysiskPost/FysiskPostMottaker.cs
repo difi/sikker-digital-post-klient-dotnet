@@ -3,6 +3,9 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 {
+    /// <summary>
+    /// En mottaker av fysisk post.
+    /// </summary>
     public class FysiskPostMottaker : PostMottaker
     {
         /// <summary>

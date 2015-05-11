@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface
     {
         string Filnavn { get; }
         byte[] Bytes { get; }
-        string Innholdstype { get; }
+        string MimeType { get; }
         string Id { get; }
     }
 }

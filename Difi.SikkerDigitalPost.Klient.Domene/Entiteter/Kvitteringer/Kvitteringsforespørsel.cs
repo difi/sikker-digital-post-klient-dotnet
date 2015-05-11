@@ -41,7 +41,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// Dersom en forsendelse er sendt med normal prioritet, vil den kun dukke opp dersom det spørres om kvittering på normal prioritet.</param>
         /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. 
         /// En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
-        public Kvitteringsforespørsel(Prioritet prioritet, string mpcId = "")
+        public Kvitteringsforespørsel(Prioritet prioritet = Prioritet.Normal, string mpcId = "")
         {
             Prioritet = prioritet;
             MpcId = mpcId;

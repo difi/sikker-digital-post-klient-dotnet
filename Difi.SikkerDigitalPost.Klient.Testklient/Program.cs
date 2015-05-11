@@ -41,7 +41,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         private static void SendPost()
         {
             /*
-             * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig),
+             * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Avsender),
              * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
              */
 
@@ -52,14 +52,14 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              */
             PostkasseInnstillinger postkasseInnstillinger = PostkasseInnstillinger.GetPosten();
             var postInfo = GenererPostInfo(postkasseInnstillinger, ErDigitalPostMottaker, ErNorskBrev);
-            var behandlingsansvarlig = new Behandlingsansvarlig(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
+            var avsender = new Avsender(postkasseInnstillinger.OrgNummerBehandlingsansvarlig);
 
-            var tekniskAvsender = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, "8702F5E55217EC88CF2CCBADAC290BB4312594AC");
-            behandlingsansvarlig.Avsenderidentifikator = "digipost";
+            var databehandler = new Databehandler(postkasseInnstillinger.OrgNummerDatabehandler, "8702F5E55217EC88CF2CCBADAC290BB4312594AC");
+            avsender.Avsenderidentifikator = "digipost";
 
-            var forsendelse = GenererForsendelse(behandlingsansvarlig, postInfo);
+            var forsendelse = GenererForsendelse(avsender, postInfo);
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
-            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon);
+            var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
 
             /**
@@ -162,7 +162,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             return klientkonfigurasjon;
         }
 
-        private static Forsendelse GenererForsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo)
+        private static Forsendelse GenererForsendelse(Avsender avsender, PostInfo postInfo)
         {
             ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources");
             
@@ -174,7 +174,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "plain/txt", "NO", "Vedlegg.txt"));
-            return new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
+            return new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
 
         }
 

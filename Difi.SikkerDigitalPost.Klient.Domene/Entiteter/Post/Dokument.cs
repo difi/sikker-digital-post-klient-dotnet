@@ -26,44 +26,44 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         public string Tittel { get; private set; }
         public string Filnavn { get; private set; }
         public byte[] Bytes { get; private set; }
-        public string Innholdstype { get; private set; }
+        public string MimeType { get; private set; }
         public string Id { get; set; }
         public string Språkkode { get; private set; }
         internal string FilnavnRådata { get; set; }
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentsti">Stien som viser til hvor dokumentet ligger på disk.</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
+        /// <param name="mimeType">MimeType for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, string dokumentsti, string innholdstype, string språkkode = null, string filnavn = null)
-            : this(tittel, File.ReadAllBytes(dokumentsti), innholdstype, språkkode, filnavn ?? Path.GetFileName(dokumentsti))
+        public Dokument(string tittel, string dokumentsti, string mimeType, string språkkode = null, string filnavn = null)
+            : this(tittel, File.ReadAllBytes(dokumentsti), mimeType, språkkode, filnavn ?? Path.GetFileName(dokumentsti))
         {
         }
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentstrøm">Dokumentet representert som en strøm.</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
+        /// <param name="mimeType">MimeType for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, Stream dokumentstrøm, string innholdstype, string språkkode = null, string filnavn = null)
-            : this(tittel, File.ReadAllBytes(new StreamReader(dokumentstrøm).ReadToEnd()), innholdstype, språkkode, filnavn)
+        public Dokument(string tittel, Stream dokumentstrøm, string mimeType, string språkkode = null, string filnavn = null)
+            : this(tittel, File.ReadAllBytes(new StreamReader(dokumentstrøm).ReadToEnd()), mimeType, språkkode, filnavn)
         {
         }
 
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentbytes">Dokumentet representert som byte[].</param>
-        /// <param name="innholdstype">Innholdstype for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
+        /// <param name="mimeType">MimeType for dokumentet. For informasjon om tillatte formater, se http://begrep.difi.no/SikkerDigitalPost/1.0.3/forretningslag/Dokumentformat/. </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse"/> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, byte[] dokumentbytes, string innholdstype, string språkkode = null, string filnavn = null)
+        public Dokument(string tittel, byte[] dokumentbytes, string mimeType, string språkkode = null, string filnavn = null)
         {
             filnavn = filnavn ?? Path.GetRandomFileName();
             var vasketFilnavn = filnavn.RemoveIllegalCharacters();
 
             Tittel = tittel;
             Bytes = dokumentbytes;
-            Innholdstype = innholdstype;
+            MimeType = mimeType;
             Filnavn = UrlEncode(filnavn.RemoveIllegalCharacters());
             FilnavnRådata = vasketFilnavn;
             Språkkode = språkkode;

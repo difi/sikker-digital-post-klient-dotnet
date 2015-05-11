@@ -4,6 +4,11 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
+    /// <summary>
+    /// Inneholder nødvendig informasjon for å sende et brev digitalt til Digipost eller Eboks, slik 
+    /// som mottaker, posttype, om brevet skal skrives ut med farge, hvordan det skal håndteres hvis
+    /// det ikke blir levert og en returmottaker.
+    /// </summary>
     public class FysiskPostInfo : PostInfo
     {
         public Posttype Posttype { get; set; }
