@@ -54,6 +54,7 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entiteter\Aktører\Avsender.cs" />
+    <Compile Include="Deprecated\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
     <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
@@ -112,6 +113,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
