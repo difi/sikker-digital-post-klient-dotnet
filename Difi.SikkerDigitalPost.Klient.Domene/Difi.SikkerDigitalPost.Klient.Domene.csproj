@@ -53,7 +53,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Entiteter\Aktører\Behandlingsansvarlig.cs" />
+    <Compile Include="Entiteter\Aktører\Avsender.cs" />
     <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
     <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
