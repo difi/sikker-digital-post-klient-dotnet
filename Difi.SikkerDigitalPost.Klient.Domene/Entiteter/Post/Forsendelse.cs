@@ -20,7 +20,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Forsendelse
     {
-
         /// <param name="avsender">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
         /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
@@ -31,6 +30,24 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
         {
             Avsender = avsender;
+            PostInfo = postInfo;
+            Dokumentpakke = dokumentpakke;
+            Prioritet = prioritet;
+            Språkkode = språkkode;
+            MpcId = mpcId;
+        }
+
+        /// <param name="avsender">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
+        /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
+        /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
+        /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
+        /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
+        /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
+        [Obsolete("Behandlingsansvarlig er erstattet med Avsender. Det er kun navn som er endret og kan gjøres uten bivirkninger.")]
+        public Forsendelse(Behandlingsansvarlig avsender, PostInfo postInfo,
+            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
+        {
+            Avsender = new Avsender(avsender.Organisasjonsnummer);
             PostInfo = postInfo;
             Dokumentpakke = dokumentpakke;
             Prioritet = prioritet;
