@@ -6,9 +6,9 @@ description: Hvordan sende fysisk og digital post
 isHome: false
 ---
 
-I disse eksempler er det Posten som er den som produserer informasjon/brev/post som skal formidles (Behandlingsansvarlig) og Posten som er teknisk avsender.
+For å gjøre det lettere å komme i gang med sending av Sikker digital post så følger det under noen konkrete eksempler.
 
-<blockquote>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere</blockquote>
+<blockquote>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.</blockquote>
 
 <h3 id="postinfodigital">PostInfo for digital post</h3>
 
@@ -22,7 +22,7 @@ Organisasjonsnummer til postkassen vil være 984661185 hvis det er Posten som ha
 
 Opprett så en `DigitalPostInfo`:
 {% highlight csharp %}
-var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå, åpningskvittering)
+var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå)
 {% endhighlight%}
 
 <h3 id="postinfofysisk">PostInfo for fysisk post</h3>
@@ -42,13 +42,18 @@ var postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt
 
 <h3 id="oppsettfoersending">Oppsett før sending</h3>
 
-Lag en behandlingsansvarlig og en teknisk avsender:
+Opprett en avsender og en databehandler:
 {% highlight csharp %}
-var behandlingsansvarlig = new Behandlingsansvarlig(orgnummerBehandlingsansvarlig);
-behandlingsansvarlig.Avsenderidentifikator = "Digipost";
+var avsender = new Avsender(orgnummerAvsender);
 
-tekniskAvsender = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
+var databehandler = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
 {% endhighlight%}
+
+Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fått unike avsenderidentifikatorer, og kan settes på følgende måte:
+
+{% highlight csharp %}
+avsender.Avsenderidentifikator = "avsenderidentifikatorIOrganisasjon"
+{% endhighlight %}
 
 <h3 id="oppretteforsendelse">Opprette forsendelse</h3>
 Deretter, opprett forsendelse. Forsendelsen inneholder de dokumentene som skal til mottakeren:
@@ -74,14 +79,17 @@ dokumentpakke.LeggTilVedlegg(vedlegg);
 Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo` eller `FysiskPostInfo`). 
 
 {% highlight csharp %}
-var forsendelse = new Forsendelse(behandlingsansvarlig, postInfo, dokumentpakke, Prioritet.Normal, mpcId, "NO");
+var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke);
 {% endhighlight %}
-
+l
 <h3 id="opprettKlient">Opprette klient og sende post </h3>
 Siste steg er å opprette en `SikkerDigitalPostKlient`:
 
 {% highlight csharp %}
-var sdpKlient = new SikkerDigitalPostKlient(tekniskAvsender, klientkonfigurasjon)
+var klientKonfig = new Klientkonfigurasjon();
+klientKonfig.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"); //Testmiljø, standard er produksjon.
+
+var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
 
 var transportkvittering = sdpKlient.Send(forsendelse)
 {% endhighlight %}
@@ -113,7 +121,7 @@ var kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 {% endhighlight %}
 
 <blockquote>
-Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende.
+Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende. 
 </blockquote>
 
 {%highlight csharp%}
@@ -123,7 +131,7 @@ sdpKlient.Bekreft((Forretningskvittering)kvittering);
 Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: `Leveringskvittering`,`Åpningskvittering`, `Returpostkvittering`, `Mottakskvittering` eller `Feilmelding`. Kvittering kan også være av typen`TransportFeiletKvittering`. Dette kan skje når selve kvitteringsforespørselen er feilformatert.
 
 <blockquote>
-Husk at hvis kvitteringen er <code>null</code> så er køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code>.
+Husk at hvis kvitteringen er <code>null</code> så er køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code> og <code>Prioritet</code> på Dokumentpakken som ble sendt. Hvis ikke dette ble satt spesifikt vil <code>MpcId = ""</code> og <code>Prioritet = Prioritet.Normal</code>.
 </blockquote>
 
 Et eksempel på sjekk om kvittering er `Åpningskvittering`:
