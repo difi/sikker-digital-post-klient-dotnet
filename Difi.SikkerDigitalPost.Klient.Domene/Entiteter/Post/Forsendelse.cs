@@ -21,16 +21,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     public class Forsendelse
     {
 
-        /// <param name="behandlingsansvarlig">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
+        /// <param name="avsender">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
         /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
         /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
-        public Forsendelse(Behandlingsansvarlig behandlingsansvarlig, PostInfo postInfo,
+        public Forsendelse(Avsender avsender, PostInfo postInfo,
             Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
         {
-            Behandlingsansvarlig = behandlingsansvarlig;
+            Avsender = avsender;
             PostInfo = postInfo;
             Dokumentpakke = dokumentpakke;
             Prioritet = prioritet;
@@ -41,7 +41,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// <summary>
         /// Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.
         /// </summary>
-        public Behandlingsansvarlig Behandlingsansvarlig { get; set; }
+        public Avsender Avsender { get; set; }
 
         /// <summary>
         /// Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.

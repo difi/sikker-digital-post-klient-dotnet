@@ -28,14 +28,14 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-        public Behandlingsansvarlig Avsender { get; private set; }
+        public Avsender Avsender { get; private set; }
         public Forsendelse Forsendelse { get; private set; }
 
 
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
-            Avsender = forsendelse.Behandlingsansvarlig;
+            Avsender = forsendelse.Avsender;
         }
 
         public string Filnavn

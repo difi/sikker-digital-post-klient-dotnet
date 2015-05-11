@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 XmlElement identifier = sender.AppendChildElement("Identifier", "ns3", Navnerom.StandardBusinessDocumentHeader, Context);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
-                identifier.InnerText = Settings.Forsendelse.Behandlingsansvarlig.Organisasjonsnummer.Iso6523();
+                identifier.InnerText = Settings.Forsendelse.Avsender.Organisasjonsnummer.Iso6523();
             }
             return sender;
         }

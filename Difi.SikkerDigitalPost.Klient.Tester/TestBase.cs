@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         protected static X509Certificate2 MottakerSertifikat;
 
         protected static Organisasjonsnummer OrgNrAvsender;
-        protected static Behandlingsansvarlig Behandlingsansvarlig;
+        protected static Avsender Avsender;
         protected static Databehandler Databehandler;
 
         protected static Organisasjonsnummer OrgNrMottaker;
@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Avsender og mottaker
             OrgNrAvsender = new Organisasjonsnummer("984661185");
-            Behandlingsansvarlig = new Behandlingsansvarlig(OrgNrAvsender);
+            Avsender = new Avsender(OrgNrAvsender);
             Databehandler = new Databehandler(OrgNrAvsender, AvsenderSertifikat);
 
             OrgNrMottaker = new Organisasjonsnummer("984661185");
@@ -88,7 +88,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel. En trojansk ... telefon..", 3, 14)
             };
 
-            Forsendelse = new Forsendelse(Behandlingsansvarlig, DigitalPostInfo, Dokumentpakke);
+            Forsendelse = new Forsendelse(Avsender, DigitalPostInfo, Dokumentpakke);
             
             //Guids, AsicEArkiv og Envelope
             GuidHandler = new GuidHandler();
