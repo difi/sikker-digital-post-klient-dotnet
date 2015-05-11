@@ -19,6 +19,10 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
+    /// <summary>
+    /// Inneholder nødvendig informasjon for å sende et brev digitalt til Digipost eller Eboks, slik 
+    /// som mottaker, tittel, sikkerhetsnivå og om åpningskvittering skal aktiveres.
+    /// </summary>
     public class DigitalPostInfo : PostInfo
     {
         /// <param name="mottaker">Mottaker av digital post.</param>

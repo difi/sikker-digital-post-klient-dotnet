@@ -55,7 +55,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             }
         }
 
-        public string Innholdstype
+        public string MimeType
         {
             get { return "application/xml"; }
         }

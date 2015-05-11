@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             get { return "manifest.xml"; }
         }
 
-        public string Innholdstype
+        public string MimeType
         {
             get { return "application/xml"; }
         }
@@ -139,7 +139,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         {
             XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, Navnerom.DifiSdpSchema10);
             dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
-            dokumentXml.SetAttribute("mime", dokument.Innholdstype);
+            dokumentXml.SetAttribute("mime", dokument.MimeType);
             {
                 XmlElement tittel = dokumentXml.AppendChildElement("tittel", Navnerom.DifiSdpSchema10, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);
