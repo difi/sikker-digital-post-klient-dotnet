@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
     /// Offentlig virksomhet som produserer informasjon/brev/post som skal fomidles. Vil i de aller fleste tilfeller være synonymt med Avsender.
     /// Videre beskrevet på http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer.
     /// </summary>
-    public class Behandlingsansvarlig
+    public class Avsender
     {
         public Organisasjonsnummer Organisasjonsnummer { get; private set; }
 
@@ -42,19 +42,19 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         public string Fakturareferanse { get; set; }
 
         /// <summary>
-        /// Lager et nytt instans av Behandlingsansvarlig.
+        /// Lager et nytt instans av Avsender.
         /// </summary>
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til den behandlingsansvarlige.</param>
-        public Behandlingsansvarlig(Organisasjonsnummer organisasjonsnummer)
+        public Avsender(Organisasjonsnummer organisasjonsnummer)
         {
             Organisasjonsnummer = organisasjonsnummer;
         }
 
         /// <summary>
-        /// Lager et nytt instans av behandlingsansvarlig.
+        /// Lager et nytt instans av Avsender.
         /// </summary>
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til den behandlingsansvarlige.</param>
-        public Behandlingsansvarlig(string organisasjonsnummer) : this(new Organisasjonsnummer(organisasjonsnummer))
+        public Avsender(string organisasjonsnummer) : this(new Organisasjonsnummer(organisasjonsnummer))
         {
         }
     }
