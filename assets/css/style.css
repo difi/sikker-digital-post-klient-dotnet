@@ -35,3 +35,51 @@ blockquote {
   font-size: 1em;
   border-left: 4px solid #e8e8e8;
 }
+
+@media (min-width: 768px) {
+    dt {
+      float: left;
+      width: 160px;
+      clear: left;
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    dd {
+      margin-left: 180px;
+    }
+  } 
+
+  nav > ul > li.active > ul {
+    display:block !important;
+  }
+
+  nav > ul {
+    text-align: left
+  }
+  
+  .content-article #content>article h3 {
+    padding-top:20px;
+  }
+
+  .content-article #content>article code {
+    padding:2px;
+    display:inline;
+    border-top: 0px;
+    border-bottom: 0px;
+    font-weight: 400;
+    font-size: 0.9em;
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace      
+  }
+
+  .content-article #content>article blockquote {
+    font-weight: 700;
+    color: #b9426d;
+    letter-spacing: -1px;
+  }
+
+  .content-article #content>article ol li {
+    margin-bottom: 2px;
+  }
+}
