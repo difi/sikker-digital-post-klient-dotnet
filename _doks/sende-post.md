@@ -81,7 +81,7 @@ Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo
 {% highlight csharp %}
 var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke);
 {% endhighlight %}
-l
+
 <h3 id="opprettKlient">Opprette klient og sende post </h3>
 Siste steg er å opprette en `SikkerDigitalPostKlient`:
 
