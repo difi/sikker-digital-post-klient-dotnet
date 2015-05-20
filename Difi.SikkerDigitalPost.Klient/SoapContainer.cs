@@ -51,10 +51,9 @@ namespace Difi.SikkerDigitalPost.Klient
             request.Method = "POST";
             request.Accept = "*/*";
 
-            string netVersion = Assembly
+            var netVersion = Assembly
                     .GetExecutingAssembly()
-                    .GetReferencedAssemblies()
-                    .Where(x => x.Name == "System.Core").First().Version.ToString();
+                    .GetReferencedAssemblies().First(x => x.Name == "System.Core").Version.ToString();
 
             var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
