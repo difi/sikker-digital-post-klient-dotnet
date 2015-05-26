@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>sikker-digital-post-net-klient</id>
+    <id>difi-sikker-digital-post-klient</id>
     <version>1.0.6.26227-alpha</version>
     <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
     <owners>Posten Norge AS</owners>    
