@@ -276,6 +276,9 @@ namespace Difi.SikkerDigitalPost.Klient
 
             request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
 
+            TheNewSender sender = new TheNewSender();
+            sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
+
             soapContainer.Send(request);
             try
             {
@@ -290,6 +293,7 @@ namespace Difi.SikkerDigitalPost.Klient
                     {
                         throw new SendException("Får ikke kontakt med meldingsformidleren. Sjekk tilkoblingsdetaljer og prøv på nytt.");
                     }
+
 
                     using (Stream errorStream = response.GetResponseStream())
                     {

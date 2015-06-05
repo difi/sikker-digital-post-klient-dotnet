@@ -23,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     internal class SoapContainer
     {
-        private readonly string _boundary;
+        public readonly string Boundary;
 
         public string Action { get; set; }
         public string ContentLocation { get; set; }
@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
         public SoapContainer()
         {
-            _boundary = Guid.NewGuid().ToString();
+            Boundary = Guid.NewGuid().ToString();
             Vedlegg = new List<ISoapVedlegg>();
         }
 
@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient
             if (!string.IsNullOrWhiteSpace(Action))
                 request.Headers.Add("SOAPAction", Action);
 
-            request.ContentType = string.Format("Multipart/Related; boundary=\"{0}\"; type=\"application/soap+xml\"; start=\"<{1}>\"", _boundary, Envelope.ContentId);
+            request.ContentType = string.Format("Multipart/Related; boundary=\"{0}\"; type=\"application/soap+xml\"; start=\"<{1}>\"", Boundary, Envelope.ContentId);
             request.Method = "POST";
             request.Accept = "*/*";
 
@@ -60,7 +60,7 @@ namespace Difi.SikkerDigitalPost.Klient
                         SkrivVedlegg(cachedResponseWriter, item, isFirst: false);
                     }
                    
-                    cachedResponseWriter.Write("\r\n--" + _boundary + "--");
+                    cachedResponseWriter.Write("\r\n--" + Boundary + "--");
                     cachedResponseWriter.Flush();
 
                     var cachedResponseBytes = cachedResponseStream.ToArray();
@@ -80,7 +80,7 @@ namespace Difi.SikkerDigitalPost.Klient
             if (!isFirst)
                 stream.Write("\r\n\r\n");
 
-            stream.WriteLine("--" + _boundary);
+            stream.WriteLine("--" + Boundary);
             if (!string.IsNullOrWhiteSpace(attachment.Innholdstype))
                 stream.WriteLine("Content-Type: " + attachment.Innholdstype);
             if (!string.IsNullOrWhiteSpace(attachment.TransferEncoding))
