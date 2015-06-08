@@ -76,9 +76,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             Console.ReadKey();
         }
 
-        private static void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        private static async void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            Transportkvittering transportkvittering = await sikkerDigitalPostKlient.Send(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
@@ -94,7 +94,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             }
         }
 
-        private static void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
+        private static async void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
         {
             Console.WriteLine();
 
@@ -107,7 +107,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Kvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                Kvittering kvittering = await sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
 
                 if (kvittering == null)
                 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 
 namespace Difi.SikkerDigitalPost.Klient
@@ -8,13 +9,13 @@ namespace Difi.SikkerDigitalPost.Klient
     internal class TheNewSender
     {
 
-        internal async void Send(SoapContainer container, string url, int timoutIMillisekunder)
+        internal async Task<HttpResponseMessage> Send(SoapContainer container, string url, int timoutIMillisekunder)
         {
             HttpContent innhold = GenererInnhold(container);HttpClient client = new HttpClient();
             client.Timeout = TimeSpan.FromMilliseconds(timoutIMillisekunder);
             client.DefaultRequestHeaders.Add("Accept", "*/*");
 
-            var res  = client.PostAsync(url, innhold).Result;
+            return await client.PostAsync(url, innhold);
         }
 
 

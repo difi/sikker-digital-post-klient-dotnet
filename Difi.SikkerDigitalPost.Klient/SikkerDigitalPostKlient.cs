@@ -16,6 +16,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.AsicE;
@@ -79,7 +81,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// </summary>
         /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
         /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
-        public Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
+        public async Task<Transportkvittering> Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
 
@@ -109,7 +111,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
             soapContainer.Vedlegg.Add(arkiv);
-            var meldingsformidlerRespons = SendSoapContainer(soapContainer);
+            var meldingsformidlerRespons = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Mottatt - Meldingsformidlerespons.txt");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true,false, "Sendt - SOAPContainer.txt");
@@ -154,9 +156,9 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public async Task<Kvittering> HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
+            return await HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
         
         /// <summary>
@@ -174,7 +176,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public async Task<Kvittering> HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
         {
             if (forrigeKvittering != null)
             {
@@ -192,7 +194,7 @@ namespace Difi.SikkerDigitalPost.Klient
             ValiderKvitteringsEnvelope(kvitteringsenvelope);
 
             var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
-            var kvittering = SendSoapContainer(soapContainer);
+            var kvittering = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsenvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
@@ -267,7 +269,7 @@ namespace Difi.SikkerDigitalPost.Klient
             SendSoapContainer(soapContainer);
         }
 
-        private string SendSoapContainer(SoapContainer soapContainer)
+        private async Task<string> SendSoapContainer(SoapContainer soapContainer)
         {
             var data = String.Empty;
             var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
@@ -277,13 +279,13 @@ namespace Difi.SikkerDigitalPost.Klient
             request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
 
             TheNewSender sender = new TheNewSender();
-            sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
+            HttpResponseMessage theNewResult = await sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
 
             soapContainer.Send(request);
             try
             {
-                var response = request.GetResponse();
-                data = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                //WebResponse response = request.GetResponse();
+                data = await theNewResult.Content.ReadAsStringAsync();
             }
             catch (WebException we)
             {
