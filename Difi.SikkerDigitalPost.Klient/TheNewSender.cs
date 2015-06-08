@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mail;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 
 namespace Difi.SikkerDigitalPost.Klient
@@ -21,24 +20,21 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private HttpContent GenererInnhold(SoapContainer container)
         {
-            //var dataGrense = string.Format("--{0}--", Guid.NewGuid());
-            var guid = container.Boundary;
-            var dataGrenseDashPad = string.Format("--{0}--", guid);
-            var dataGrense = guid.ToString();
-
-            MultipartFormDataContent meldingsinnhold = new MultipartFormDataContent(guid);
+            MultipartFormDataContent meldingsinnhold = new MultipartFormDataContent(container.Boundary);
             
             var contentType =string.Format(
                 "Multipart/Related; boundary=\"{0}\"; " +
                 "type=\"application/soap+xml\"; " +
-                "start=\"<{1}>\"", guid, container.Envelope.ContentId);
+                "start=\"<{1}>\"", 
+                container.Boundary, 
+                container.Envelope.ContentId);
+
             var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
             meldingsinnhold.Headers.ContentType = mediaTypeHeaderValue;
 
             meldingsinnhold.Headers.Add("SOAPAction", "\"\"");
 
             LeggTilInnhold(container.Envelope, meldingsinnhold);
-            
             foreach (var soapVedlegg in container.Vedlegg)
             {
                 LeggTilInnhold(soapVedlegg, meldingsinnhold);
