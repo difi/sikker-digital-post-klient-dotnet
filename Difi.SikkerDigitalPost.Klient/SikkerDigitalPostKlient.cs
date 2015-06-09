@@ -109,12 +109,12 @@ namespace Difi.SikkerDigitalPost.Klient
                 throw new Exception("Sending av forsendelse feilet under validering. Feilmelding: " + e.GetBaseException(), e.InnerException);
             }
 
-            var soapContainer = new SoapContainer { Envelope = forretningsmeldingEnvelope, Action = "\"\"" };
+            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
             soapContainer.Vedlegg.Add(arkiv);
             var meldingsformidlerRespons = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Mottatt - Meldingsformidlerespons.txt");
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, soapContainer.SisteBytesSendt, true,false, "Sendt - SOAPContainer.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, new byte[1], true,false, "Sendt - SOAPContainer.txt");
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + meldingsformidlerRespons);
             
@@ -193,7 +193,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             ValiderKvitteringsEnvelope(kvitteringsenvelope);
 
-            var soapContainer = new SoapContainer { Envelope = kvitteringsenvelope, Action = "\"\"" };
+            var soapContainer = new SoapContainer(kvitteringsenvelope);
             var kvittering = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsenvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
@@ -242,7 +242,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <remarks>
         /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public void Bekreft(Forretningskvittering forrigeKvittering)
+        public async Task Bekreft(Forretningskvittering forrigeKvittering)
         {
             Logging.Log(TraceEventType.Information, forrigeKvittering.KonversasjonsId, "Bekrefter forrige kvittering.");
 
@@ -265,8 +265,8 @@ namespace Difi.SikkerDigitalPost.Klient
             }
 
 
-            var soapContainer = new SoapContainer { Envelope = kvitteringMottattEnvelope, Action = "\"\"" };
-            SendSoapContainer(soapContainer);
+            var soapContainer = new SoapContainer(kvitteringMottattEnvelope);
+            await SendSoapContainer(soapContainer);
         }
 
         private async Task<string> SendSoapContainer(SoapContainer soapContainer)
@@ -281,7 +281,6 @@ namespace Difi.SikkerDigitalPost.Klient
             TheNewSender sender = new TheNewSender();
             HttpResponseMessage theNewResult = await sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
 
-            soapContainer.Send(request);
             try
             {
                 //WebResponse response = request.GetResponse();
