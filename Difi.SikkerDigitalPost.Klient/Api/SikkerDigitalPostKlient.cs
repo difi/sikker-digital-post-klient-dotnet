@@ -53,7 +53,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         public SikkerDigitalPostKlient(Databehandler databehandler)
             : this(databehandler, new Klientkonfigurasjon())
         {
-
         }
 
         /// <param name="databehandler">
@@ -168,7 +167,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            return HentKvittering(kvitteringsforespørsel);
+            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
         }
 
         /// <summary>
@@ -338,20 +337,23 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private async Task<string> SendSoapContainer(SoapContainer soapContainer)
         {
-            var data = String.Empty;
-            var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
-            if (_klientkonfigurasjon.BrukProxy)
-                request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
+            string data;
 
-            request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
+            //var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
+            //if (_klientkonfigurasjon.BrukProxy)
+                //request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
 
-            MessageAction sender = new MessageAction();
-            HttpResponseMessage theNewResult = await sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
+            //request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
+
+            var v = new HttpClient();
+          
+
+            var sender = new MessageAction(_klientkonfigurasjon);
+            var responseMessage = await sender.Send(soapContainer);
 
             try
-            {
-                //WebResponse response = request.GetResponse();
-                data = await theNewResult.Content.ReadAsStringAsync();
+            {               
+                data = await responseMessage.Content.ReadAsStringAsync();
             }
             catch (WebException we)
             {

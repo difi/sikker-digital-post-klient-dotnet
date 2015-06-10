@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -8,16 +9,20 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     internal class MessageAction
     {
+        private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
-        internal async Task<HttpResponseMessage> Send(SoapContainer container, string url, int timoutIMillisekunder)
+        internal MessageAction(Klientkonfigurasjon klientkonfigurasjon)
         {
-            HttpContent innhold = GenererInnhold(container);HttpClient client = new HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(timoutIMillisekunder);
-            client.DefaultRequestHeaders.Add("Accept", "*/*");
-
-            return await client.PostAsync(url, innhold);
+            _klientkonfigurasjon = klientkonfigurasjon;
         }
 
+        internal async Task<HttpResponseMessage> Send(SoapContainer container)
+        {
+            var innhold = GenererInnhold(container);
+            
+            ThreadSafeClient.DefaultRequestHeaders.Add("Accept", "*/*");
+            return await ThreadSafeClient.PostAsync(_klientkonfigurasjon.MeldingsformidlerUrl, innhold);
+        }
 
         private HttpContent GenererInnhold(SoapContainer container)
         {
@@ -55,6 +60,47 @@ namespace Difi.SikkerDigitalPost.Klient
             meldingsdata.Headers.Add("Content-ID", string.Format("<{0}>", vedlegg.ContentId));
             
             meldingsinnhold.Add(meldingsdata);
+        }
+
+        private readonly object _threadLock = new Object();
+
+        private HttpClient _httpClient;
+
+        private HttpClient ThreadSafeClient
+        {
+            get
+            {
+                lock (_threadLock)
+                {
+                    if (_httpClient == null)
+                    {
+                        var timeout = TimeSpan.FromMilliseconds(_klientkonfigurasjon.TimeoutIMillisekunder);
+
+                        if (_klientkonfigurasjon.BrukProxy)
+                        {
+
+                            var proxyHandler = new HttpClientHandler()
+                            {
+                                Proxy = new WebProxy(_klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort)
+                            };
+
+                            _httpClient = new HttpClient(proxyHandler)
+                            {
+                                Timeout = timeout
+                            };
+                        }
+                        else
+                        {
+                            _httpClient = new HttpClient
+                            {
+                                Timeout = timeout
+                            };
+                        }
+                    }
+                   
+                    return _httpClient;
+                }
+            }
         }
     }
 }
