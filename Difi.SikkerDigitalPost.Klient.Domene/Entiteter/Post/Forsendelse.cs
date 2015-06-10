@@ -13,6 +13,7 @@
  */
 
 using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Deprecated;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 

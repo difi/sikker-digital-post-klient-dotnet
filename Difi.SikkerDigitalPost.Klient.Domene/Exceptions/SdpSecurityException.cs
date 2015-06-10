@@ -2,6 +2,7 @@
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
+    [SerializableAttribute]
     public class SdpSecurityException: SikkerDigitalPostException
     {
         public SdpSecurityException()

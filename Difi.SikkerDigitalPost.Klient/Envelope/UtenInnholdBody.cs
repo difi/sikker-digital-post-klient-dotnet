@@ -14,6 +14,7 @@
 
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope
 {
@@ -25,9 +26,9 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         public override XmlNode Xml()
         {
-            XmlElement body = Context.CreateElement("env", "Body", Navnerom.SoapEnvelopeEnv12);
-            body.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
-            body.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.BodyId);
+            XmlElement body = Context.CreateElement("env", "Body", NavneromUtility.SoapEnvelopeEnv12);
+            body.SetAttribute("xmlns:wsu", NavneromUtility.WssecurityUtility10);
+            body.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.BodyId);
             return body;
         }
     }

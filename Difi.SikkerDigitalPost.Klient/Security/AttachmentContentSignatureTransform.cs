@@ -95,5 +95,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         {
             get { return _outputTypes; }
         }
+        
     }
 }

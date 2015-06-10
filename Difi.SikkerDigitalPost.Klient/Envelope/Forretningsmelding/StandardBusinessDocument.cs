@@ -17,6 +17,7 @@ using System.Security.Cryptography.Xml;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Security;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
@@ -31,10 +32,10 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public override XmlNode Xml()
         {
-            var standardBusinessDocumentElement = Context.CreateElement("ns3", "StandardBusinessDocument", Navnerom.StandardBusinessDocumentHeader);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns3", Navnerom.StandardBusinessDocumentHeader);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns5", Navnerom.XmlDsig);
-            standardBusinessDocumentElement.SetAttribute("xmlns:ns9", Navnerom.DifiSdpSchema10);
+            var standardBusinessDocumentElement = Context.CreateElement("ns3", "StandardBusinessDocument", NavneromUtility.StandardBusinessDocumentHeader);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns3", NavneromUtility.StandardBusinessDocumentHeader);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns5", NavneromUtility.XmlDsig);
+            standardBusinessDocumentElement.SetAttribute("xmlns:ns9", NavneromUtility.DifiSdpSchema10);
             Context.AppendChild(standardBusinessDocumentElement);
 
             standardBusinessDocumentElement.AppendChild(StandardBusinessDocumentHeaderElement());

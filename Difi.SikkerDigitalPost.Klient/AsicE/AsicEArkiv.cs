@@ -34,10 +34,10 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
 
-        private readonly GuidHandler _guidHandler;
+        private readonly GuidUtility _guidHandler;
 
 
-        public AsicEArkiv(Forsendelse forsendelse, GuidHandler guidHandler, X509Certificate2 avsenderSertifikat)
+        public AsicEArkiv(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
         {
             Manifest = new Manifest(forsendelse);
             Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
@@ -127,7 +127,6 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             using (Stream s = entry.Open())
             {
                 s.Write(data, 0, data.Length);
-                s.Close();
             }
         }
 

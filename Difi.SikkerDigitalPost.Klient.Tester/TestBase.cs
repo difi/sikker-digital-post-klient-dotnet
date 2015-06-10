@@ -26,6 +26,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -60,7 +61,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         internal static AsicEArkiv Arkiv;
         internal static ForretningsmeldingEnvelope Envelope;
-        internal static GuidHandler GuidHandler;
+        internal static GuidUtility GuidHandler;
 
 
         public static void Initialiser()
@@ -91,7 +92,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             Forsendelse = new Forsendelse(Avsender, DigitalPostInfo, Dokumentpakke);
             
             //Guids, AsicEArkiv og Envelope
-            GuidHandler = new GuidHandler();
+            GuidHandler = new GuidUtility();
             Arkiv = new AsicEArkiv(Forsendelse, GuidHandler, Databehandler.Sertifikat);
             Envelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(Forsendelse, Arkiv, Databehandler, GuidHandler, new Klientkonfigurasjon()));
         }

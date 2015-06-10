@@ -14,9 +14,9 @@
 
 using System;
 
-namespace Difi.SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
-    internal class GuidHandler
+    internal class GuidUtility
     {
         public readonly string StandardBusinessDocumentHeaderId = Guid.NewGuid().ToString();
         

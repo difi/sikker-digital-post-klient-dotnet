@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using ApiClientShared;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -78,7 +79,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static async void SendPost(SikkerDigitalPostKlient _sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            Transportkvittering transportkvittering = await _sikkerDigitalPostKlient.Send(forsendelse);
+            Transportkvittering transportkvittering = await _sikkerDigitalPostKlient.SendAsync(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
@@ -107,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Kvittering kvittering = await _sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                Kvittering kvittering = await _sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
                 if (kvittering == null)
                 {

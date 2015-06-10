@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApiClientShared;
 using ApiClientShared.Enums;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -127,7 +128,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Assert
             var forsendelse = new Forsendelse(avsender, postinfo, dokumentpakke, Prioritet.Prioritert, mpcId);
-            var transportkvittering = await sdpKlient.Send(forsendelse);
+            var transportkvittering = await sdpKlient.SendAsync(forsendelse);
 
             if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
             {
@@ -148,7 +149,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 Thread.Sleep(1000);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
-                var kvittering = await sdpKlient.HentKvittering(kvitteringsforespørsel);
+                var kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
                 

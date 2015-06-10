@@ -16,6 +16,7 @@ using System.IO;
 using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -25,9 +26,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public ManifestValidator()
         {
-            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-manifest.xsd"));
-            LeggTilXsdRessurs(Navnerom.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
-            LeggTilXsdRessurs(Navnerom.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            LeggTilXsdRessurs(NavneromUtility.DifiSdpSchema10, HentRessurs("sdp-manifest.xsd"));
+            LeggTilXsdRessurs(NavneromUtility.DifiSdpSchema10, HentRessurs("sdp-felles.xsd"));
+            LeggTilXsdRessurs(NavneromUtility.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
         }
 
         private XmlReader HentRessurs(string path)

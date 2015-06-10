@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
@@ -26,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 
         public override XmlNode Xml()
         {
-            var header = Context.CreateElement("env", "Header", Navnerom.SoapEnvelopeEnv12);
+            var header = Context.CreateElement("env", "Header", NavneromUtility.SoapEnvelopeEnv12);
             header.AppendChild(SecurityElement());
             header.AppendChild(MessagingElement());
             return header;

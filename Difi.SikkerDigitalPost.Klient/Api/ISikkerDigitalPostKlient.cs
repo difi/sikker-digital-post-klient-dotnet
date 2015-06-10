@@ -8,14 +8,23 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 {
     public interface ISikkerDigitalPostKlient
     {
-        Task<Transportkvittering> Send(Forsendelse forsendelse, bool lagreDokumentpakke = false);
+        Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false);
 
-        Task<Kvittering> HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel);
+        Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel);
         
-        Task<Kvittering> HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
+        Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel,
             Forretningskvittering forrigeKvittering);
 
-        Task Bekreft(Forretningskvittering forrigeKvittering);
+        Task BekreftAsync(Forretningskvittering forrigeKvittering);
+
+        Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false);
+
+        Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel);
+
+        Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
+            Forretningskvittering forrigeKvittering);
+
+        void Bekreft(Forretningskvittering forrigeKvittering);
 
     }
 }
