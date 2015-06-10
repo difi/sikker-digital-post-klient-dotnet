@@ -7,11 +7,11 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    internal class MessageAction
+    internal class Meldingshandling
     {
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
-        internal MessageAction(Klientkonfigurasjon klientkonfigurasjon)
+        internal Meldingshandling(Klientkonfigurasjon klientkonfigurasjon)
         {
             _klientkonfigurasjon = klientkonfigurasjon;
         }

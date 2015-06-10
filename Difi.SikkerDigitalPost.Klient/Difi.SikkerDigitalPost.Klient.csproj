@@ -98,7 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="MessageAction.cs" />
+    <Compile Include="MeldingsHandling.cs" />
     <Compile Include="Sertifikater.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
