@@ -21,7 +21,6 @@ namespace Difi.SikkerDigitalPost.Klient
     internal class SoapContainer
     {
         public readonly string Boundary;
-        public string ContentLocation { get; set; }
         public IList<ISoapVedlegg> Vedlegg { get; set; }
         public ISoapVedlegg Envelope { get; set; }
 

@@ -6,7 +6,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    internal class TheNewSender
+    internal class MessageAction
     {
 
         internal async Task<HttpResponseMessage> Send(SoapContainer container, string url, int timoutIMillisekunder)

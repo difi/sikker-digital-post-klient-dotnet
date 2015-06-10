@@ -65,6 +65,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
     <Compile Include="AsicE\AsicEArkiv.cs" />
     <Compile Include="AsicE\Manifest.cs" />
     <Compile Include="AsicE\Signatur.cs" />
@@ -97,7 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TheNewSender.cs" />
+    <Compile Include="MessageAction.cs" />
     <Compile Include="Sertifikater.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,7 +110,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SikkerDigitalPostKlient.cs" />
+    <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="GuidHandler.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Security\AttachmentContentSignatureTransform.cs" />
@@ -233,6 +234,7 @@
     <None Include="Resources\commfidesenterprise-sha256.crt" />
     <None Include="Resources\cpn enterprise sha256 class 3.crt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

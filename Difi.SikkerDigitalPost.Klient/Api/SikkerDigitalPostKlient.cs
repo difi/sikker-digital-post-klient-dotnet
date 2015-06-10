@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -36,7 +37,7 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    public class SikkerDigitalPostKlient
+    public class SikkerDigitalPostKlient : ISikkerDigitalPostKlient
     {
         private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
@@ -278,7 +279,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
 
-            TheNewSender sender = new TheNewSender();
+            MessageAction sender = new MessageAction();
             HttpResponseMessage theNewResult = await sender.Send(soapContainer, _klientkonfigurasjon.MeldingsformidlerUrl.ToString(), _klientkonfigurasjon.TimeoutIMillisekunder);
 
             try
