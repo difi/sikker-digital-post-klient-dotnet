@@ -348,7 +348,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var v = new HttpClient();
           
 
-            var sender = new MessageAction(_klientkonfigurasjon);
+            var sender = new Meldingshandling(_klientkonfigurasjon);
             var responseMessage = await sender.Send(soapContainer);
 
             try

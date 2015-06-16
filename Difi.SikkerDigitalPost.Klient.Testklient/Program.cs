@@ -157,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaopoffffentlig.meldingsformidler.digipost.no/api/ebmHESTs");
+            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebmHESTs");
             klientkonfigurasjon.LoggXmlTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
