@@ -15,7 +15,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
@@ -48,6 +50,14 @@ namespace Difi.SikkerDigitalPost.Klient
             request.ContentType = string.Format("Multipart/Related; boundary=\"{0}\"; type=\"application/soap+xml\"; start=\"<{1}>\"", _boundary, Envelope.ContentId);
             request.Method = "POST";
             request.Accept = "*/*";
+
+            var netVersion = Assembly
+                    .GetExecutingAssembly()
+                    .GetReferencedAssemblies().First(x => x.Name == "System.Core").Version.ToString();
+
+            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+            request.UserAgent = string.Format("SikkerDigitalPost/{1} .NET/{0},", netVersion, assemblyVersion);
 
             using (var cachedResponseStream = new MemoryStream())
             {
