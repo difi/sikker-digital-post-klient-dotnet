@@ -16,7 +16,7 @@ using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 
-namespace Difi.SikkerDigitalPost.Klient.Domene.Aktører
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     [Obsolete("Behandlingsansvarlig heter nå Avsender, da behandlingsansvarlig vil for alle praktiske formål være avsenderen." +
               " Ingen andre endringer er gjort, og overgang kan gjøres uten bieffekter.")]
