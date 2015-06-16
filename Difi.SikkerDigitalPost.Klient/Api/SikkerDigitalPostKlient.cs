@@ -339,15 +339,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             string data;
 
-            //var request = (HttpWebRequest)WebRequest.Create(_klientkonfigurasjon.MeldingsformidlerUrl);
-            //if (_klientkonfigurasjon.BrukProxy)
-                //request.Proxy = new WebProxy(new UriBuilder(_klientkonfigurasjon.ProxyScheme, _klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort).Uri);
-
-            //request.Timeout = _klientkonfigurasjon.TimeoutIMillisekunder;
-
-            var v = new HttpClient();
-          
-
             var sender = new Meldingshandling(_klientkonfigurasjon);
             var responseMessage = await sender.Send(soapContainer);
 

@@ -20,8 +20,8 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             var innhold = GenererInnhold(container);
             
-            ThreadSafeClient.DefaultRequestHeaders.Add("Accept", "*/*");
-            return await ThreadSafeClient.PostAsync(_klientkonfigurasjon.MeldingsformidlerUrl, innhold);
+            GetThreadSafeClient.DefaultRequestHeaders.Add("Accept", "*/*");
+            return await GetThreadSafeClient.PostAsync(_klientkonfigurasjon.MeldingsformidlerUrl, innhold);
         }
 
         private HttpContent GenererInnhold(SoapContainer container)
@@ -66,38 +66,37 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private HttpClient _httpClient;
 
-        private HttpClient ThreadSafeClient
+        private HttpClient GetThreadSafeClient
         {
             get
             {
                 lock (_threadLock)
                 {
-                    if (_httpClient == null)
+                    if (_httpClient != null) return _httpClient;
+
+                    var timeout = TimeSpan.FromMilliseconds(_klientkonfigurasjon.TimeoutIMillisekunder);
+
+                    if (_klientkonfigurasjon.BrukProxy)
                     {
-                        var timeout = TimeSpan.FromMilliseconds(_klientkonfigurasjon.TimeoutIMillisekunder);
 
-                        if (_klientkonfigurasjon.BrukProxy)
+                        var proxyHandler = new HttpClientHandler()
                         {
+                            Proxy = new WebProxy(_klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort)
+                        };
 
-                            var proxyHandler = new HttpClientHandler()
-                            {
-                                Proxy = new WebProxy(_klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort)
-                            };
-
-                            _httpClient = new HttpClient(proxyHandler)
-                            {
-                                Timeout = timeout
-                            };
-                        }
-                        else
+                        _httpClient = new HttpClient(proxyHandler)
                         {
-                            _httpClient = new HttpClient
-                            {
-                                Timeout = timeout
-                            };
-                        }
+                            Timeout = timeout
+                        };
                     }
-                   
+                    else
+                    {
+                        _httpClient = new HttpClient
+                        {
+                            Timeout = timeout
+                        };
+                    }
+
                     return _httpClient;
                 }
             }
