@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
@@ -52,9 +52,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\sikker-digital-post.pfx">
-      <Link>sikker-digital-post.pfx</Link>
-    </None>
     <None Include="App.config" />
     <EmbeddedResource Include="Resources\Hoveddokument.pdf" />
     <EmbeddedResource Include="Resources\Vedlegg.pdf" />
