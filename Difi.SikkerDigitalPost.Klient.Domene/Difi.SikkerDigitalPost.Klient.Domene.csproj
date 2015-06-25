@@ -37,7 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Keys\digipost.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ApiClientShared">
@@ -108,9 +108,6 @@
     <Compile Include="Sha256Reference.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\sikker-digital-post.pfx">
-      <Link>sikker-digital-post.pfx</Link>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
