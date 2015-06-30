@@ -18,7 +18,7 @@ using ApiClientShared.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
-    public class PostkasseInnstillinger
+    internal class PostkasseInnstillinger
     {
         /*
         * Følgende sertifikater må brukes for å kunne sende digital post
