@@ -26,6 +26,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -146,10 +147,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         private static IEnumerable<Dokument> GenererVedlegg()
         {
-            int count = 0;
-            return Vedlegg = new List<Dokument>(
-                    Vedleggsstier.Select(
-                        v => new Dokument("Vedlegg" + count++, _resourceUtility.ReadAllBytes(false,v), "text/" + Path.GetExtension(_hoveddokument), "NO", _resourceUtility.GetFileName(v))));
+            return DomeneUtility.GetSimpleVedlegg();
         }
     }
 }
