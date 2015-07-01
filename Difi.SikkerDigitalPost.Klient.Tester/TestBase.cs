@@ -140,9 +140,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         private static Dokument GenererHoveddokument()
         {
-            var bytes = _resourceUtility.ReadAllBytes(false,_hoveddokument);
-            var fileName = _resourceUtility.GetFileName(_hoveddokument);
-            return Hoveddokument = new Dokument("Hoveddokument", bytes,"text/xml","NO", fileName);
+            return Hoveddokument = DomeneUtility.GetSimpleDokument();
         }
 
         private static IEnumerable<Dokument> GenererVedlegg()

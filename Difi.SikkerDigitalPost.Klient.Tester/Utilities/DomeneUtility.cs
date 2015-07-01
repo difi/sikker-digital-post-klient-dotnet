@@ -21,7 +21,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         public static Dokument GetSimpleDokument()
         {
             string hoveddokumentMappe = "hoveddokument";
-            return null;
+            var hoveddokument = _resourceUtility.GetFiles(hoveddokumentMappe).ElementAt(0);
+
+            var bytes = _resourceUtility.ReadAllBytes(false, hoveddokument);
+            var fileName = _resourceUtility.GetFileName(hoveddokument);
+            return new Dokument("Hoveddokument", bytes, "text/xml", "NO", fileName);
 
         }
         
