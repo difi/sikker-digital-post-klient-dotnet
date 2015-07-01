@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-namespace Difi.SikkerDigitalPost.Klient
+namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
-    internal static class Navnerom
+    internal static class NavneromUtility
     {
         /// <summary>
         /// http://www.w3.org/2003/05/soap-envelope

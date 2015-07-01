@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,9 +36,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             
             //Endre id på hoveddokument til å starte på et tall
             var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
-            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
-            namespaceManager.AddNamespace("ns10", Navnerom.UriEtsi121);
-            namespaceManager.AddNamespace("ns11", Navnerom.UriEtsi132);
+            namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
+            namespaceManager.AddNamespace("ns10", NavneromUtility.UriEtsi121);
+            namespaceManager.AddNamespace("ns11", NavneromUtility.UriEtsi132);
 
             var hoveddokumentReferanseNode = signaturXml.DocumentElement
                 .SelectSingleNode("//ds:Reference[@Id = '" + Hoveddokument.Id + "']", namespaceManager);

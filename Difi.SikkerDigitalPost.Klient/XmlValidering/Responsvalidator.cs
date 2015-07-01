@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Security;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -41,14 +42,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             responseDocument.LoadXml(response);
 
             nsMgr = new XmlNamespaceManager(responseDocument.NameTable);
-            nsMgr.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
-            nsMgr.AddNamespace("wsse", Navnerom.WssecuritySecext10);
-            nsMgr.AddNamespace("ds", Navnerom.XmlDsig);
-            nsMgr.AddNamespace("eb", Navnerom.EbXmlCore);
-            nsMgr.AddNamespace("wsu", Navnerom.WssecurityUtility10);
-            nsMgr.AddNamespace("ebbp", Navnerom.EbppSignals);
-            nsMgr.AddNamespace("sbd", Navnerom.StandardBusinessDocumentHeader);
-            nsMgr.AddNamespace("difi", Navnerom.DifiSdpSchema10);
+            nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
+            nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
+            nsMgr.AddNamespace("ds", NavneromUtility.XmlDsig);
+            nsMgr.AddNamespace("eb", NavneromUtility.EbXmlCore);
+            nsMgr.AddNamespace("wsu", NavneromUtility.WssecurityUtility10);
+            nsMgr.AddNamespace("ebbp", NavneromUtility.EbppSignals);
+            nsMgr.AddNamespace("sbd", NavneromUtility.StandardBusinessDocumentHeader);
+            nsMgr.AddNamespace("difi", NavneromUtility.DifiSdpSchema10);
 
             _sendtMelding = sendtMelding;
         }
@@ -126,7 +127,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// Sjekker at motatt soap dokument har samme digest verdier for body og dokumentpakke i avsendt brev vha motatt NonRepudiationInformation element. 
         /// </summary>
         /// <param name="guidHandler">Samme guid handler som ble benyttet for å generere det avsendte brevet.</param>
-        public void ValiderDigest(GuidHandler guidHandler)
+        public void ValiderDigest(GuidUtility guidHandler)
         {
             string sourceDigestPath = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
             string targetDigestPath = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";

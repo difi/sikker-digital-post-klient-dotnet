@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,8 +36,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Endre navn på hoveddokument til å være for kort
             var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
-            namespaceManager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
-            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
+            namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+            namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
 
             var hoveddokumentNode = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument", namespaceManager);
             var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;

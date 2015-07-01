@@ -28,13 +28,13 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 
         public override XmlNode Xml()
         {
-            XmlElement messaging = Context.CreateElement("eb", "Messaging", Navnerom.EbXmlCore);
-            messaging.SetAttribute("xmlns:wsu", Navnerom.WssecurityUtility10);
-            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", Navnerom.SoapEnvelopeEnv12);
+            XmlElement messaging = Context.CreateElement("eb", "Messaging", NavneromUtility.EbXmlCore);
+            messaging.SetAttribute("xmlns:wsu", NavneromUtility.WssecurityUtility10);
+            XmlAttribute mustUnderstand = Context.CreateAttribute("env", "mustUnderstand", NavneromUtility.SoapEnvelopeEnv12);
             mustUnderstand.InnerText = "true";
             messaging.Attributes.Append(mustUnderstand);
 
-            messaging.SetAttribute("Id", Navnerom.WssecurityUtility10, Settings.GuidHandler.EbMessagingId);
+            messaging.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.EbMessagingId);
 
             messaging.AppendChild(SignalMessageElement());
             
@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 
         private XmlElement SignalMessageElement()
         {
-            XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", Navnerom.EbXmlCore);
+            XmlElement signalMessage = Context.CreateElement("eb", "SignalMessage", NavneromUtility.EbXmlCore);
 
             signalMessage.AppendChild(MessageInfoElement());
             signalMessage.AppendChild(PullRequestElement());
@@ -53,12 +53,12 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 
         private XmlElement MessageInfoElement()
         {
-            XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", Navnerom.EbXmlCore);
+            XmlElement messageInfo = Context.CreateElement("eb", "MessageInfo", NavneromUtility.EbXmlCore);
             {
-                XmlElement timestamp = messageInfo.AppendChildElement("Timestamp", "eb", Navnerom.EbXmlCore, Context);
+                XmlElement timestamp = messageInfo.AppendChildElement("Timestamp", "eb", NavneromUtility.EbXmlCore, Context);
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
 
-                XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", Navnerom.EbXmlCore, Context);
+                XmlElement messageId = messageInfo.AppendChildElement("MessageId", "eb", NavneromUtility.EbXmlCore, Context);
                 messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
             }
             return messageInfo;
@@ -66,7 +66,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 
         private XmlElement PullRequestElement()
         {
-            XmlElement pullRequest = Context.CreateElement("eb", "PullRequest", Navnerom.EbXmlCore);
+            XmlElement pullRequest = Context.CreateElement("eb", "PullRequest", NavneromUtility.EbXmlCore);
             pullRequest.SetAttribute("mpc", Settings.Kvitteringsforespørsel.Mpc);
             return pullRequest;
         }

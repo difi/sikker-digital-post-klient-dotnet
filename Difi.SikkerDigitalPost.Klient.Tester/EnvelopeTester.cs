@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -45,14 +46,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Endre til ugyldig forretningsmeldingenvelope
             var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
-            namespaceManager.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
-            namespaceManager.AddNamespace("eb", Navnerom.EbXmlCore);
-            namespaceManager.AddNamespace("ds", Navnerom.XmlDsig);
-            namespaceManager.AddNamespace("wsse", Navnerom.WssecuritySecext10);
-            namespaceManager.AddNamespace("wsu", Navnerom.WssecurityUtility10);
-            namespaceManager.AddNamespace("ns3", Navnerom.StandardBusinessDocumentHeader);
-            namespaceManager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
-            namespaceManager.AddNamespace("ns5", Navnerom.XmlDsig);
+            namespaceManager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
+            namespaceManager.AddNamespace("eb", NavneromUtility.EbXmlCore);
+            namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
+            namespaceManager.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
+            namespaceManager.AddNamespace("wsu", NavneromUtility.WssecurityUtility10);
+            namespaceManager.AddNamespace("ns3", NavneromUtility.StandardBusinessDocumentHeader);
+            namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+            namespaceManager.AddNamespace("ns5", NavneromUtility.XmlDsig);
 
             var securityNode = forretningsmeldingEnvelopeXml.DocumentElement.SelectSingleNode("//wsse:Security", namespaceManager);
 

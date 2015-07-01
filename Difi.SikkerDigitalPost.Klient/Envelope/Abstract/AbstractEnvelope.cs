@@ -17,6 +17,7 @@ using System.Text;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
@@ -66,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
             var xmlDokument = new XmlDocument();
             xmlDokument.PreserveWhitespace = true;
             var xmlDeclaration = xmlDokument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            var baseNode = xmlDokument.CreateElement("env", "Envelope", Navnerom.SoapEnvelopeEnv12);
+            var baseNode = xmlDokument.CreateElement("env", "Envelope", NavneromUtility.SoapEnvelopeEnv12);
             xmlDokument.AppendChild(baseNode);
             xmlDokument.InsertBefore(xmlDeclaration, xmlDokument.DocumentElement);
             return xmlDokument;

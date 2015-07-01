@@ -16,6 +16,7 @@ using System;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
+    [SerializableAttribute]
     public class XmlParseException : KonfigurasjonsException
     {
         private const string ekstrainfo =

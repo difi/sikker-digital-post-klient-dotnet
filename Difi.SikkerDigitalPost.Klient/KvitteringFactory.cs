@@ -17,6 +17,7 @@ using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -139,12 +140,12 @@ namespace Difi.SikkerDigitalPost.Klient
         private static XmlNamespaceManager NamespaceManager(XmlDocument document)
         {
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
-            manager.AddNamespace("env", Navnerom.SoapEnvelopeEnv12);
-            manager.AddNamespace("eb", Navnerom.EbXmlCore);
-            manager.AddNamespace("ns3", Navnerom.StandardBusinessDocumentHeader);
-            manager.AddNamespace("ns5", Navnerom.XmlDsig);
-            manager.AddNamespace("ns6", Navnerom.EbXmlCore);
-            manager.AddNamespace("ns9", Navnerom.DifiSdpSchema10);
+            manager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
+            manager.AddNamespace("eb", NavneromUtility.EbXmlCore);
+            manager.AddNamespace("ns3", NavneromUtility.StandardBusinessDocumentHeader);
+            manager.AddNamespace("ns5", NavneromUtility.XmlDsig);
+            manager.AddNamespace("ns6", NavneromUtility.EbXmlCore);
+            manager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
             return manager;
         }
     }

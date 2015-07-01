@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using ApiClientShared;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -76,9 +77,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             Console.ReadKey();
         }
 
-        private static void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        private static async void SendPost(SikkerDigitalPostKlient _sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            Transportkvittering transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            Transportkvittering transportkvittering = await _sikkerDigitalPostKlient.SendAsync(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
@@ -94,7 +95,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             }
         }
 
-        private static void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
+        private static async void HentKvitteringer(SikkerDigitalPostKlient _sikkerDigitalPostKlient)
         {
             Console.WriteLine();
 
@@ -107,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Kvittering kvittering = sikkerDigitalPostKlient.HentKvittering(kvitteringsForespørsel);
+                Kvittering kvittering = await _sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
                 if (kvittering == null)
                 {
@@ -147,7 +148,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
+                _sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
                 Console.WriteLine("   - Kvittering sendt.");
             }
         }
@@ -156,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebmHESTs");
             klientkonfigurasjon.LoggXmlTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;

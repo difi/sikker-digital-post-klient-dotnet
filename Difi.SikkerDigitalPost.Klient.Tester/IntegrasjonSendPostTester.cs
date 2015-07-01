@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using ApiClientShared;
 using ApiClientShared.Enums;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -50,21 +52,25 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Debug.WriteLine("Kjører test: " + beskrivelse);
                 var personnummer = "00000000000";
                 var postkasseadresse = GetTestContextColumnData("postkasseadresse");
+                var databehandler = new Databehandler(OrgnummerPosten,
+                CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian));
+                var sdpKlient = new SikkerDigitalPostKlient(databehandler, new Klientkonfigurasjon
+                {
+                    MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
+                });
    
                 //Act
                 var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse,  CertificateUtility.ReceiverCertificate(MottakersertifikatThumbprint,Language.Norwegian), OrgnummerPosten);
                 var postinfo = new DigitalPostInfo(mottaker, "Ikkesensitiv tittel fra Endetester", Sikkerhetsnivå.Nivå3);
                
                 //Assert
-                SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, out sdpKlient);
+                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, sdpKlient).Result;
                 HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
             {
                 Assert.Fail("Feilet for '{0}', feilmelding: {1}, {2}", beskrivelse, e.Message, e.StackTrace);
             }
-
         }
 
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", @"|DataDirectory|\testdata\integrasjon\fysiskpost.csv", "fysiskpost#csv", DataAccessMethod.Sequential)]
@@ -83,6 +89,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var posttype = (Posttype)Enum.Parse(typeof(Posttype), GetTestContextColumnData("Posttype"), ignoreCase: true);
                 var utskriftsfarge = (Utskriftsfarge)Enum.Parse(typeof(Utskriftsfarge), GetTestContextColumnData("utskriftsfarge"), ignoreCase: true);
                 var posthåndtering = (Posthåndtering)Enum.Parse(typeof(Posthåndtering), GetTestContextColumnData("posthandtering"), ignoreCase: true);
+                var databehandler = new Databehandler(OrgnummerPosten,
+               CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian));
+                var sdpKlient = new SikkerDigitalPostKlient(databehandler, new Klientkonfigurasjon
+                {
+                    MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
+                });
 
                 //Act
                 var mottaker = new FysiskPostMottaker(mottakernavn, mottakerAdresse, CertificateUtility.ReceiverCertificate(MottakersertifikatThumbprint,Language.Norwegian), OrgnummerPosten);
@@ -90,8 +102,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var postinfo = new FysiskPostInfo(mottaker, posttype, utskriftsfarge, posthåndtering, returmottaker);
                 
                 //Assert
-                SikkerDigitalPostKlient sdpKlient;
-                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, out sdpKlient);
+                var forsendelse = ByggDokumentpakkeOgSend(_avsender, postinfo, _mpcId, sdpKlient).Result;
                 HentKvitteringOgBekreft(sdpKlient, beskrivelse, _mpcId, forsendelse);
             }
             catch (Exception e)
@@ -100,8 +111,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        private Forsendelse ByggDokumentpakkeOgSend(Avsender avsender,
-            PostInfo postinfo, string mpcId, out SikkerDigitalPostKlient sdpKlient)
+        private async Task<Forsendelse> ByggDokumentpakkeOgSend(Avsender avsender,
+            PostInfo postinfo, string mpcId, SikkerDigitalPostKlient sdpKlient)
         {
             //Arrange
             var hoveddoktype = GetTestContextColumnData("hoveddokumenttype");
@@ -110,24 +121,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var vedlegg1Sti = GetFirstFile(GetTestContextColumnData("vedlegg1"));
             var vedlegg2Type = GetTestContextColumnData("vedlegg2type");
             var vedlegg2Sti = GetFirstFile(GetTestContextColumnData("vedlegg2"));
-
+            
             //Act
-            var databehandler = new Databehandler(OrgnummerPosten,
-                CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian));
             var dokumentpakke = GetDokumentpakke(hoveddokumentsti, hoveddoktype, vedlegg1Sti, vedlegg1Type, vedlegg2Sti,
                 vedlegg2Type);
 
-            sdpKlient = new SikkerDigitalPostKlient(databehandler, new Klientkonfigurasjon
-            {
-                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
-            });
-
             //Assert
             var forsendelse = new Forsendelse(avsender, postinfo, dokumentpakke, Prioritet.Prioritert, mpcId);
-            var transportkvittering = sdpKlient.Send(forsendelse);
+            var transportkvittering = await sdpKlient.SendAsync(forsendelse);
 
             if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
             {
+                 
                 var feilmelding = ((TransportFeiletKvittering) transportkvittering).Beskrivelse;
                 Assert.Fail(message: feilmelding);
             }
@@ -135,7 +140,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             return forsendelse;
         }
 
-        private void HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse, string mpcId,
+        private async void HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse, string mpcId,
             Forsendelse forsendelse)
         {
             bool hentKvitteringPåNytt = true;
@@ -144,7 +149,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 Thread.Sleep(1000);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
-                var kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
+                var kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
                 

@@ -16,7 +16,9 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient
 {

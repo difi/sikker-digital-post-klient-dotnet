@@ -24,6 +24,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
 
 namespace Difi.SikkerDigitalPost.Klient.AsicE
@@ -144,8 +145,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         {
             var signaturXml = new XmlDocument { PreserveWhitespace = true };
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
-            signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", Navnerom.UriEtsi121));
-            signaturXml.DocumentElement.SetAttribute("xmlns:ns11", Navnerom.UriEtsi132);
+            signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", NavneromUtility.UriEtsi121));
+            signaturXml.DocumentElement.SetAttribute("xmlns:ns11", NavneromUtility.UriEtsi132);
 
             signaturXml.InsertBefore(xmlDeclaration, signaturXml.DocumentElement);
             return signaturXml;

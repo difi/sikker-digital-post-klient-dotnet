@@ -13,6 +13,8 @@
  */
 
 using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
