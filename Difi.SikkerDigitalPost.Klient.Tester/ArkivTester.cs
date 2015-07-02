@@ -20,6 +20,7 @@ using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -42,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            Assert.AreEqual(Vedleggsstier.Length, Dokumentpakke.Vedlegg.Count);
+            Assert.AreEqual(DomeneUtility.GetVedleggsFilerStier().Length, Dokumentpakke.Vedlegg.Count);
             Assert.IsNotNull(Dokumentpakke.Hoveddokument);
         }
 
@@ -73,7 +74,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
         public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
         {
-            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Hoveddokument.Filnavn));
+            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Dokumentpakke.Hoveddokument.Filnavn));
         }
 
         private static X509Certificate2 Mottakersertifikat()

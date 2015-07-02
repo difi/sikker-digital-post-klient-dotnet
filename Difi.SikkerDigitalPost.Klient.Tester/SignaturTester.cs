@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             namespaceManager.AddNamespace("ns11", NavneromUtility.UriEtsi132);
 
             var hoveddokumentReferanseNode = signaturXml.DocumentElement
-                .SelectSingleNode("//ds:Reference[@Id = '" + Hoveddokument.Id + "']", namespaceManager);
+                .SelectSingleNode("//ds:Reference[@Id = '" + DomeneUtility.GetHoveddokumentEnkel().Id + "']", namespaceManager);
 
             var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
             hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
