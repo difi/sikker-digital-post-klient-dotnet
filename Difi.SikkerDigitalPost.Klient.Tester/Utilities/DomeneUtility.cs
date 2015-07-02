@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -17,18 +21,27 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     /// <summary>
     /// Hjelpeklasse for instansiering av domeneobjekter. Klassen kan virke tilstandsløs, og vil for alle praktiske formål være det,
     /// da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses fra disk kun èn
-    /// gang for ytelse.
+    /// gang for økt ytelse.
     /// </summary>
     internal static class DomeneUtility
     {
         static readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
         private static GuidUtility _guidUtility = new GuidUtility();
         private static readonly string fileExtension;
+        private static readonly string _postkasseOrgnummer = "984661185";
 
-        internal static Dokumentpakke GetDokumentpakkeEnkel()
+
+        internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
             var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
-            dokumentpakke.LeggTilVedlegg(GetVedleggEnkel());
+            dokumentpakke.LeggTilVedlegg(GetVedlegg(1));
+            return dokumentpakke;
+        }
+
+        internal static Dokumentpakke GetDokumentpakkeMedFlereVedlegg()
+        {
+            var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
+            dokumentpakke.LeggTilVedlegg(GetVedlegg(3));
             return dokumentpakke;
         }
 
@@ -59,7 +72,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static IEnumerable<Dokument> _vedlegg; 
 
-        internal static IEnumerable<Dokument> GetVedleggEnkel()
+        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall)
         {
             if (_vedlegg != null)
             {
@@ -68,12 +81,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             var count = 0;
            
-            return _vedlegg = new List<Dokument>(
+            _vedlegg = new List<Dokument>(
                     GetVedleggsFilerStier().Select(
                         v => new Dokument("Vedlegg" + count++,
                             _resourceUtility.ReadAllBytes(false, v), 
                             "text/" + fileExtension, 
-                            "NO", _resourceUtility.GetFileName(v))));   
+                            "NO", _resourceUtility.GetFileName(v))));
+
+            return _vedlegg.Take(maksAntall);
+
         }
 
         private static Avsender _avsender;
@@ -99,8 +115,21 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _digitalPostMottaker;
             }
 
-            var orgNrMottaker = new Organisasjonsnummer("984661185");
-            return _digitalPostMottaker = new DigitalPostMottaker("04036125433", "ove.jonsen#6K5A", GetMottakerSertifikat(), orgNrMottaker.Iso6523());
+        return _digitalPostMottaker = new DigitalPostMottaker("04036125433", "hjarvald.tuftKUK#0BNU", GetMottakerSertifikat(), _postkasseOrgnummer);
+        }
+
+        private static FysiskPostMottaker _fysiskPostMottaker;
+
+        internal static FysiskPostMottaker GetFysiskPostMottaker()
+        {
+            if (_fysiskPostMottaker != null)
+            {
+                return _fysiskPostMottaker;
+            }
+
+            return
+                _fysiskPostMottaker =
+                    new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerSertifikat(), _postkasseOrgnummer );
         }
 
         internal static Databehandler GetDatabehandler()
@@ -120,28 +149,52 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static DigitalPostInfo GetDigitalPostInfoEnkel()
         {
             return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel");
+        }
+
+        internal static FysiskPostInfo GetFysiskPostInfoEnkel()
+        {
+            return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
+                Posthåndtering.DirekteRetur, GetFysiskPostMottaker());
         } 
 
-        internal static Forsendelse GetForsendelseEnkel()
+        internal static Forsendelse GetDigitalForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeEnkel());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg());
+        }
+
+        internal static Forsendelse GetFysiskForsendelseEnkel()
+        {
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg());
+        }
+
+        internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
+        {
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg());
         }
 
         internal static AsicEArkiv GetAsicEArkivEnkel()
         {
             
-            return new AsicEArkiv(GetForsendelseEnkel(), _guidUtility, GetAvsenderSertifikat());
+            return new AsicEArkiv(GetDigitalForsendelseEnkel(), _guidUtility, GetAvsenderSertifikat());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
         {
             var envelopeSettings = new EnvelopeSettings(
-                GetForsendelseEnkel(), 
+                GetDigitalForsendelseEnkel(), 
                 GetAsicEArkivEnkel(), 
                 GetDatabehandler(),
                 _guidUtility, 
                 new Klientkonfigurasjon());
            return new ForretningsmeldingEnvelope(envelopeSettings);
+        }
+
+        internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
+        {
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon()
+            {
+                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
+            });
         }
 
         private static X509Certificate2 _avsenderSertifikat;
