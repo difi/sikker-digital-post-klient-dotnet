@@ -21,12 +21,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class SignaturTester : TestBase
+    public class SignaturTester
     {
         [TestMethod]
         public void HoveddokumentStarterMedEtTallXsdValidererIkke()
         {
-            var signaturXml = Arkiv.Signatur.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var signaturXml = arkiv.Signatur.Xml();
             var signaturvalidator = new Signaturvalidator();
             
             //Endre id på hoveddokument til å starte på et tall
@@ -50,7 +52,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void ValidereSignaturMotXsdValiderer()
         {
-            var signaturXml = Arkiv.Signatur.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var signaturXml = arkiv.Signatur.Xml();
             var signaturValidering = new Signaturvalidator();
             var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
 

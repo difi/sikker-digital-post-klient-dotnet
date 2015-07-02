@@ -12,12 +12,7 @@
  * limitations under the License.
  */
 
-using System.IO;
-using System.IO.Compression;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using ApiClientShared;
-using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
@@ -26,37 +21,39 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class ArkivTester : TestBase
+    public class ArkivTester
     {
         public TestContext TestContext { get; set; }
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
-
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
             //Overkjør arkiv i Base for å bruke et sertifikat vi har privatekey til.
-            DigitalPostMottaker.Sertifikat = Mottakersertifikat();
+            //DigitalPostMottaker.Sertifikat = Mottakersertifikat();
         }
 
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            Assert.AreEqual(DomeneUtility.GetVedleggsFilerStier().Length, Dokumentpakke.Vedlegg.Count);
-            Assert.IsNotNull(Dokumentpakke.Hoveddokument);
+            var dokumentpakke = DomeneUtility.GetDokumentpakkeEnkel();
+
+            Assert.AreEqual(DomeneUtility.GetVedleggsFilerStier().Length, dokumentpakke.Vedlegg.Count);
+            Assert.IsNotNull(dokumentpakke);
         }
 
         [TestMethod]
         public void LeggTilVedleggOgSjekkIdNummer()
         {
-            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] { 0x00 }, "text/plain"));
-            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] { 0x00 }, "text/plain"));
-            Dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 3", new byte[] { 0x00 }, "text/plain"), new Dokument("Dokument 4", new byte[] { 0x00 }, "text/plain"));
+            var dokumentpakke = DomeneUtility.GetDokumentpakkeEnkel();
 
-            Assert.AreEqual(Dokumentpakke.Hoveddokument.Id, "Id_2");
-            for (int i = 0; i < Dokumentpakke.Vedlegg.Count; i++)
+            dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] { 0x00 }, "text/plain"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] { 0x00 }, "text/plain"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 3", new byte[] { 0x00 }, "text/plain"), new Dokument("Dokument 4", new byte[] { 0x00 }, "text/plain"));
+
+            Assert.AreEqual(dokumentpakke.Hoveddokument.Id, "Id_2");
+            for (int i = 0; i < dokumentpakke.Vedlegg.Count; i++)
             {
-                var vedlegg = Dokumentpakke.Vedlegg[i];
+                var vedlegg = dokumentpakke.Vedlegg[i];
                 Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
             }
         }
@@ -65,15 +62,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
         public void LeggTilVedleggSammeFilnavnKasterException()
         {
-            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));
-            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));   
+            var dokumentpakke = DomeneUtility.GetDokumentpakkeEnkel();
+
+            dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] { 0x00 }, "text/plain", "NO", "Filnavn.txt"));   
         }
 
         [TestMethod]
         [ExpectedException(typeof(KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
         public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
         {
-            Dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", Dokumentpakke.Hoveddokument.Filnavn));
+            var dokumentpakke = DomeneUtility.GetDokumentpakkeEnkel();
+            dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", dokumentpakke.Hoveddokument.Filnavn));
         }
 
         private static X509Certificate2 Mottakersertifikat()

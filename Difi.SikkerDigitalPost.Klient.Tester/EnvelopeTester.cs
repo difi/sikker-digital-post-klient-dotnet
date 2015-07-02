@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,12 +21,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class EnvelopeTester : TestBase
+    public class EnvelopeTester
     {
         [TestMethod]
         public void ValidereEnvelopeMotXsdValiderer()
         {
-            var forretningsmeldingEnvelopeXml = Envelope.Xml();
+            var envelope = DomeneUtility.GetForretningsmeldingEnvelope();
+            var forretningsmeldingEnvelopeXml = envelope.Xml();
             var  envelopeValidator = new ForretningsmeldingEnvelopeValidator();
             var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
 
@@ -35,7 +37,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void LagUgyldigSecurityNodeXsdValidererIkke()
         {
-           var forretningsmeldingEnvelopeXml = Envelope.Xml();
+            var envelope = DomeneUtility.GetForretningsmeldingEnvelope();
+            var forretningsmeldingEnvelopeXml = envelope.Xml();
             var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
 
             //Endre til ugyldig forretningsmeldingenvelope

@@ -77,7 +77,6 @@
     <Compile Include="IntegrasjonSendPostTester.cs" />
     <Compile Include="SignaturTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
-    <Compile Include="TestBase.cs" />
     <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
   <ItemGroup>
