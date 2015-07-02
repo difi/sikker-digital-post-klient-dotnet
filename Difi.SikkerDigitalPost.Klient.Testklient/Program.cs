@@ -174,7 +174,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var dokumentpakke =
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
-            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "plain/txt", "NO", "Vedlegg.txt"));
+            dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "Vedlegg.txt"));
             return new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
 
         }

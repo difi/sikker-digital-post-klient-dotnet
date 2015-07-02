@@ -35,7 +35,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            Initialiser();
             //Overkjør arkiv i Base for å bruke et sertifikat vi har privatekey til.
             DigitalPostMottaker.Sertifikat = Mottakersertifikat();
         }

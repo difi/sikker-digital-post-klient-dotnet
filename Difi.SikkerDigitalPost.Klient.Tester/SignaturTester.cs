@@ -23,12 +23,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class SignaturTester : TestBase
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            Initialiser();
-        }
-
         [TestMethod]
         public void HoveddokumentStarterMedEtTallXsdValidererIkke()
         {

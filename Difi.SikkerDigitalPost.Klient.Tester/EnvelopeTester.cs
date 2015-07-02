@@ -22,12 +22,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class EnvelopeTester : TestBase
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            Initialiser();
-        }
-
         [TestMethod]
         public void ValidereEnvelopeMotXsdValiderer()
         {

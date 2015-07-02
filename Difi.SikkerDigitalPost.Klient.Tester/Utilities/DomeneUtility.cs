@@ -3,9 +3,14 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
+using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
+using Difi.SikkerDigitalPost.Klient.Envelope;
+using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -14,12 +19,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     /// da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses fra disk kun èn
     /// gang for ytelse.
     /// </summary>
-    public static class DomeneUtility
+    internal static class DomeneUtility
     {
         static readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+        private static GuidUtility _guidUtility = new GuidUtility();
         private static readonly string fileExtension;
 
-        public static Dokumentpakke GetDokumentpakkeEnkel()
+        internal static Dokumentpakke GetDokumentpakkeEnkel()
         {
             var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
             dokumentpakke.LeggTilVedlegg(GetVedleggEnkel());
@@ -28,7 +34,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static Dokument _hoveddokument;
 
-        public static Dokument GetHoveddokumentEnkel()
+        internal static Dokument GetHoveddokumentEnkel()
         {
             if (_hoveddokument != null)
             {
@@ -44,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return _hoveddokument = new Dokument("Hoveddokument", bytes, "text/xml", "NO", fileName);
         }
 
-        public static string[] GetVedleggsFilerStier()
+        internal static string[] GetVedleggsFilerStier()
         {
             const string VedleggsMappe = "vedlegg";
             
@@ -53,7 +59,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static IEnumerable<Dokument> _vedlegg; 
 
-        public static IEnumerable<Dokument> GetVedleggEnkel()
+        internal static IEnumerable<Dokument> GetVedleggEnkel()
         {
             if (_vedlegg != null)
             {
@@ -72,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static Avsender _avsender;
         
-        public static Avsender GetAvsender()
+        internal static Avsender GetAvsender()
         {
             if (_avsender != null)
             {
@@ -84,14 +90,63 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return _avsender = new Avsender(orgNrAvsender);
         }
 
-        public static Databehandler GetDatabehandler()
+        private static DigitalPostMottaker _digitalPostMottaker;
+
+        internal static DigitalPostMottaker GetDigitalPostMottaker()
+        {
+            if (_digitalPostMottaker != null)
+            {
+                return _digitalPostMottaker;
+            }
+
+            var orgNrMottaker = new Organisasjonsnummer("984661185");
+            return _digitalPostMottaker = new DigitalPostMottaker("04036125433", "ove.jonsen#6K5A", GetMottakerSertifikat(), orgNrMottaker.Iso6523());
+        }
+
+        internal static Databehandler GetDatabehandler()
         {
             return new Databehandler(GetAvsender().Organisasjonsnummer, GetMottakerSertifikat());
         }
 
+        internal static DigitalPostInfo GetDigitalPostInfoMedVarsel()
+        {
+            return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel")
+            {
+                EpostVarsel = new EpostVarsel("tull@ball.no", "Dette er et epostvarsel fra Enhentstester .NET", 0, 7),
+                SmsVarsel = new SmsVarsel("45215454", "Dette er et smsvarsel fra Enhetstester .NET", 3, 14)
+            };
+        }
+
+        internal static DigitalPostInfo GetDigitalPostInfoEnkel()
+        {
+            return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel");
+        } 
+
+        internal static Forsendelse GetForsendelseEnkel()
+        {
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeEnkel());
+        }
+
+        internal static AsicEArkiv GetAsicEArkivEnkel()
+        {
+            
+            return new AsicEArkiv(GetForsendelseEnkel(), _guidUtility, GetAvsenderSertifikat());
+        }
+
+        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
+        {
+            var envelopeSettings = new EnvelopeSettings(
+                GetForsendelseEnkel(), 
+                GetAsicEArkivEnkel(), 
+                GetDatabehandler(),
+                _guidUtility, 
+                new Klientkonfigurasjon());
+           return new ForretningsmeldingEnvelope(envelopeSettings);
+        }
+
         private static X509Certificate2 _avsenderSertifikat;
 
-        public static X509Certificate2 GetAvsenderSertifikat()
+        internal static X509Certificate2 GetAvsenderSertifikat()
         {
             if (_avsenderSertifikat != null)
             {
@@ -103,7 +158,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         
         private static X509Certificate2 _mottakerSertifikat;
 
-        public static X509Certificate2 GetMottakerSertifikat()
+        internal static X509Certificate2 GetMottakerSertifikat()
         {
             if (_mottakerSertifikat != null)
             {

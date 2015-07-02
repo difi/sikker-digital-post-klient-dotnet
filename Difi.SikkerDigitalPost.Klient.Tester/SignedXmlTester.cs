@@ -27,14 +27,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class SignedXmlTester : TestBase
     {
-        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
-
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
-        {
-            Initialiser();
-        }
-
         [TestMethod]
         public void FindIdElement()
         {
