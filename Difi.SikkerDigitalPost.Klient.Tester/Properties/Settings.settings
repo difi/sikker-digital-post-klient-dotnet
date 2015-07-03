@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Difi.SikkerDigitalPost.Klient.Tester.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DigitalPostkasseAdresseMottaker" Type="System.String" Scope="User">
+      <Value Profile="(Default)">hjarvald.tuftKUK#0BNU</Value>
+    </Setting>
+    <Setting Name="PersonnummerMottaker" Type="System.String" Scope="User">
+      <Value Profile="(Default)">04036125433</Value>
+    </Setting>
+    <Setting Name="OrganisasjonsnummerAvsender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">984661185</Value>
+    </Setting>
+    <Setting Name="OrganisasjonsnummerPostkasse" Type="System.String" Scope="User">
+      <Value Profile="(Default)">984661185</Value>
+    </Setting>
+    <Setting Name="UrlMeldingsformidler" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://qaoffentlig.meldingsformidler.digipost.no/api/ebms</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

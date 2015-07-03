@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
-            var dokumentpakke = DomeneUtility.GetDokumentpakkeUtenVedlegg();
+            var dokumentpakke = DomeneUtility.GetDokumentpakkeMedFlereVedlegg(5);
 
             Assert.AreEqual(DomeneUtility.GetVedleggsFilerStier().Length, dokumentpakke.Vedlegg.Count);
             Assert.IsNotNull(dokumentpakke);
