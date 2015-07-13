@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         
         private static Avsender _avsender;
         
-        private static DigitalPostMottaker _digitalPostMottaker;
+        private static DigitalPostMottaker _digitalPostMottaker; 
         
         private static FysiskPostMottaker _fysiskPostMottaker;
         
