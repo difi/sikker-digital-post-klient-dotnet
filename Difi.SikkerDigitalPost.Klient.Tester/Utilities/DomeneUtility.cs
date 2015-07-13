@@ -49,7 +49,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
             var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
-            dokumentpakke.LeggTilVedlegg(GetVedlegg(1));
             return dokumentpakke;
         }
 
@@ -164,17 +163,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal,Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetFysiskForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static AsicEArkiv GetAsicEArkivEnkel()
