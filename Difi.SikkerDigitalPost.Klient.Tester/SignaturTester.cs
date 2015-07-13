@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,18 +21,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class SignaturTester : TestBase
+    public class SignaturTester
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            Initialiser();
-        }
-
         [TestMethod]
         public void HoveddokumentStarterMedEtTallXsdValidererIkke()
         {
-            var signaturXml = Arkiv.Signatur.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var signaturXml = arkiv.Signatur.Xml();
             var signaturvalidator = new Signaturvalidator();
             
             //Endre id på hoveddokument til å starte på et tall
@@ -41,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             namespaceManager.AddNamespace("ns11", NavneromUtility.UriEtsi132);
 
             var hoveddokumentReferanseNode = signaturXml.DocumentElement
-                .SelectSingleNode("//ds:Reference[@Id = '" + Hoveddokument.Id + "']", namespaceManager);
+                .SelectSingleNode("//ds:Reference[@Id = '" + DomeneUtility.GetHoveddokumentEnkel().Id + "']", namespaceManager);
 
             var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
             hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
@@ -55,7 +52,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void ValidereSignaturMotXsdValiderer()
         {
-            var signaturXml = Arkiv.Signatur.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var signaturXml = arkiv.Signatur.Xml();
             var signaturValidering = new Signaturvalidator();
             var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
 

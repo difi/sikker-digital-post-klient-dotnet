@@ -69,6 +69,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,7 +82,6 @@
     <Compile Include="IntegrasjonSendPostTester.cs" />
     <Compile Include="SignaturTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
-    <Compile Include="TestBase.cs" />
     <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -174,16 +179,15 @@
     <EmbeddedResource Include="testdata\Post\manifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="testdata\integrasjon\fysiskpost.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
-    <None Include="testdata\integrasjon\digitalpost.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

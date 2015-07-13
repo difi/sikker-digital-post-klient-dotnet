@@ -13,6 +13,7 @@
  */
 
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,18 +21,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class ManifestTester : TestBase
+    public class ManifestTester
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            Initialiser();
-        }
-
         [TestMethod]
         public void UgyldigNavnPåHoveddokumentValidererIkke()
         {
-            var manifestXml = Arkiv.Manifest.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var manifestXml = arkiv.Manifest.Xml();
             var manifestValidering = new ManifestValidator();
 
             //Endre navn på hoveddokument til å være for kort
@@ -52,7 +49,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         [TestMethod]
         public void ValidereManifestMotXsdValiderer()
         {
-            var manifestXml = Arkiv.Manifest.Xml();
+            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+
+            var manifestXml = arkiv.Manifest.Xml();
 
             var manifestValidering = new ManifestValidator();
             var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);

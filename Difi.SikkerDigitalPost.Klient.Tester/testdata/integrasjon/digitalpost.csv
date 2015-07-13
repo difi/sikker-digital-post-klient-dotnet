@@ -1,4 +1,0 @@
-beskrivelse,postkasseadresse,hoveddokumenttype,hoveddokument,vedlegg1type,vedlegg1,vedlegg2type,vedlegg2
-Digitalt brev (.pdf) med txt-vedlegg,hjarvald.tuft#0BNU,application/pdf,hoveddokument.Hoveddokument.pdf,text/plain,vedlegg.Vedlegg.txt,
-Digitalt brev (.pdf) med .pdf-vedlegg,hjarvald.tuft#0BNU,application/pdf,hoveddokument.Hoveddokument.pdf,application/pdf,vedlegg.VedleggsHjelm.pdf,
-Digitalt brev (.pdf) med 2 txt-vedlegg,hjarvald.tuft#0BNU,application/pdf,hoveddokument.Hoveddokument.pdf,text/plain,vedlegg.Vedlegg.txt,text/plain,vedlegg.Vedlegg2.txt
