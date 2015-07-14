@@ -19,7 +19,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     [Obsolete("Behandlingsansvarlig heter nå Avsender, da behandlingsansvarlig vil for alle praktiske formål være avsenderen." +
-              " Ingen andre endringer er gjort, og overgang kan gjøres uten bieffekter.")]
+              " Ingen andre endringer er gjort, og overgang kan gjøres uten bieffekter. OBS! Vil bli fjernet fom. neste versjon.")]
     public class Behandlingsansvarlig
     {
         private readonly Avsender _målKlasse;

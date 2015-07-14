@@ -20,10 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 
         public FysiskPostMottakerAbstrakt ReturMottaker { get; set; }
 
-        /// <summary>
-        /// Denne konstruktøren er obsulete, bruk Konstruktøren som har PostMottaker og FysiskPostReturMottaker.
-        /// </summary>
-        [Obsolete]
+        [Obsolete("Denne konstruktøren skal ikke brukes. Bruk Konstruktøren med FysiskPosttMottaker og FysiskPostReturMottaker. OBS! Vil bli fjernet fom. neste versjon.")]
         public FysiskPostInfo(PostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostMottaker returMottaker) : base(mottaker)
         {
             Posttype = posttype;
@@ -32,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             ReturMottaker = returMottaker;
         }
 
-        public FysiskPostInfo(PostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturMottaker returMottaker)
+        public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturMottaker returMottaker)
             : base(mottaker)
         {
             Posttype = posttype;
