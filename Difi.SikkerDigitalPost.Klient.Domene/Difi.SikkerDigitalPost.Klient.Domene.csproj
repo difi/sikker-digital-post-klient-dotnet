@@ -57,9 +57,13 @@
     <Compile Include="Deprecated\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
+    <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entiteter\FysiskPost\FysiskPostMottakerAbstrakt.cs" />
+    <Compile Include="Entiteter\FysiskPost\FysiskPostReturMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
     <Compile Include="Entiteter\FysiskPost\UtenlandskAdresse.cs" />
-    <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\MottaksKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostKvittering.cs" />
     <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />

@@ -12,7 +12,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
     internal class FysiskPostInfoElement : EnvelopeXmlPart
     {
         private readonly FysiskPostInfo _fysiskPostInfo;
-        private readonly FysiskPostMottaker _returmottaker;
+        private readonly FysiskPostMottakerAbstrakt _returmottaker;
 
         public FysiskPostInfoElement(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {

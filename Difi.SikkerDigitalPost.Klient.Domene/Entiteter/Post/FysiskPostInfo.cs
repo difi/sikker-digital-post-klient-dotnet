@@ -1,4 +1,5 @@
-﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
@@ -17,9 +18,22 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 
         public Posthåndtering Posthåndtering { get; set; }
 
-        public FysiskPostMottaker ReturMottaker { get; set; }
+        public FysiskPostMottakerAbstrakt ReturMottaker { get; set; }
 
+        /// <summary>
+        /// Denne konstruktøren er obsulete, bruk Konstruktøren som har PostMottaker og FysiskPostReturMottaker.
+        /// </summary>
+        [Obsolete]
         public FysiskPostInfo(PostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostMottaker returMottaker) : base(mottaker)
+        {
+            Posttype = posttype;
+            Utskriftsfarge = utskriftsfarge;
+            Posthåndtering = posthåndtering;
+            ReturMottaker = returMottaker;
+        }
+
+        public FysiskPostInfo(PostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturMottaker returMottaker)
+            : base(mottaker)
         {
             Posttype = posttype;
             Utskriftsfarge = utskriftsfarge;
