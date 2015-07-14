@@ -4,16 +4,16 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Tester.enhetstester
+namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 {
     [TestClass]
-    public class FysiskPostInfoTest
+    public class FysiskPostInfoTests
     {
         [TestClass]
-        public class Kontstruktør
+        public class KontstruktørMetode
         {
             [TestMethod]
-            public void StøtteForLegacyKonstruktør()
+            public void StøtteForLegacyInitialisering()
             {
                 var fysiskPostInfo =
                     new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.enhetstester
             }
 
             [TestMethod]
-            public void SkalFungereMedNyKonstruktør()
+            public void SkalFungereMedNyMåteÅInitialiserePå()
             {
                 var fysiskPostInfo =
                     new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
