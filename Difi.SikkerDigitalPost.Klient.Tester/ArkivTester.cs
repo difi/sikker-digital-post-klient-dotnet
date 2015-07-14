@@ -25,13 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     {
         public TestContext TestContext { get; set; }
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            //Overkjør arkiv i Base for å bruke et sertifikat vi har privatekey til.
-            //DigitalPostMottaker.Sertifikat = Mottakersertifikat();
-        }
-
+        
         [TestMethod]
         public void LeggFilerTilDokumentpakkeAntallStemmer()
         {
@@ -74,15 +68,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         {
             var dokumentpakke = DomeneUtility.GetDokumentpakkeUtenVedlegg();
             dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] { 0x00 }, "text/plain", "NO", dokumentpakke.Hoveddokument.Filnavn));
-        }
-
-        private static X509Certificate2 Mottakersertifikat()
-        {
-            var storeMy = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            storeMy.Open(OpenFlags.ReadOnly);
-            var sertifikat = storeMy.Certificates[0];
-            storeMy.Close();
-            return sertifikat;
         }
 
     }
