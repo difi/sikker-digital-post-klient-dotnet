@@ -41,10 +41,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         private static DigitalPostMottaker _digitalPostMottaker; 
         
         private static FysiskPostMottaker _fysiskPostMottaker;
-        
+        private static FysiskPostReturmottaker _fysiskPostReturmottaker;
+
         private static X509Certificate2 _avsenderSertifikat;
         
         private static X509Certificate2 _mottakerSertifikat;
+        
 
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
@@ -134,6 +136,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return
                 _fysiskPostMottaker =
                     new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+        }
+
+        internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
+        {
+            if (_fysiskPostReturmottaker != null)
+            {
+                return _fysiskPostReturmottaker;
+            }
+            return _fysiskPostReturmottaker = 
+                new FysiskPostReturmottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"));
         }
 
         internal static Databehandler GetDatabehandler()
