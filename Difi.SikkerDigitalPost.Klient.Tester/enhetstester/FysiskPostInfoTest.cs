@@ -10,18 +10,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.enhetstester
     public class FysiskPostInfoTest
     {
         [TestMethod]
-        public void FysiskPostMottaker_skalKunnebliBruktSomMottakerOgRetur()
+        public void StøtteForLegacyKonstruktør()
         {
            var fysiskPostInfo =
              new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
                 Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostMottaker());
             
-            Assert.IsInstanceOfType(fysiskPostInfo.Mottaker,typeof( FysiskPostMottaker));
+            Assert.IsInstanceOfType(fysiskPostInfo.Mottaker,typeof(FysiskPostMottaker));
             Assert.IsInstanceOfType(fysiskPostInfo.ReturMottaker, typeof(FysiskPostMottaker));
         }
 
         [TestMethod]
-        public void FysiskPostInfo_skalKunneBliInitialisertMedFysiskPostMottakerOgFysiskPostReturMottaker()
+        public void SkalFungereMedNyKonstruktør()
         {
             var fysiskPostInfo =
               new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
