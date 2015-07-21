@@ -110,7 +110,6 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
             }
 
-            byte[] ziparray = stream.ToArray();
             return stream.ToArray();
         }
 
