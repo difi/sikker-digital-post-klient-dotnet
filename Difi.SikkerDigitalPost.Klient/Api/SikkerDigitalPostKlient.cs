@@ -96,13 +96,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var guidHandler = new GuidUtility();
             
-            var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
-            if (lagreDokumentpakke)
-            {
-                arkiv.LagreTilDisk(_klientkonfigurasjon.StandardLoggSti, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");                
-            }
+            var arkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
 
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler, _klientkonfigurasjon));
+            var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, arkiv, guidHandler);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
@@ -110,16 +106,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             
             try
             {
-                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml(), arkiv.Manifest.Xml(),
-                    arkiv.Signatur.Xml());
+                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
+                ValiderArkivManifest(arkiv.Manifest.Xml());
+                ValiderArkivSignatur(arkiv.Signatur.Xml());
             }
             catch (Exception e)
             {
                 throw new Exception("Sending av forsendelse feilet under validering. Feilmelding: " + e.GetBaseException(), e.InnerException);
             }
 
-            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
-            soapContainer.Vedlegg.Add(arkiv);
+            var soapContainer = LagSoapContainer(forretningsmeldingEnvelope, arkiv);
             var meldingsformidlerRespons = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Mottatt - Meldingsformidlerespons.txt");
@@ -128,6 +124,34 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + meldingsformidlerRespons);
             
             return ValiderTransportkvittering(meldingsformidlerRespons, forretningsmeldingEnvelope.Xml(), guidHandler);
+        }
+
+        private static SoapContainer LagSoapContainer(ForretningsmeldingEnvelope forretningsmeldingEnvelope, AsicEArkiv arkiv)
+        {
+            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
+            soapContainer.Vedlegg.Add(arkiv);
+            return soapContainer;
+        }
+
+        private ForretningsmeldingEnvelope LagForretningsmeldingEnvelope(Forsendelse forsendelse, AsicEArkiv arkiv,
+            GuidUtility guidHandler)
+        {
+            var forretningsmeldingEnvelope =
+                new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler,
+                    _klientkonfigurasjon));
+            return forretningsmeldingEnvelope;
+        }
+
+
+        private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
+        {
+            var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
+            if (lagreDokumentpakke)
+            {
+                arkiv.LagreTilDisk(_klientkonfigurasjon.StandardLoggSti, "dokumentpakke",
+                    DateUtility.DateForFile() + " - Dokumentpakke.zip");
+            }
+            return arkiv;
         }
 
         private static Transportkvittering ValiderTransportkvittering(string meldingsformidlerRespons,
@@ -368,7 +392,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             return data;
         }
 
-        private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml, XmlDocument manifestXml, XmlDocument signaturXml)
+        private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml)
         {
             const string preMessage = "Envelope validerer ikke: ";
 
@@ -376,17 +400,26 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
             if (!envelopeValidert)
                 throw new XmlValidationException(preMessage + envelopeValidering.ValideringsVarsler);
+        }
+
+        private static void ValiderArkivSignatur(XmlDocument signaturXml)
+        {
+            const string preMessage = "Envelope validerer ikke: ";
+
+            var signaturValidering = new Signaturvalidator();
+            var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
+            if (!signaturValidert)
+                throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);
+        }
+
+        private static void ValiderArkivManifest(XmlDocument manifestXml)
+        {
+            const string preMessage = "Envelope validerer ikke: ";
 
             var manifestValidering = new ManifestValidator();
             var manifestValidert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
             if (!manifestValidert)
                 throw new XmlValidationException(preMessage + manifestValidering.ValideringsVarsler);
-
-            var signaturValidering = new Signaturvalidator();
-            var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
-            if (!signaturValidert)
-                throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);           
-
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
