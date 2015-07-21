@@ -18,67 +18,86 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     {
         private int _hentKvitteringerMaksAntallGanger = 10;
 
-        [TestMethod]
-        public void SendDigitalPostIntegrasjonEnkel()
+        [TestClass]
+        public class Digital : IntegrasjonSendPostTester
         {
-            try
+            [TestMethod]
+            public void SendDigitalPostIntegrasjonEnkel()
             {
-                //Arrange
-                var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                
-                //Act
-                SendDokumentpakke(sdpklient, enkelForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse.MpcId, enkelForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger, "Fant ikke kvittering innen maksimalt antall forsøk.");
+                try
+                {
+                    //Arrange
+                    var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
+                    var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+
+                    //Act
+                    SendDokumentpakke(sdpklient, enkelForsendelse);
+                    var antallGangerForsøkt =
+                        HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse.MpcId,
+                            enkelForsendelse).Result;
+                    Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger,
+                        "Fant ikke kvittering innen maksimalt antall forsøk.");
+                }
+                catch (Exception e)
+                {
+                    //Assert
+                    Assert.Fail(e.Message);
+                }
             }
-            catch (Exception e)
+
+            [TestMethod]
+            public void SendDigitalPostIntegrasjonDekkende()
             {
-                //Assert
-                Assert.Fail(e.Message);
+                try
+                {
+                    //Arrange
+                    var dekkendeDigitalForsendelse =
+                        DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
+                    var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+
+                    //Act
+                    SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
+                    var antallGangerForsøkt =
+                        HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse.MpcId,
+                            dekkendeDigitalForsendelse).Result;
+                    Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger,
+                        "Fant ikke kvittering innen maksimalt antall forsøk.");
+                }
+                catch (Exception e)
+                {
+                    //Assert
+                    Assert.Fail(e.Message);
+                }
+
             }
         }
 
-        [TestMethod]
-        public void SendDigitalPostIntegrasjonDekkende()
+        [TestClass]
+        public class FysiskPost : IntegrasjonSendPostTester
         {
-            try
-            {
-                //Arrange
-                var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
-                //Act
-                SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse.MpcId, dekkendeDigitalForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger, "Fant ikke kvittering innen maksimalt antall forsøk.");
-            }
-            catch (Exception e)
+            [TestMethod]
+            public void SendFysiskPostIntegrasjon()
             {
-                //Assert
-                Assert.Fail(e.Message);
-            }
+                try
+                {
+                    //Arrange
+                    var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
+                    var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
-        }
-
-        [TestMethod]
-        public void SendFysiskPostIntegrasjon()
-        {
-            try
-            {
-                //Arrange
-                var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-
-                //Act
-                SendDokumentpakke(sdpklient, enkelFysiskForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post",enkelFysiskForsendelse.MpcId, enkelFysiskForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger,"Fant ikke kvittering innen maksimalt antall forsøk.");
-            }
-            catch (Exception e)
-            {
-                //Assert
-                Assert.Fail(e.Message);
+                    //Act
+                    SendDokumentpakke(sdpklient, enkelFysiskForsendelse);
+                    var antallGangerForsøkt =
+                        HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse.MpcId,
+                            enkelFysiskForsendelse).Result;
+                    Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger,
+                        "Fant ikke kvittering innen maksimalt antall forsøk.");
+                }
+                catch (Exception e)
+                {
+                    //Assert
+                    Assert.Fail(e.Message);
+                }
             }
         }
 
