@@ -3,6 +3,10 @@ using System.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
+    /// <summary>
+    /// Dette er Kvittering på at posten har kommet i retur og har blitt makulert.
+    /// Les mer på http://begrep.difi.no/SikkerDigitalPost/1.2.0/meldinger/ReturpostKvittering
+    /// </summary>
     public class Returpostkvittering : Forretningskvittering
     {
         internal Returpostkvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
