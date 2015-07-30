@@ -23,42 +23,47 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class SignaturTester
     {
-        [TestMethod]
-        public void HoveddokumentStarterMedEtTallXsdValidererIkke()
+        [TestClass]
+        public class XsdValidering
         {
-            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+            [TestMethod]
+            public void HoveddokumentStarterMedEtTallXsdValidererIkke()
+            {
+                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
 
-            var signaturXml = arkiv.Signatur.Xml();
-            var signaturvalidator = new Signaturvalidator();
-            
-            //Endre id på hoveddokument til å starte på et tall
-            var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
-            namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
-            namespaceManager.AddNamespace("ns10", NavneromUtility.UriEtsi121);
-            namespaceManager.AddNamespace("ns11", NavneromUtility.UriEtsi132);
+                var signaturXml = arkiv.Signatur.Xml();
+                var signaturvalidator = new Signaturvalidator();
 
-            var hoveddokumentReferanseNode = signaturXml.DocumentElement
-                .SelectSingleNode("//ds:Reference[@Id = '" + DomeneUtility.GetHoveddokumentEnkel().Id + "']", namespaceManager);
+                //Endre id på hoveddokument til å starte på et tall
+                var namespaceManager = new XmlNamespaceManager(signaturXml.NameTable);
+                namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
+                namespaceManager.AddNamespace("ns10", NavneromUtility.UriEtsi121);
+                namespaceManager.AddNamespace("ns11", NavneromUtility.UriEtsi132);
 
-            var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
-            hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
+                var hoveddokumentReferanseNode = signaturXml.DocumentElement
+                    .SelectSingleNode("//ds:Reference[@Id = '" + DomeneUtility.GetHoveddokumentEnkel().Id + "']",
+                        namespaceManager);
 
-            var validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
-            Assert.IsFalse(validerer, signaturvalidator.ValideringsVarsler);
+                var gammelVerdi = hoveddokumentReferanseNode.Attributes["Id"].Value;
+                hoveddokumentReferanseNode.Attributes["Id"].Value = "0_Id_Som_Skal_Feile";
 
-            hoveddokumentReferanseNode.Attributes["Id"].Value = gammelVerdi;
-        }
+                var validerer = signaturvalidator.ValiderDokumentMotXsd(signaturXml.OuterXml);
+                Assert.IsFalse(validerer, signaturvalidator.ValideringsVarsler);
 
-        [TestMethod]
-        public void ValidereSignaturMotXsdValiderer()
-        {
-            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+                hoveddokumentReferanseNode.Attributes["Id"].Value = gammelVerdi;
+            }
 
-            var signaturXml = arkiv.Signatur.Xml();
-            var signaturValidering = new Signaturvalidator();
-            var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
+            [TestMethod]
+            public void ValidereSignaturMotXsdValiderer()
+            {
+                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
 
-            Assert.IsTrue(validerer, signaturValidering.ValideringsVarsler);
+                var signaturXml = arkiv.Signatur.Xml();
+                var signaturValidering = new Signaturvalidator();
+                var validerer = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
+
+                Assert.IsTrue(validerer, signaturValidering.ValideringsVarsler);
+            }
         }
     }
 }

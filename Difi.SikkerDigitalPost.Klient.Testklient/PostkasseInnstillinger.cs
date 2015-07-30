@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         * Følgende sertifikater må brukes for å kunne sende digital post
         * 
         * - Mottagersertifikat brukes for å kryptere og signere dokumentpakke som skal til mottagerens postkasse.
-        * - TekniskAvsenderSertifikat brukes for sikker kommunikasjon med meldingsformidler.
+        * - DatabehandlerSertifikat brukes for sikker kommunikasjon med meldingsformidler.
         */
         public X509Certificate2 Avsendersertifikat { get; set; }
         public X509Certificate2 Mottakersertifikat { get; set; }
@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         public static PostkasseInnstillinger GetEboks()
         {
-            var tekniskAvsenderSertifikat =  CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            var databehandlerSertifikat =  CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
             var mottakerSertifikat = CertificateUtility.ReceiverCertificate("7166484C1116D8A32AACD49FD2FB79F06751661D", Language.Norwegian);
 
             var orgnummerPosten = "984661185";
@@ -59,12 +59,12 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var mottakerPersonnummer = "02018090301";
             var mottakerPostkasse = "0000485509";
 
-            return new PostkasseInnstillinger(tekniskAvsenderSertifikat, mottakerSertifikat, orgnummerBehandlingsansvarlig, orgnummerDatabehandler, orgnummerPostkasse, mottakerPersonnummer, mottakerPostkasse);
+            return new PostkasseInnstillinger(databehandlerSertifikat, mottakerSertifikat, orgnummerBehandlingsansvarlig, orgnummerDatabehandler, orgnummerPostkasse, mottakerPersonnummer, mottakerPostkasse);
         }
 
         public static PostkasseInnstillinger GetPosten()
         {
-            var tekniskAvsenderSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            var databehandlerSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
             var mottakerSertifikat = CertificateUtility.ReceiverCertificate("B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD", Language.Norwegian);
 
             var orgnummerPosten = "984661185";
@@ -74,7 +74,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var mottakerPersonnummer = "04036125433";
             var mottakerPostkasse = "ove.jonsen#6K5A";
 
-            return new PostkasseInnstillinger(tekniskAvsenderSertifikat, mottakerSertifikat, orgnummerBehandlingsansvarlig, orgnummerDatabehandler, orgnummerPostkasse, mottakerPersonnummer, mottakerPostkasse);
+            return new PostkasseInnstillinger(databehandlerSertifikat, mottakerSertifikat, orgnummerBehandlingsansvarlig, orgnummerDatabehandler, orgnummerPostkasse, mottakerPersonnummer, mottakerPostkasse);
         }
     }
 }
