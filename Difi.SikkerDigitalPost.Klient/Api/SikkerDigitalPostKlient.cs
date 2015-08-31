@@ -1,4 +1,4 @@
-/** 
+ï»¿/** 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.AsicE;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.AktÃ¸rer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
@@ -30,7 +30,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
-using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
+using Difi.SikkerDigitalPost.Klient.Envelope.KvitteringsforespÃ¸rsel;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -42,13 +42,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
         /// <param name="databehandler">
-        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
-        /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
-        /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
-        /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
+        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utfÃ¸relsen av sendingen.
+        /// Teknisk avsender er den aktÃ¸ren som stÃ¥r for utfÃ¸relsen av den tekniske sendingen. 
+        /// Hvis sendingen utfÃ¸res av en databehandler vil dette vÃ¦re databehandleren. 
+        /// Hvis sendingen utfÃ¸res av behandlingsansvarlige selv er dette den behandlingsansvarlige.
         /// </param>
         /// <remarks>
-        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
+        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktÃ¸rer</a>
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler)
             : this(databehandler, new Klientkonfigurasjon())
@@ -56,16 +56,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <param name="databehandler">
-        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
-        /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
-        /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
-        /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
+        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utfÃ¸relsen av sendingen.
+        /// Teknisk avsender er den aktÃ¸ren som stÃ¥r for utfÃ¸relsen av den tekniske sendingen. 
+        /// Hvis sendingen utfÃ¸res av en databehandler vil dette vÃ¦re databehandleren. 
+        /// Hvis sendingen utfÃ¸res av behandlingsansvarlige selv er dette den behandlingsansvarlige.
         /// </param>
-        /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
-        /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
+        /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for Ã¥ sette parametere
+        /// som proxy, timeout og URI til meldingsformidler. For Ã¥ bruke standardkonfigurasjon, lag
         /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
         /// <remarks>
-        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
+        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktÃ¸rer</a>
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
@@ -78,8 +78,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
-        /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til Ã¥ kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
+        /// <param name="lagreDokumentpakke">Hvis satt til true, sÃ¥ lagres dokumentpakken pÃ¥ Klientkonfigurasjon.StandardLoggSti.</param>
         public Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             return SendAsync(forsendelse, lagreDokumentpakke).Result;
@@ -88,8 +88,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <summary>
         /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
-        /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
+        /// <param name="forsendelse">Et objekt som har all informasjon klar til Ã¥ kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
+        /// <param name="lagreDokumentpakke">Hvis satt til true, sÃ¥ lagres dokumentpakken pÃ¥ Klientkonfigurasjon.StandardLoggSti.</param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
@@ -168,7 +168,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 var transportFeiletKvittering = KvitteringFactory.GetTransportkvittering(meldingsformidlerRespons);
                 if (transportFeiletKvittering is TransportOkKvittering)
                 {
-                    throw new SdpSecurityException("Validering av signatur og digest på respons feilet.", e);
+                    throw new SdpSecurityException("Validering av signatur og digest pÃ¥ respons feilet.", e);
                 }
                 return transportFeiletKvittering;
             }
@@ -177,91 +177,91 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
-        /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        /// ForespÃ¸r kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
+        /// Det er ikke mulig Ã¥ etterspÃ¸rre kvittering for en spesifikk forsendelse.
         /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="kvitteringsforespÃ¸rsel"></param>
         /// <returns></returns>
         /// <remarks>
         /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
+        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes fÃ¸lgende tidsintervaller fÃ¸r en ny forespÃ¸rsel gjÃ¸res</description></listheader>
         /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        public Kvittering HentKvittering(KvitteringsforespÃ¸rsel kvitteringsforespÃ¸rsel)
         {
-            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
+            return HentKvitteringOgBekreftForrige(kvitteringsforespÃ¸rsel, null);
         }
 
         /// <summary>
-        /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
-        /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        /// ForespÃ¸r kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
+        /// Det er ikke mulig Ã¥ etterspÃ¸rre kvittering for en spesifikk forsendelse.
         /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="kvitteringsforespÃ¸rsel"></param>
         /// <returns></returns>
         /// <remarks>
         /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
+        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes fÃ¸lgende tidsintervaller fÃ¸r en ny forespÃ¸rsel gjÃ¸res</description></listheader>
         /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public async Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel)
+        public async Task<Kvittering> HentKvitteringAsync(KvitteringsforespÃ¸rsel kvitteringsforespÃ¸rsel)
         {
-            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null);
+            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespÃ¸rsel, null);
         }
 
         /// <summary>
-        /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
-        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
+        /// ForespÃ¸r kvittering for forsendelser med mulighet til Ã¥ samtidig bekrefte pÃ¥ forrige kvittering for Ã¥ slippe Ã¥ kjÃ¸re eget kall for bekreft. 
+        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig Ã¥ etterspÃ¸rre kvittering for en 
         /// spesifikk forsendelse. 
         /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="kvitteringsforespÃ¸rsel"></param>
         /// <param name="forrigeKvittering"></param>
         /// <returns></returns>
         /// <remarks>
         /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
+        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes fÃ¸lgende tidsintervaller fÃ¸r en ny forespÃ¸rsel gjÃ¸res</description></listheader>
         /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
+        public Kvittering HentKvitteringOgBekreftForrige(KvitteringsforespÃ¸rsel kvitteringsforespÃ¸rsel,
             Forretningskvittering forrigeKvittering)
         {
-            return HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, forrigeKvittering).Result;
+            return HentKvitteringOgBekreftForrigeAsync(kvitteringsforespÃ¸rsel, forrigeKvittering).Result;
         }
         
         /// <summary>
-        /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
-        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
+        /// ForespÃ¸r kvittering for forsendelser med mulighet til Ã¥ samtidig bekrefte pÃ¥ forrige kvittering for Ã¥ slippe Ã¥ kjÃ¸re eget kall for bekreft. 
+        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig Ã¥ etterspÃ¸rre kvittering for en 
         /// spesifikk forsendelse. 
         /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="kvitteringsforespÃ¸rsel"></param>
         /// <param name="forrigeKvittering"></param>
         /// <returns></returns>
         /// <remarks>
         /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
+        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes fÃ¸lgende tidsintervaller fÃ¸r en ny forespÃ¸rsel gjÃ¸res</description></listheader>
         /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
         /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
         /// </list>
         /// </remarks>
-        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(KvitteringsforespÃ¸rsel kvitteringsforespÃ¸rsel, Forretningskvittering forrigeKvittering)
         {
             if (forrigeKvittering != null)
             {
                 Bekreft(forrigeKvittering);
             }
 
-            Logging.Log(TraceEventType.Information, "Henter kvittering for " + kvitteringsforespørsel.Mpc);
+            Logging.Log(TraceEventType.Information, "Henter kvittering for " + kvitteringsforespÃ¸rsel.Mpc);
 
             var guidHandler = new GuidUtility();
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, guidHandler);
-            var kvitteringsenvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespÃ¸rsel, _databehandler, guidHandler);
+            var kvitteringsenvelope = new KvitteringsforespÃ¸rselEnvelope(envelopeSettings);
 
-            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespørsel" + Environment.NewLine + kvitteringsenvelope.Xml().OuterXml);
+            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespÃ¸rsel" + Environment.NewLine + kvitteringsenvelope.Xml().OuterXml);
 
             ValiderKvitteringsEnvelope(kvitteringsenvelope);
 
@@ -284,35 +284,35 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             return KvitteringFactory.GetForretningskvittering(kvittering);
         }
 
-        private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
+        private static void ValiderKvitteringsEnvelope(KvitteringsforespÃ¸rselEnvelope kvitteringsenvelope)
         {
             try
             {
-                var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
-                var kvitteringForespørselEnvelopeValidert =
-                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
-                if (!kvitteringForespørselEnvelopeValidert)
-                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
+                var kvitteringForespÃ¸rselEnvelopeValidering = new KvitteringsforespÃ¸rselEnvelopeValidator();
+                var kvitteringForespÃ¸rselEnvelopeValidert =
+                    kvitteringForespÃ¸rselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                if (!kvitteringForespÃ¸rselEnvelopeValidert)
+                    throw new Exception(kvitteringForespÃ¸rselEnvelopeValidering.ValideringsVarsler);
             }
             catch (Exception e)
             {
-                throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
+                throw new XmlValidationException("KvitteringsforespÃ¸rsel validerer ikke mot xsd:" + e.Message);
             }
 
         }
 
         /// <summary>
-        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
+        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/>.
         /// <list type="bullet">
-        /// <listheader><description><para>Dette legger opp til følgende arbeidsflyt</para></description></listheader>
-        /// <item><description><para><see cref="HentKvittering(Kvitteringsforespørsel)"/></para></description></item>
-        /// <item><description><para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para></description></item>
+        /// <listheader><description><para>Dette legger opp til fÃ¸lgende arbeidsflyt</para></description></listheader>
+        /// <item><description><para><see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/></para></description></item>
+        /// <item><description><para>GjÃ¸r intern prosessering av kvitteringen (lagre til database, og sÃ¥ videre)</para></description></item>
         /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
         /// </list>
         /// </summary>
         /// <param name="forrigeKvittering"></param>
         /// <remarks>
-        /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
+        /// <see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/> kommer ikke til Ã¥ returnere en ny kvittering fÃ¸r mottak av den forrige er bekreftet.
         /// </remarks>
         public void Bekreft(Forretningskvittering forrigeKvittering)
         {
@@ -320,17 +320,17 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
+        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/>.
         /// <list type="bullet">
-        /// <listheader><description><para>Dette legger opp til følgende arbeidsflyt</para></description></listheader>
-        /// <item><description><para><see cref="HentKvittering(Kvitteringsforespørsel)"/></para></description></item>
-        /// <item><description><para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para></description></item>
+        /// <listheader><description><para>Dette legger opp til fÃ¸lgende arbeidsflyt</para></description></listheader>
+        /// <item><description><para><see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/></para></description></item>
+        /// <item><description><para>GjÃ¸r intern prosessering av kvitteringen (lagre til database, og sÃ¥ videre)</para></description></item>
         /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
         /// </list>
         /// </summary>
         /// <param name="forrigeKvittering"></param>
         /// <remarks>
-        /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
+        /// <see cref="HentKvittering(KvitteringsforespÃ¸rsel)"/> kommer ikke til Ã¥ returnere en ny kvittering fÃ¸r mottak av den forrige er bekreftet.
         /// </remarks>
         public async Task BekreftAsync(Forretningskvittering forrigeKvittering)
         {
@@ -376,7 +376,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 {
                     if (response == null)
                     {
-                        throw new SendException("Får ikke kontakt med meldingsformidleren. Sjekk tilkoblingsdetaljer og prøv på nytt.");
+                        throw new SendException("FÃ¥r ikke kontakt med meldingsformidleren. Sjekk tilkoblingsdetaljer og prÃ¸v pÃ¥ nytt.");
                     }
 
 
@@ -454,7 +454,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, Forretningskvittering kvittering, bool datoPrefiks, bool isXml, params string[] filsti)
         {
             var fileSuffix = isXml ? ".xml" : ".txt";
-            Logg(viktighet,konversasjonsId,kvittering.Rådata, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name + fileSuffix);
+            Logg(viktighet,konversasjonsId,kvittering.RÃ¥data, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name + fileSuffix);
         }
     }
 }
