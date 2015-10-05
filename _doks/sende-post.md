@@ -18,7 +18,7 @@ Først, lag en motaker av type `DigitalPostMottaker`:
 var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, mottakersertifikat, orgnummerPostkasse)
 {% endhighlight%}
 
-<blockquote>Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Dette er  984661185 for Posten, og 996460320 for EBoks</blockquote>
+<blockquote>Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.</blockquote>
 
 Opprett så en `DigitalPostInfo`:
 {% highlight csharp %}
