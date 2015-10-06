@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
@@ -139,6 +140,31 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 }
             }
             return prøvdPåNytt;
+        }
+
+        [TestMethod]
+        public void SenPaaVegneAv()
+        {
+            string thumbprint = "12312321321321321";
+            string avsender = "987654321";
+            string databehandler = "123456789";
+            Avsender a = new Avsender(avsender);
+            Databehandler dbh = new Databehandler(databehandler,thumbprint);
+            
+            var enkelForsendelse = new Forsendelse(a, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+
+            var klientKonfig = new Klientkonfigurasjon
+            {
+                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
+            };
+            var sdpKlient = new SikkerDigitalPostKlient(dbh, klientKonfig);
+
+            var transportkvittering = sdpKlient.Send(enkelForsendelse);
+
+            var antallGangerForsøkt = HentKvitteringOgBekreft(sdpKlient, "Enkel Digital Post", enkelForsendelse.MpcId, enkelForsendelse).Result;
+            Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger, "Fant ikke kvittering innen maksimalt antall forsøk.");
+
+
         }
 
     }
