@@ -15,7 +15,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
-using Difi.SikkerDigitalPost.Klient.Utilities; 
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -36,11 +36,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         
         private static IEnumerable<Dokument> _vedlegg;
         
-        private static Avsender _avsender;
-        
-        private static DigitalPostMottaker _digitalPostMottaker; 
-        
         private static FysiskPostMottaker _fysiskPostMottaker;
+        
         private static FysiskPostReturmottaker _fysiskPostReturmottaker;
 
         private static X509Certificate2 _avsenderSertifikat;
@@ -97,33 +94,27 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                     GetVedleggsFilerStier().Select(
                         v => new Dokument("Vedlegg" + count++,
                             ResourceUtility.ReadAllBytes(false, v), 
-                            "text/" + fileExtension, 
+                            GetMimeType(v), 
                             "NO", ResourceUtility.GetFileName(v))));
 
             return _vedlegg.Take(maksAntall);
 
         }
 
+        internal static string GetMimeType(string fileName)
+        {
+            return "text/plain";
+        }
+
         internal static Avsender GetAvsender()
         {
-            if (_avsender != null)
-            {
-                return _avsender;
-            }
-
             var orgNrAvsender = new Organisasjonsnummer(Settings.Default.OrganisasjonsnummerAvsender);
-            
-            return _avsender = new Avsender(orgNrAvsender);
+            return new Avsender(orgNrAvsender) {Avsenderidentifikator = Settings.Default.Avsenderidentifikator};
         }
         
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            if (_digitalPostMottaker != null)
-            {
-                return _digitalPostMottaker;
-            }
-
-        return _digitalPostMottaker = new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
@@ -150,7 +141,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Databehandler GetDatabehandler()
         {
-            return new Databehandler(GetAvsender().Organisasjonsnummer, GetMottakerSertifikat());
+            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderSertifikat());
         }
 
         internal static DigitalPostInfo GetDigitalPostInfoMedVarsel()
@@ -175,12 +166,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal,Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetFysiskForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
@@ -220,7 +211,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _avsenderSertifikat;
             }
 
-            return _avsenderSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            return _avsenderSertifikat = CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerSertifikat()
@@ -230,7 +221,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _mottakerSertifikat;
             }
 
-            return _mottakerSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            return
+                _mottakerSertifikat =
+                    CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
         }
 
     }
