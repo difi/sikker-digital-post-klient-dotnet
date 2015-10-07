@@ -65,38 +65,32 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _hoveddokument;
             }
 
-            var hoveddokumentMappe = "hoveddokument";
-            var hoveddokument = ResourceUtility.GetFiles(hoveddokumentMappe).ElementAt(0);
-
-            var bytes = ResourceUtility.ReadAllBytes(false, hoveddokument);
-            var fileName = ResourceUtility.GetFileName(hoveddokument);
-            
-            return _hoveddokument = new Dokument("Hoveddokument", bytes, "text/xml", "NO", fileName);
+            return _hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
         internal static string[] GetVedleggsFilerStier()
         {
-            const string VedleggsMappe = "vedlegg";
+            const string vedleggsMappe = "vedlegg";
             
-            return ResourceUtility.GetFiles(VedleggsMappe).ToArray();
+            return ResourceUtility.GetFiles(vedleggsMappe).ToArray();
         }
 
-        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall)
+        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall = 5)
         {
             if (_vedlegg != null)
             {
                 return _vedlegg;
             }
 
-            var count = 0;
-           
-            _vedlegg = new List<Dokument>(
-                    GetVedleggsFilerStier().Select(
-                        v => new Dokument("Vedlegg" + count++,
-                            ResourceUtility.ReadAllBytes(false, v), 
-                            GetMimeType(v), 
-                            "NO", ResourceUtility.GetFileName(v))));
+            var vedleggTxt0 =  new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg","Vedlegg.txt"), "text/plain");
+            var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
+            var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
+            var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
 
+
+            _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 }; 
+           
             return _vedlegg.Take(maksAntall);
 
         }

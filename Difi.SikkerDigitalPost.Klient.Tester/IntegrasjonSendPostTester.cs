@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     public class IntegrasjonSendPostTester
     {
         [TestMethod]
-        public void SendDigitalPostIntegrasjonEnkel()
+        public async Task SendDigitalPostIntegrasjonEnkel()
         {
             //Arrange
             var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
@@ -26,12 +26,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Act
             SendDokumentpakke(sdpklient, enkelForsendelse);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse.MpcId, enkelForsendelse).Result;
+            var kvittering = await HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         [TestMethod]
-        public void SendDigitalPostIntegrasjonDekkende()
+        public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
             var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
@@ -39,13 +39,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Act
             SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse.MpcId, dekkendeDigitalForsendelse).Result;
+            var kvittering = await HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
 
         }
 
         [TestMethod]
-        public void SendFysiskPostIntegrasjon()
+        public async Task SendFysiskPostIntegrasjon()
         {
             //Arrange
             var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
@@ -56,10 +56,32 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Assert
             Assert.IsTrue(transportKvittering is TransportOkKvittering);
+            var kvittering =  await HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse);
+            Assert.IsTrue(kvittering is Mottakskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+        }
 
+        [TestMethod]
+        public void SendDigitaltPåVegneAvIntegrasjon()
+        {
+            //Arrange
+            const string testDepartementetAvsenderOrgnummer = "987656789";
+            const string postenDatabehandlerOrgnummer = "984661185";
+            var a = new Avsender(testDepartementetAvsenderOrgnummer);
 
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse.MpcId, enkelFysiskForsendelse).Result;
-            Assert.IsTrue(kvittering is Leveringskvittering ,"Klarte ikke hente kvittering eller feilet kvittering");
+            var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
+            var enkelForsendelse = new Forsendelse(a, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            var klientKonfig = new Klientkonfigurasjon
+            {
+                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
+                LoggXmlTilFil = true
+            };
+
+            //Act
+            var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
+            var transportkvittering = sdpKlient.Send(enkelForsendelse, true);
+
+            //Assert
+            Assert.IsFalse(transportkvittering is TransportFeiletKvittering);
         }
 
         private Transportkvittering SendDokumentpakke(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
@@ -67,10 +89,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             return sikkerDigitalPostKlient.Send(forsendelse);
         }
 
-        private async Task<Kvittering> HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse, string mpcId,
+        private static async Task<Kvittering> HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
             Forsendelse forsendelse)
         {
-            var hentKvitteringMaksAntallGanger = 4;
+            const int hentKvitteringMaksAntallGanger = 4;
             var hentKvitteringPåNytt = true;
             var prøvdPåNytt = 0;
 
@@ -82,31 +104,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
+                hentKvitteringPåNytt = false;
 
                 sdpKlient.Bekreft((Forretningskvittering)kvittering);
 
-                hentKvitteringPåNytt = false;
-
-                var konversasjonsId = Guid.Empty;
-
-                if (kvittering is Feilmelding)
-                {
-                    var feilmelding = (Feilmelding)kvittering;
-                    konversasjonsId = feilmelding.KonversasjonsId;
-                    Assert.Fail("Test '{0}' feilet. Feilmelding fra Meldingsformidler: {1}",
-                        testBeskrivelse,
-                        feilmelding.Detaljer);
-                    
-                }
-
-                if (kvittering is Leveringskvittering)
-                {
-                    var leveringskvittering = (Leveringskvittering)kvittering;
-                    konversasjonsId = leveringskvittering.KonversasjonsId;
-                }
-
-               
-                if (konversasjonsId.ToString() != forsendelse.KonversasjonsId.ToString())
+                var konversasjonsId = HentKonversasjonsIdFraKvittering(kvittering);
+                if (konversasjonsId != forsendelse.KonversasjonsId)
                 {
                     throw new FieldAccessException(
                         string.Format(
@@ -117,30 +120,29 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             return kvittering;
         }
 
-        [TestMethod]
-        public void SendPåVegneAv()
+        private static Guid HentKonversasjonsIdFraKvittering(Kvittering kvittering)
         {
-            //Arrange
-            const string testDepartementetAvsenderOrgnummer = "987656789"; 
-            const string postenDatabehandlerOrgnummer = "984661185"; 
-            var a = new Avsender(testDepartementetAvsenderOrgnummer);
-            
-            var databehandler = new Databehandler(postenDatabehandlerOrgnummer,DomeneUtility.GetAvsenderSertifikat());
-            var enkelForsendelse = new Forsendelse(a, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
-            var klientKonfig = new Klientkonfigurasjon
+            Guid konversasjonsId = Guid.Empty;
+
+            if (kvittering is Feilmelding)
             {
-                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
-                LoggXmlTilFil = true
-                
-            };
-            
-            //Act
-            var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
-            var transportkvittering = sdpKlient.Send(enkelForsendelse, true);
+                var feilmelding = (Feilmelding)kvittering;
+                konversasjonsId = feilmelding.KonversasjonsId;
+            }
 
-            //Assert
-            Assert.IsFalse(transportkvittering is TransportFeiletKvittering);
+            if (kvittering is Leveringskvittering)
+            {
+                var leveringskvittering = (Leveringskvittering)kvittering;
+                konversasjonsId = leveringskvittering.KonversasjonsId;
+            }
+
+            if (kvittering is Mottakskvittering)
+            {
+                var mottakskvittering = (Mottakskvittering)kvittering;
+                konversasjonsId = mottakskvittering.KonversasjonsId;
+            }
+
+            return konversasjonsId;
         }
-
     }
 }
