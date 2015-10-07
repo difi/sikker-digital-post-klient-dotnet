@@ -15,7 +15,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
-using Difi.SikkerDigitalPost.Klient.Utilities; 
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -36,11 +36,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         
         private static IEnumerable<Dokument> _vedlegg;
         
-        private static Avsender _avsender;
-        
-        private static DigitalPostMottaker _digitalPostMottaker; 
-        
         private static FysiskPostMottaker _fysiskPostMottaker;
+        
         private static FysiskPostReturmottaker _fysiskPostReturmottaker;
 
         private static X509Certificate2 _avsenderSertifikat;
@@ -68,62 +65,50 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _hoveddokument;
             }
 
-            var hoveddokumentMappe = "hoveddokument";
-            var hoveddokument = ResourceUtility.GetFiles(hoveddokumentMappe).ElementAt(0);
-
-            var bytes = ResourceUtility.ReadAllBytes(false, hoveddokument);
-            var fileName = ResourceUtility.GetFileName(hoveddokument);
-            
-            return _hoveddokument = new Dokument("Hoveddokument", bytes, "text/xml", "NO", fileName);
+            return _hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
         internal static string[] GetVedleggsFilerStier()
         {
-            const string VedleggsMappe = "vedlegg";
+            const string vedleggsMappe = "vedlegg";
             
-            return ResourceUtility.GetFiles(VedleggsMappe).ToArray();
+            return ResourceUtility.GetFiles(vedleggsMappe).ToArray();
         }
 
-        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall)
+        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall = 5)
         {
             if (_vedlegg != null)
             {
                 return _vedlegg;
             }
 
-            var count = 0;
-           
-            _vedlegg = new List<Dokument>(
-                    GetVedleggsFilerStier().Select(
-                        v => new Dokument("Vedlegg" + count++,
-                            ResourceUtility.ReadAllBytes(false, v), 
-                            "text/" + fileExtension, 
-                            "NO", ResourceUtility.GetFileName(v))));
+            var vedleggTxt0 =  new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg","Vedlegg.txt"), "text/plain");
+            var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
+            var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
+            var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
 
+
+            _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 }; 
+           
             return _vedlegg.Take(maksAntall);
 
         }
 
+        internal static string GetMimeType(string fileName)
+        {
+            return "text/plain";
+        }
+
         internal static Avsender GetAvsender()
         {
-            if (_avsender != null)
-            {
-                return _avsender;
-            }
-
             var orgNrAvsender = new Organisasjonsnummer(Settings.Default.OrganisasjonsnummerAvsender);
-            
-            return _avsender = new Avsender(orgNrAvsender);
+            return new Avsender(orgNrAvsender) {Avsenderidentifikator = Settings.Default.Avsenderidentifikator};
         }
         
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            if (_digitalPostMottaker != null)
-            {
-                return _digitalPostMottaker;
-            }
-
-        return _digitalPostMottaker = new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
@@ -150,7 +135,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Databehandler GetDatabehandler()
         {
-            return new Databehandler(GetAvsender().Organisasjonsnummer, GetMottakerSertifikat());
+            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderSertifikat());
         }
 
         internal static DigitalPostInfo GetDigitalPostInfoMedVarsel()
@@ -175,12 +160,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal,Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetFysiskForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
@@ -220,7 +205,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _avsenderSertifikat;
             }
 
-            return _avsenderSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            return _avsenderSertifikat = CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerSertifikat()
@@ -230,7 +215,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _mottakerSertifikat;
             }
 
-            return _mottakerSertifikat = CertificateUtility.SenderCertificate("8702F5E55217EC88CF2CCBADAC290BB4312594AC", Language.Norwegian);
+            return
+                _mottakerSertifikat =
+                    CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
         }
 
     }

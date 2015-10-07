@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Difi.SikkerDigitalPost.Klient.Testklient.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MottakerPersonnummer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">04036125433</Value>
+    </Setting>
+    <Setting Name="MottakerDigipostadresse" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ove.jonsen#6K5A</Value>
+    </Setting>
+    <Setting Name="MottakerSertifikatThumbprint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD</Value>
+    </Setting>
+    <Setting Name="OrgnummerPosten" Type="System.String" Scope="User">
+      <Value Profile="(Default)">984661185</Value>
+    </Setting>
+    <Setting Name="DatabehandlerSertifikatThumbprint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8702F5E55217EC88CF2CCBADAC290BB4312594AC</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

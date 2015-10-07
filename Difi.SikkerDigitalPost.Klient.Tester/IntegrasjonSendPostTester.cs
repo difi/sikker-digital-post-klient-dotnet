@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
@@ -16,121 +17,99 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class IntegrasjonSendPostTester
     {
-        private int _hentKvitteringerMaksAntallGanger = 10;
-
         [TestMethod]
-        public void SendDigitalPostIntegrasjonEnkel()
+        public async Task SendDigitalPostIntegrasjonEnkel()
         {
-            try
-            {
-                //Arrange
-                var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                
-                //Act
-                SendDokumentpakke(sdpklient, enkelForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse.MpcId, enkelForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger, "Fant ikke kvittering innen maksimalt antall forsøk.");
-            }
-            catch (Exception e)
-            {
-                //Assert
-                Assert.Fail(e.Message);
-            }
+            //Arrange
+            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
+            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+
+            //Act
+            SendDokumentpakke(sdpklient, enkelForsendelse);
+            var kvittering = await HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
+            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         [TestMethod]
-        public void SendDigitalPostIntegrasjonDekkende()
+        public async Task SendDigitalPostIntegrasjonDekkende()
         {
-            try
-            {
-                //Arrange
-                var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            //Arrange
+            var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
+            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
-                //Act
-                SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse.MpcId, dekkendeDigitalForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger, "Fant ikke kvittering innen maksimalt antall forsøk.");
-            }
-            catch (Exception e)
-            {
-                //Assert
-                Assert.Fail(e.Message);
-            }
+            //Act
+            SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
+            var kvittering = await HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse);
+            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
 
         }
 
         [TestMethod]
-        public void SendFysiskPostIntegrasjon()
+        public async Task SendFysiskPostIntegrasjon()
         {
-            try
-            {
-                //Arrange
-                var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
-                var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            //Arrange
+            var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
+            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
-                //Act
-                SendDokumentpakke(sdpklient, enkelFysiskForsendelse);
-                var antallGangerForsøkt = HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post",enkelFysiskForsendelse.MpcId, enkelFysiskForsendelse).Result;
-                Assert.IsTrue(antallGangerForsøkt >= _hentKvitteringerMaksAntallGanger,"Fant ikke kvittering innen maksimalt antall forsøk.");
-            }
-            catch (Exception e)
-            {
-                //Assert
-                Assert.Fail(e.Message);
-            }
+            //Act
+            var transportKvittering = SendDokumentpakke(sdpklient, enkelFysiskForsendelse);
+
+            //Assert
+            Assert.IsTrue(transportKvittering is TransportOkKvittering);
+            var kvittering =  await HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse);
+            Assert.IsTrue(kvittering is Mottakskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
-        private void SendDokumentpakke(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        [TestMethod]
+        public void SendDigitaltPåVegneAvIntegrasjon()
         {
-            var transportkvittering = sikkerDigitalPostKlient.Send(forsendelse);
+            //Arrange
+            const string testDepartementetAvsenderOrgnummer = "987656789";
+            const string postenDatabehandlerOrgnummer = "984661185";
+            var a = new Avsender(testDepartementetAvsenderOrgnummer);
 
-            if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
+            var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
+            var enkelForsendelse = new Forsendelse(a, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            var klientKonfig = new Klientkonfigurasjon
             {
-                var feilmelding = ((TransportFeiletKvittering)transportkvittering).Beskrivelse;
-                Assert.Fail(feilmelding);
-            }
+                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
+                LoggXmlTilFil = true
+            };
+
+            //Act
+            var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
+            var transportkvittering = sdpKlient.Send(enkelForsendelse, true);
+
+            //Assert
+            Assert.IsFalse(transportkvittering is TransportFeiletKvittering);
         }
 
-        private async Task<int> HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse, string mpcId,
+        private Transportkvittering SendDokumentpakke(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        {
+            return sikkerDigitalPostKlient.Send(forsendelse);
+        }
+
+        private static async Task<Kvittering> HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
             Forsendelse forsendelse)
         {
+            const int hentKvitteringMaksAntallGanger = 4;
             var hentKvitteringPåNytt = true;
             var prøvdPåNytt = 0;
-            
-            while (hentKvitteringPåNytt && (prøvdPåNytt++ <= _hentKvitteringerMaksAntallGanger))
+
+            Kvittering kvittering = null;
+            while (hentKvitteringPåNytt && (prøvdPåNytt++ <= hentKvitteringMaksAntallGanger))
             {
                 Thread.Sleep(1000);
-                var kvitteringsforespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, mpcId);
-                var kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
+                var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
+                kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
+                hentKvitteringPåNytt = false;
 
                 sdpKlient.Bekreft((Forretningskvittering)kvittering);
 
-                hentKvitteringPåNytt = false;
-
-                var konversasjonsId = Guid.Empty;
-
-                if (kvittering is Feilmelding)
-                {
-                    var feilmelding = (Feilmelding)kvittering;
-                    konversasjonsId = feilmelding.KonversasjonsId;
-                    Assert.Fail("Test '{0}' feilet. Feilmelding fra Meldingsformidler: {1}",
-                        testBeskrivelse,
-                        feilmelding.Detaljer);
-                    
-                }
-
-                if (kvittering is Leveringskvittering)
-                {
-                    var leveringskvittering = (Leveringskvittering)kvittering;
-                    konversasjonsId = leveringskvittering.KonversasjonsId;
-                }
-
-               
-                if (konversasjonsId.ToString() != forsendelse.KonversasjonsId.ToString())
+                var konversasjonsId = HentKonversasjonsIdFraKvittering(kvittering);
+                if (konversasjonsId != forsendelse.KonversasjonsId)
                 {
                     throw new FieldAccessException(
                         string.Format(
@@ -138,8 +117,32 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                             "eller har noe skjedd galt med hvilken kø du henter fra?", testBeskrivelse));
                 }
             }
-            return prøvdPåNytt;
+            return kvittering;
         }
 
+        private static Guid HentKonversasjonsIdFraKvittering(Kvittering kvittering)
+        {
+            Guid konversasjonsId = Guid.Empty;
+
+            if (kvittering is Feilmelding)
+            {
+                var feilmelding = (Feilmelding)kvittering;
+                konversasjonsId = feilmelding.KonversasjonsId;
+            }
+
+            if (kvittering is Leveringskvittering)
+            {
+                var leveringskvittering = (Leveringskvittering)kvittering;
+                konversasjonsId = leveringskvittering.KonversasjonsId;
+            }
+
+            if (kvittering is Mottakskvittering)
+            {
+                var mottakskvittering = (Mottakskvittering)kvittering;
+                konversasjonsId = mottakskvittering.KonversasjonsId;
+            }
+
+            return konversasjonsId;
+        }
     }
 }
