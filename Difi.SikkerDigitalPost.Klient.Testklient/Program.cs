@@ -23,6 +23,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Testklient.Properties;
 
@@ -157,8 +158,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var klientkonfigurasjon = new Klientkonfigurasjon();
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebmHESTs");
-            klientkonfigurasjon.LoggXmlTilFil = false;
+            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            klientkonfigurasjon.LoggXmlTilFil = false; 
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
@@ -211,6 +212,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
                 postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
                 ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
+
+                ((DigitalPostInfo)postInfo).SmsVarsel = new SmsVarsel("12345678", "Et lite varsel pr SMS.");
+
             }
             else
             {
