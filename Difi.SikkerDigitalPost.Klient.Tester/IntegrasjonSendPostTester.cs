@@ -92,7 +92,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         private static Kvittering HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
             Forsendelse forsendelse)
         {
-            const int hentKvitteringMaksAntallGanger = 4;
+            const int hentKvitteringMaksAntallGanger = 10;
             var hentKvitteringPåNytt = true;
             var prøvdPåNytt = 0;
 
