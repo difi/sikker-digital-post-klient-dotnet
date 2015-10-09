@@ -115,8 +115,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 if (konversasjonsId != forsendelse.KonversasjonsId)
                 {
                     throw new FieldAccessException(
-                        $"Fikk ikke til å hente kvittering for test '{testBeskrivelse}' -- det ble hentet feil kvittering eller ingen kvittering. Var du for rask å hente, " +
-                        "eller har noe skjedd galt med hvilken kø du henter fra?");
+                        string.Format(
+                            "Fikk ikke til å hente kvittering for test '{0}' -- det ble hentet feil kvittering eller ingen kvittering. Var du for rask å hente, " +
+                            "eller har noe skjedd galt med hvilken kø du henter fra?", testBeskrivelse));
                 }
             }
             return kvittering;
