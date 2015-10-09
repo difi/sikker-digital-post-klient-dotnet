@@ -42,10 +42,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
         /// <param name="databehandler">
-        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
-        /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
-        /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
-        /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
+        /// Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med 
+        /// formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra 
+        /// Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har 
+        /// ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
         /// </param>
         /// <remarks>
         /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
@@ -56,10 +56,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <param name="databehandler">
-        /// Teknisk avsender er den parten som har ansvarlig for den tekniske utførelsen av sendingen.
-        /// Teknisk avsender er den aktøren som står for utførelsen av den tekniske sendingen. 
-        /// Hvis sendingen utføres av en databehandler vil dette være databehandleren. 
-        /// Hvis sendingen utføres av behandlingsansvarlige selv er dette den behandlingsansvarlige.
+        /// Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med 
+        /// formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra 
+        /// Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har 
+        /// ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
         /// </param>
         /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag

@@ -69,8 +69,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Enhetstester\FysiskPostInfoTests.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
+    <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -81,7 +81,7 @@
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArkivTester.cs" />
-    <Compile Include="IntegrasjonSendPostTester.cs" />
+    <Compile Include="SmokeTester.cs" />
     <Compile Include="SignaturTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
     <Compile Include="SertifikatTester.cs" />

@@ -23,11 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 
                 //Assert
                 var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-
-                sikkerDigitalPostKlient.
-
                 var forsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
-
             }             
         }
 

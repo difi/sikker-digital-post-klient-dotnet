@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             /*
              * I dette eksemplet er det Posten som er den som produserer informasjon/brev/post som skal formidles (Avsender),
-             * Posten som er teknisk avsender, og det er Digipostkassen som skal motta meldingen. 
+             * Posten som er databehandler, og det er Digipostkassen som skal motta meldingen. 
              */
 
             Console.WriteLine("--- STARTER Å SENDE POST ---");
