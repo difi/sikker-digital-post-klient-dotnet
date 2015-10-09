@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -8,6 +7,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,8 +15,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 {
 
     [TestClass]
-    public class IntegrasjonSendPostTester
-    {
+    public class SmokeTester
+    {      
         [TestMethod]
         public void SendDigitalPostIntegrasjonEnkel()
         {
@@ -66,22 +66,25 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Arrange
             const string testDepartementetAvsenderOrgnummer = "987656789";
             const string postenDatabehandlerOrgnummer = "984661185";
-            var a = new Avsender(testDepartementetAvsenderOrgnummer);
+            var avsender = new Avsender(testDepartementetAvsenderOrgnummer);
 
             var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
-            var enkelForsendelse = new Forsendelse(a, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
             var klientKonfig = new Klientkonfigurasjon
             {
-                MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
+                MeldingsformidlerUrl = new Uri(Settings.Default.UrlMeldingsformidler),
                 LoggXmlTilFil = true
             };
 
             //Act
             var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
-            var transportkvittering = sdpKlient.Send(enkelForsendelse, true);
+            var transportkvittering = sdpKlient.Send(forsendelse, true);
+
 
             //Assert
-            Assert.IsFalse(transportkvittering is TransportFeiletKvittering);
+            Assert.IsNotNull(transportkvittering);
+            var kvittering = HentKvitteringOgBekreft(sdpKlient, "Send digital paa vegne av", forsendelse);
+            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         private Transportkvittering SendDokumentpakke(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
@@ -101,7 +104,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 Thread.Sleep(1000);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
-                kvittering = sdpKlient.HentKvitteringAsync(kvitteringsforespørsel).Result;
+                kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 
                 if (kvittering == null) { continue; }
                 hentKvitteringPåNytt = false;
@@ -112,9 +115,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 if (konversasjonsId != forsendelse.KonversasjonsId)
                 {
                     throw new FieldAccessException(
-                        string.Format(
-                            "Fikk ikke til å hente kvittering for test '{0}' -- det ble hentet feil kvittering eller ingen kvittering. Var du for rask å hente, " +
-                            "eller har noe skjedd galt med hvilken kø du henter fra?", testBeskrivelse));
+                        $"Fikk ikke til å hente kvittering for test '{testBeskrivelse}' -- det ble hentet feil kvittering eller ingen kvittering. Var du for rask å hente, " +
+                        "eller har noe skjedd galt med hvilken kø du henter fra?");
                 }
             }
             return kvittering;

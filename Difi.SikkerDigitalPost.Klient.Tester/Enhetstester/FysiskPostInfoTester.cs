@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 {
     [TestClass]
-    public class FysiskPostInfoTests
+    public class FysiskPostInfoTester
     {
         [TestClass]
         public class KontstruktørMetode

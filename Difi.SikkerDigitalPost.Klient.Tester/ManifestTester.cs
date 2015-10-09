@@ -23,39 +23,48 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class ManifestTester
     {
-        [TestMethod]
-        public void UgyldigNavnPåHoveddokumentValidererIkke()
+        [TestClass]
+        public class Hoveddokument
         {
-            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+            [TestMethod]
+            public void UgyldigNavnPåHoveddokumentValidererIkke()
+            {
+                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
 
-            var manifestXml = arkiv.Manifest.Xml();
-            var manifestValidering = new ManifestValidator();
+                var manifestXml = arkiv.Manifest.Xml();
+                var manifestValidering = new ManifestValidator();
 
-            //Endre navn på hoveddokument til å være for kort
-            var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
-            namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
-            namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
+                //Endre navn på hoveddokument til å være for kort
+                var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
+                namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+                namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
 
-            var hoveddokumentNode = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument", namespaceManager);
-            var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
-            hoveddokumentNode.Attributes["href"].Value = "abc";
+                var hoveddokumentNode = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument",
+                    namespaceManager);
+                var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
+                hoveddokumentNode.Attributes["href"].Value = "abc";
 
-            var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-            Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
+                var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+                Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
 
-            hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
+                hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
+            }
         }
 
-        [TestMethod]
-        public void ValidereManifestMotXsdValiderer()
+        [TestClass]
+        public class XsdValidering
         {
-            var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+            [TestMethod]
+            public void ValidereManifestMotXsdValiderer()
+            {
+                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
 
-            var manifestXml = arkiv.Manifest.Xml();
+                var manifestXml = arkiv.Manifest.Xml();
 
-            var manifestValidering = new ManifestValidator();
-            var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-            Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
+                var manifestValidering = new ManifestValidator();
+                var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
+                Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
+            }
         }
     }
 }
