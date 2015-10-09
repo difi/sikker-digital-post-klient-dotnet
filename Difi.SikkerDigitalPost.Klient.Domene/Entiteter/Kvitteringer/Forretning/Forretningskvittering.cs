@@ -27,11 +27,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         private readonly XmlNamespaceManager _namespaceManager;
 
         /// <summary>
-        /// Tidspunktet da kvitteringen ble sendt.
-        /// </summary>
-        public DateTime Tidspunkt { get; protected set; }
-
-        /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
         public Guid KonversasjonsId { get; protected set; }
