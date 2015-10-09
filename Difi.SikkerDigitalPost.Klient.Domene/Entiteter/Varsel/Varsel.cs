@@ -42,15 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
 
         protected Varsel(string varslingstekst, IEnumerable<int> varselEtterDager)
         {
-            if (!varselEtterDager.Any())
-            {
-                varselEtterDager = new List<int> { 0 };
-            }
-            else
-            {
-                VarselEtterDager = varselEtterDager;
-            }
-
+            VarselEtterDager = !varselEtterDager.Any() ? new List<int> { 0 } : varselEtterDager;
             Varslingstekst = varslingstekst;
         }
     }
