@@ -16,3 +16,25 @@ var klientkonfigurasjon = new Klientkonfigurasjon();
 klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
 
 {% endhighlight%}
+
+<h3 id="endepunkter">Endepunkter</h3>
+
+Funksjonelt testmiljø:
+
+https://qaoffentlig.meldingsformidler.digipost.no
+
+Produksjonsmiljø:
+https://meldingsformidler.digipost.no
+
+
+<h4 id="norskhelsenett">Norsk Helsenett</h4>
+
+For å nå Meldingsformidleren fra Norsk Helsenett, må man benytte litt andre URL-er:
+
+Funksjonelt testmiljø:
+
+https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445
+
+Produksjonsmiljø:
+
+https://meldingsformidler.nhn.digipost.no:4444
