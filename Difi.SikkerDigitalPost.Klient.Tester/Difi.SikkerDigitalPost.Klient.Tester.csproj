@@ -188,6 +188,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="testdata\sertifikat\difi-enhetstester.cer" />
+    <None Include="testdata\sertifikat\difi-enhetstester.p12" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />

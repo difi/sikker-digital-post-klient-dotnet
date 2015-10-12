@@ -17,8 +17,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             {
                 
                 var fysiskPostInfo =
-                    new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
-                        Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostMottaker());
+                    new FysiskPostInfo(DomeneUtility.GetFysiskPostMottakerMedTestSertifikat(), Posttype.A, Utskriftsfarge.Farge,
+                        Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostMottakerMedTestSertifikat());
 
                 Assert.IsInstanceOfType(fysiskPostInfo.Mottaker, typeof (FysiskPostMottaker));
                 Assert.IsInstanceOfType(fysiskPostInfo.ReturMottaker, typeof(FysiskPostMottaker));
@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void SkalFungereMedNyMåteÅInitialiserePå()
             {
                 var fysiskPostInfo =
-                    new FysiskPostInfo(DomeneUtility.GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
+                    new FysiskPostInfo(DomeneUtility.GetFysiskPostMottakerMedTestSertifikat(), Posttype.A, Utskriftsfarge.Farge,
                         Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostReturMottaker());
 
                 
