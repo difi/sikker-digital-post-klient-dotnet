@@ -185,6 +185,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderTestSertifikat());
         }
 
+        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()
+        {
+            var envelopeSettings = new EnvelopeSettings(
+                GetDigitalForsendelseEnkelMedTestSertifikat(),
+                GetAsicEArkivEnkelMedTestSertifikat(),
+                GetDatabehandler(),
+                GuidUtility,
+                new Klientkonfigurasjon());
+            return new ForretningsmeldingEnvelope(envelopeSettings);
+        }
+
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
         {
             var envelopeSettings = new EnvelopeSettings(
@@ -216,7 +227,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 EvigTestSertifikat()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"));
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"),"", X509KeyStorageFlags.Exportable) ;
         }
 
         internal static X509Certificate2 GetAvsenderSertifikat()

@@ -83,7 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArkivTester.cs" />
     <Compile Include="SmokeTester.cs" />
-    <Compile Include="SignaturTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
     <Compile Include="SertifikatTester.cs" />
   </ItemGroup>
@@ -188,13 +187,15 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="testdata\sertifikat\difi-enhetstester.cer" />
-    <None Include="testdata\sertifikat\difi-enhetstester.p12" />
+    <EmbeddedResource Include="testdata\sertifikater\difi-enhetstester.cer" />
+    <EmbeddedResource Include="testdata\sertifikater\difi-enhetstester.p12" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="testdata\sertifikat\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />
   </ItemGroup>
