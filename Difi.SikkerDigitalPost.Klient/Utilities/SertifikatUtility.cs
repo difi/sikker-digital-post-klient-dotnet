@@ -2,11 +2,11 @@
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 
-namespace Difi.SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
-    public static class X509Certificate2Extensions
+    internal static class SertifikatUtility
     {
-        public static X509Certificate2Collection TestSertifikater(this X509Certificate2 sertifikat)
+        public static X509Certificate2Collection TestSertifikater()
         {
             ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Resources.test");
 

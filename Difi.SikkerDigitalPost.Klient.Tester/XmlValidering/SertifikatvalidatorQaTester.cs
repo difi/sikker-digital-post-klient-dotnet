@@ -7,12 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 {
     [TestClass]
-    public class SertifikatvalidatorTester
+    public class SertifikatvalidatorQaTester
     {
         readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ValiderResponssertifikatMethod : SertifikatvalidatorTester
+        public class ValiderResponssertifikatMethod : SertifikatvalidatorQaTester
         {
             [TestMethod]
             public void GodkjennerTestsertifikat()
@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(DomeneUtility.DifiTestkjedesertifikater());
+                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(DomeneUtility.DifiTestkjedesertifikater());
                 var result = sertifikatValidator.ValiderResponssertifikat(testSertifikat);
 
                 //Assert
@@ -30,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         }
 
         [TestClass]
-        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorTester
+        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorQaTester
         {
             [TestMethod]
             public void GodkjennerTestsertifikat()
@@ -39,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(DomeneUtility.DifiTestkjedesertifikater());
+                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(DomeneUtility.DifiTestkjedesertifikater());
                 var result = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
 
                 //Assert

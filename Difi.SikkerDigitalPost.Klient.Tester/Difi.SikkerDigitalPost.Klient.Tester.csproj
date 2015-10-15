@@ -86,7 +86,7 @@
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
     <Compile Include="SertifikatTester.cs" />
-    <Compile Include="XmlValidering\SertifikatvalidatorTester.cs" />
+    <Compile Include="XmlValidering\SertifikatvalidatorQaTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">

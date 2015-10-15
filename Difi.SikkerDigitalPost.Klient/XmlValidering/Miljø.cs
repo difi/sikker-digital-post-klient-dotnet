@@ -2,20 +2,21 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     public class Miljø
     {
-        public IEnumerable<X509Certificate2> Sertifikater { get; set; }
+        public X509Certificate2Collection Sertifikatlager { get; set; }
 
         public Url Url { get; set; }
 
         internal Sertifikatvalidator Sertifikatvalidator { get; set; }
 
-        private Miljø(IEnumerable<X509Certificate2> sertifikater, Url url)
+        private Miljø(X509Certificate2Collection sertifikatlager, Url url)
         {
-            Sertifikater = sertifikater;
+            Sertifikatlager = sertifikatlager;
             Url = url;
         }
 
@@ -23,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             get
             {
-                return new Miljø(new List<X509Certificate2>(), new Url(""));
+                return new Miljø(new X509Certificate2Collection(), new Url(""));
             }
         }
 
@@ -31,7 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             get
             {
-                return new Miljø(new List<X509Certificate2>(), new Url(""));
+                return new Miljø(SertifikatUtility.TestSertifikater(), new Url(""));
             }
         }
     }
