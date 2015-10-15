@@ -59,19 +59,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 get
                 {
-                    return new X509ChainPolicy()
+                    var policy = new X509ChainPolicy()
                     {
                         RevocationMode = X509RevocationMode.NoCheck,
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
-                        VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority,
-                        ExtraStore =
-                        {
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_Root_CA.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test","root - cpn root sha256 ca - test.crt"))
-                        }
+                        VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
                     };
+                    policy.ExtraStore.AddRange(DomeneUtility.DifiTestkjedesertifikater());
+
+                    return policy;
+
                 }
             }
 
@@ -108,21 +105,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 get
                 {
-                    return new X509ChainPolicy()
+                    var policy = new X509ChainPolicy()
                     {
                         RevocationFlag = X509RevocationFlag.EntireChain,
                         RevocationMode = X509RevocationMode.Online,
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.NoFlag,
-                        ExtraStore =
-                        {
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_Root_CA.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test","root - cpn root sha256 ca - test.crt"))
-                        }
                     };
+                    policy.ExtraStore.AddRange(DomeneUtility.DifiTestkjedesertifikater());
+
+                    return policy;
                 }
+
+
             }
         }
     }

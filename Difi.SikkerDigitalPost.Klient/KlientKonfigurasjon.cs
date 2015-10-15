@@ -97,7 +97,7 @@ namespace Difi.SikkerDigitalPost.Klient
         public Klientkonfigurasjon()
         {
             MeldingsformidlerUrl = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
-            MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185")); // Posten Norge AS
+            MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185"));
             ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
             ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
             TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);

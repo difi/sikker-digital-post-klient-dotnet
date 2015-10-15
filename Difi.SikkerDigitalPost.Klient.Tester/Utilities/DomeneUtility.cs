@@ -27,13 +27,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     internal static class DomeneUtility
     {
         internal static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
-        
+
         private static readonly GuidUtility GuidUtility = new GuidUtility();
-        
+
         private static readonly string fileExtension;
 
         private static Dokument _hoveddokument;
-        
+
         private static IEnumerable<Dokument> _vedlegg;
 
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
@@ -62,7 +62,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static string[] GetVedleggsFilerStier()
         {
             const string vedleggsMappe = "vedlegg";
-            
+
             return ResourceUtility.GetFiles(vedleggsMappe).ToArray();
         }
 
@@ -73,15 +73,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return _vedlegg;
             }
 
-            var vedleggTxt0 =  new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg","Vedlegg.txt"), "text/plain");
+            var vedleggTxt0 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
             var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
 
 
-            _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 }; 
-           
+            _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 };
+
             return _vedlegg.Take(maksAntall);
 
         }
@@ -94,9 +94,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Avsender GetAvsender()
         {
             var orgNrAvsender = new Organisasjonsnummer(Settings.Default.OrganisasjonsnummerAvsender);
-            return new Avsender(orgNrAvsender) {Avsenderidentifikator = Settings.Default.Avsenderidentifikator};
+            return new Avsender(orgNrAvsender) { Avsenderidentifikator = Settings.Default.Avsenderidentifikator };
         }
-        
+
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
             return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
@@ -119,7 +119,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
         {
-            
+
             return new FysiskPostReturmottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"));
         }
 
@@ -151,7 +151,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
                 Posthåndtering.DirekteRetur, GetFysiskPostMottaker());
-        } 
+        }
 
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
@@ -175,7 +175,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static AsicEArkiv GetAsicEArkivEnkel()
         {
-            
+
             return new AsicEArkiv(GetDigitalForsendelseEnkel(), GuidUtility, GetAvsenderSertifikat());
         }
 
@@ -199,14 +199,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
         {
             var envelopeSettings = new EnvelopeSettings(
-                GetDigitalForsendelseEnkel(), 
-                GetAsicEArkivEnkel(), 
+                GetDigitalForsendelseEnkel(),
+                GetAsicEArkivEnkel(),
                 GetDatabehandler(),
-                GuidUtility, 
+                GuidUtility,
                 new Klientkonfigurasjon());
-           return new ForretningsmeldingEnvelope(envelopeSettings);
+            return new ForretningsmeldingEnvelope(envelopeSettings);
         }
-        
+
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
         {
             return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon()
@@ -227,11 +227,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 EvigTestSertifikat()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"),"", X509KeyStorageFlags.Exportable) ;
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderSertifikat()
-        {   
+        {
             return CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
         }
 
@@ -240,5 +240,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
         }
 
+        internal static X509Certificate2Collection DifiTestkjedesertifikater()
+        {
+            var difiTestkjedesertifikater = new List<X509Certificate2>
+            {
+                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
+                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_Root_CA.cer")),
+                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt")),
+                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test","root - cpn root sha256 ca - test.crt"))
+            };
+            return new X509Certificate2Collection(difiTestkjedesertifikater.ToArray());
+        }
     }
 }
