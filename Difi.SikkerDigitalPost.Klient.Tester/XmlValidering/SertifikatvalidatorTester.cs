@@ -9,28 +9,42 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
     [TestClass]
     public class SertifikatvalidatorTester
     {
-        ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
+        readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ValiderMethod : SertifikatvalidatorTester
+        public class ValiderResponssertifikatMethod : SertifikatvalidatorTester
         {
             [TestMethod]
             public void GodkjennerTestsertifikat()
             {
                 //Arrange
-                var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+                var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
                 SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(DomeneUtility.DifiTestkjedesertifikater());
+                var result = sertifikatValidator.ValiderResponssertifikat(testSertifikat);
 
                 //Assert
+                Assert.AreEqual(0, result.Length);
             }
-            
-             
-
         }
 
-        
-        
+        [TestClass]
+        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorTester
+        {
+            [TestMethod]
+            public void GodkjennerTestsertifikat()
+            {
+                //Arrange
+                var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+
+                //Act
+                SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(DomeneUtility.DifiTestkjedesertifikater());
+                var result = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
+
+                //Assert
+                Assert.IsTrue(result);
+            }
+        }
     }
 }

@@ -9,7 +9,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
         }
 
-        public override X509ChainStatus[] ValiderRespons(X509Certificate2 sertifikat)
+        public override X509ChainStatus[] ValiderResponssertifikat(X509Certificate2 sertifikat)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
         {
             throw new System.NotImplementedException();
         }
