@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -44,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var ignoreStoreMySertifikater = true;
                 var chain = new X509Chain(ignoreStoreMySertifikater)
                 {
-                    ChainPolicy = ChainPolicyForTest
+                    ChainPolicy = ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
                 };
 
                 //Act
@@ -53,8 +55,56 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Assert
                 Assert.IsTrue(isValidCertificate);
             }
+            public X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
+            {
+                get
+                {
+                    return new X509ChainPolicy()
+                    {
+                        RevocationMode = X509RevocationMode.NoCheck,
+                        UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
+                        VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority,
+                        ExtraStore =
+                        {
+                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
+                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_Root_CA.cer")),
+                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt")),
+                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test","root - cpn root sha256 ca - test.crt"))
+                        }
+                    };
+                }
+            }
 
-            public X509ChainPolicy ChainPolicyForProd
+            [TestMethod]
+            public void GyldigKjedeMedUkjentRotnodeOgUgyldigOnlineOppslag()
+            {
+                //Arrange
+                var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+                var ignoreStoreMySertifikater = true;
+                var chain = new X509Chain(ignoreStoreMySertifikater)
+                {
+                    ChainPolicy = ChainPolicyWithOnlineCheckOgUkjentRotnode
+                };
+
+               //Act
+                chain.Build(gyldigSertifikat);
+                X509ChainElement[] chainElements = new X509ChainElement[chain.ChainElements.Count];
+                chain.ChainElements.CopyTo(chainElements, 0);
+
+                //Assert
+                var elementerMedRevokeringsstatusUkjent = chainElements.Select(chainElement => new
+                {
+                    Status = chainElement.ChainElementStatus
+                    .Where(elementStatus => elementStatus.Status == X509ChainStatusFlags.RevocationStatusUnknown)
+                }).Where(node => node.Status.Any());
+                Assert.AreEqual(2, elementerMedRevokeringsstatusUkjent.Count());
+
+                var rotNode = chainElements[0];
+                Assert.AreEqual(0, rotNode.ChainElementStatus.Count(elementStatus => elementStatus.Status == X509ChainStatusFlags.UntrustedRoot));
+            }
+
+
+            public X509ChainPolicy ChainPolicyWithOnlineCheckOgUkjentRotnode
             {
                 get
                 {
@@ -64,26 +114,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                         RevocationMode = X509RevocationMode.Online,
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.NoFlag,
-                        ExtraStore =
-                        {
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "BPClass3CA3.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "BPClass3RootCA.cer")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "cpn enterprise sha256 class 3.crt")),
-                            new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "cpn rootca sha256 class 3.crt"))
-                        }
-                    };
-                }
-            }
-            
-            public X509ChainPolicy ChainPolicyForTest
-            {
-                get
-                {
-                    return new X509ChainPolicy()
-                    {
-                        RevocationMode = X509RevocationMode.NoCheck,
-                        UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
-                        VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority,
                         ExtraStore =
                         {
                             new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
