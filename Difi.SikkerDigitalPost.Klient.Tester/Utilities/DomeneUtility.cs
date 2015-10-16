@@ -239,17 +239,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             return CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
         }
-
-        internal static X509Certificate2Collection DifiTestkjedesertifikater()
-        {
-            var difiTestkjedesertifikater = new List<X509Certificate2>
-            {
-                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_CA_3.cer")),
-                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "Buypass_Class_3_Test4_Root_CA.cer")),
-                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt")),
-                new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test","root - cpn root sha256 ca - test.crt"))
-            };
-            return new X509Certificate2Collection(difiTestkjedesertifikater.ToArray());
-        }
     }
 }

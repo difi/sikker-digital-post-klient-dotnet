@@ -77,6 +77,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\SertifikatUtilityTester.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />

@@ -8,6 +8,7 @@ using ApiClientShared;
 using ApiClientShared.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -34,13 +35,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 chain.Build(utgåttSertifikat);
 
                 //Assert
-                Assert.Equals(X509ChainStatusFlags.NotTimeValid, chain.ChainStatus.Select(e => e.Status == X509ChainStatusFlags.NotTimeValid));
+                Assert.IsTrue(chain.ChainStatus.Select(e => e.Status == X509ChainStatusFlags.NotTimeValid).Any());
             }
 
             [TestMethod]
             public void GyldigKjedeUtenRevokeringssjekkOgUkjentCertificateAuthority()
             {
-                var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true,"test", "testmottakerFraOppslagstjenesten.pem"));
+               var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true,"test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Arrange
                 var ignoreStoreMySertifikater = true;
@@ -54,6 +55,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 //Assert
                 Assert.IsTrue(isValidCertificate);
+
             }
             public X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
             {
@@ -65,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
                     };
-                    policy.ExtraStore.AddRange(DomeneUtility.DifiTestkjedesertifikater());
+                    policy.ExtraStore.AddRange(SertifikatUtility.TestSertifikater());
 
                     return policy;
 
@@ -112,7 +114,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.NoFlag,
                     };
-                    policy.ExtraStore.AddRange(DomeneUtility.DifiTestkjedesertifikater());
+                    policy.ExtraStore.AddRange(SertifikatUtility.TestSertifikater());
 
                     return policy;
                 }

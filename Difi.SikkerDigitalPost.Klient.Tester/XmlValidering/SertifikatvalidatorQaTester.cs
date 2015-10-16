@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
-using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
@@ -21,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(DomeneUtility.DifiTestkjedesertifikater());
+                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(SertifikatUtility.TestSertifikater());
                 var result = sertifikatValidator.ValiderResponssertifikat(testSertifikat);
 
                 //Assert
@@ -39,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(DomeneUtility.DifiTestkjedesertifikater());
+                SertifikatValidatorQa sertifikatValidator = new SertifikatValidatorQa(SertifikatUtility.TestSertifikater());
                 var result = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
 
                 //Assert

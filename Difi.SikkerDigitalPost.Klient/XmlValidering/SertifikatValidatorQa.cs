@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -11,17 +13,28 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public override X509ChainStatus[] ValiderResponssertifikat(X509Certificate2 sertifikat)
         {
-            throw new System.NotImplementedException();
+            return Valider(sertifikat);
         }
 
         public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
         {
-            throw new System.NotImplementedException();
+            return Valider(sertifikat).Length == 0;
         }
 
-        public X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
+        private X509ChainStatus[] Valider(X509Certificate2 sertifikat)
         {
-            get
+            var ignoreStoreMySertifikater = true;
+            var chain = new X509Chain(ignoreStoreMySertifikater)
+            {
+                ChainPolicy = ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority()
+            };
+            chain.Build(sertifikat);
+
+            return chain.ChainStatus;
+        }
+
+        private X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority()
+        {
             {
                 var policy = new X509ChainPolicy()
                 {
@@ -29,8 +42,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                     UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                     VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
                 };
-                //policy.ExtraStore.AddRange(X509Certificate2.TestSertifikater);
-
+                policy.ExtraStore.AddRange(SertifikatLager);
+                                
                 return policy;
 
             }
