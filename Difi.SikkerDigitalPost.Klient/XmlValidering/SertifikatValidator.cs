@@ -13,7 +13,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             SertifikatLager = sertifikatLager;
         }
 
-        public abstract X509ChainStatus[] ValiderResponssertifikat(X509Certificate2 sertifikat);
+        public abstract bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus);
 
         public abstract bool ErGyldigResponssertifikat(X509Certificate2 sertifikat);
     }

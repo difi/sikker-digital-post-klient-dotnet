@@ -227,7 +227,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 EvigTestSertifikat()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater","enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderSertifikat()
