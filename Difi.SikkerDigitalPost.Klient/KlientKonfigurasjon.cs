@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// Angir organisasjonsnummeret til meldingsformidleren. Standardverdi er '984661185' som er organisasjonsnummeret til Posten Norge AS. Denne verdien kan også overstyres i 
         /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:MeldingsformidlerOrganisasjon'.
         /// </summary>
-        public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
+        internal Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
 
         /// <summary>
         /// Setter om logging skal gjøres til fil for alle meldinger som går mellom Klientbibliotek og Meldingsformidler
