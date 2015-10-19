@@ -19,6 +19,7 @@ using System.IO;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -27,6 +28,8 @@ namespace Difi.SikkerDigitalPost.Klient
     /// </summary> 
     public class Klientkonfigurasjon
     {
+        public Miljø Miljø { get; set; }
+
         /// <summary>
         /// Angir Uri som skal benyttes for sending av meldinger. Standardverdi er 'https://meldingsformidler.digipost.no/api/ebms'. Denne verdien kan også overstyres i 
         /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:MeldingsformidlerUrl'.
@@ -96,32 +99,14 @@ namespace Difi.SikkerDigitalPost.Klient
         /// </summary>
         public Klientkonfigurasjon()
         {
-            MeldingsformidlerUrl = SetFromAppConfig<Uri>("SDP:MeldingsformidlerRoot", new Uri("https://meldingsformidler.digipost.no/api/ebms"));
-            MeldingsformidlerOrganisasjon = SetFromAppConfig<Organisasjonsnummer>("SDP:MeldingsformidlerOrganisasjon", new Organisasjonsnummer("984661185"));
-            ProxyHost = SetFromAppConfig<string>("SDP:ProxyHost", null);
-            ProxyScheme = SetFromAppConfig<string>("SDP:ProxyScheme", "https");
-            TimeoutIMillisekunder = SetFromAppConfig<int>("SDP:TimeoutIMillisekunder", (int)TimeSpan.FromSeconds(30).TotalMilliseconds);
+            MeldingsformidlerUrl = new Uri("https://meldingsformidler.digipost.no/api/ebms");
+            MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
+            ProxyHost = null;
+            ProxyScheme = "https";
+            TimeoutIMillisekunder = (int) TimeSpan.FromSeconds(30).TotalMilliseconds;            
             Logger = Logging.TraceLogger();
-            LoggXmlTilFil = SetFromAppConfig<bool>("SDP:LoggXmlTilFil", false);
-            StandardLoggSti = SetFromAppConfig<string>("SDP:LoggSti", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost"));
-        }
-
-        private T SetFromAppConfig<T>(string key, T @default)
-        {
-            var appSettings = ConfigurationManager.AppSettings;
-
-            string value = appSettings[key];
-            if (value == null)
-                return @default;
-
-            if (typeof(IConvertible).IsAssignableFrom(typeof(T)))
-            {
-                return (T)Convert.ChangeType(value, typeof(T));
-            }
-            else
-            {
-                return (T)Activator.CreateInstance(typeof(T), new object[] { value });
-            }
+            LoggXmlTilFil = false;
+            StandardLoggSti = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost");
         }
     }
 }
