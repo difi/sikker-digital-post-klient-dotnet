@@ -88,6 +88,7 @@
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SignedXmlTester.cs" />
     <Compile Include="SertifikatTester.cs" />
+    <Compile Include="XmlValidering\ResponsvalidatorTester.cs" />
     <Compile Include="XmlValidering\SertifikatvalidatorQaTester.cs" />
   </ItemGroup>
   <ItemGroup>

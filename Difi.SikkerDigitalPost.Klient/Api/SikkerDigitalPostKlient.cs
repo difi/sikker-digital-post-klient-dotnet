@@ -111,22 +111,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             
            return ValiderTransportkvittering(meldingsformidlerRespons, forretningsmeldingEnvelope.Xml(), guidHandler);
         }
-
-        private static SoapContainer LagSoapContainer(ForretningsmeldingEnvelope forretningsmeldingEnvelope, AsicEArkiv arkiv)
-        {
-            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
-            soapContainer.Vedlegg.Add(arkiv);
-            return soapContainer;
-        }
-
-        private ForretningsmeldingEnvelope LagForretningsmeldingEnvelope(Forsendelse forsendelse, AsicEArkiv arkiv,
-            GuidUtility guidHandler)
-        {
-            var forretningsmeldingEnvelope =
-                new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler,
-                    _klientkonfigurasjon));
-            return forretningsmeldingEnvelope;
-        }
         
         private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
         {
@@ -139,14 +123,30 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             return arkiv;
         }
 
-        private static Transportkvittering ValiderTransportkvittering(string meldingsformidlerRespons,
+        private ForretningsmeldingEnvelope LagForretningsmeldingEnvelope(Forsendelse forsendelse, AsicEArkiv arkiv,
+            GuidUtility guidHandler)
+        {
+            var forretningsmeldingEnvelope =
+                new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, _databehandler, guidHandler,
+                    _klientkonfigurasjon));
+            return forretningsmeldingEnvelope;
+        }
+
+        private static SoapContainer LagSoapContainer(ForretningsmeldingEnvelope forretningsmeldingEnvelope, AsicEArkiv arkiv)
+        {
+            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
+            soapContainer.Vedlegg.Add(arkiv);
+            return soapContainer;
+        }
+
+        private Transportkvittering ValiderTransportkvittering(string meldingsformidlerRespons,
             XmlDocument forretningsmeldingEnvelope, GuidUtility guidHandler)
         {
             try
             {
-                var valideringAvRespons = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope);
-                valideringAvRespons.ValiderHeaderSignatur();
-                valideringAvRespons.ValiderDigest(guidHandler);
+                var responsvalidator = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope, _klientkonfigurasjon.Miljø);
+                responsvalidator.ValiderHeaderSignatur();
+                responsvalidator.ValiderDigest(guidHandler);
             }
             catch (Exception e)
             {
@@ -257,7 +257,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             try
             {
-                var valideringAvResponsSignatur = new Responsvalidator(kvittering, kvitteringsenvelope.Xml());
+                var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering, sendtMelding: kvitteringsenvelope.Xml(), miljø: _klientkonfigurasjon.Miljø);
                 valideringAvResponsSignatur.ValiderHeaderSignatur();
                 valideringAvResponsSignatur.ValiderKvitteringSignatur();
             }

@@ -27,6 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     /// </summary>
     internal class Responsvalidator
     {
+        internal Miljø Miljø { get; set; }
         private XmlDocument responseDocument;
         private XmlNamespaceManager nsMgr;
         private XmlDocument _sendtMelding;
@@ -34,12 +35,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <summary>
         /// Oppretter en ny instanse av responsvalidatoren.
         /// </summary>
-        /// <param name="response">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
+        /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
-        public Responsvalidator(string response, XmlDocument sendtMelding)
+        /// <param name="miljø"></param>
+        public Responsvalidator(string respons, XmlDocument sendtMelding, Miljø miljø)
         {
+            Miljø = miljø;
             responseDocument = new XmlDocument();
-            responseDocument.LoadXml(response);
+            responseDocument.LoadXml(respons);
 
             nsMgr = new XmlNamespaceManager(responseDocument.NameTable);
             nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
