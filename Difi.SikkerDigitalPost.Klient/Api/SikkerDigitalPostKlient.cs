@@ -47,20 +47,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har 
         /// ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
         /// </param>
-        /// <remarks>
-        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
-        /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler)
-            : this(databehandler, new Klientkonfigurasjon())
-        {
-        }
-
-        /// <param name="databehandler">
-        /// Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med 
-        /// formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra 
-        /// Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har 
-        /// ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
-        /// </param>
         /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
         /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
@@ -141,8 +127,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                     _klientkonfigurasjon));
             return forretningsmeldingEnvelope;
         }
-
-
+        
         private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
         {
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);

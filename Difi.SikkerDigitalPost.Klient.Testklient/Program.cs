@@ -26,6 +26,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Testklient.Properties;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
@@ -39,6 +40,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         static void Main(string[] args)
         {
             SendPost();
+            var uri = new Uri("http://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
+            var uris = uri.ToString();
         }
  
         private static void SendPost()
@@ -156,9 +159,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static Klientkonfigurasjon SettOppKlientkonfigurasjon()
         {
-            var klientkonfigurasjon = new Klientkonfigurasjon();
+            var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.Test);
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
             klientkonfigurasjon.LoggXmlTilFil = false; 
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
