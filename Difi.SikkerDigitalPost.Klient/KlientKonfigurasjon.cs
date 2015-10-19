@@ -31,15 +31,6 @@ namespace Difi.SikkerDigitalPost.Klient
         public Miljø Miljø { get; set; }
 
         /// <summary>
-        /// Angir Uri som skal benyttes for sending av meldinger. Standardverdi er 'https://meldingsformidler.digipost.no/api/ebms'. Denne verdien kan også overstyres i 
-        /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:MeldingsformidlerUrl'.
-        /// </summary>
-        /// <remarks>
-        /// Uri for QA miljø er 'https://qaoffentlig.meldingsformidler.digipost.no/api/ebms'.
-        /// </remarks>
-        public Uri MeldingsformidlerUrl { get; set; }
-
-        /// <summary>
         /// Angir host som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en proxy skal benyttes. Denne verdien kan også overstyres i 
         /// applikasjonens konfigurasjonsfil gjennom med appSettings verdi med nøkkelen 'SDP:ProxyHost'.
         /// </summary>
@@ -97,9 +88,9 @@ namespace Difi.SikkerDigitalPost.Klient
         /// Klientkonfigurasjon som brukes ved oppsett av <see cref="SikkerDigitalPostKlient"/>.  Brukes for å sette parametere
         /// som proxy, timeout og URI til meldingsformidler.
         /// </summary>
-        public Klientkonfigurasjon()
+        public Klientkonfigurasjon(Miljø miljø)
         {
-            MeldingsformidlerUrl = new Uri("https://meldingsformidler.digipost.no/api/ebms");
+            Miljø = miljø;
             MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
             ProxyHost = null;
             ProxyScheme = "https";

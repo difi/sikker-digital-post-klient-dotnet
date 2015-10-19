@@ -9,6 +9,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -70,9 +71,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
             var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
-            var klientKonfig = new Klientkonfigurasjon
+            var klientKonfig = new Klientkonfigurasjon(Miljø.Test)
             {
-                MeldingsformidlerUrl = new Uri(Settings.Default.UrlMeldingsformidler),
                 LoggXmlTilFil = true
             };
 

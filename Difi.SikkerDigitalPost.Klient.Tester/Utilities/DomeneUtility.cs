@@ -16,6 +16,7 @@ using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -192,7 +193,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 GetAsicEArkivEnkelMedTestSertifikat(),
                 GetDatabehandler(),
                 GuidUtility,
-                new Klientkonfigurasjon());
+                new Klientkonfigurasjon(Miljø.Test));
             return new ForretningsmeldingEnvelope(envelopeSettings);
         }
 
@@ -203,16 +204,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 GetAsicEArkivEnkel(),
                 GetDatabehandler(),
                 GuidUtility,
-                new Klientkonfigurasjon());
+                new Klientkonfigurasjon(Miljø.Test));
             return new ForretningsmeldingEnvelope(envelopeSettings);
         }
 
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
         {
-            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon()
-            {
-                MeldingsformidlerUrl = new Uri(Settings.Default.UrlMeldingsformidler)
-            });
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.Test));
         }
 
         internal static X509Certificate2 GetAvsenderTestSertifikat()
