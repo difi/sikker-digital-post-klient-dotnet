@@ -61,10 +61,22 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _sendtMelding = sendtMelding;
         }
 
+        public void ValiderMeldingskvittering()
+        {
+            ValiderHeaderSignatur();
+            ValiderKvitteringSignatur();
+        }
+
+        public void ValiderTransportkvittering(GuidUtility guidUtility)
+        {
+            ValiderHeaderSignatur();
+            ValiderDigest(guidUtility);
+        }
+
         /// <summary>
         /// Validerer signaturen i soap headeren for motatt dokument.
         /// </summary>
-        public void ValiderHeaderSignatur()
+        private void ValiderHeaderSignatur()
         {
             XmlNode responseRot = responseDocument.DocumentElement;
             _signaturNode = (XmlElement)responseRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
@@ -75,7 +87,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             ValiderSignaturOgSertifikat("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
         }
         
-        public void ValiderKvitteringSignatur()
+        private void ValiderKvitteringSignatur()
         {
             var standardBusinessDocumentNode =
                 responseDocument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
@@ -137,7 +149,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// Sjekker at motatt soap dokument har samme digest verdier for body og dokumentpakke i avsendt brev vha motatt NonRepudiationInformation element. 
         /// </summary>
         /// <param name="guidHandler">Samme guid handler som ble benyttet for å generere det avsendte brevet.</param>
-        public void ValiderDigest(GuidUtility guidHandler)
+        private void ValiderDigest(GuidUtility guidHandler)
         {
             string sourceDigestPath = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
             string targetDigestPath = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";

@@ -140,13 +140,12 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         private Transportkvittering ValiderTransportkvittering(string meldingsformidlerRespons,
-            XmlDocument forretningsmeldingEnvelope, GuidUtility guidHandler)
+            XmlDocument forretningsmeldingEnvelope, GuidUtility guidUtility)
         {
             try
             {
                 var responsvalidator = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope, _klientkonfigurasjon.Miljø);
-                responsvalidator.ValiderHeaderSignatur();
-                responsvalidator.ValiderDigest(guidHandler);
+                responsvalidator.ValiderTransportkvittering(guidUtility);
             }
             catch (Exception e)
             {
@@ -258,8 +257,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             try
             {
                 var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering, sendtMelding: kvitteringsenvelope.Xml(), miljø: _klientkonfigurasjon.Miljø);
-                valideringAvResponsSignatur.ValiderHeaderSignatur();
-                valideringAvResponsSignatur.ValiderKvitteringSignatur();
+                valideringAvResponsSignatur.ValiderMeldingskvittering();
             }
             catch (Exception e)
             {
