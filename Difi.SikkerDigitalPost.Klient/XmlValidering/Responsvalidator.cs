@@ -32,6 +32,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private XmlNamespaceManager nsMgr;
         private XmlDocument _sendtMelding;
 
+        private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
+        private XmlElement _signaturNode;
+        private X509Certificate2 _certificate;
+
         /// <summary>
         /// Oppretter en ny instanse av responsvalidatoren.
         /// </summary>
@@ -57,59 +61,62 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _sendtMelding = sendtMelding;
         }
 
-
         /// <summary>
         /// Validerer signaturen i soap headeren for motatt dokument.
         /// </summary>
         public void ValiderHeaderSignatur()
         {
             XmlNode responseRot = responseDocument.DocumentElement;
-            var signatureNode = (XmlElement)responseRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
-            var signed = new SignedXmlWithAgnosticId(responseDocument);
+            _signaturNode = (XmlElement)responseRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
+            _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(responseDocument);
 
-            ValiderInnhold(signatureNode, signed);
+            ValiderInnhold();
 
-            ValiderSignaturOgSertifikat(signed, signatureNode, "/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
+            ValiderSignaturOgSertifikat("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
         }
-
+        
         public void ValiderKvitteringSignatur()
         {
-            // Signaturer i //difi elementer har kontekst av standard business document. Kjører derfor valideringen på et subset av originaldokumentet.
-
-            var standardBusinessDocument =
+            var standardBusinessDocumentNode =
                 responseDocument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
 
-            if (standardBusinessDocument == null)
-                return;
+            if (standardBusinessDocumentNode != null)
+            {
+                var standardBusinessDocument = XmlNodeToXmlDocument(standardBusinessDocumentNode);
 
-            XmlDocument sbd = new XmlDocument();
-            sbd.LoadXml(standardBusinessDocument.OuterXml);
+                _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(standardBusinessDocument);
+                _signaturNode = (XmlElement)standardBusinessDocument.SelectSingleNode("//ds:Signature", nsMgr);
 
-            var signed = new SignedXmlWithAgnosticId(sbd);
-            var signatureNode = (XmlElement)sbd.SelectSingleNode("//ds:Signature", nsMgr);
-
-            ValiderSignaturOgSertifikat(signed, signatureNode, "./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
+                ValiderSignaturOgSertifikat("./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
+            }
         }
 
-        private void ValiderSignaturOgSertifikat(SignedXmlWithAgnosticId signed, XmlElement signatureNode, string path)
+        private static XmlDocument XmlNodeToXmlDocument(XmlNode standardBusinessDocument)
         {
-            var certificate = new X509Certificate2(Convert.FromBase64String(signatureNode.SelectSingleNode(path, nsMgr).InnerText));
-            ErKvalifisertMellomliggendeSertifikat(certificate);
+            XmlDocument sbd = new XmlDocument();
+            sbd.LoadXml(standardBusinessDocument.OuterXml);
+            return sbd;
+        }
 
-            signed.LoadXml(signatureNode);
+        private void ValiderSignaturOgSertifikat(string path)
+        {
+            _certificate = new X509Certificate2(Convert.FromBase64String(_signaturNode.SelectSingleNode(path, nsMgr).InnerText));
+            ErKvalifisertMellomliggendeSertifikat();
 
-            AsymmetricAlgorithm key = null;
-            if (!signed.CheckSignatureReturningKey(out key))
+            _signedXmlWithAgnosticId.LoadXml(_signaturNode);
+
+            AsymmetricAlgorithm key;
+            if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out key))
                 throw new Exception("Signaturen i motatt svar er ikke gyldig.");
 
-            if (key.ToXmlString(false) != certificate.PublicKey.Key.ToXmlString(false))
+            if (key.ToXmlString(false) != _certificate.PublicKey.Key.ToXmlString(false))
                 throw new Exception(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
         }
 
-        private void ErKvalifisertMellomliggendeSertifikat(X509Certificate2 certificate)
+        private void ErKvalifisertMellomliggendeSertifikat()
         {
             var chain = new X509Chain(false);
-            chain.Build(certificate);
+            chain.Build(_certificate);
 
             foreach (var item in chain.ChainElements)
             {
@@ -148,7 +155,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <summary>
         /// Sjekker at soap envelopen inneholder timestamp, body og messaging element med korrekt id og referanser i security signaturen.
         /// </summary>
-        private void ValiderInnhold(XmlElement signature, SignedXmlWithAgnosticId signedXml)
+        private void ValiderInnhold()
         {
             string[] requiredSignatureElements = { "/env:Envelope/env:Header/wsse:Security/wsu:Timestamp", "/env:Envelope/env:Body", "/env:Envelope/env:Header/eb:Messaging" };
 
@@ -164,14 +171,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 // Sørg for at det finnes en refereanse til node i signatur element
                 var elementId = nodes[0].Attributes["wsu:Id"].Value;
 
-                var references = signature.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId), nsMgr);
+                var references = _signaturNode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId), nsMgr);
                 if (references == null || references.Count == 0)
                     throw new Exception(string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.", elementXPath));
                 if (references.Count > 1)
                     throw new Exception(string.Format("Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.", elementXPath, references.Count));
 
                 // Sørg for at Id node matcher
-                var targetNode = signedXml.GetIdElement(responseDocument, elementId);
+                var targetNode = _signedXmlWithAgnosticId.GetIdElement(responseDocument, elementId);
                 if (targetNode != nodes[0])
                     throw new Exception(string.Format("Signaturreferansen med id '{0}' må refererer til node med sti '{1}'", elementId, elementXPath));
             }
