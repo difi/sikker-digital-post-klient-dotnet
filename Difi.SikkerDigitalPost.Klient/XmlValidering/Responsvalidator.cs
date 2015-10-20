@@ -151,16 +151,16 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <param name="guidHandler">Samme guid handler som ble benyttet for å generere det avsendte brevet.</param>
         private void ValiderDigest(GuidUtility guidHandler)
         {
-            string sourceDigestPath = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
-            string targetDigestPath = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";
+            var sendtMeldingDigestSti = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
+            var mottattSvarDigestSti = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";
 
-            foreach (var uri in new string[] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId })
+            foreach (var uri in new [] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId })
             {
-                string sourceDigest = _sendtMelding.SelectSingleNode(string.Format(sourceDigestPath, uri), nsMgr).InnerText;
-                string targetDigest = responseDocument.SelectSingleNode(string.Format(targetDigestPath, uri), nsMgr).InnerText;
+                var sendtMeldingDigest = _sendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, uri), nsMgr).InnerText;
+                var mottattSvarDigest = responseDocument.SelectSingleNode(string.Format(mottattSvarDigestSti, uri), nsMgr).InnerText;
 
-                if (sourceDigest != targetDigest)
-                    throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", uri, sourceDigest, targetDigest));
+                if (sendtMeldingDigest != mottattSvarDigest)
+                    throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", uri, sendtMeldingDigest, mottattSvarDigest));
             }
         }
 
@@ -173,27 +173,56 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             foreach (var elementXPath in requiredSignatureElements)
             {
-                // Sørg for at svar inneholde påkrevede noder.
-                var nodes = responseDocument.SelectNodes(elementXPath, nsMgr);
-                if (nodes == null || nodes.Count == 0)
-                    throw new Exception(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.", elementXPath));
-                if (nodes.Count > 1)
-                    throw new Exception(string.Format("Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.", elementXPath, nodes.Count));
+                XmlNodeList nodes;
+                ResponseInneholderPåkrevedeNoder(elementXPath, out nodes);
 
-                // Sørg for at det finnes en refereanse til node i signatur element
-                var elementId = nodes[0].Attributes["wsu:Id"].Value;
+                var elementId = ElementId(nodes);
+                FinnReferanseTilNodeISignaturElement(elementId, elementXPath);
 
-                var references = _signaturNode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId), nsMgr);
-                if (references == null || references.Count == 0)
-                    throw new Exception(string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.", elementXPath));
-                if (references.Count > 1)
-                    throw new Exception(string.Format("Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.", elementXPath, references.Count));
-
-                // Sørg for at Id node matcher
-                var targetNode = _signedXmlWithAgnosticId.GetIdElement(responseDocument, elementId);
+                var targetNode = HentMålnode(elementId);
                 if (targetNode != nodes[0])
                     throw new Exception(string.Format("Signaturreferansen med id '{0}' må refererer til node med sti '{1}'", elementId, elementXPath));
             }
+        }
+
+        private XmlElement HentMålnode(string elementId)
+        {
+            var targetNode = _signedXmlWithAgnosticId.GetIdElement(responseDocument, elementId);
+            return targetNode;
+        }
+
+        private void FinnReferanseTilNodeISignaturElement(string elementId, string elementXPath)
+        {
+            var references = _signaturNode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId),
+                nsMgr);
+            if (references == null || references.Count == 0)
+                throw new Exception(
+                    string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.",
+                        elementXPath));
+            if (references.Count > 1)
+                throw new Exception(
+                    string.Format(
+                        "Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.",
+                        elementXPath, references.Count));
+        }
+
+        private static string ElementId(XmlNodeList nodes)
+        {
+            var elementId = nodes[0].Attributes["wsu:Id"].Value;
+            return elementId;
+        }
+
+        private void ResponseInneholderPåkrevedeNoder(string elementXPath, out XmlNodeList nodes)
+        {
+            nodes = responseDocument.SelectNodes(elementXPath, nsMgr);
+            if (nodes == null || nodes.Count == 0)
+                throw new Exception(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.",
+                    elementXPath));
+            if (nodes.Count > 1)
+                throw new Exception(
+                    string.Format(
+                        "Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.",
+                        elementXPath, nodes.Count));
         }
     }
 }
