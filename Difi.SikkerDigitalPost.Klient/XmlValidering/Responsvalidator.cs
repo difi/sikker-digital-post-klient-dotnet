@@ -17,6 +17,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
@@ -33,8 +35,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private XmlDocument _sendtMelding;
 
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
-        private XmlElement _signaturNode;
-        private X509Certificate2 _certificate;
+        private XmlElement _signaturnode;
+        private X509Certificate2 _sertifikat;
 
         /// <summary>
         /// Oppretter en ny instanse av responsvalidatoren.
@@ -72,14 +74,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             ValiderHeaderSignatur();
             ValiderDigest(guidUtility);
         }
-
-        /// <summary>
-        /// Validerer signaturen i soap headeren for motatt dokument.
-        /// </summary>
+        
         private void ValiderHeaderSignatur()
         {
-            XmlNode responseRot = responseDocument.DocumentElement;
-            _signaturNode = (XmlElement)responseRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
+            XmlNode responsRot = responseDocument.DocumentElement;
+            _signaturnode = (XmlElement)responsRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
             _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(responseDocument);
 
             ValiderInnhold();
@@ -97,9 +96,13 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 var standardBusinessDocument = XmlNodeToXmlDocument(standardBusinessDocumentNode);
 
                 _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(standardBusinessDocument);
-                _signaturNode = (XmlElement)standardBusinessDocument.SelectSingleNode("//ds:Signature", nsMgr);
+                _signaturnode = (XmlElement) standardBusinessDocument.SelectSingleNode("//ds:Signature", nsMgr);
 
                 ValiderSignaturOgSertifikat("./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
+            }
+            else
+            {
+                throw new SdpSecurityException("Fant ikke StandardBusinessDocument-node. Prøvde du å validere en transportkvittering?");
             }
         }
 
@@ -112,23 +115,23 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderSignaturOgSertifikat(string path)
         {
-            _certificate = new X509Certificate2(Convert.FromBase64String(_signaturNode.SelectSingleNode(path, nsMgr).InnerText));
+            _sertifikat = new X509Certificate2(Convert.FromBase64String(_signaturnode.SelectSingleNode(path, nsMgr).InnerText));
             ErKvalifisertMellomliggendeSertifikat();
 
-            _signedXmlWithAgnosticId.LoadXml(_signaturNode);
+            _signedXmlWithAgnosticId.LoadXml(_signaturnode);
 
-            AsymmetricAlgorithm key;
-            if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out key))
+            AsymmetricAlgorithm asymmetricAlgorithm;
+            if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out asymmetricAlgorithm))
                 throw new Exception("Signaturen i motatt svar er ikke gyldig.");
 
-            if (key.ToXmlString(false) != _certificate.PublicKey.Key.ToXmlString(false))
+            if (asymmetricAlgorithm.ToXmlString(false) != _sertifikat.PublicKey.Key.ToXmlString(false))
                 throw new Exception(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
         }
 
         private void ErKvalifisertMellomliggendeSertifikat()
         {
             var chain = new X509Chain(false);
-            chain.Build(_certificate);
+            chain.Build(_sertifikat);
 
             foreach (var item in chain.ChainElements)
             {
@@ -193,7 +196,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void FinnReferanseTilNodeISignaturElement(string elementId, string elementXPath)
         {
-            var references = _signaturNode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId),
+            var references = _signaturnode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId),
                 nsMgr);
             if (references == null || references.Count == 0)
                 throw new Exception(
