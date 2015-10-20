@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
