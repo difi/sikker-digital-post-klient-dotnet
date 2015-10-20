@@ -30,10 +30,10 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     {
         private XmlDocument m_containingDocument;
 
-        public SignedXmlWithAgnosticId(XmlDocument xml)
-            : base(xml)
+        public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
+            : base(xmlDocument)
         {
-            this.m_containingDocument = xml;
+            this.m_containingDocument = xmlDocument;
         }
 
         public SignedXmlWithAgnosticId(XmlElement xmlElement)
@@ -45,25 +45,13 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         /// <summary>
         /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
         /// </summary>
-        /// <param name="xml">The document containing the references to be signed.</param>
+        /// <param name="xmlDocument">The document containing the references to be signed.</param>
         /// <param name="certificate">The certificate containing the private key used for signing.</param>
         /// <param name="inclusiveNamespacesPrefixList">An optional list of namespaces to be set as the canonicalization namespace prefix list.</param>
-        public SignedXmlWithAgnosticId(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-            : base(xml)
+        public SignedXmlWithAgnosticId(XmlDocument xmlDocument, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
+            : base(xmlDocument)
         {
-            Initialize(xml, certificate, inclusiveNamespacesPrefixList);
-        }
-
-        /// <summary>
-        /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
-        /// </summary>
-        /// <param name="xmlElement">The xml element containing the references to be signed.</param>
-        /// <param name="certificate">The certificate containing the private key used for sigining.</param>
-        /// <param name="inclusiveNamespacesPrefixList">An optional list of namespaces to be set as the canonicalization namespace prefix list.</param>
-        public SignedXmlWithAgnosticId(XmlElement xmlElement, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-            : base(xmlElement)
-        {
-            Initialize(xmlElement.OwnerDocument, certificate, inclusiveNamespacesPrefixList);
+            Initialize(xmlDocument, certificate, inclusiveNamespacesPrefixList);
         }
 
         private void Initialize(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
