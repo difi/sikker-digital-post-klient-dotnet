@@ -26,8 +26,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket språk som benyttes, slik at varselet om mulig kan vises i riktig kontekst. Standard er NO.</param>
         /// <param name="mpcId">Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".</param>
+        /// <param name="konversasjonsId">Brukes for å knytte forsendelser sammen med senere kvitteringer. Dersom den ikke oppgis, så settes den til en ny Guid.</param>
         public Forsendelse(Avsender avsender, PostInfo postInfo,
-            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
+            Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO", Guid konversasjonsId = default(Guid))
         {
             Avsender = avsender;
             PostInfo = postInfo;
@@ -35,8 +36,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Prioritet = prioritet;
             Språkkode = språkkode;
             MpcId = mpcId;
+            KonversasjonsId = konversasjonsId == default(Guid) ? Guid.NewGuid() : konversasjonsId;
         }
-
         /// <param name="avsender">Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige virksomheten som er ansvarlig for brevet som skal sendes.</param>
         /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
@@ -92,7 +93,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// Unik ID opprettet og definert i en initiell melding og siden brukt i alle tilhørende kvitteringer knyttet til den opprinnelige meldingen.
         /// Skal være unik for en avsender.
         /// </summary>
-        public readonly Guid KonversasjonsId = Guid.NewGuid();
+        public Guid KonversasjonsId { get; private set; }
 
         /// <summary>
         /// Setter forsendelsens prioritet. Standard er Prioritet.Normal
