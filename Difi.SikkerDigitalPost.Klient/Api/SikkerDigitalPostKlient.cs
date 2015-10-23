@@ -253,6 +253,23 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             return kvitteringsrespons;
         }
 
+        private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
+        {
+            try
+            {
+                var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
+                var kvitteringForespørselEnvelopeValidert =
+                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                if (!kvitteringForespørselEnvelopeValidert)
+                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
+            }
+
+        }
+
         private void SikkerhetsvalideringAvTomKøKvittering(string kvitteringsresponsrådata, XmlDocument forretningsmelding)
         {
             var responsvalidator = new Responsvalidator(respons: kvitteringsresponsrådata, sendtMelding: forretningsmelding, kjørendeMiljø: _klientkonfigurasjon.Miljø);
@@ -269,23 +286,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering.Rådata, sendtMelding: kvitteringsforespørselEnvelope.Xml(), kjørendeMiljø: _klientkonfigurasjon.Miljø);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
-        }
-
-        private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
-        {
-            try
-            {
-                var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
-                var kvitteringForespørselEnvelopeValidert =
-                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
-                if (!kvitteringForespørselEnvelopeValidert)
-                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
-            }
-            catch (Exception e)
-            {
-                throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
-            }
-
         }
 
         /// <summary>
