@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     /// </summary>
     internal class Responsvalidator
     {
-        internal Miljø Miljø { get; set; }
+        internal Miljø KjørendeMiljø { get; set; }
         private XmlDocument responseDocument;
         private XmlNamespaceManager nsMgr;
         private XmlDocument _sendtMelding;
@@ -43,10 +43,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// </summary>
         /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
-        /// <param name="miljø"></param>
-        public Responsvalidator(string respons, XmlDocument sendtMelding, Miljø miljø)
+        /// <param name="kjørendeMiljø"></param>
+        public Responsvalidator(string respons, XmlDocument sendtMelding, Miljø kjørendeMiljø)
         {
-            Miljø = miljø;
+            KjørendeMiljø = kjørendeMiljø;
             responseDocument = new XmlDocument();
             responseDocument.LoadXml(respons);
 
@@ -74,7 +74,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             ValiderHeaderSignatur();
             ValiderDigest(guidUtility);
         }
-        
+
+        public void ValiderTomkøkvittering()
+        {
+            ValiderHeaderSignatur();
+        }
+
         private void ValiderHeaderSignatur()
         {
             XmlNode responsRot = responseDocument.DocumentElement;
@@ -85,7 +90,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             ValiderSignaturOgSertifikat("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
         }
-        
+
         private void ValiderKvitteringSignatur()
         {
             var standardBusinessDocumentNode =
@@ -116,7 +121,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private void ValiderSignaturOgSertifikat(string path)
         {
             _sertifikat = new X509Certificate2(Convert.FromBase64String(_signaturnode.SelectSingleNode(path, nsMgr).InnerText));
-            ErKvalifisertMellomliggendeSertifikat();
+            ValiderResponssertifikat();
 
             _signedXmlWithAgnosticId.LoadXml(_signaturnode);
 
@@ -128,24 +133,15 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 throw new Exception(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
         }
 
-        private void ErKvalifisertMellomliggendeSertifikat()
+        private void ValiderResponssertifikat()
         {
-            var chain = new X509Chain(false);
-            chain.Build(_sertifikat);
+            bool erGyldig = KjørendeMiljø.Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
 
-            foreach (var item in chain.ChainElements)
+            if (!erGyldig)
             {
-                if (item.Certificate.RawData.SequenceEqual(Sertifikater.BPClass3CA3))
-                    return;
-                if (item.Certificate.RawData.SequenceEqual(Sertifikater.Buypass_Class_3_Test4_CA_3))
-                    return;
-                if (item.Certificate.RawData.SequenceEqual(Sertifikater.commfidesenterprise_sha256))
-                    return;
-                if (item.Certificate.RawData.SequenceEqual(Sertifikater.cpn_enterprise_sha256_class_3))
-                    return;
+                throw new Exception(
+                    "Sertifikatet som er angitt i signaturen er ikke signert av en gyldig mellomliggende utsteder.");
             }
-
-            throw new Exception("Sertifikatet som er angitt i signaturen er ikke signert av en gyldig mellomliggende utsteder.");
         }
 
         /// <summary>

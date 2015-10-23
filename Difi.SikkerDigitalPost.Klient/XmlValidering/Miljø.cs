@@ -6,31 +6,37 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     public class Miljø
     {
-        public X509Certificate2Collection Sertifikatlager { get; set; }
 
         public Uri Url { get; set; }
 
         internal Sertifikatvalidator Sertifikatvalidator { get; set; }
 
-        private Miljø(X509Certificate2Collection sertifikatlager, Uri url)
+        private Miljø(Uri url, Sertifikatvalidator sertifikatvalidator)
         {
-            Sertifikatlager = sertifikatlager;
+            Sertifikatvalidator = sertifikatvalidator;
             Url = url;
-        }
-
-        public static Miljø Produksjon
-        {
-            get
-            {
-                return new Miljø(new X509Certificate2Collection(), new Uri("https://meldingsformidler.digipost.no/api/ebms"));
-            }
         }
 
         public static Miljø Test
         {
             get
             {
-                return new Miljø(SertifikatUtility.TestSertifikater(), new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"));
+                return new Miljø(
+                    new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
+                    new SertifikatValidatorTest(SertifikatUtility.TestSertifikater())
+                    );
+
+            }
+        }
+
+        public static Miljø Produksjon
+        {
+            get
+            {
+                return new Miljø(
+                    new Uri("https://meldingsformidler.digipost.no/api/ebms"),
+                    new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater())
+                    );
             }
         }
     }

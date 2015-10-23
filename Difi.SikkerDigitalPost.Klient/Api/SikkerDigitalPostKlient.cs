@@ -102,14 +102,18 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             }
 
             var soapContainer = LagSoapContainer(forretningsmeldingEnvelope, arkiv);
-            var meldingsformidlerRespons = await SendSoapContainer(soapContainer);
+            var transportkvitteringRådata = await SendSoapContainer(soapContainer);
 
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, meldingsformidlerRespons, true, true, "Mottatt - Meldingsformidlerespons.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, transportkvitteringRådata, true, true, "Mottatt - Meldingsformidlerespons.txt");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, new byte[1], true,false, "Sendt - SOAPContainer.txt");
 
-            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + meldingsformidlerRespons);
-            
-           return ValiderTransportkvittering(meldingsformidlerRespons, forretningsmeldingEnvelope.Xml(), guidHandler);
+            Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportkvitteringRådata);
+
+            var transportKvittering = KvitteringFactory.GetTransportkvittering(transportkvitteringRådata);
+
+            SikkerhetsvalideringAvTransportkvittering(transportKvittering, forretningsmeldingEnvelope.Xml(), guidHandler);
+
+            return transportKvittering;
         }
         
         private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
@@ -138,28 +142,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             soapContainer.Vedlegg.Add(arkiv);
             return soapContainer;
         }
-
-        private Transportkvittering ValiderTransportkvittering(string meldingsformidlerRespons,
-            XmlDocument forretningsmeldingEnvelope, GuidUtility guidUtility)
-        {
-            try
-            {
-                var responsvalidator = new Responsvalidator(meldingsformidlerRespons, forretningsmeldingEnvelope, _klientkonfigurasjon.Miljø);
-                responsvalidator.ValiderTransportkvittering(guidUtility);
-            }
-            catch (Exception e)
-            {
-                var transportFeiletKvittering = KvitteringFactory.GetTransportkvittering(meldingsformidlerRespons);
-                if (transportFeiletKvittering is TransportOkKvittering)
-                {
-                    throw new SdpSecurityException("Validering av signatur og digest på respons feilet.", e);
-                }
-                return transportFeiletKvittering;
-            }
-
-            return KvitteringFactory.GetTransportkvittering(meldingsformidlerRespons);
-        }
-
+        
         /// <summary>
         /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
         /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
@@ -216,7 +199,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             return HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, forrigeKvittering).Result;
         }
-        
+
         /// <summary>
         /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
         /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
@@ -241,30 +224,51 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             Logging.Log(TraceEventType.Information, "Henter kvittering for " + kvitteringsforespørsel.Mpc);
 
-            var guidHandler = new GuidUtility();
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, guidHandler);
-            var kvitteringsenvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
+            var guidUtility = new GuidUtility();
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, guidUtility);
+            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
-            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespørsel" + Environment.NewLine + kvitteringsenvelope.Xml().OuterXml);
+            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespørsel" + Environment.NewLine + kvitteringsforespørselEnvelope.Xml().OuterXml);
 
-            ValiderKvitteringsEnvelope(kvitteringsenvelope);
+            ValiderKvitteringsEnvelope(kvitteringsforespørselEnvelope);
 
-            var soapContainer = new SoapContainer(kvitteringsenvelope);
-            var kvittering = await SendSoapContainer(soapContainer);
+            var soapContainer = new SoapContainer(kvitteringsforespørselEnvelope);
+            var kvitteringsresponsrådata = await SendSoapContainer(soapContainer);
 
-            Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsenvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
+            Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
-            try
+            var kvitteringsrespons = KvitteringFactory.GetForretningskvittering(kvitteringsresponsrådata);
+
+            bool isTomKøKvittering = kvitteringsrespons == null;
+
+            if (isTomKøKvittering)
             {
-                var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering, sendtMelding: kvitteringsenvelope.Xml(), miljø: _klientkonfigurasjon.Miljø);
-                valideringAvResponsSignatur.ValiderMeldingskvittering();
+                SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsrådata, kvitteringsforespørselEnvelope.Xml());
             }
-            catch (Exception e)
+            else
             {
-                return ValiderTransportkvittering(kvittering,kvitteringsenvelope.Xml(),guidHandler);
+                SikkerhetsvalideringAvMeldingskvittering(kvitteringsrespons, kvitteringsforespørselEnvelope);
             }
 
-            return KvitteringFactory.GetForretningskvittering(kvittering);
+            return kvitteringsrespons;
+        }
+
+        private void SikkerhetsvalideringAvTomKøKvittering(string kvitteringsresponsrådata, XmlDocument forretningsmelding)
+        {
+            var responsvalidator = new Responsvalidator(respons: kvitteringsresponsrådata, sendtMelding: forretningsmelding, kjørendeMiljø: _klientkonfigurasjon.Miljø);
+            responsvalidator.ValiderTomkøkvittering();
+        }
+
+        private void SikkerhetsvalideringAvTransportkvittering(Kvittering kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
+        {
+            var responsvalidator = new Responsvalidator(respons: kvittering.Rådata, sendtMelding: forretningsmelding, kjørendeMiljø: _klientkonfigurasjon.Miljø);
+            responsvalidator.ValiderTransportkvittering(guidUtility);
+        }
+
+        private void SikkerhetsvalideringAvMeldingskvittering(Kvittering kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        {
+            var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering.Rådata, sendtMelding: kvitteringsforespørselEnvelope.Xml(), kjørendeMiljø: _klientkonfigurasjon.Miljø);
+            valideringAvResponsSignatur.ValiderMeldingskvittering();
         }
 
         private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
