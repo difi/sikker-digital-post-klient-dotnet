@@ -13,8 +13,26 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             SertifikatLager = sertifikatLager;
         }
 
-        public abstract bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus);
+        public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
+        {
+            X509ChainStatus[] kjedestatus;
+            return ErGyldigResponssertifikat(sertifikat, out kjedestatus);
+        }
 
-        public abstract bool ErGyldigResponssertifikat(X509Certificate2 sertifikat);
+        public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus)
+        {
+            var ignoreStoreMySertifikater = true;
+            var chain = new X509Chain(ignoreStoreMySertifikater)
+            {
+                ChainPolicy = ChainPolicy()
+            };
+
+            var erGyldigResponssertifikat = chain.Build(sertifikat);
+
+            kjedestatus = chain.ChainStatus;
+            return erGyldigResponssertifikat;
+        }
+
+        public abstract X509ChainPolicy ChainPolicy();
     }
 }

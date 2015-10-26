@@ -14,30 +14,30 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         public class ErGyldigResponssertifikatMethod : SertifikatvalidatorTestTester
         {
             [TestMethod]
-            public void GodkjennerTestsertifikatReturnererKjedeSomOutparameter()
+            public void GodkjennerProduksjonssertifikatReturnererKjedeSomOutparameter()
             {
                 //Arrange
-                var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+                var produksjonssertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
 
                 //Act
-                SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(SertifikatUtility.TestSertifikater());
+                SertifikatValidatorProduksjon sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
                 X509ChainStatus[] kjedestatus;
-                var result = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat, out kjedestatus);
+                var result = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
 
                 //Assert
                 Assert.IsTrue(result);
-                Assert.AreEqual(1, kjedestatus.Length);
+                Assert.AreEqual(0, kjedestatus.Length);
             }
 
             [TestMethod]
-            public void GodkjennerTestsertifikat()
+            public void GodkjennerProduksjonssertifikat()
             {
                 //Arrange
-                var testSertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+                var produksjonssertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
 
                 //Act
-                SertifikatValidatorTest sertifikatValidator = new SertifikatValidatorTest(SertifikatUtility.TestSertifikater());
-                var result = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
+                SertifikatValidatorProduksjon sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var result = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
 
                 //Assert
                 Assert.IsTrue(result);

@@ -10,39 +10,17 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         public SertifikatValidatorTest(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
         {
         }
-        public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
-        {
-            X509ChainStatus[] kjedestatus;
-            return ErGyldigResponssertifikat(sertifikat, out kjedestatus);
-        }
 
-        public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus)
+        public override X509ChainPolicy ChainPolicy()
         {
-            var ignoreStoreMySertifikater = true;
-            var chain = new X509Chain(ignoreStoreMySertifikater)
+            var policy = new X509ChainPolicy()
             {
-                ChainPolicy = ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority()
+                RevocationMode = X509RevocationMode.NoCheck,
+                VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
             };
-
-            bool gyldigSertifikat = chain.Build(sertifikat);
-
-            kjedestatus = chain.ChainStatus;
-            return gyldigSertifikat;
-        }
-
-        private X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority()
-        {
-            {
-                var policy = new X509ChainPolicy()
-                {
-                    RevocationMode = X509RevocationMode.NoCheck,
-                    VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
-                };
-                policy.ExtraStore.AddRange(SertifikatLager);
+            policy.ExtraStore.AddRange(SertifikatLager);
                                 
-                return policy;
-
-            }
+            return policy;
         }
     }
 }

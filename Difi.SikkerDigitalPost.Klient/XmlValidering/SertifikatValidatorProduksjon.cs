@@ -6,16 +6,18 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     {
         public SertifikatValidatorProduksjon(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
         {
+
         }
 
-        public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus)
+        public override X509ChainPolicy ChainPolicy()
         {
-            throw new System.NotImplementedException();
-        }
+            var policy = new X509ChainPolicy()
+            {
+                RevocationMode = X509RevocationMode.NoCheck
+            };
+            policy.ExtraStore.AddRange(SertifikatLager);
 
-        public override bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
-        {
-            throw new System.NotImplementedException();
+            return policy;
         }
     }
 }
