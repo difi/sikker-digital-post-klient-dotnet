@@ -43,17 +43,17 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         public class KonstruktørMethod : ResponsvalidatorTester
         {
             [TestMethod]
-            public void EnkelKonstruktørMedMiljø()
+            public void EnkelKonstruktørMedSertifikatvalidator()
             {
                 ////Arrange
                 var sendtMelding = SendtMeldingXmlDocument;
                 var miljø = Miljø.Test;
-                Responsvalidator responsvalidator = new Responsvalidator(_responsTransportkvitteringXmlTestmiljø, sendtMelding, miljø);
+                Responsvalidator responsvalidator = new Responsvalidator(_responsTransportkvitteringXmlTestmiljø, sendtMelding, miljø.Sertifikatvalidator);
 
                 //Act
 
                 //Assert
-                Assert.AreEqual(miljø, responsvalidator.KjørendeMiljø);
+                Assert.AreEqual(miljø.Sertifikatvalidator, responsvalidator.Sertifikatvalidator);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 AddRsaSha256AlgorithmToCryptoConfig();
 
                 var miljø = Miljø.Test;
-                Responsvalidator responsvalidator = new Responsvalidator(_responsTransportkvitteringXmlTestmiljø, SendtMeldingXmlDocument, miljø);
+                Responsvalidator responsvalidator = new Responsvalidator(_responsTransportkvitteringXmlTestmiljø, SendtMeldingXmlDocument, miljø.Sertifikatvalidator);
                 GuidUtility guidUtility = new GuidUtility()
                 {
                     BinarySecurityTokenId = "X509-513ffecb-cd7e-4bb3-a4c5-47eff314683f",
@@ -98,7 +98,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 
                 XmlDocument sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                Responsvalidator responsvalidator = new Responsvalidator(respons: _responsKvitteringsForespørsel, sendtMelding: sendtKvitteringsForespørsel, kjørendeMiljø: miljø);
+                Responsvalidator responsvalidator = new Responsvalidator(respons: _responsKvitteringsForespørsel, sendtMelding: sendtKvitteringsForespørsel, sertifikatvalidator: miljø.Sertifikatvalidator);
 
                 //Act
                 responsvalidator.ValiderMeldingskvittering();
@@ -119,7 +119,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var miljø = Miljø.Test;
                 XmlDocument sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                Responsvalidator responsvalidator = new Responsvalidator(_tomKøKvittering, sendtKvitteringsForespørsel, miljø);
+                Responsvalidator responsvalidator = new Responsvalidator(_tomKøKvittering, sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
                 
                 //Act
                 responsvalidator.ValiderTomkøkvittering();

@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     /// </summary>
     internal class Responsvalidator
     {
-        internal Miljø KjørendeMiljø { get; set; }
+        public Sertifikatvalidator Sertifikatvalidator { get; set; }
         private XmlDocument responseDocument;
         private XmlNamespaceManager nsMgr;
         private XmlDocument _sendtMelding;
@@ -44,9 +44,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
         /// <param name="kjørendeMiljø"></param>
-        public Responsvalidator(string respons, XmlDocument sendtMelding, Miljø kjørendeMiljø)
+        public Responsvalidator(string respons, XmlDocument sendtMelding, Sertifikatvalidator sertifikatvalidator)
         {
-            KjørendeMiljø = kjørendeMiljø;
+            Sertifikatvalidator = sertifikatvalidator;
+
             responseDocument = new XmlDocument();
             responseDocument.LoadXml(respons);
 
@@ -135,7 +136,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderResponssertifikat()
         {
-            bool erGyldig = KjørendeMiljø.Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
+            bool erGyldig = Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
 
             if (!erGyldig)
             {
