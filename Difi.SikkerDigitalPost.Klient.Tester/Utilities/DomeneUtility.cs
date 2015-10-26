@@ -35,15 +35,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         private static Dokument _hoveddokument;
         
         private static IEnumerable<Dokument> _vedlegg;
-        
-        private static FysiskPostMottaker _fysiskPostMottaker;
-        
-        private static FysiskPostReturmottaker _fysiskPostReturmottaker;
-
-        private static X509Certificate2 _avsenderSertifikat;
-        
-        private static X509Certificate2 _mottakerSertifikat;
-        
 
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
@@ -111,26 +102,25 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
+        internal static DigitalPostMottaker GetDigitalPostMottakerMedTestSertifikat()
+        {
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetAvsenderTestSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+        }
+
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            if (_fysiskPostMottaker != null)
-            {
-                return _fysiskPostMottaker;
-            }
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+        }
 
-            return
-                _fysiskPostMottaker =
-                    new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+        internal static FysiskPostMottaker GetFysiskPostMottakerMedTestSertifikat()
+        {
+            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetMottakerTestSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
         {
-            if (_fysiskPostReturmottaker != null)
-            {
-                return _fysiskPostReturmottaker;
-            }
-            return _fysiskPostReturmottaker = 
-                new FysiskPostReturmottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"));
+            
+            return new FysiskPostReturmottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"));
         }
 
         internal static Databehandler GetDatabehandler()
@@ -152,6 +142,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel");
         }
 
+        internal static DigitalPostInfo GetDigitalPostInfoEnkelMedTestSertifikat()
+        {
+            return new DigitalPostInfo(GetDigitalPostMottakerMedTestSertifikat(), "Ikke-sensitiv tittel");
+        }
+
         internal static FysiskPostInfo GetFysiskPostInfoEnkel()
         {
             return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
@@ -161,6 +156,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+        }
+
+        internal static Forsendelse GetDigitalForsendelseEnkelMedTestSertifikat()
+        {
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkelMedTestSertifikat(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetFysiskForsendelseEnkel()
@@ -177,6 +177,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             
             return new AsicEArkiv(GetDigitalForsendelseEnkel(), GuidUtility, GetAvsenderSertifikat());
+        }
+
+        internal static AsicEArkiv GetAsicEArkivEnkelMedTestSertifikat()
+        {
+
+            return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderTestSertifikat());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
@@ -198,26 +204,29 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             });
         }
 
-        internal static X509Certificate2 GetAvsenderSertifikat()
+        internal static X509Certificate2 GetAvsenderTestSertifikat()
         {
-            if (_avsenderSertifikat != null)
-            {
-                return _avsenderSertifikat;
-            }
+            return EvigTestSertifikat();
+        }
 
-            return _avsenderSertifikat = CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
+        internal static X509Certificate2 GetMottakerTestSertifikat()
+        {
+            return EvigTestSertifikat();
+        }
+
+        private static X509Certificate2 EvigTestSertifikat()
+        {
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikat", "difi-enhetstester.p12"));
+        }
+
+        internal static X509Certificate2 GetAvsenderSertifikat()
+        {   
+            return CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerSertifikat()
         {
-            if (_mottakerSertifikat != null)
-            {
-                return _mottakerSertifikat;
-            }
-
-            return
-                _mottakerSertifikat =
-                    CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
+            return CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
         }
 
     }

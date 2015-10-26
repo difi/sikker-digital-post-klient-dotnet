@@ -72,6 +72,7 @@
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
     <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
+    <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -188,6 +189,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="testdata\sertifikat\difi-enhetstester.cer" />
+    <None Include="testdata\sertifikat\difi-enhetstester.p12" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />

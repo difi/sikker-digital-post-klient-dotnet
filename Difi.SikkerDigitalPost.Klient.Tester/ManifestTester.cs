@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
 
                 var manifestXml = arkiv.Manifest.Xml();
                 var manifestValidering = new ManifestValidator();
@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereManifestMotXsdValiderer()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkel();
+                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
 
                 var manifestXml = arkiv.Manifest.Xml();
 
