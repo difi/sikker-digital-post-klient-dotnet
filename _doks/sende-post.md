@@ -71,11 +71,6 @@ dokumentpakke.LeggTilVedlegg(vedlegg);
 {% endhighlight %}
 
 <blockquote>
-	<b>Viktig å huske på</b>: <code>Dokument.Tittel</code> brukes bare for hoveddokument ved sending digitalt og vises bare i innboksen om du har satt sikkerhetsnivå til <code>Sikekrhetsnivå.Nivå3</code>. Ved <code>Sikkerhetsnivå.Nivå4</code> vil tittelen være <i>Konfidensielt brev</i>.
-	<code>Dokument.Filnavn</code> er visningsnavn for filen i digital postkasse. Merk at filnavn trenger ikke ha filendelse. Ved nedlasting av fil vil filnavn være en kombinasjon av dato og <code>Dokument.Filnavn</code>. 
-</blockquote>
-
-<blockquote>
 Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se [http://begrep.difi.no](http://begrep.difi.no/Felles/ikkeSensitivTittel) for detaljer om denne forskjellen.
 </blockquote>
 
