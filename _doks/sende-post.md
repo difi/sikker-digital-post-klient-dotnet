@@ -75,6 +75,9 @@ dokumentpakke.LeggTilVedlegg(vedlegg);
 	<code>Dokument.Filnavn</code> er visningsnavn for filen i digital postkasse. Merk at filnavn trenger ikke ha filendelse. Ved nedlasting av fil vil filnavn være en kombinasjon av dato og <code>Dokument.Filnavn</code>. 
 </blockquote>
 
+<blockquote>
+Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se [http://begrep.difi.no](http://begrep.difi.no/Felles/ikkeSensitivTittel) for detaljer om denne forskjellen.
+</blockquote>
 
 Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo` eller `FysiskPostInfo`). 
 
