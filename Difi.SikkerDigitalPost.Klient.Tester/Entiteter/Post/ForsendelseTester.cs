@@ -63,17 +63,32 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Tests
             public void KonstruktørForIdentiskHash()
             {
                 //Arrange
+                var prioritet = Prioritet.Normal;
+                var mpcId = "mpcId";
+                var språkkode = "NO";
+
                 var konversasjonsid = Guid.NewGuid();
                 Forsendelse forsendelse = new Forsendelse(
                     DomeneUtility.GetAvsender(),
                     DomeneUtility.GetDigitalPostInfoEnkel(),
                     DomeneUtility.GetDokumentpakkeUtenVedlegg(),
-                    konversasjonsid);
+                    konversasjonsid, 
+                    prioritet,
+                    mpcId, 
+                    språkkode);
 
                 //Act
 
                 //Assert
+
                 Assert.AreEqual(konversasjonsid, forsendelse.KonversasjonsId);
+                Assert.IsNotNull(forsendelse.Avsender);
+                Assert.IsNotNull(forsendelse.PostInfo);
+                Assert.IsNotNull(forsendelse.Dokumentpakke);
+                Assert.AreEqual(prioritet, forsendelse.Prioritet);
+                Assert.AreEqual(mpcId, forsendelse.MpcId);
+                Assert.AreEqual(språkkode, forsendelse.Språkkode);
+
             }
             
                       
