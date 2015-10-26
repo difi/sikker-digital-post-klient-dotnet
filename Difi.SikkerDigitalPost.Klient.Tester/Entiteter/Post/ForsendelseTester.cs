@@ -1,0 +1,82 @@
+﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Tests
+{
+    [TestClass()]
+    public class ForsendelseTester
+    {
+        [TestClass]
+        public class KonstruktørMethod : ForsendelseTester
+        {
+            [TestMethod]
+            public void EnkelKonstruktør()
+            {
+                //Arrange
+                Forsendelse forsendelse = new Forsendelse(
+                    DomeneUtility.GetAvsender(), 
+                    DomeneUtility.GetDigitalPostInfoEnkel(), 
+                    DomeneUtility.GetDokumentpakkeUtenVedlegg()
+                    );
+
+                //Act
+
+                //Assert
+                Assert.IsNotNull(forsendelse.Avsender);
+                Assert.IsNotNull(forsendelse.PostInfo);
+                Assert.IsNotNull(forsendelse.Dokumentpakke);
+            }
+
+            [TestMethod]
+            public void KonstruktørMedOptionalParametere()
+            {
+                //Arrange
+                var prioritet = Prioritet.Normal;
+                var mpcId = "mpcId";
+                var språkkode = "NO";
+
+                Forsendelse forsendelse = new Forsendelse(
+                    DomeneUtility.GetAvsender(),
+                    DomeneUtility.GetDigitalPostInfoEnkel(),
+                    DomeneUtility.GetDokumentpakkeUtenVedlegg(),
+                    prioritet, 
+                    mpcId, 
+                    språkkode
+                    );
+
+
+                //Act
+
+                //Assert
+                Assert.IsNotNull(forsendelse.Avsender);
+                Assert.IsNotNull(forsendelse.PostInfo);
+                Assert.IsNotNull(forsendelse.Dokumentpakke);
+                Assert.AreEqual(prioritet, forsendelse.Prioritet);
+                Assert.AreEqual(mpcId, forsendelse.MpcId);
+                Assert.AreEqual(språkkode, forsendelse.Språkkode);
+            }
+
+            [TestMethod]
+            public void KonstruktørForIdentiskHash()
+            {
+                //Arrange
+                var konversasjonsid = Guid.NewGuid();
+                Forsendelse forsendelse = new Forsendelse(
+                    DomeneUtility.GetAvsender(),
+                    DomeneUtility.GetDigitalPostInfoEnkel(),
+                    DomeneUtility.GetDokumentpakkeUtenVedlegg(),
+                    konversasjonsid);
+
+                //Act
+
+                //Assert
+                Assert.AreEqual(konversasjonsid, forsendelse.KonversasjonsId);
+            }
+            
+                      
+        }
+    }
+}
