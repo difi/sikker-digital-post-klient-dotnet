@@ -13,7 +13,7 @@ For å sette url mot meldingsformidler, kan du gjøre dette slik:
 {% highlight csharp%}
 var klientkonfigurasjon = new Klientkonfigurasjon();
 
-klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
+klientkonfigurasjon.MeldingsformidlerUrl = new Uri("https://eksempelendepunkt.no")
 
 {% endhighlight%}
 
