@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             {
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms";
-                var miljø = Miljø.Test;
+                var miljø = Miljø.FunksjoneltTestmiljø;
                 var sertifikater = SertifikatUtility.TestSertifikater();
 
                 //Act
@@ -32,7 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             {
                 //Arrange
                 var url = "https://meldingsformidler.digipost.no/api/ebms";
-                var miljø = Miljø.Produksjon;
+                var miljø = Miljø.Produksjonsmiljø;
                 var sertifikater = SertifikatUtility.ProduksjonsSertifikater();
 
                 //Act

@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 {
     [TestClass]
-    public class SertifikatvalidatorTestTester
+    public class SertifikatvalidatorFunksjoneltTestmiljøTester
     {
         readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorTestTester
+        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorFunksjoneltTestmiljøTester
         {
             [TestMethod]
             public void GodkjennerTestsertifikatReturnererKjedeSomOutparameter()

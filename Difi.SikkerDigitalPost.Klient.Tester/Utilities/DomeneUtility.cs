@@ -193,7 +193,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 GetAsicEArkivEnkelMedTestSertifikat(),
                 GetDatabehandler(),
                 GuidUtility,
-                new Klientkonfigurasjon(Miljø.Test));
+                new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
             return new ForretningsmeldingEnvelope(envelopeSettings);
         }
 
@@ -204,13 +204,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 GetAsicEArkivEnkel(),
                 GetDatabehandler(),
                 GuidUtility,
-                new Klientkonfigurasjon(Miljø.Test));
+                new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
             return new ForretningsmeldingEnvelope(envelopeSettings);
         }
 
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
         {
-            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.Test));
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
         }
 
         internal static X509Certificate2 GetAvsenderTestSertifikat()

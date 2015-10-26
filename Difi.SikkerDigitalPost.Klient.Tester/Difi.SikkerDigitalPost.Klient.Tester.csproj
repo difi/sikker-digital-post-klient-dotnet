@@ -92,7 +92,7 @@
     <Compile Include="SertifikatTester.cs" />
     <Compile Include="XmlValidering\ResponsvalidatorTester.cs" />
     <Compile Include="XmlValidering\SertifikatValidatorProduksjonTester.cs" />
-    <Compile Include="XmlValidering\SertifikatvalidatorTestTester.cs" />
+    <Compile Include="XmlValidering\SertifikatvalidatorFunksjoneltTestmiljøTester.cs" />
     <Compile Include="XmlValidering\MiljøTester.cs" />
   </ItemGroup>
   <ItemGroup>

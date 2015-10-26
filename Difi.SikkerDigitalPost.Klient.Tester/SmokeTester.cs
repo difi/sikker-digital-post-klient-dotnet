@@ -70,7 +70,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
             var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
-            var klientKonfig = new Klientkonfigurasjon(Miljø.Test)
+            var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
             {
                 LoggXmlTilFil = true
             };

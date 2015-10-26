@@ -11,7 +11,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         static readonly ResourceUtility _resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorTestTester
+        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorFunksjoneltTestmiljøTester
         {
             [TestMethod]
             public void GodkjennerProduksjonssertifikatReturnererKjedeSomOutparameter()

@@ -159,7 +159,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static Klientkonfigurasjon SettOppKlientkonfigurasjon()
         {
-            var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.Test);
+            var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
             LeggTilLogging(klientkonfigurasjon);
             klientkonfigurasjon.LoggXmlTilFil = false; 
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";

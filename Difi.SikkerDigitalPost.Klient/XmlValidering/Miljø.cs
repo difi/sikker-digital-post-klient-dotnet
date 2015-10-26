@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             Url = url;
         }
 
-        public static Miljø Test
+        public static Miljø FunksjoneltTestmiljø
         {
             get
             {
@@ -29,12 +29,35 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             }
         }
 
-        public static Miljø Produksjon
+        public static Miljø Produksjonsmiljø
         {
             get
             {
                 return new Miljø(
                     new Uri("https://meldingsformidler.digipost.no/api/ebms"),
+                    new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater())
+                    );
+            }
+        }
+
+        public static Miljø FunksjoneltTestmiljøNorskHelsenett
+        {
+            get
+            {
+                return new Miljø(
+                    new Uri("https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/"),
+                    new SertifikatValidatorTest(SertifikatUtility.TestSertifikater())
+                    );
+
+            }
+        }
+
+        public static Miljø ProduksjonsmiljøNorskHelsenett
+        {
+            get
+            {
+                return new Miljø(
+                    new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
                     new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater())
                     );
             }

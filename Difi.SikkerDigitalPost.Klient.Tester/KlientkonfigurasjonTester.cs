@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             [TestMethod] public void EnkelKonstruktørMedMiljø()
             {
                 //Arrange
-                var miljø = Miljø.Test;
+                var miljø = Miljø.FunksjoneltTestmiljø;
                 var organisasjonsnummerPosten = "984661185";
                 object proxyhost = null;
                 string proxyScheme = "https";
