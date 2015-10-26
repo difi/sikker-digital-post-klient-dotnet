@@ -71,7 +71,7 @@ dokumentpakke.LeggTilVedlegg(vedlegg);
 {% endhighlight %}
 
 <blockquote>
-Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <http://begrep.difi.no/Felles/ikkeSensitivTittel> for detaljer om denne forskjellen.
+Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se http://begrep.difi.no/Felles/ikkeSensitivTittel for detaljer om denne forskjellen.
 </blockquote>
 
 Deretter er det bare å opprette en forsendelse med `PostInfo` (`DigitalPostInfo` eller `FysiskPostInfo`). 
