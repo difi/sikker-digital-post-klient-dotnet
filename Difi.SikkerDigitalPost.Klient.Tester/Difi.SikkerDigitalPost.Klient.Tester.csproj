@@ -212,7 +212,9 @@
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="testdata\sertifikater\prod\DigipostVirksomhetssertifikat.pem" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />
   </ItemGroup>
