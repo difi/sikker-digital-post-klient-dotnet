@@ -18,15 +18,17 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
             {
                 //Arrange
                 var produksjonssertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
+                X509ChainStatus[] kjedestatus;
+
 
                 //Act
-                SertifikatValidatorProduksjon sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
-                X509ChainStatus[] kjedestatus;
-                var result = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
+                var sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
 
                 //Assert
-                Assert.IsTrue(result);
-                Assert.AreEqual(0, kjedestatus.Length);
+                int forventetAntallStatusElementer = 0;
+                Assert.IsTrue(erGyldigResponssertifikat);
+                Assert.AreEqual(forventetAntallStatusElementer, kjedestatus.Length);
             }
 
             [TestMethod]
@@ -36,11 +38,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var produksjonssertifikat = new X509Certificate2(_resourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
 
                 //Act
-                SertifikatValidatorProduksjon sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
-                var result = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
+                var sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
 
                 //Assert
-                Assert.IsTrue(result);
+                Assert.IsTrue(erGyldigResponssertifikat);
             }
         }
     }

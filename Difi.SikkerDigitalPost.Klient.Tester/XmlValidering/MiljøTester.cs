@@ -42,6 +42,38 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 Assert.AreEqual(url, miljø.Url.ToString());
                 CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatvalidator.SertifikatLager);
             }
+
+            [TestMethod]
+            public void ReturnererInitialisertTestmiljøNorskHelsenett()
+            {
+                //Arrange
+                var url = "https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/";
+                var miljø = Miljø.FunksjoneltTestmiljøNorskHelsenett;
+                var sertifikater = SertifikatUtility.TestSertifikater();
+
+                //Act
+
+                //Assert
+                Assert.IsNotNull(miljø.Sertifikatvalidator);
+                Assert.AreEqual(url, miljø.Url.AbsoluteUri);
+                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatvalidator.SertifikatLager);
+            }
+
+            [TestMethod]
+            public void ReturnererInitialisertProduksjonsmiljøNorskHelsenett()
+            {
+                //Arrange
+                var url = "https://meldingsformidler.nhn.digipost.no:4444/api/";
+                var miljø = Miljø.ProduksjonsmiljøNorskHelsenett;
+                var sertifikater = SertifikatUtility.ProduksjonsSertifikater();
+
+                //Act
+
+                //Assert
+                Assert.IsNotNull(miljø.Sertifikatvalidator);
+                Assert.AreEqual(url, miljø.Url.ToString());
+                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatvalidator.SertifikatLager);
+            }
         }
     }
 }

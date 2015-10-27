@@ -29,11 +29,13 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     /// </summary>
     internal class Responsvalidator
     {
-        public Sertifikatvalidator Sertifikatvalidator { get; set; }
-        private readonly XmlDocument _responsdokument;
-        private readonly XmlNamespaceManager nsMgr;
-        private readonly XmlDocument _sendtMelding;
+        public XmlDocument Respons { get; internal set; }
 
+        public XmlDocument SendtMelding { get; internal set; }
+
+        public Sertifikatvalidator Sertifikatvalidator { get; internal set; }
+        
+        private readonly XmlNamespaceManager nsMgr;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
         private XmlElement _signaturnode;
         private X509Certificate2 _sertifikat;
@@ -46,10 +48,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <param name="kjørendeMiljø"></param>
         public Responsvalidator(XmlDocument respons, XmlDocument sendtMelding, Sertifikatvalidator sertifikatvalidator)
         {
+            Respons = respons;
+            SendtMelding = sendtMelding;
             Sertifikatvalidator = sertifikatvalidator;
 
-            _responsdokument = respons;
-            nsMgr = new XmlNamespaceManager(_responsdokument.NameTable);
+            
+            nsMgr = new XmlNamespaceManager(Respons.NameTable);
             nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
             nsMgr.AddNamespace("ds", NavneromUtility.XmlDsig);
@@ -58,8 +62,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             nsMgr.AddNamespace("ebbp", NavneromUtility.EbppSignals);
             nsMgr.AddNamespace("sbd", NavneromUtility.StandardBusinessDocumentHeader);
             nsMgr.AddNamespace("difi", NavneromUtility.DifiSdpSchema10);
-
-            _sendtMelding = sendtMelding;
         }
 
         public void ValiderMeldingskvittering()
@@ -81,9 +83,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderHeaderSignatur()
         {
-            XmlNode responsRot = _responsdokument.DocumentElement;
+            XmlNode responsRot = Respons.DocumentElement;
             _signaturnode = (XmlElement)responsRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
-            _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(_responsdokument);
+            _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(Respons);
 
             ValiderSignaturelementer();
             ValiderSignaturOgSertifikat("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
@@ -92,7 +94,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private void ValiderKvitteringSignatur()
         {
             var standardBusinessDocumentNode =
-                _responsdokument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
+                Respons.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
 
             if (standardBusinessDocumentNode != null)
             {
@@ -150,13 +152,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             var sendtMeldingDigestSti = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
             var mottattSvarDigestSti = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";
 
-            foreach (var uri in new [] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId })
+            var ider = new [] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId };
+            foreach (var id in ider)
             {
-                var sendtMeldingDigest = _sendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, uri), nsMgr).InnerText;
-                var mottattSvarDigest = _responsdokument.SelectSingleNode(string.Format(mottattSvarDigestSti, uri), nsMgr).InnerText;
+                var sendtMeldingDigest = SendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, id), nsMgr).InnerText;
+                var mottattSvarDigest = Respons.SelectSingleNode(string.Format(mottattSvarDigestSti, id), nsMgr).InnerText;
 
                 if (sendtMeldingDigest != mottattSvarDigest)
-                    throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", uri, sendtMeldingDigest, mottattSvarDigest));
+                    throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", id, sendtMeldingDigest, mottattSvarDigest));
             }
         }
 
@@ -183,7 +186,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private XmlElement HentMålnode(string elementId)
         {
-            var targetNode = _signedXmlWithAgnosticId.GetIdElement(_responsdokument, elementId);
+            var targetNode = _signedXmlWithAgnosticId.GetIdElement(Respons, elementId);
             return targetNode;
         }
 
@@ -205,7 +208,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ResponsInneholderPåkrevdeNoder(string elementXPath, out XmlNodeList nodes)
         {
-            nodes = _responsdokument.SelectNodes(elementXPath, nsMgr);
+            nodes = Respons.SelectNodes(elementXPath, nsMgr);
             if (nodes == null || nodes.Count == 0)
                 throw new SdpSecurityException(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.",elementXPath));
             if (nodes.Count > 1)

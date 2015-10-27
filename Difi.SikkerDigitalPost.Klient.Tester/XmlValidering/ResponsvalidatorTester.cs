@@ -23,17 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 
         private readonly string _tomKøKvittering = KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø;
         
-        private XmlDocument SendtMeldingXmlDocument
-        {
-            get
-            {
-                XmlDocument sendtMelding = new XmlDocument();
-                sendtMelding.LoadXml(_sendtMeldingXmlTestMiljø); 
-                return sendtMelding;
-            }
-        }
-
-        private static XmlDocument ToXmlDocument(string xml)
+        private static XmlDocument TilXmlDokument(string xml)
         {
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
@@ -54,17 +44,20 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         public class KonstruktørMethod : ResponsvalidatorTester
         {
             [TestMethod]
-            public void EnkelKonstruktørMedSertifikatvalidator()
+            public void EnkelKonstruktør()
             {
                 ////Arrange
-                var sendtMelding = SendtMeldingXmlDocument;
+                var sendtMelding = TilXmlDokument(_sendtMeldingXmlTestMiljø);
+                var respons = TilXmlDokument(_responsTransportkvitteringXmlTestmiljø);
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                Responsvalidator responsvalidator = new Responsvalidator(ToXmlDocument(_responsTransportkvitteringXmlTestmiljø), sendtMelding, miljø.Sertifikatvalidator);
+                Responsvalidator responsvalidator = new Responsvalidator(respons, sendtMelding, miljø.Sertifikatvalidator);
 
                 //Act
 
                 //Assert
                 Assert.AreEqual(miljø.Sertifikatvalidator, responsvalidator.Sertifikatvalidator);
+                Assert.AreEqual(sendtMelding, responsvalidator.SendtMelding);
+                Assert.AreEqual(respons, responsvalidator.Respons);
             }
         }
 
@@ -78,7 +71,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 AddRsaSha256AlgorithmToCryptoConfig();
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                Responsvalidator responsvalidator = new Responsvalidator(ToXmlDocument(_responsTransportkvitteringXmlTestmiljø), SendtMeldingXmlDocument, miljø.Sertifikatvalidator);
+                var sendtMeldingXmlDocument = TilXmlDokument(_sendtMeldingXmlTestMiljø);
+                Responsvalidator responsvalidator = new Responsvalidator(TilXmlDokument(_responsTransportkvitteringXmlTestmiljø), sendtMeldingXmlDocument, miljø.Sertifikatvalidator);
                 GuidUtility guidUtility = new GuidUtility()
                 {
                     BinarySecurityTokenId = "X509-513ffecb-cd7e-4bb3-a4c5-47eff314683f",
@@ -109,7 +103,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 
                 XmlDocument sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                Responsvalidator responsvalidator = new Responsvalidator(respons: ToXmlDocument(_responsKvitteringsForespørsel), sendtMelding: sendtKvitteringsForespørsel, sertifikatvalidator: miljø.Sertifikatvalidator);
+                Responsvalidator responsvalidator = new Responsvalidator(respons: TilXmlDokument(_responsKvitteringsForespørsel), sendtMelding: sendtKvitteringsForespørsel, sertifikatvalidator: miljø.Sertifikatvalidator);
 
                 //Act
                 responsvalidator.ValiderMeldingskvittering();
@@ -130,7 +124,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 XmlDocument sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                Responsvalidator responsvalidator = new Responsvalidator(ToXmlDocument(_tomKøKvittering), sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
+                Responsvalidator responsvalidator = new Responsvalidator(TilXmlDokument(_tomKøKvittering), sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
                 
                 //Act
                 responsvalidator.ValiderTomkøkvittering();

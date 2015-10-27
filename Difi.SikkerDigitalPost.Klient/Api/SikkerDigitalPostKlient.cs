@@ -111,7 +111,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var transportKvittering = KvitteringFactory.GetTransportkvittering(transportkvitteringRådata);
 
-            XmlDocument transportkvitteringXml = new XmlDocument();
+            var transportkvitteringXml = new XmlDocument();
             transportkvitteringXml.LoadXml(transportkvitteringRådata);
 
             SikkerhetsvalideringAvTransportkvittering(transportkvitteringXml, forretningsmeldingEnvelope.Xml(), guidHandler);
@@ -240,7 +240,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
-            XmlDocument kvitteringsresponsXml = new XmlDocument();
+            var kvitteringsresponsXml = new XmlDocument();
             kvitteringsresponsXml.LoadXml(kvitteringsresponsrådata);
 
             var kvitteringsrespons = KvitteringFactory.GetForretningskvittering(kvitteringsresponsrådata);
