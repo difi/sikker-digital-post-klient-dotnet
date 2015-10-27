@@ -111,7 +111,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var transportKvittering = KvitteringFactory.GetTransportkvittering(transportkvitteringRådata);
 
-            SikkerhetsvalideringAvTransportkvittering(transportKvittering, forretningsmeldingEnvelope.Xml(), guidHandler);
+            XmlDocument transportkvitteringXml = new XmlDocument();
+            transportkvitteringXml.LoadXml(transportkvitteringRådata);
+
+            SikkerhetsvalideringAvTransportkvittering(transportkvitteringXml, forretningsmeldingEnvelope.Xml(), guidHandler);
 
             return transportKvittering;
         }
@@ -237,17 +240,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
+            XmlDocument kvitteringsresponsXml = new XmlDocument();
+            kvitteringsresponsXml.LoadXml(kvitteringsresponsrådata);
+
             var kvitteringsrespons = KvitteringFactory.GetForretningskvittering(kvitteringsresponsrådata);
-
-            bool isTomKøKvittering = kvitteringsrespons == null;
-
+            
+            var isTomKøKvittering = kvitteringsrespons == null;
             if (isTomKøKvittering)
             {
-                SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsrådata, kvitteringsforespørselEnvelope.Xml());
+                SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope.Xml());
             }
             else
             {
-                SikkerhetsvalideringAvMeldingskvittering(kvitteringsrespons, kvitteringsforespørselEnvelope);
+                SikkerhetsvalideringAvMeldingskvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope);
             }
 
             return kvitteringsrespons;
@@ -269,22 +274,21 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             }
 
         }
-
-        private void SikkerhetsvalideringAvTomKøKvittering(string kvitteringsresponsrådata, XmlDocument forretningsmelding)
+        private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
-            var responsvalidator = new Responsvalidator(respons: kvitteringsresponsrådata, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
-            responsvalidator.ValiderTomkøkvittering();
-        }
-
-        private void SikkerhetsvalideringAvTransportkvittering(Kvittering kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
-        {
-            var responsvalidator = new Responsvalidator(respons: kvittering.Rådata, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator );
+            var responsvalidator = new Responsvalidator(respons: kvittering, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator );
             responsvalidator.ValiderTransportkvittering(guidUtility);
         }
 
-        private void SikkerhetsvalideringAvMeldingskvittering(Kvittering kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering.Rådata, sendtMelding: kvitteringsforespørselEnvelope.Xml(), sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
+            var responsvalidator = new Responsvalidator(respons: kvittering, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
+            responsvalidator.ValiderTomkøkvittering();
+        }
+
+        private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        {
+            var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering, sendtMelding: kvitteringsforespørselEnvelope.Xml(), sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
         }
 

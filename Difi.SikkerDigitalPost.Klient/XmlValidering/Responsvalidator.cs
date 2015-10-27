@@ -30,9 +30,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     internal class Responsvalidator
     {
         public Sertifikatvalidator Sertifikatvalidator { get; set; }
-        private XmlDocument responseDocument;
-        private XmlNamespaceManager nsMgr;
-        private XmlDocument _sendtMelding;
+        private readonly XmlDocument _responsdokument;
+        private readonly XmlNamespaceManager nsMgr;
+        private readonly XmlDocument _sendtMelding;
 
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
         private XmlElement _signaturnode;
@@ -44,14 +44,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
         /// <param name="kjørendeMiljø"></param>
-        public Responsvalidator(string respons, XmlDocument sendtMelding, Sertifikatvalidator sertifikatvalidator)
+        public Responsvalidator(XmlDocument respons, XmlDocument sendtMelding, Sertifikatvalidator sertifikatvalidator)
         {
             Sertifikatvalidator = sertifikatvalidator;
 
-            responseDocument = new XmlDocument();
-            responseDocument.LoadXml(respons);
-
-            nsMgr = new XmlNamespaceManager(responseDocument.NameTable);
+            _responsdokument = respons;
+            nsMgr = new XmlNamespaceManager(_responsdokument.NameTable);
             nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
             nsMgr.AddNamespace("ds", NavneromUtility.XmlDsig);
@@ -83,19 +81,18 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderHeaderSignatur()
         {
-            XmlNode responsRot = responseDocument.DocumentElement;
+            XmlNode responsRot = _responsdokument.DocumentElement;
             _signaturnode = (XmlElement)responsRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", nsMgr);
-            _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(responseDocument);
+            _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(_responsdokument);
 
-            ValiderInnhold();
-
+            ValiderSignaturelementer();
             ValiderSignaturOgSertifikat("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
         }
 
         private void ValiderKvitteringSignatur()
         {
             var standardBusinessDocumentNode =
-                responseDocument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
+                _responsdokument.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", nsMgr);
 
             if (standardBusinessDocumentNode != null)
             {
@@ -136,11 +133,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderResponssertifikat()
         {
-            bool erGyldig = Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
+            var erGyldigSertifikat = Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
 
-            if (!erGyldig)
+            if (!erGyldigSertifikat)
             {
-                throw new SdpSecurityException("Sertifikatet som er angitt i signaturen er ikke signert av en gyldig mellomliggende utsteder.");
+                throw new SdpSecurityException("Sertifikatet som er angitt i signaturen er ikke en del av en gyldig sertifikatkjede.");
             }
         }
 
@@ -156,7 +153,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             foreach (var uri in new [] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId })
             {
                 var sendtMeldingDigest = _sendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, uri), nsMgr).InnerText;
-                var mottattSvarDigest = responseDocument.SelectSingleNode(string.Format(mottattSvarDigestSti, uri), nsMgr).InnerText;
+                var mottattSvarDigest = _responsdokument.SelectSingleNode(string.Format(mottattSvarDigestSti, uri), nsMgr).InnerText;
 
                 if (sendtMeldingDigest != mottattSvarDigest)
                     throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", uri, sendtMeldingDigest, mottattSvarDigest));
@@ -166,14 +163,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <summary>
         /// Sjekker at soap envelopen inneholder timestamp, body og messaging element med korrekt id og referanser i security signaturen.
         /// </summary>
-        private void ValiderInnhold()
+        private void ValiderSignaturelementer()
         {
             string[] requiredSignatureElements = { "/env:Envelope/env:Header/wsse:Security/wsu:Timestamp", "/env:Envelope/env:Body", "/env:Envelope/env:Header/eb:Messaging" };
 
             foreach (var elementXPath in requiredSignatureElements)
             {
                 XmlNodeList nodes;
-                ResponseInneholderPåkrevedeNoder(elementXPath, out nodes);
+                ResponsInneholderPåkrevdeNoder(elementXPath, out nodes);
 
                 var elementId = ElementId(nodes);
                 FinnReferanseTilNodeISignaturElement(elementId, elementXPath);
@@ -186,7 +183,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private XmlElement HentMålnode(string elementId)
         {
-            var targetNode = _signedXmlWithAgnosticId.GetIdElement(responseDocument, elementId);
+            var targetNode = _signedXmlWithAgnosticId.GetIdElement(_responsdokument, elementId);
             return targetNode;
         }
 
@@ -195,14 +192,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             var references = _signaturnode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId),
                 nsMgr);
             if (references == null || references.Count == 0)
-                throw new Exception(
-                    string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.",
-                        elementXPath));
+                throw new SdpSecurityException(string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.",elementXPath));
             if (references.Count > 1)
-                throw new Exception(
-                    string.Format(
-                        "Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.",
-                        elementXPath, references.Count));
+                throw new SdpSecurityException(string.Format("Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.",elementXPath, references.Count));
         }
 
         private static string ElementId(XmlNodeList nodes)
@@ -211,17 +203,13 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return elementId;
         }
 
-        private void ResponseInneholderPåkrevedeNoder(string elementXPath, out XmlNodeList nodes)
+        private void ResponsInneholderPåkrevdeNoder(string elementXPath, out XmlNodeList nodes)
         {
-            nodes = responseDocument.SelectNodes(elementXPath, nsMgr);
+            nodes = _responsdokument.SelectNodes(elementXPath, nsMgr);
             if (nodes == null || nodes.Count == 0)
-                throw new Exception(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.",
-                    elementXPath));
+                throw new SdpSecurityException(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.",elementXPath));
             if (nodes.Count > 1)
-                throw new Exception(
-                    string.Format(
-                        "Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.",
-                        elementXPath, nodes.Count));
+                throw new SdpSecurityException(string.Format("Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.",elementXPath, nodes.Count));
         }
     }
 }

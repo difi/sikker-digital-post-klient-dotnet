@@ -6,7 +6,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     public class Miljø
     {
-
         public Uri Url { get; set; }
 
         internal Sertifikatvalidator Sertifikatvalidator { get; set; }
