@@ -128,10 +128,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             AsymmetricAlgorithm asymmetricAlgorithm;
             if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out asymmetricAlgorithm))
-                throw new Exception("Signaturen i motatt svar er ikke gyldig.");
+                throw new SdpSecurityException("Signaturen i motatt svar er ikke gyldig.");
 
             if (asymmetricAlgorithm.ToXmlString(false) != _sertifikat.PublicKey.Key.ToXmlString(false))
-                throw new Exception(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
+                throw new SdpSecurityException(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
         }
 
         private void ValiderResponssertifikat()
@@ -140,8 +140,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             if (!erGyldig)
             {
-                throw new Exception(
-                    "Sertifikatet som er angitt i signaturen er ikke signert av en gyldig mellomliggende utsteder.");
+                throw new SdpSecurityException("Sertifikatet som er angitt i signaturen er ikke signert av en gyldig mellomliggende utsteder.");
             }
         }
 

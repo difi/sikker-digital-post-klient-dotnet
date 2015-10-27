@@ -5,9 +5,9 @@ using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class SertifikatValidatorTest : Sertifikatvalidator
+    internal class SertifikatValidatorFunksjoneltTestmiljø : Sertifikatvalidator
     {
-        public SertifikatValidatorTest(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
+        public SertifikatValidatorFunksjoneltTestmiljø(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
         {
         }
 

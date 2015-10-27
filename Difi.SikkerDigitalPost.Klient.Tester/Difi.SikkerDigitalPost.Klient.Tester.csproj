@@ -80,6 +80,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="testdata\meldinger\KvitteringsRespons.cs" />
+    <Compile Include="testdata\meldinger\Kvitteringsforespørsel.cs" />
+    <Compile Include="testdata\meldinger\TransportKvittering.cs" />
+    <Compile Include="testdata\meldinger\SendtMelding.cs" />
     <Compile Include="Utilities\SertifikatUtilityTester.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
