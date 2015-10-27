@@ -13,11 +13,10 @@
  */
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -148,19 +147,35 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// </summary>
         /// <param name="guidHandler">Samme guid handler som ble benyttet for å generere det avsendte brevet.</param>
         private void ValiderDigest(GuidUtility guidHandler)
-        {
+       {
             var sendtMeldingDigestSti = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
             var mottattSvarDigestSti = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";
 
-            var ider = new [] { "#" + guidHandler.BodyId, "cid:" + guidHandler.DokumentpakkeId };
-            foreach (var id in ider)
+            var ider = new List<string>
             {
-                var sendtMeldingDigest = SendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, id), nsMgr).InnerText;
-                var mottattSvarDigest = Respons.SelectSingleNode(string.Format(mottattSvarDigestSti, id), nsMgr).InnerText;
+                string.Format("#{0}", guidHandler.BodyId),
+                string.Format("cid:{0}", guidHandler.DokumentpakkeId)
+            };
 
-                if (sendtMeldingDigest != mottattSvarDigest)
-                    throw new Exception(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", id, sendtMeldingDigest, mottattSvarDigest));
+           foreach (var id in ider)
+           {
+                string sendtMeldingDigest;
+                string mottattSvarDigest;
+
+                var erGyldigDigest = ValiderDigestElement(sendtMeldingDigestSti, mottattSvarDigestSti, id, out sendtMeldingDigest, out mottattSvarDigest);
+                if (!erGyldigDigest)
+                {
+                    throw new SdpSecurityException(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", id,sendtMeldingDigest, mottattSvarDigest));
+                }
             }
+        }
+
+        private bool ValiderDigestElement(string sendtMeldingDigestSti, string mottattSvarDigestSti, string id, out string sendtMeldingDigest, out string mottattSvarDigest)
+        {
+            sendtMeldingDigest = SendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, id), nsMgr).InnerText;
+            mottattSvarDigest = Respons.SelectSingleNode(string.Format(mottattSvarDigestSti, id), nsMgr).InnerText;
+
+            return sendtMeldingDigest == mottattSvarDigest;
         }
 
         /// <summary>
@@ -180,7 +195,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
                 var targetNode = HentMålnode(elementId);
                 if (targetNode != nodes[0])
-                    throw new Exception(string.Format("Signaturreferansen med id '{0}' må refererer til node med sti '{1}'", elementId, elementXPath));
+                    throw new SdpSecurityException(string.Format("Signaturreferansen med id '{0}' må refererer til node med sti '{1}'", elementId, elementXPath));
             }
         }
 
