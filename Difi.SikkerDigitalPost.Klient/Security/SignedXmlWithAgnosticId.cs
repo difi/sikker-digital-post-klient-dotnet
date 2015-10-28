@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Security
 {
@@ -136,35 +137,91 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             return result;
         }
 
+       
+
         protected override AsymmetricAlgorithm GetPublicKey()
         {
-            AsymmetricAlgorithm result = base.GetPublicKey();
+           PublicKey = HentNesteKeySomViSkalSjekkeSignaturMot();
+           return PublicKey;
+        }
 
-            // If we have no key, attemt to find one via a SecurityTokenReference.
-            if (result == null && this.KeyInfo != null)
+        AsymmetricAlgorithm PublicKey = null;
+
+        private AsymmetricAlgorithm HentNesteKeySomViSkalSjekkeSignaturMot()
+        {
+            var harHentetPublicKeyTidligere = PublicKey != null;
+            AsymmetricAlgorithm publicKey = null;
+
+            if (this.KeyInfo == null)
             {
-                var keyinfo = this.KeyInfo.GetXml();
-                if (keyinfo != null)
+                throw new CryptographicException("Kryptografi_Xml_Keyinfo nødvendig");
+            }
+
+            if (!harHentetPublicKeyTidligere)
+            {
+                var keyInfoXml = KeyInfo.GetXml();
+                if (keyInfoXml != null)
                 {
-                    XmlNamespaceManager mgr = new XmlNamespaceManager(keyinfo.OwnerDocument.NameTable);
-                    mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
-                    mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
-                    var reference = keyinfo.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", mgr);
-                    if (reference != null)
+                    var keyInfoNamespaceMananger = GetKeyInfoNamespaceMananger(keyInfoXml);
+                    var securityTokenReference = SecurityTokenReference(keyInfoXml, keyInfoNamespaceMananger);
+
+                    if (securityTokenReference != null)
                     {
-                        var targetId = reference.Attributes["URI"].Value;
-                        if (targetId.StartsWith("#"))
-                            targetId = targetId.Substring(1);
-                        var keyElement = FindIdElement(m_containingDocument, targetId);
-                        if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
-                        {
-                            result = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText)).PublicKey.Key;
-                        }
+                        var securityTokenReferanseUri = HentSecurityTokenReferanseUri(securityTokenReference);
+                        var binarySecurityTokenSertifikat = HentBinarySecurityToken(securityTokenReferanseUri);
+
+                        publicKey = binarySecurityTokenSertifikat.PublicKey.Key;
                     }
                 }
             }
 
-            return result;
+            return publicKey;
+        }
+
+        private static XmlNamespaceManager GetKeyInfoNamespaceMananger(XmlElement keyInfoXml)
+        {
+            XmlNamespaceManager mgr = new XmlNamespaceManager(keyInfoXml.OwnerDocument.NameTable);
+            mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+            mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
+
+            return mgr; 
+        }
+
+        private static XmlNode SecurityTokenReference(XmlElement keyInfoXml, XmlNamespaceManager keyInfoNamespaceMananger)
+        {
+            return keyInfoXml.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", keyInfoNamespaceMananger);
+        }
+
+        private string HentSecurityTokenReferanseUri(XmlNode reference)
+        {
+            var uriRefereanseAttributt = reference.Attributes["URI"];
+
+            if (uriRefereanseAttributt == null)
+            {
+                throw new SdpSecurityException("Klarte ikke finne SecurityTokenReferenceUri.");
+            }
+
+            var referanseUriVerdi = uriRefereanseAttributt.Value;
+            if (referanseUriVerdi.StartsWith("#"))
+            {
+                referanseUriVerdi = referanseUriVerdi.Substring(1);
+            }
+
+            return referanseUriVerdi;
+            
+        }
+
+        private X509Certificate2 HentBinarySecurityToken(string securityTokenReferanseUri)
+        {
+            X509Certificate2 publicsertifikat = null;
+
+            var keyElement = FindIdElement(m_containingDocument, securityTokenReferanseUri);
+            if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
+            {
+                publicsertifikat = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText));
+            }
+
+            return publicsertifikat;
         }
     }
 }
