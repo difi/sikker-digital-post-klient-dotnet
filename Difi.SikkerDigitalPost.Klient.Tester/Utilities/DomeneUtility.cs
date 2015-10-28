@@ -105,7 +105,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static DigitalPostMottaker GetDigitalPostMottakerMedTestSertifikat()
         {
-            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetAvsenderTestSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerTestSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
@@ -127,6 +127,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Databehandler GetDatabehandler()
         {
             return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderSertifikat());
+        }
+
+        internal static Databehandler GetDatabehandlerMedTestSertifikat()
+        {
+            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderTestSertifikat());
         }
 
         internal static DigitalPostInfo GetDigitalPostInfoMedVarsel()
@@ -191,7 +196,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var envelopeSettings = new EnvelopeSettings(
                 GetDigitalForsendelseEnkelMedTestSertifikat(),
                 GetAsicEArkivEnkelMedTestSertifikat(),
-                GetDatabehandler(),
+                GetDatabehandlerMedTestSertifikat(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
             return new ForretningsmeldingEnvelope(envelopeSettings);

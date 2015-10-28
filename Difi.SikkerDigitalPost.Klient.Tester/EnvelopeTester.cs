@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     public class EnvelopeTester
     {
         [TestClass]
-        public class XsdValidering
+        public class XsdValidering : EnvelopeTester
         {
             [TestMethod]
             public void ValidereEnvelopeMotXsdValiderer()
