@@ -30,7 +30,21 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 Assert.IsTrue(erGyldigResponssertifikat);
                 Assert.AreEqual(forventetAntallStatusElementer, kjedestatus.Length);
             }
-            
+
+            [TestMethod]
+            public void GodkjennerProduksjonssertifikat()
+            {
+                //Arrange
+                var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
+
+                //Act
+                var sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
+
+                //Assert
+                Assert.IsTrue(erGyldigResponssertifikat);
+            }
+
         }
     }
 }

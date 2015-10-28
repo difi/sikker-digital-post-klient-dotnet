@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Security
 {
@@ -29,7 +30,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
         private XmlDocument m_containingDocument;
-
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
         {

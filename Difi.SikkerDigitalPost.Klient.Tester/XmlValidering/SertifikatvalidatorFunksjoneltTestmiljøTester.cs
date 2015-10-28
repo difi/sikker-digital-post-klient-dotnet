@@ -29,7 +29,20 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 Assert.IsTrue(erGyldigResponssertifikat);
                 Assert.IsTrue(kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
             }
- 
+
+            [TestMethod]
+            public void GodkjennerTestsertifikat()
+            {
+                //Arrange
+                var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+
+                //Act
+                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.TestSertifikater());
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
+
+                //Assert
+                Assert.IsTrue(erGyldigResponssertifikat);
+            }
         }
     }
 }

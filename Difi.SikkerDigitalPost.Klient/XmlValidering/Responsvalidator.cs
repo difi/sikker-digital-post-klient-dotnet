@@ -172,10 +172,18 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private bool ValiderDigestElement(string sendtMeldingDigestSti, string mottattSvarDigestSti, string id, out string sendtMeldingDigest, out string mottattSvarDigest)
         {
-            sendtMeldingDigest = SendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, id), nsMgr).InnerText;
-            mottattSvarDigest = Respons.SelectSingleNode(string.Format(mottattSvarDigestSti, id), nsMgr).InnerText;
+            sendtMeldingDigest = null;
+            mottattSvarDigest = null;
 
-            return sendtMeldingDigest == mottattSvarDigest;
+            var sendtMeldingSelectedNode = SendtMelding.SelectSingleNode(string.Format(sendtMeldingDigestSti, id), nsMgr);
+            if (sendtMeldingSelectedNode != null)
+                sendtMeldingDigest = sendtMeldingSelectedNode.InnerText;
+
+            var responsSelectedNode = Respons.SelectSingleNode(string.Format(mottattSvarDigestSti, id), nsMgr);
+            if (responsSelectedNode != null)
+                mottattSvarDigest = responsSelectedNode.InnerText;
+
+            return (sendtMeldingDigest != null && responsSelectedNode != null) && sendtMeldingDigest == mottattSvarDigest;
         }
 
         /// <summary>
