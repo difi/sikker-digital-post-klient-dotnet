@@ -24,7 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class SignedXmlTester
+    public class GamleSignedXmlTester
     {
         [TestClass]
         public class SignedXmlWithAgnosticIdTester

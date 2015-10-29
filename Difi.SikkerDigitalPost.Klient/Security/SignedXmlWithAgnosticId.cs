@@ -31,6 +31,8 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </remarks>
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
+        const int PROV_RSA_AES = 24;    // CryptoApi provider type for an RSA provider supporting sha-256 digital signatures
+
         private XmlDocument _xmlDokument;
 
         readonly List<AsymmetricAlgorithm> _publicKeys = new List<AsymmetricAlgorithm>();
@@ -38,6 +40,8 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator;
 
         public AsymmetricAlgorithm PublicKey { get; private set; }
+
+        protected RSACryptoServiceProvider SigningKey { get; }
 
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
@@ -54,11 +58,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
             : base(xmlDocument)
         {
-            Initialize(xmlDocument, certificate, inclusiveNamespacesPrefixList);
-        }
-
-        private void Initialize(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-        {
             const string signatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
             // Adds signature method to crypto api
@@ -67,13 +66,13 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
             // Makes sure the signingkey is using Microsoft Enhanced RSA and AES Cryptographic Provider which enables SHA256
             if (!certificate.HasPrivateKey)
-                throw new Exception(string.Format("Angitt sertifikat med fingeravtrykk {0} inneholder ikke en privatnøkkel. Dette er påkrevet for å signere xml dokumenter.", certificate.Thumbprint));
+                throw new SdpSecurityException(string.Format("Angitt sertifikat med fingeravtrykk {0} inneholder ikke en privatnøkkel. Dette er påkrevet for å signere xml dokumenter.", certificate.Thumbprint));
 
             var targetKey = certificate.PrivateKey as RSACryptoServiceProvider;
             if (targetKey == null)
-                throw new Exception(string.Format("Privatnøkkelen i sertifikatet med fingeravtrykk {0} er ikke en gyldig RSA asymetrisk nøkkel.", certificate.Thumbprint));
+                throw new SdpSecurityException(string.Format("Privatnøkkelen i sertifikatet med fingeravtrykk {0} er ikke en gyldig RSA asymetrisk nøkkel.", certificate.Thumbprint));
 
-            if (targetKey.CspKeyContainerInfo.ProviderType == 24)
+            if (targetKey.CspKeyContainerInfo.ProviderType == PROV_RSA_AES)
                 SigningKey = targetKey;
             else
             {
@@ -93,7 +92,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             if (inclusiveNamespacesPrefixList != null)
                 ((XmlDsigExcC14NTransform)SignedInfo.CanonicalizationMethodObject).InclusiveNamespacesPrefixList = inclusiveNamespacesPrefixList;
 
-            _xmlDokument = xml;
+            _xmlDokument = xmlDocument;
         }
 
         public override XmlElement GetIdElement(XmlDocument doc, string id)
@@ -126,6 +125,12 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             return idElem;
         }
 
+        protected override AsymmetricAlgorithm GetPublicKey()
+        {
+            var publicKey = base.GetPublicKey() ?? HentNesteKey();
+            return PublicKey = publicKey;
+        }
+
         private XmlElement FindIdElement(XmlNode node, string idValue)
         {
             XmlElement result = null;
@@ -137,12 +142,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             }
 
             return result;
-        }
-        
-        protected override AsymmetricAlgorithm GetPublicKey()
-        {
-            var publicKey = base.GetPublicKey() ?? HentNesteKey();
-            return PublicKey = publicKey;
         }
 
         private AsymmetricAlgorithm HentNesteKey()
