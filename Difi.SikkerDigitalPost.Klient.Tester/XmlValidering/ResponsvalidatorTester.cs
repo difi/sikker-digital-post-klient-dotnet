@@ -3,6 +3,7 @@ using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,14 +25,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
         private readonly string _tomKøKvittering = KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø;
 
-        private static XmlDocument TilXmlDokument(string xml)
-        {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-
-            return xmlDocument;
-        }
-
         private static void AddRsaSha256AlgorithmToCryptoConfig()
         {
             const string signatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
@@ -48,8 +41,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             public void EnkelKonstruktør()
             {
                 ////Arrange
-                var sendtMelding = TilXmlDokument(_sendtMeldingXmlTestMiljø);
-                var respons = TilXmlDokument(_responsTransportkvitteringXmlTestmiljø);
+                var sendtMelding = XmlUtility.TilXmlDokument(_sendtMeldingXmlTestMiljø);
+                var respons = XmlUtility.TilXmlDokument(_responsTransportkvitteringXmlTestmiljø);
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var responsvalidator = new Responsvalidator(respons, sendtMelding, miljø.Sertifikatvalidator);
 
@@ -72,8 +65,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 AddRsaSha256AlgorithmToCryptoConfig();
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                var sendtMeldingXmlDocument = TilXmlDokument(_sendtMeldingXmlTestMiljø);
-                var responsvalidator = new Responsvalidator(TilXmlDokument(_responsTransportkvitteringXmlTestmiljø),
+                var sendtMeldingXmlDocument = XmlUtility.TilXmlDokument(_sendtMeldingXmlTestMiljø);
+                var responsvalidator = new Responsvalidator(XmlUtility.TilXmlDokument(_responsTransportkvitteringXmlTestmiljø),
                     sendtMeldingXmlDocument, miljø.Sertifikatvalidator);
                 var guidUtility = new GuidUtility
                 {
@@ -104,10 +97,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sendtMeldingXmlDocument =
-                    TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput(dokumentPakkeIdRequest));
+                    XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput(dokumentPakkeIdRequest));
 
                 var mottattTransportKvittering =
-                    TilXmlDokument(
+                    XmlUtility.TilXmlDokument(
                         TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(dokumentPakkeIdRespons));
                 var responsvalidator = new Responsvalidator(mottattTransportKvittering, sendtMeldingXmlDocument,
                     miljø.Sertifikatvalidator);
@@ -144,11 +137,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sendtMeldingXmlDocument =
-                    TilXmlDokument(
+                    XmlUtility.TilXmlDokument(
                         SendtMelding.FunksjoneltTestMiljøMedInput(securityBinary: securityBinaryKvitteringRequest));
 
                 var mottattTransportKvittering =
-                    TilXmlDokument(
+                    XmlUtility.TilXmlDokument(
                         TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(
                             securityBinary: securityBinaryKvittering));
                 var responsvalidator = new Responsvalidator(mottattTransportKvittering, sendtMeldingXmlDocument,
@@ -177,10 +170,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 AddRsaSha256AlgorithmToCryptoConfig();
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                var sendtMeldingXmlDocument = TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
+                var sendtMeldingXmlDocument = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
 
                 var mottattTransportKvittering =
-                    TilXmlDokument(TransportKvittering.TransportOkKvitteringMedByttetDokumentpakkeIdFunksjoneltTestmiljø);
+                    XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvitteringMedByttetDokumentpakkeIdFunksjoneltTestmiljø);
                 var responsvalidator = new Responsvalidator(mottattTransportKvittering, sendtMeldingXmlDocument,
                     miljø.Sertifikatvalidator);
 
@@ -212,7 +205,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                var responsvalidator = new Responsvalidator(TilXmlDokument(_responsKvitteringsForespørsel),
+                var responsvalidator = new Responsvalidator(XmlUtility.TilXmlDokument(_responsKvitteringsForespørsel),
                     sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
 
                 //Act
@@ -234,7 +227,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sendtKvitteringsForespørsel = new XmlDocument();
                 sendtKvitteringsForespørsel.LoadXml(_sendtKvitteringsforespørsel);
-                var responsvalidator = new Responsvalidator(TilXmlDokument(_tomKøKvittering),
+                var responsvalidator = new Responsvalidator(XmlUtility.TilXmlDokument(_tomKøKvittering),
                     sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
 
                 //Act
