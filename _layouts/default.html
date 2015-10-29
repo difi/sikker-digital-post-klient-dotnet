@@ -6,8 +6,8 @@
 	<link rel="shortcut icon" href="//www.difi.no/profiles/difino/themes/difi3_difino/favicon.ico" type="image/vnd.microsoft.icon" />
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link type="text/css" rel="stylesheet" href="//www.difi.no/_style/site/difino/style.css" media="screen" />
-	<link href="assets/css/docs.min.css" rel="stylesheet">
-	<link href="assets/css/style.css" rel="stylesheet">
+	<link href="{{site.baseurl}}/assets/css/docs.min.css" rel="stylesheet">
+	<link href="{{site.baseurl}}/assets/css/style.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7COpen+Sans+Condensed:300,700%7CSource+Sans+Pro:200,300,regular,600,700,900&amp;subset=latin-ext,vietnamese,latin" media="all" />
 
 	<!--[if lt IE 9]>
@@ -76,7 +76,7 @@
 		            You are viewing the documentation for API Client {{ page.url | replace: '/', '' | replace: 'v', ''}}, which is not the most recently released version. The newest version is {{ site.currentVersion}} and can be browsed <a href="{{ site.baseurl }}/">here</a>.
 		          </div>
 		        {% endif %}
-		        {{content}}
+		        
 		     </div>
 		</div>
 
@@ -115,11 +115,11 @@
           {% endif %}
             <a href="{{site.baseurl}}/v{{version}}/" class="list-group-item {{ active }}"> v{{ version }}</a> 
         {% endfor %}
-        </div>
+      </div>
      </div> 
 	<script type="text/javascript" src="//www.difi.no/_style/lib/jquery/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="//www.difi.no/_style/lib/bootstrap3/js/bootstrap.js"></script>
 	<script type="text/javascript" src="//www.difi.no/themes/contrib/difi3/js/jquery.flexnav.min.js"></script>
-	<script type="text/javascript" src="assets/js/docs.min.js"></script>
+	<script type="text/javascript" src="{{site.baseurl}}/assets/js/docs.min.js"></script>
 </body>
 </html>
