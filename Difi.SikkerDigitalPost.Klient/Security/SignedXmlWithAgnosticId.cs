@@ -30,7 +30,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
         private XmlDocument m_containingDocument;
-
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
         {

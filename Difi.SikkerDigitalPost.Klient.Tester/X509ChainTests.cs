@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
-using ApiClientShared.Enums;
-using Difi.SikkerDigitalPost.Klient.Tester.Properties;
-using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class X509ChainTests
     {
-        ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
+        static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
         public class Buildmethod : X509ChainTests
@@ -28,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "utgått.pem"));
 
                 //Arrange
-                var ignoreStoreMySertifikater = true;
+                const bool ignoreStoreMySertifikater = true;
                 var chain = new X509Chain(ignoreStoreMySertifikater);
 
                 //Act
@@ -44,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true,"test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Arrange
-                var ignoreStoreMySertifikater = true;
+                const bool ignoreStoreMySertifikater = true;
                 var chain = new X509Chain(ignoreStoreMySertifikater)
                 {
                     ChainPolicy = ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
@@ -79,7 +73,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 //Arrange
                 var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
-                var ignoreStoreMySertifikater = true;
+                const bool ignoreStoreMySertifikater = true;
                 var chain = new X509Chain(ignoreStoreMySertifikater)
                 {
                     ChainPolicy = ChainPolicyWithOnlineCheckOgUkjentRotnode
