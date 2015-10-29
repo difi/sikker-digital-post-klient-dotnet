@@ -140,8 +140,14 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
         protected override AsymmetricAlgorithm GetPublicKey()
         {
-           PublicKey = HentNesteKeySomViSkalSjekkeSignaturMot();
-           return PublicKey;
+            AsymmetricAlgorithm publicKey = base.GetPublicKey();
+
+            if (publicKey == null)
+            {
+               publicKey = HentNesteKeySomViSkalSjekkeSignaturMot();
+            }
+
+            return PublicKey = publicKey;
         }
 
         AsymmetricAlgorithm PublicKey = null;
