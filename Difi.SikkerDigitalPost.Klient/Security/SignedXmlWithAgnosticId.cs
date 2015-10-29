@@ -13,6 +13,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
@@ -30,6 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
         private XmlDocument m_containingDocument;
+        public AsymmetricAlgorithm PublicKey { get; private set; } = null;
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
         {
@@ -136,51 +139,53 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             return result;
         }
 
-       
-
+        readonly List<AsymmetricAlgorithm> _publicKeyList = new List<AsymmetricAlgorithm>();
+        private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator = null;
         protected override AsymmetricAlgorithm GetPublicKey()
         {
-            AsymmetricAlgorithm publicKey = base.GetPublicKey();
-
-            if (publicKey == null)
-            {
-               publicKey = HentNesteKeySomViSkalSjekkeSignaturMot();
-            }
+            var publicKey = base.GetPublicKey() ?? HentNesteKeyIListe();
 
             return PublicKey = publicKey;
         }
 
-        AsymmetricAlgorithm PublicKey = null;
-
-        private AsymmetricAlgorithm HentNesteKeySomViSkalSjekkeSignaturMot()
+        private AsymmetricAlgorithm HentNesteKeyIListe()
         {
-            var harHentetPublicKeyTidligere = PublicKey != null;
             AsymmetricAlgorithm publicKey = null;
 
-            if (this.KeyInfo == null)
+            if (KeyInfo == null)
             {
                 throw new CryptographicException("Kryptografi_Xml_Keyinfo nødvendig");
             }
 
-            if (!harHentetPublicKeyTidligere)
+            if (_publicKeyListEnumerator == null)
             {
-                var keyInfoXml = KeyInfo.GetXml();
-                if (keyInfoXml != null)
-                {
-                    var keyInfoNamespaceMananger = GetKeyInfoNamespaceMananger(keyInfoXml);
-                    var securityTokenReference = SecurityTokenReference(keyInfoXml, keyInfoNamespaceMananger);
+                HentPublicKeysOgSettEnumerator();
+            }
 
-                    if (securityTokenReference != null)
-                    {
-                        var securityTokenReferanseUri = HentSecurityTokenReferanseUri(securityTokenReference);
-                        var binarySecurityTokenSertifikat = HentBinarySecurityToken(securityTokenReferanseUri);
-
-                        publicKey = binarySecurityTokenSertifikat.PublicKey.Key;
-                    }
-                }
+            while (_publicKeyListEnumerator != null && _publicKeyListEnumerator.MoveNext())
+            {
+                publicKey = _publicKeyListEnumerator.Current;
             }
 
             return publicKey;
+        }
+
+        private void HentPublicKeysOgSettEnumerator()
+        {
+            var keyInfoXml = KeyInfo.GetXml();
+            if (!keyInfoXml.IsEmpty)
+            {
+                var keyInfoNamespaceMananger = GetKeyInfoNamespaceMananger(keyInfoXml);
+                var securityTokenReference = SecurityTokenReference(keyInfoXml, keyInfoNamespaceMananger);
+
+                if (securityTokenReference != null)
+                {
+                    var binarySecurityTokenSertifikat = HentBinarySecurityToken(securityTokenReference);
+
+                    _publicKeyList.Add(binarySecurityTokenSertifikat.PublicKey.Key);
+                    _publicKeyListEnumerator = _publicKeyList.GetEnumerator();
+                }
+            }
         }
 
         private static XmlNamespaceManager GetKeyInfoNamespaceMananger(XmlElement keyInfoXml)
@@ -189,12 +194,26 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
             mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
 
-            return mgr; 
+            return mgr;
         }
 
         private static XmlNode SecurityTokenReference(XmlElement keyInfoXml, XmlNamespaceManager keyInfoNamespaceMananger)
         {
             return keyInfoXml.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", keyInfoNamespaceMananger);
+        }
+
+        private X509Certificate2 HentBinarySecurityToken(XmlNode securityTokenReference)
+        {
+            var securityTokenReferanseUri = HentSecurityTokenReferanseUri(securityTokenReference);
+            X509Certificate2 publicSertifikat = null;
+
+            var keyElement = FindIdElement(m_containingDocument, securityTokenReferanseUri);
+            if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
+            {
+                publicSertifikat = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText));
+            }
+
+            return publicSertifikat;
         }
 
         private string HentSecurityTokenReferanseUri(XmlNode reference)
@@ -213,20 +232,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             }
 
             return referanseUriVerdi;
-            
-        }
 
-        private X509Certificate2 HentBinarySecurityToken(string securityTokenReferanseUri)
-        {
-            X509Certificate2 publicsertifikat = null;
-
-            var keyElement = FindIdElement(m_containingDocument, securityTokenReferanseUri);
-            if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
-            {
-                publicsertifikat = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText));
-            }
-
-            return publicsertifikat;
         }
     }
 }
