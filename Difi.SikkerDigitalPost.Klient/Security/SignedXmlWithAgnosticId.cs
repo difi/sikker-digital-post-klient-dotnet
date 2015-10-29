@@ -31,20 +31,20 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </remarks>
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
-        private XmlDocument m_containingDocument;
-        public AsymmetricAlgorithm PublicKey { get; private set; } = null;
+        private XmlDocument _xmlDokument;
+
+        readonly List<AsymmetricAlgorithm> _publicKeys = new List<AsymmetricAlgorithm>();
+
+        private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator;
+
+        public AsymmetricAlgorithm PublicKey { get; private set; }
+
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
         {
-            this.m_containingDocument = xmlDocument;
+            _xmlDokument = xmlDocument;
         }
-
-        public SignedXmlWithAgnosticId(XmlElement xmlElement)
-            : base(xmlElement)
-        {
-            this.m_containingDocument = xmlElement.OwnerDocument;
-        }
-
+        
         /// <summary>
         /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
         /// </summary>
@@ -93,13 +93,13 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             if (inclusiveNamespacesPrefixList != null)
                 ((XmlDsigExcC14NTransform)SignedInfo.CanonicalizationMethodObject).InclusiveNamespacesPrefixList = inclusiveNamespacesPrefixList;
 
-            this.m_containingDocument = xml;
+            _xmlDokument = xml;
         }
 
         public override XmlElement GetIdElement(XmlDocument doc, string id)
         {
             // Attemt to find id node using standard methods. If not found, attempt using namespace agnostic method.
-            XmlElement idElem = base.GetIdElement(doc, id) ?? FindIdElement(doc, id);
+            var idElem = base.GetIdElement(doc, id) ?? FindIdElement(doc, id);
 
             // Check to se if id element is within the signatures object node. This is used by ESIs Xml Advanced Electronic Signatures (Xades)
             if (idElem == null)
@@ -138,17 +138,14 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
             return result;
         }
-
-        readonly List<AsymmetricAlgorithm> _publicKeyList = new List<AsymmetricAlgorithm>();
-        private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator = null;
+        
         protected override AsymmetricAlgorithm GetPublicKey()
         {
-            var publicKey = base.GetPublicKey() ?? HentNesteKeyIListe();
-
+            var publicKey = base.GetPublicKey() ?? HentNesteKey();
             return PublicKey = publicKey;
         }
 
-        private AsymmetricAlgorithm HentNesteKeyIListe()
+        private AsymmetricAlgorithm HentNesteKey()
         {
             AsymmetricAlgorithm publicKey = null;
 
@@ -182,8 +179,8 @@ namespace Difi.SikkerDigitalPost.Klient.Security
                 {
                     var binarySecurityTokenSertifikat = HentBinarySecurityToken(securityTokenReference);
 
-                    _publicKeyList.Add(binarySecurityTokenSertifikat.PublicKey.Key);
-                    _publicKeyListEnumerator = _publicKeyList.GetEnumerator();
+                    _publicKeys.Add(binarySecurityTokenSertifikat.PublicKey.Key);
+                    _publicKeyListEnumerator = _publicKeys.GetEnumerator();
                 }
             }
         }
@@ -207,7 +204,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             var securityTokenReferanseUri = HentSecurityTokenReferanseUri(securityTokenReference);
             X509Certificate2 publicSertifikat = null;
 
-            var keyElement = FindIdElement(m_containingDocument, securityTokenReferanseUri);
+            var keyElement = FindIdElement(_xmlDokument, securityTokenReferanseUri);
             if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
             {
                 publicSertifikat = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText));
