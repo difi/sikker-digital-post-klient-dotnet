@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="no">
 
-<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="shortcut icon" href="//www.difi.no/profiles/difino/themes/difi3_difino/favicon.ico" type="image/vnd.microsoft.icon" />
   	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,16 +9,17 @@
 	<link href="{{site.baseurl}}/assets/css/style.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7COpen+Sans+Condensed:300,700%7CSource+Sans+Pro:200,300,regular,600,700,900&amp;subset=latin-ext,vietnamese,latin" media="all" />
 
+	{% if page.url contains version %}
+    	{% assign active = "active" %} 
+	{% else %}
+		{% assign active = "" %}
+	{% endif %}
+
 	<!--[if lt IE 9]>
 		<script type="text/javascript" src="//www.difi.no/_style/lib/html5shiv/html5shiv-3.7.2.min.js"></script>
 		<script type="text/javascript" src="//www.difi.no/_style/lib/respond/respond-1.4.2.min.js"></script>
 	<![endif]-->
-	{% if page.url contains version %}
-	  {% assign active = "active" %} 
-	{% else %}
-	    {% assign active = "" %}
-	{% endif %}
-</head>
+
 <body class="nodetype-blogg content-article aside-right" >
 	<a id="top"/>
 	<div id="skip-link">
@@ -30,7 +30,7 @@
 		<header>
 			<div class="branding sub-portal">
 				<div class="logo">
-					<a href="/"><h1>{{site.siteUrlText}}</h1></a>
+					<a href="{{site.baseurl}}/"><h1>{{site.siteUrlText}}</h1></a>
 				</div>
 
 				<div class="seperator"></div>
@@ -67,17 +67,18 @@
 		    			</h1>  
 		    		</div>
 		    	</section>
-	 		</div>
-	 		<div class="col-md-9" role="main">
+		    	<div class="col-md-9" role="main">
 		        <!-- Info box notifying that you are using old documentation --> 
 		        {% if page.url contains site.currentVersion %}    
+		        {% else if page.url contains site.unntakversjonering %}    
 		        {% else %}
+
 		          <div class="alert alert-info">
-		            You are viewing the documentation for API Client {{ page.url | replace: '/', '' | replace: 'v', ''}}, which is not the most recently released version. The newest version is {{ site.currentVersion}} and can be browsed <a href="{{ site.baseurl }}/">here</a>.
+		            Du ser nå på dokumentasjonen for Sikker-digital-post-klient-dotnet {{ page.url | replace: '/', '' | replace: 'v', ''}}, som ikke er den nyeste versjonen av klienten. Den nyeste versjonen er {{ site.currentVersion}} og kan nåes <a href="{{ site.baseurl }}/">her</a>.
 		          </div>
 		        {% endif %}
-		        
-		     </div>
+		      </div>
+	 		</div>
 		</div>
 
 		{{content}}
@@ -105,18 +106,7 @@
 			<div class="up-arrow">↑</div>
 		</a>
 	</div>
-	<!-- List of documentation versions -->
-    <div class="list-group col-md-1 list-versions">
-        {% for version in site.versions %}
-          {% if page.url contains version %}
-            {% assign active = "active" %} 
-          {% else %}
-            {% assign active = "" %}
-          {% endif %}
-            <a href="{{site.baseurl}}/v{{version}}/" class="list-group-item {{ active }}"> v{{ version }}</a> 
-        {% endfor %}
-      </div>
-     </div> 
+	
 	<script type="text/javascript" src="//www.difi.no/_style/lib/jquery/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="//www.difi.no/_style/lib/bootstrap3/js/bootstrap.js"></script>
 	<script type="text/javascript" src="//www.difi.no/themes/contrib/difi3/js/jquery.flexnav.min.js"></script>

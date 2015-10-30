@@ -3,7 +3,7 @@ name: Sikker Digital Post .NET
 siteUrlText: difi.github.io/difi-sikker-digital-post-klient-dotnet
 
 # current version of the software
-version: 1.2
+version: 1.3
 # url of the download button
 downloadUrl: https://www.nuget.org/packages/difi-sikker-digital-post-klient/
 
@@ -15,7 +15,7 @@ licenseUrl: http://opensource.org/licenses/MIT
 baseurl: "/sikker-digital-post-klient-dotnet"
 
 ##Version handling
-currentCollecion: "v1_2"
+currentCollecion: "v1_3"
 currentVersion: "1.3"
 versions: ["1.2", "1.3"]
 
@@ -27,12 +27,14 @@ collections:
   v1_3:
     output: true
     permalink: /v1.3/
+
+unntakversjonering: "about.html"
 ## End of Version handling
 
 # list of additional links on the right of the top menu
 headerLinks:
   - title: Om sikker digital post
-    url: about.html
+    url: /sikker-digital-post-klient-dotnet/about.html
   - title: GitHub
     url: https://github.com/difi/sikker-digital-post-net-klient
   - title: Issues

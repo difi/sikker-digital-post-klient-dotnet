@@ -35,6 +35,7 @@ body{
   background:linear-gradient(135deg, transparent 50px, white 50px);
 }
 
+
 @media (min-width: 768px) {
 
   nav > ul > li.active > ul {

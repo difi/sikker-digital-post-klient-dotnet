@@ -1,8 +1,9 @@
 ---
 layout: default
 title: .NET-klient for integrasjon mot Sikker digital post-tjenesten
-redirect_from:
+description:
 isHome: true
+redirect_from: /
 ---
 
 <div id="main" class="with-aside">
@@ -24,7 +25,6 @@ isHome: true
 				</div>
 			{% endif %}
 
-			<!-- Documentation -->
 			{% for dok in site.v1_3 %}
 				{% if dok.id %}
 					<h2 id="{{dok.id}}">{{dok.title}}</h2>
@@ -33,10 +33,8 @@ isHome: true
 					</div>
 				{% endif%}
 			{% endfor %}
-			
 		</article>
 	</section>
-
 	<aside>
 		<section class="box">
 			<div class="heading">
