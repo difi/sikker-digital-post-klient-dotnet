@@ -40,7 +40,7 @@ body{
 
 .list-versions {
   position: fixed;
-  bottom: 0%;
+  bottom: 10%;
   width: 75px;
 }
 @media (max-width: 768px){
