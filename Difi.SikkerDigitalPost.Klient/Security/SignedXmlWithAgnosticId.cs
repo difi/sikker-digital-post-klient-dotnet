@@ -40,9 +40,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator;
 
         public AsymmetricAlgorithm PublicKey { get; private set; }
-
-        protected RSACryptoServiceProvider SigningKey { get; }
-
+        
         public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
             : base(xmlDocument)
         {
