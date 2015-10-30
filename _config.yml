@@ -28,7 +28,7 @@ collections:
     output: true
     permalink: /v1.3/
 
-unntakversjonering: "about.html"
+aboutSide: "about.html"
 ## End of Version handling
 
 # list of additional links on the right of the top menu

@@ -34,10 +34,25 @@ body{
   width:30%;
   background:linear-gradient(135deg, transparent 50px, white 50px);
 }
+.list-group {
+  margin-top:10px ;
+}
 
+.list-versions {
+  position: fixed;
+  bottom: 0%;
+  width: 75px;
+}
+@media (max-width: 768px){
+  .list-versions{
+    top:0%;
+    font-size: 0.5em;
+    right: 0%;
+  }
+}
 
 @media (min-width: 768px) {
-
+  
   nav > ul > li.active > ul {
     display:block !important;
   }
