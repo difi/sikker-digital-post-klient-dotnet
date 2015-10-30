@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,24 +15,21 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
         [TestClass]
         public class KonstruktørMethod : SignedXmlWithAgnosticIdTester
         {
-            Comparator _comparator = new Comparator();   
-
             [TestMethod]
             public void KonstruktørMedXmlDokumentOgSertifikat()
             {
                 //Arrange
                 var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
                 var sertifikat = DomeneUtility.GetAvsenderSertifikat();
+                var signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
 
                 //Act
-                var signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
-                var signingKey = typeof (SignedXmlWithAgnosticId).GetProperty("SigningKey", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .GetValue(signedXmlWithAgnosticId, null);
+                var signingKey = signedXmlWithAgnosticId.SigningKey;
 
                 //Assert
                 Assert.IsTrue(signingKey is RSACryptoServiceProvider);
             }
-
+            
             [TestMethod]
             [ExpectedException(typeof(SdpSecurityException))]
             public void FeilerMedSertifikatUtenPrivatnøkkel()
@@ -60,12 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
             }
         }
 
-        [TestClass]
-        public class SignedXmlWithAgnosticIdMethod : SignedXmlWithAgnosticIdTester
-        {
-         
-        }
-
+     
         [TestClass]
         public class FindIdElementMethod : SignedXmlWithAgnosticIdTester
         {
@@ -122,77 +111,77 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
                 return xmlNamespaceManager;
             }
 
+            private void LeggHeaderSignaturNodeTilSignedXmlWithAgnosticId(XmlDocument kildeXmlDokument, SignedXmlWithAgnosticId signedXmlWithAgnosticId)
+            {
+                var headerSignaturNode = (XmlElement) kildeXmlDokument.DocumentElement.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", 
+                    GetNamespaceManager(kildeXmlDokument));
+                signedXmlWithAgnosticId.LoadXml(headerSignaturNode);
+            }
+
+            private void LeggBodySignaturNodeTilSignedXmlWithAgnosticId(XmlDocument kildeXmlDokument, SignedXmlWithAgnosticId signedXmlWithAgnosticId)
+            {
+                var standardBusinessDocumentNode = (XmlElement) kildeXmlDokument.SelectSingleNode("//ds:Signature", GetNamespaceManager(kildeXmlDokument));
+                signedXmlWithAgnosticId.LoadXml(standardBusinessDocumentNode);
+            }
+
+            private object GetPublicKey(SignedXmlWithAgnosticId signedXmlWithAgnosticId)
+            {
+                return typeof(SignedXmlWithAgnosticId).GetMethod("GetPublicKey", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Invoke(signedXmlWithAgnosticId, null);
+            }
+
             [TestMethod]
-            public void ValidererTransportkvitteringKorrekt()
+            public void HenterKeyFraTransportkvittering()
             {
                 //Arrange
                 var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
                 SignedXmlWithAgnosticId signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument);
 
-                var headerSignaturNode = (XmlElement) xmlDokument.DocumentElement.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", GetNamespaceManager(xmlDokument));
-                signedXmlWithAgnosticId.LoadXml(headerSignaturNode);
+                LeggHeaderSignaturNodeTilSignedXmlWithAgnosticId(xmlDokument, signedXmlWithAgnosticId);
 
                 //Act
-                var signingKey = typeof(SignedXmlWithAgnosticId).GetMethod("GetPublicKey", BindingFlags.Instance | BindingFlags.NonPublic)
-                   .Invoke(signedXmlWithAgnosticId, null);
+                var signingKey = GetPublicKey(signedXmlWithAgnosticId);
+                var signingKey2 = GetPublicKey(signedXmlWithAgnosticId);
 
                 //Assert
                 Assert.IsNotNull(signingKey);
+                Assert.IsNull(signingKey2);
             }
 
             [TestMethod]
-            public void ValidererMeldingskvitteringKorrekt()
+            public void HenterKeyFraMeldingskvitteringHeader()
             {
                 //Arrange
+                var xmlDokument = XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø);
+                SignedXmlWithAgnosticId signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument);
 
+                LeggHeaderSignaturNodeTilSignedXmlWithAgnosticId(xmlDokument, signedXmlWithAgnosticId);
 
                 //Act
+                var signingKey = GetPublicKey(signedXmlWithAgnosticId);
+                var signingKey2 = GetPublicKey(signedXmlWithAgnosticId);
 
                 //Assert
+                Assert.IsNotNull(signingKey);
+                Assert.IsNull(signingKey2);
             }
-
+            
             [TestMethod]
-            public void FeilerForUgyldigTransportkvittering()
+            public void HenterKeyFraMeldingskvitteringBody()
             {
                 //Arrange
+                var xmlDokument = XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø);
+                SignedXmlWithAgnosticId signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument);
 
-
-                //Act
-
-                //Assert
-            }
-
-            [TestMethod]
-            public void FeilerForUgyldingMeldingskvittering()
-            {
-                //Arrange
-
+                LeggBodySignaturNodeTilSignedXmlWithAgnosticId(xmlDokument, signedXmlWithAgnosticId);
 
                 //Act
+                var signingKey = GetPublicKey(signedXmlWithAgnosticId);
+                var signingKey2 = GetPublicKey(signedXmlWithAgnosticId);
 
                 //Assert
-            }
-
-            [TestMethod]
-            public void ReturnererIngenSertifikatVedFeilXml()
-            {
-                //Arrange
-                
-
-                //Act
-
-                //Assert
-            }
-
-            [TestMethod]
-            public void ReturererSertifikatVedKorrektXml()
-            {
-                //Arrange
-                
-
-                //Act
-
-                //Assert
+                Assert.IsNotNull(signingKey);
+                Assert.IsNull(signingKey2);
             }
         }
 

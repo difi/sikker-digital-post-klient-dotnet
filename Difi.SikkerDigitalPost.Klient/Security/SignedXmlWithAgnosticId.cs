@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         {
             _xmlDokument = xmlDocument;
         }
-        
+
         /// <summary>
         /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
         /// </summary>
