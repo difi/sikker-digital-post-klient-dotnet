@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
             {
                 //Arrange
                 var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
-                var sertifikat = DomeneUtility.GetAvsenderSertifikat();
+                var sertifikat = DomeneUtility.GetAvsenderEnhetstesterSertifikat();
                 var signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
 
                 //Act
@@ -36,10 +36,10 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
             {
                 //Arrange
                 var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
-                var sertifikat = DomeneUtility.GetMottakerSertifikat();
+                var sertifikat = DomeneUtility.GetMottakerEnhetstesterSertifikat();
 
                 //Act
-                var signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
+                new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
             }
 
             [TestMethod] public void FeilerMedPrivatnøkkelSomIkkeErRsa()
