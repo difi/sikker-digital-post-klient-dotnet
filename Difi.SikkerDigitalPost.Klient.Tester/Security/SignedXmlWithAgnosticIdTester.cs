@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
             [TestMethod] public void FeilerMedPrivatnøkkelSomIkkeErRsa()
             {
                 //Arrange
-                
+                var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
 
                 //Act
 
@@ -53,46 +53,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
                 Assert.Fail();
             }
         }
-
-     
-        [TestClass]
-        public class FindIdElementMethod : SignedXmlWithAgnosticIdTester
-        {
-            [TestMethod]
-            public void FinnerIdElementVAFFORNO1()
-            {
-                //Arrange
-                
-
-                //Act
-
-                //Assert
-            }
-
-            [TestMethod]
-            public void FinnerIdElementVAFFORNO2()
-            {
-                //Arrange
-
-
-                //Act
-
-                //Assert
-            }
-
-            [TestMethod]
-            public void FinnerIdElementVAFFORNO3()
-            {
-                //Arrange
-
-
-                //Act
-
-                //Assert
-            }
-
-        }
-
+        
         [TestClass]
         public class GetPublicKeyMethod : SignedXmlWithAgnosticIdTester
         {
