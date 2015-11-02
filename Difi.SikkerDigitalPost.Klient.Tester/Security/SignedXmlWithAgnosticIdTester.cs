@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
@@ -42,15 +44,26 @@ namespace Difi.SikkerDigitalPost.Klient.Security.Tests
                 new SignedXmlWithAgnosticId(xmlDokument, sertifikat);
             }
 
-            [TestMethod] public void FeilerMedPrivatnøkkelSomIkkeErRsa()
+            [TestMethod] public void FeilerMedPrivatnøkkelSomIkkeErRsaIKKEIMPLEMENTERT()
             {
-                //Arrange
-                var xmlDokument = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
+                //Denne testen er ikke skrevet fordi vi ikke har klart å lage et sertifikat som bruker
+                //DSACryptoProvider. Script `GenererSertifikatScripts.txt` inneholder info om hvordan.
+                //Feilmelding `bad data` kommer, så noe er galt. Jeg mener det likevel er viktig å påpeke
+                //at vi bør ha testdekning på dette. Kanskje kan fremtiden løse dette problemet?
+                // Aleksander 02.11.2015
 
-                //Act
+                //////////////////////////////////////////////
+                //P12 container med privatekey og sertifikat som holder i 10 år, DSA kryptering
+                //////////////////////////////////////////////
 
-                //Assert
-                Assert.Fail();
+                //Lag dsa-parametere
+                // openssl dsaparam -out dsap.pem 2048
+
+                //Lag privatnøkkel og sertifikat
+                //openssl req -x509 - newkey dsa: dsap.pem - keyout key.pem -out certificate.pem - days 3650 - nodes - subj "/C=NO/ST=Oslo/L=Posthuset/O=Digipost testsertifikat Name/OU=Org/CN=www.digiphoest.no"
+
+                //Pakk inn i container
+                //openssl pkcs12 -export -out certificate.pfx - inkey key.pem -in certificate.pem
             }
         }
         

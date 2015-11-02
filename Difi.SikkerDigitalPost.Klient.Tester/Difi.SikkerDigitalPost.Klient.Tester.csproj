@@ -212,7 +212,6 @@
     </None>
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.cer" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.p12" />
-    <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
     <EmbeddedResource Include="testdata\sertifikater\prod\BPClass3CA3.cer" />
     <EmbeddedResource Include="testdata\sertifikater\prod\BPClass3RootCA.cer" />
     <EmbeddedResource Include="testdata\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
@@ -222,6 +221,7 @@
     <EmbeddedResource Include="testdata\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\testmottakerFraOppslagstjenesten.pem" />
+    <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
@@ -237,6 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
