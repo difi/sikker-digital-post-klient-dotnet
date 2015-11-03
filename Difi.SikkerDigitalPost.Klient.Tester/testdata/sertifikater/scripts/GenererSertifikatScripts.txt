@@ -11,16 +11,3 @@ openssl req -x509 -newkey rsa:2048 -keyout key.pem -out certificate.pem -days 36
 openssl pkcs12 -export -out certificate.pfx -inkey key.pem -in certificate.pem
 
 
-//////////////////////////////////////////////
-//P12 container med privatekey og sertifikat som holder i 10 år, DSA kryptering
-//////////////////////////////////////////////
-
-//Lag dsa-parametere
-openssl dsaparam -out dsap.pem 2048
-
-//Lag privatnøkkel og sertifikat
-openssl req -x509 -newkey dsa:dsap.pem -keyout key.pem -out certificate.pem -days 3650 -nodes -subj "/C=NO/ST=Oslo/L=Posthuset/O=Digipost testsertifikat Name/OU=Org/CN=www.digiphoest.no"
-
-//Pakk inn i container
-openssl pkcs12 -export -out certificate.pfx -inkey key.pem -in certificate.pem
-
