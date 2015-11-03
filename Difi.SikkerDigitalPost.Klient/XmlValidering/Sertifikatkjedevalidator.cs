@@ -14,15 +14,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         }
 
         public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
-        {
+       {
             X509ChainStatus[] kjedestatus;
             return ErGyldigResponssertifikat(sertifikat, out kjedestatus);
         }
 
         public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat, out X509ChainStatus[] kjedestatus)
         {
-            var ignoreStoreMySertifikater = true;
-            var chain = new X509Chain(ignoreStoreMySertifikater)
+            var chain = new X509Chain()
             {
                 ChainPolicy = ChainPolicy()
             };

@@ -15,6 +15,20 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
         public class ErGyldigResponssertifikatMethod : SertifikatkjedevalidatorFunksjoneltTestmiljøTester
         {
             [TestMethod]
+            public void GodkjennerTestsertifikat()
+            {
+                //Arrange
+                var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
+
+                //Act
+                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
+
+                //Assert
+                Assert.IsTrue(erGyldigResponssertifikat);
+            }
+
+            [TestMethod]
             public void ErGyldigSertifikatOgKjedestatus()
             {
                 //Arrange
@@ -27,21 +41,37 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 
                 //Assert
                 Assert.IsTrue(erGyldigResponssertifikat);
-                Assert.IsTrue(kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
+                Assert.IsTrue(kjedestatus.Count() == 0 || kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
             }
 
-            [TestMethod]
-            public void GodkjennerTestsertifikat()
+            [TestMethod] public void FeilerMedSertifikatUtenGyldigKjede()
             {
                 //Arrange
-                var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
+                var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
 
                 //Act
                 var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
-                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
+
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat);
 
                 //Assert
-                Assert.IsTrue(erGyldigResponssertifikat);
+                Assert.IsFalse(erGyldigResponssertifikat);
+            }
+
+            [TestMethod]
+            public void FeilerMedSertifikatUtenGyldigKjedeReturnererKjedestatus()
+            {
+                var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
+                //Act
+                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+
+                X509ChainStatus[] kjedestatus;
+                var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat, out kjedestatus);
+
+                //Assert
+                Assert.IsFalse(erGyldigResponssertifikat);
+                Assert.IsTrue(kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
+
             }
         }
     }

@@ -12,8 +12,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             var policy = new X509ChainPolicy()
             {
-                RevocationMode = X509RevocationMode.NoCheck,
-                VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
+                RevocationMode = X509RevocationMode.NoCheck
+
             };
             policy.ExtraStore.AddRange(SertifikatLager);
                                 
