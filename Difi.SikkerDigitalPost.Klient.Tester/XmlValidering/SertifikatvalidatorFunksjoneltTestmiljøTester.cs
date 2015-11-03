@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 X509ChainStatus[] kjedestatus;
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.TestSertifikater());
+                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat, out kjedestatus);
 
                 //Assert
@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.TestSertifikater());
+                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
 
                 //Assert

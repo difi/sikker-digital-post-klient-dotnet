@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
-                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.TestSertifikater())
+                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }
@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/"),
-                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.TestSertifikater())
+                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }

@@ -8,7 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
     {
         static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Resources.sertifikater");
 
-        public static X509Certificate2Collection TestSertifikater()
+        public static X509Certificate2Collection FunksjoneltTestmiljøSertifikater()
         {
             var difiTestkjedesertifikater = new List<X509Certificate2>
             {

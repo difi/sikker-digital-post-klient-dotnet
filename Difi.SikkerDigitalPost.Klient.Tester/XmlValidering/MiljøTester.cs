@@ -12,12 +12,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
         public class GetMiljøMethod : MiljøTester
         {
             [TestMethod]
-            public void ReturnererInitialisertTestmiljø()
+            public void ReturnererInitialisertFunksjoneltTestmiljø()
             {
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms";
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                var sertifikater = SertifikatUtility.TestSertifikater();
+                var sertifikater = SertifikatUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 
@@ -44,12 +44,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
 
             [TestMethod]
-            public void ReturnererInitialisertTestmiljøNorskHelsenett()
+            public void ReturnererInitialisertFunksjoneltTestmiljøNorskHelsenett()
             {
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/";
                 var miljø = Miljø.FunksjoneltTestmiljøNorskHelsenett;
-                var sertifikater = SertifikatUtility.TestSertifikater();
+                var sertifikater = SertifikatUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 

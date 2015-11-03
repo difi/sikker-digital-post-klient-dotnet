@@ -12,7 +12,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities.Tests
             public void ReturnererFireSertifikaterMedThumbprint()
             {
                 //Arrange
-                var sertifikater = SertifikatUtility.TestSertifikater();
+                var sertifikater = SertifikatUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 
