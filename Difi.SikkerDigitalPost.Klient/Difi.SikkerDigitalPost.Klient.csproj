@@ -99,11 +99,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="MeldingsHandling.cs" />
-    <Compile Include="Sertifikater.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Sertifikater.resx</DependentUpon>
-    </Compile>
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
@@ -144,11 +139,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Sertifikater.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Sertifikater.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -232,13 +222,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\BPClass3CA3.cer" />
-    <None Include="Resources\Buypass_Class_3_Test4_CA_3.cer" />
-    <None Include="Resources\commfidesenterprise-sha256.crt" />
-    <None Include="Resources\cpn enterprise sha256 class 3.crt" />
-    <EmbeddedResource Include="Resources\sertifikater\enhetstester\difi-enhetstester.cer" />
-    <EmbeddedResource Include="Resources\sertifikater\enhetstester\difi-enhetstester.p12" />
-    <EmbeddedResource Include="Resources\sertifikater\enhetstester\utgått.pem" />
     <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3CA3.cer" />
     <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3RootCA.cer" />
     <EmbeddedResource Include="Resources\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
@@ -247,7 +230,6 @@
     <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
     <EmbeddedResource Include="Resources\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
     <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
-    <EmbeddedResource Include="Resources\sertifikater\test\testmottakerFraOppslagstjenesten.pem" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

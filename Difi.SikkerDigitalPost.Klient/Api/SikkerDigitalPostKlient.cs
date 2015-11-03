@@ -272,7 +272,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
             }
-
         }
         private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
