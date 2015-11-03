@@ -28,8 +28,35 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class ManifestTester
     {
+
         [TestClass]
-        public class Hoveddokument
+        public class KonstruktørMethod : ManifestTester
+        {
+            [TestMethod]
+            public void EnkelKonstruktør()
+            {
+                //Arrange
+                const string id = "Id_1";
+                const string mimeType = "application/xml";
+                const string filnavn = "manifest.xml";
+
+                var forsendelse = DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat();
+                var manifest = new Manifest(forsendelse);
+                
+                //Act
+
+                //Assert
+                Assert.AreEqual(forsendelse,manifest.Forsendelse);
+                Assert.AreEqual(forsendelse.Avsender,manifest.Avsender);
+                Assert.AreEqual(id,manifest.Id);
+                Assert.AreEqual(mimeType,manifest.MimeType);
+                Assert.AreEqual(filnavn,manifest.Filnavn);
+            } 
+        }
+
+
+        [TestClass]
+        public class Hoveddokument : ManifestTester
         {
             [TestMethod]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
