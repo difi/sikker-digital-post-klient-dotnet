@@ -275,19 +275,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
         private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
-            var responsvalidator = new Responsvalidator(respons: kvittering, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator );
+            var responsvalidator = new Responsvalidator(sendtMelding: forretningsmelding, respons: kvittering, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
             responsvalidator.ValiderTransportkvittering(guidUtility);
         }
 
         private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var responsvalidator = new Responsvalidator(respons: kvittering, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
+            var responsvalidator = new Responsvalidator(sendtMelding: forretningsmelding, respons: kvittering, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
             responsvalidator.ValiderTomKøKvittering();
         }
 
         private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var valideringAvResponsSignatur = new Responsvalidator(respons: kvittering, sendtMelding: kvitteringsforespørselEnvelope.Xml(), sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
+            var valideringAvResponsSignatur = new Responsvalidator(sendtMelding: kvitteringsforespørselEnvelope.Xml(), respons: kvittering, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
         }
 

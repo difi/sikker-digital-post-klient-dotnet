@@ -42,10 +42,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// <summary>
         /// Oppretter en ny instanse av responsvalidatoren.
         /// </summary>
-        /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
+        /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
+        /// <param name="sertifikatvalidator"></param>
         /// <param name="kjørendeMiljø"></param>
-        public Responsvalidator(XmlDocument respons, XmlDocument sendtMelding, Sertifikatvalidator sertifikatvalidator)
+        public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, Sertifikatvalidator sertifikatvalidator)
         {
             Respons = respons;
             SendtMelding = sendtMelding;
