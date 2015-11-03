@@ -14,13 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
             Sertifikat = sertifikat;
             OrganisasjonsnummerPostkasse = organisasjonsnummer;
         }
-
-        protected PostMottaker(string sertifikatThumbprint, string organisasjonsnummerPostkasse)
-        {
-            Sertifikat = CertificateUtility.ReceiverCertificate(sertifikatThumbprint, Language.Norwegian);
-            OrganisasjonsnummerPostkasse = new Organisasjonsnummer(organisasjonsnummerPostkasse);
-        }
-
+        
         protected PostMottaker(X509Certificate2 sertifikat, string organisasjonsnummer) : this(sertifikat, new Organisasjonsnummer(organisasjonsnummer))
         {
         }

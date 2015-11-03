@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient
             var innhold = GenererInnhold(container);
             
             GetThreadSafeClient.DefaultRequestHeaders.Add("Accept", "*/*");
-            return await GetThreadSafeClient.PostAsync(_klientkonfigurasjon.MeldingsformidlerUrl, innhold);
+            return await GetThreadSafeClient.PostAsync(_klientkonfigurasjon.Miljø.Url, innhold);
         }
 
         private HttpContent GenererInnhold(SoapContainer container)

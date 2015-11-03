@@ -7,8 +7,8 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
-            SendDokumentpakke(sdpklient, enkelForsendelse);
+            var transportkvittering = SendDokumentpakke(sdpklient, enkelForsendelse);
             var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
@@ -70,9 +70,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
             var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
-            var klientKonfig = new Klientkonfigurasjon
+            var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
             {
-                MeldingsformidlerUrl = new Uri(Settings.Default.UrlMeldingsformidler),
                 LoggXmlTilFil = true
             };
 
@@ -102,7 +101,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             Kvittering kvittering = null;
             while (hentKvitteringPåNytt && (prøvdPåNytt++ <= hentKvitteringMaksAntallGanger))
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
                 kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 

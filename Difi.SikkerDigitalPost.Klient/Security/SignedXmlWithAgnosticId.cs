@@ -13,10 +13,13 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Security
 {
@@ -28,45 +31,30 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </remarks>
     internal sealed class SignedXmlWithAgnosticId : SignedXml
     {
-        private XmlDocument m_containingDocument;
+        const int PROV_RSA_AES = 24;    // CryptoApi provider type for an RSA provider supporting sha-256 digital signatures
 
-        public SignedXmlWithAgnosticId(XmlDocument xml)
-            : base(xml)
-        {
-            this.m_containingDocument = xml;
-        }
+        private XmlDocument _xmlDokument;
 
-        public SignedXmlWithAgnosticId(XmlElement xmlElement)
-            : base(xmlElement)
+        readonly List<AsymmetricAlgorithm> _publicKeys = new List<AsymmetricAlgorithm>();
+
+        private IEnumerator<AsymmetricAlgorithm> _publicKeyListEnumerator;
+
+        public AsymmetricAlgorithm PublicKey { get; private set; }
+        
+        public SignedXmlWithAgnosticId(XmlDocument xmlDocument)
+            : base(xmlDocument)
         {
-            this.m_containingDocument = xmlElement.OwnerDocument;
+            _xmlDokument = xmlDocument;
         }
 
         /// <summary>
         /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
         /// </summary>
-        /// <param name="xml">The document containing the references to be signed.</param>
+        /// <param name="xmlDocument">The document containing the references to be signed.</param>
         /// <param name="certificate">The certificate containing the private key used for signing.</param>
         /// <param name="inclusiveNamespacesPrefixList">An optional list of namespaces to be set as the canonicalization namespace prefix list.</param>
-        public SignedXmlWithAgnosticId(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-            : base(xml)
-        {
-            Initialize(xml, certificate, inclusiveNamespacesPrefixList);
-        }
-
-        /// <summary>
-        /// Sets SHA256 as signaure method and XmlDsigExcC14NTransformUrl as canonicalization method
-        /// </summary>
-        /// <param name="xmlElement">The xml element containing the references to be signed.</param>
-        /// <param name="certificate">The certificate containing the private key used for sigining.</param>
-        /// <param name="inclusiveNamespacesPrefixList">An optional list of namespaces to be set as the canonicalization namespace prefix list.</param>
-        public SignedXmlWithAgnosticId(XmlElement xmlElement, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
-            : base(xmlElement)
-        {
-            Initialize(xmlElement.OwnerDocument, certificate, inclusiveNamespacesPrefixList);
-        }
-
-        private void Initialize(XmlDocument xml, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
+        public SignedXmlWithAgnosticId(XmlDocument xmlDocument, X509Certificate2 certificate, string inclusiveNamespacesPrefixList = null)
+            : base(xmlDocument)
         {
             const string signatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
@@ -76,13 +64,13 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
             // Makes sure the signingkey is using Microsoft Enhanced RSA and AES Cryptographic Provider which enables SHA256
             if (!certificate.HasPrivateKey)
-                throw new Exception(string.Format("Angitt sertifikat med fingeravtrykk {0} inneholder ikke en privatnøkkel. Dette er påkrevet for å signere xml dokumenter.", certificate.Thumbprint));
+                throw new SdpSecurityException(string.Format("Angitt sertifikat med fingeravtrykk {0} inneholder ikke en privatnøkkel. Dette er påkrevet for å signere xml dokumenter.", certificate.Thumbprint));
 
             var targetKey = certificate.PrivateKey as RSACryptoServiceProvider;
             if (targetKey == null)
-                throw new Exception(string.Format("Privatnøkkelen i sertifikatet med fingeravtrykk {0} er ikke en gyldig RSA asymetrisk nøkkel.", certificate.Thumbprint));
+                throw new SdpSecurityException(string.Format("Privatnøkkelen i sertifikatet med fingeravtrykk {0} er ikke en gyldig RSA asymetrisk nøkkel.", certificate.Thumbprint));
 
-            if (targetKey.CspKeyContainerInfo.ProviderType == 24)
+            if (targetKey.CspKeyContainerInfo.ProviderType == PROV_RSA_AES)
                 SigningKey = targetKey;
             else
             {
@@ -102,13 +90,13 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             if (inclusiveNamespacesPrefixList != null)
                 ((XmlDsigExcC14NTransform)SignedInfo.CanonicalizationMethodObject).InclusiveNamespacesPrefixList = inclusiveNamespacesPrefixList;
 
-            this.m_containingDocument = xml;
+            _xmlDokument = xmlDocument;
         }
 
         public override XmlElement GetIdElement(XmlDocument doc, string id)
         {
             // Attemt to find id node using standard methods. If not found, attempt using namespace agnostic method.
-            XmlElement idElem = base.GetIdElement(doc, id) ?? FindIdElement(doc, id);
+            var idElem = base.GetIdElement(doc, id) ?? FindIdElement(doc, id);
 
             // Check to se if id element is within the signatures object node. This is used by ESIs Xml Advanced Electronic Signatures (Xades)
             if (idElem == null)
@@ -135,6 +123,12 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             return idElem;
         }
 
+        protected override AsymmetricAlgorithm GetPublicKey()
+        {
+            var publicKey = base.GetPublicKey() ?? HentNesteKey();
+            return PublicKey = publicKey;
+        }
+
         private XmlElement FindIdElement(XmlNode node, string idValue)
         {
             XmlElement result = null;
@@ -148,35 +142,91 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             return result;
         }
 
-        protected override AsymmetricAlgorithm GetPublicKey()
+        private AsymmetricAlgorithm HentNesteKey()
         {
-            AsymmetricAlgorithm result = base.GetPublicKey();
+            AsymmetricAlgorithm publicKey = null;
 
-            // If we have no key, attemt to find one via a SecurityTokenReference.
-            if (result == null && this.KeyInfo != null)
+            if (KeyInfo == null)
             {
-                var keyinfo = this.KeyInfo.GetXml();
-                if (keyinfo != null)
-                {
-                    XmlNamespaceManager mgr = new XmlNamespaceManager(keyinfo.OwnerDocument.NameTable);
-                    mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
-                    mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
-                    var reference = keyinfo.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", mgr);
-                    if (reference != null)
-                    {
-                        var targetId = reference.Attributes["URI"].Value;
-                        if (targetId.StartsWith("#"))
-                            targetId = targetId.Substring(1);
-                        var keyElement = FindIdElement(m_containingDocument, targetId);
-                        if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
-                        {
-                            result = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText)).PublicKey.Key;
-                        }
-                    }
-                }
+                throw new CryptographicException("Kryptografi_Xml_Keyinfo nødvendig");
             }
 
-            return result;
+            if (_publicKeyListEnumerator == null)
+            {
+                HentPublicKeysOgSettEnumerator();
+            }
+
+            while (_publicKeyListEnumerator != null && _publicKeyListEnumerator.MoveNext())
+            {
+                publicKey = _publicKeyListEnumerator.Current;
+            }
+
+            return publicKey;
+        }
+
+        private void HentPublicKeysOgSettEnumerator()
+        {
+            var keyInfoXml = KeyInfo.GetXml();
+            if (!keyInfoXml.IsEmpty)
+            {
+                var keyInfoNamespaceMananger = GetKeyInfoNamespaceMananger(keyInfoXml);
+                var securityTokenReference = SecurityTokenReference(keyInfoXml, keyInfoNamespaceMananger);
+
+                if (securityTokenReference != null)
+                {
+                    var binarySecurityTokenSertifikat = HentBinarySecurityToken(securityTokenReference);
+
+                    _publicKeys.Add(binarySecurityTokenSertifikat.PublicKey.Key);
+                    _publicKeyListEnumerator = _publicKeys.GetEnumerator();
+                }
+            }
+        }
+
+        private static XmlNamespaceManager GetKeyInfoNamespaceMananger(XmlElement keyInfoXml)
+        {
+            XmlNamespaceManager mgr = new XmlNamespaceManager(keyInfoXml.OwnerDocument.NameTable);
+            mgr.AddNamespace("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+            mgr.AddNamespace("ds", "http://www.w3.org/2000/09/xmldsig#");
+
+            return mgr;
+        }
+
+        private static XmlNode SecurityTokenReference(XmlElement keyInfoXml, XmlNamespaceManager keyInfoNamespaceMananger)
+        {
+            return keyInfoXml.SelectSingleNode("./wsse:SecurityTokenReference/wsse:Reference", keyInfoNamespaceMananger);
+        }
+
+        private X509Certificate2 HentBinarySecurityToken(XmlNode securityTokenReference)
+        {
+            var securityTokenReferanseUri = HentSecurityTokenReferanseUri(securityTokenReference);
+            X509Certificate2 publicSertifikat = null;
+
+            var keyElement = FindIdElement(_xmlDokument, securityTokenReferanseUri);
+            if (keyElement != null && !string.IsNullOrEmpty(keyElement.InnerText))
+            {
+                publicSertifikat = new X509Certificate2(Convert.FromBase64String(keyElement.InnerText));
+            }
+
+            return publicSertifikat;
+        }
+
+        private string HentSecurityTokenReferanseUri(XmlNode reference)
+        {
+            var uriRefereanseAttributt = reference.Attributes["URI"];
+
+            if (uriRefereanseAttributt == null)
+            {
+                throw new SdpSecurityException("Klarte ikke finne SecurityTokenReferenceUri.");
+            }
+
+            var referanseUriVerdi = uriRefereanseAttributt.Value;
+            if (referanseUriVerdi.StartsWith("#"))
+            {
+                referanseUriVerdi = referanseUriVerdi.Substring(1);
+            }
+
+            return referanseUriVerdi;
+
         }
     }
 }

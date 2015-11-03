@@ -99,11 +99,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="MeldingsHandling.cs" />
-    <Compile Include="Sertifikater.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Sertifikater.resx</DependentUpon>
-    </Compile>
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
@@ -119,10 +114,15 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
+    <Compile Include="Utilities\SertifikatkjedeUtility.cs" />
     <Compile Include="XmlValidering\KvitteringsforespørselEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ManifestValidator.cs" />
+    <Compile Include="XmlValidering\Miljø.cs" />
+    <Compile Include="XmlValidering\Sertifikatkjedevalidator.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorProduksjon.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorFunksjoneltTestmiljø.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>
@@ -139,10 +139,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Sertifikater.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Sertifikater.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -226,10 +222,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\BPClass3CA3.cer" />
-    <None Include="Resources\Buypass_Class_3_Test4_CA_3.cer" />
-    <None Include="Resources\commfidesenterprise-sha256.crt" />
-    <None Include="Resources\cpn enterprise sha256 class 3.crt" />
+    <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3CA3.cer" />
+    <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3RootCA.cer" />
+    <EmbeddedResource Include="Resources\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
+    <EmbeddedResource Include="Resources\sertifikater\prod\cpn rootca sha256 class 3.crt" />
+    <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_CA_3.cer" />
+    <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
+    <EmbeddedResource Include="Resources\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
+    <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
