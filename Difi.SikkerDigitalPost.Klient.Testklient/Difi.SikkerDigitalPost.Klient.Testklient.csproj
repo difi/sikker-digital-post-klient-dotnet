@@ -64,6 +64,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Resources\Sertifikater\testmottakerFraOppslagstjenesten.pem" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">

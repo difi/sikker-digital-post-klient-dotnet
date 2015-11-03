@@ -33,20 +33,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         }
 
         /// <summary>
-        /// Informasjon om mottaker av fysisk post.
-        /// </summary>
-        /// <param name="navn">Fullt navn på mottaker av fysisk post.</param>
-        /// <param name="adresse">Adresse for mottaker av fysisk post.</param>
-        /// <param name="sertifikatThumbprint">Thumbprint til mottakersertifikatet. Se guide på http://difi.github.io/sikker-digital-post-klient-dotnet/#mottakersertifikat </param>
-        /// <param name="organisasjonsnummer">Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i meldingsprosessen.</param>
-        protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse, string sertifikatThumbprint, string organisasjonsnummer)
-            : base(sertifikatThumbprint, organisasjonsnummer)
-        {
-            Navn = navn;
-            Adresse = adresse;
-        }
-
-        /// <summary>
         ///  Informasjon om mottaker av fysisk post. Kun for returmottaker, da utskriftstjenesteSertifikat og organisasjonsnummer til postkasse ikke blir satt.
         /// Bruk overload med utskriftstjenesteSertifkat og organisasjonsnummer for Mottaker.
         /// </summary>

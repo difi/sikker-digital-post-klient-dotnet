@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Api;
@@ -200,15 +201,18 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static PostInfo GenererPostInfo(bool erDigitalPostMottaker, bool erNorskBrev)
         {
+            ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources.Sertifikater");
+
             PostInfo postInfo;
             PostMottaker mottaker;
+            var sertifikat = new X509Certificate2(resourceUtility.ReadAllBytes(true, "testmottakerFraOppslagstjenesten.pem"));
 
             if (erDigitalPostMottaker)
             {
                 mottaker = new DigitalPostMottaker(
                     personidentifikator: Settings.Default.MottakerPersonnummer, 
                     postkasseadresse: Settings.Default.MottakerDigipostadresse, 
-                    sertifikatThumbprint:Settings.Default.MottakerSertifikatThumbprint, 
+                    sertifikat: sertifikat , 
                     organisasjonsnummerPostkasse: Settings.Default.OrgnummerPosten
                     );
 
@@ -216,7 +220,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
 
                 ((DigitalPostInfo)postInfo).SmsVarsel = new SmsVarsel("12345678", "Et lite varsel pr SMS.");
-
             }
             else
             {
@@ -227,14 +230,12 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
 
                 mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
-                    Settings.Default.MottakerSertifikatThumbprint, Settings.Default.OrgnummerPosten);
+                    sertifikat, Settings.Default.OrgnummerPosten);
 
-                var returMottaker = new FysiskPostMottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"))
-                {
-                    Adresse = { Adresselinje1 = "Søppelveien 33" }
-                };
-
-                postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
+                var returMottaker = new FysiskPostReturmottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"));
+                
+                  
+                postInfo = new FysiskPostInfo((FysiskPostMottaker)mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.DirekteRetur, returMottaker);
             }
             return postInfo;
         }
