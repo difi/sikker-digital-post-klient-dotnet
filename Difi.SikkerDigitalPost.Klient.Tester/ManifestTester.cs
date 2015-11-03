@@ -74,7 +74,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
                 var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
