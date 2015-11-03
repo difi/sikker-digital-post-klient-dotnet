@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             ValiderDigest(guidUtility);
         }
 
-        public void ValiderTomkøkvittering()
+        public void ValiderTomKøKvittering()
         {
             ValiderHeaderSignatur();
         }

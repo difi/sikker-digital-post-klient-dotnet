@@ -282,7 +282,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
             var responsvalidator = new Responsvalidator(respons: kvittering, sendtMelding: forretningsmelding, sertifikatvalidator: _klientkonfigurasjon.Miljø.Sertifikatvalidator);
-            responsvalidator.ValiderTomkøkvittering();
+            responsvalidator.ValiderTomKøKvittering();
         }
 
         private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)

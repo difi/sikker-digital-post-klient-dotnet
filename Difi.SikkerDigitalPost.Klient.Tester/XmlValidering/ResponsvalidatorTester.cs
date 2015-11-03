@@ -231,7 +231,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                     sendtKvitteringsForespørsel, miljø.Sertifikatvalidator);
 
                 //Act
-                responsvalidator.ValiderTomkøkvittering();
+                responsvalidator.ValiderTomKøKvittering();
 
                 //Assert
             }
