@@ -60,7 +60,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public class Vedlegg : ManifestTester
         {
             [TestMethod]
-            public void TittelSkalSettesIManifestet()
+            public void VedleggTittelSkalSettesIManifestet()
             {
                 //Arrange
                 //Arrange
