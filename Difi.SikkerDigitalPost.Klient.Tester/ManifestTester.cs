@@ -12,7 +12,12 @@
  * limitations under the License.
  */
 
+using System;
 using System.Xml;
+using ApiClientShared;
+using Difi.SikkerDigitalPost.Klient.AsicE;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
@@ -48,6 +53,41 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
+            }
+        }
+
+        [TestClass]
+        public class Vedlegg : ManifestTester
+        {
+            [TestMethod]
+            public void TittelSkalSettesIManifestet()
+            {
+                //Arrange
+                //Arrange
+                ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+                var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+                var vedleggTittel = "tittel";
+                var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
+                    "application/pdf");
+
+
+                var dokumentPakke = new Dokumentpakke(dokument);
+                dokumentPakke.LeggTilVedlegg(vedlegg);
+
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+                var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
+
+                var manifestXml = asiceArkiv.Manifest.Xml();
+                var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
+                namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+                namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
+                //Act
+
+                //Assert
+                
+                var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg",
+                    namespaceManager).InnerText;
+                Assert.AreEqual(vedleggTittel,vedleggNodeInnerText);
             }
         }
 
