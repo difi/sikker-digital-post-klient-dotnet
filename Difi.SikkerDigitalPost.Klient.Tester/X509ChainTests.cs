@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void GyldigKjedeUtenRevokeringssjekkOgUkjentCertificateAuthority()
             {
-               var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true,"test", "testmottakerFraOppslagstjenesten.pem"));
+               var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true,"test", "testmottakersertifikatFraOppslagstjenesten.pem"));
 
                 //Arrange
                 const bool ignoreStoreMySertifikater = true;
@@ -72,7 +72,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void GyldigKjedeMedUkjentRotnodeOgUgyldigOnlineOppslag()
             {
                 //Arrange
-                var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
+                var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
                 const bool ignoreStoreMySertifikater = true;
                 var chain = new X509Chain(ignoreStoreMySertifikater)
                 {

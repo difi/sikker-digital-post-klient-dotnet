@@ -219,14 +219,14 @@
     <EmbeddedResource Include="testdata\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
     <EmbeddedResource Include="testdata\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
-    <EmbeddedResource Include="testdata\sertifikater\test\testmottakerFraOppslagstjenesten.pem" />
+    <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="testdata\sertifikater\prod\DigipostVirksomhetssertifikat.pem" />
+    <EmbeddedResource Include="testdata\sertifikater\prod\produksjonsmottakersertifikatFraOppslagstjenesten.pem" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />

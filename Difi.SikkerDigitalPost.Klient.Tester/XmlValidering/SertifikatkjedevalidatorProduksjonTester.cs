@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
             public void ErGyldigSertifikatOgKjedestatus()
             {
                 //Arrange
-                var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
+                var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "produksjonsmottakersertifikatFraOppslagstjenesten.pem"));
                 X509ChainStatus[] kjedestatus;
 
 
@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
             public void GodkjennerProduksjonssertifikat()
             {
                 //Arrange
-                var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
+                var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "produksjonsmottakersertifikatFraOppslagstjenesten.pem"));
 
                 //Act
                 var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
@@ -44,7 +44,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 //Assert
                 Assert.IsTrue(erGyldigResponssertifikat);
             }
-
         }
     }
 }
