@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Difi.SikkerDigitalPost.Klient.Extensions;
+﻿using System.Security.Cryptography.X509Certificates;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class SertifikatValidatorFunksjoneltTestmiljø : Sertifikatvalidator
+    internal class SertifikatkjedevalidatorFunksjoneltTestmiljø : Sertifikatkjedevalidator
     {
-        public SertifikatValidatorFunksjoneltTestmiljø(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
+        public SertifikatkjedevalidatorFunksjoneltTestmiljø(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
         {
         }
 

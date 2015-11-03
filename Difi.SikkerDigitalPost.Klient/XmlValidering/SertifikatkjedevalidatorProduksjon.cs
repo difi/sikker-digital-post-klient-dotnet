@@ -2,9 +2,9 @@
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class SertifikatValidatorProduksjon : Sertifikatvalidator
+    internal class SertifikatkjedevalidatorProduksjon : Sertifikatkjedevalidator
     {
-        public SertifikatValidatorProduksjon(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
+        public SertifikatkjedevalidatorProduksjon(X509Certificate2Collection sertifikatLager) : base(sertifikatLager)
         {
 
         }

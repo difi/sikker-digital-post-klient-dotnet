@@ -32,7 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SendtMelding { get; internal set; }
 
-        public Sertifikatvalidator Sertifikatvalidator { get; internal set; }
+        public Sertifikatkjedevalidator Sertifikatkjedevalidator { get; internal set; }
         
         private readonly XmlNamespaceManager nsMgr;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
@@ -44,13 +44,13 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         /// </summary>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
         /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
-        /// <param name="sertifikatvalidator"></param>
+        /// <param name="sertifikatkjedevalidator"></param>
         /// <param name="kjørendeMiljø"></param>
-        public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, Sertifikatvalidator sertifikatvalidator)
+        public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, Sertifikatkjedevalidator sertifikatkjedevalidator)
         {
             Respons = respons;
             SendtMelding = sendtMelding;
-            Sertifikatvalidator = sertifikatvalidator;
+            Sertifikatkjedevalidator = sertifikatkjedevalidator;
 
             
             nsMgr = new XmlNamespaceManager(Respons.NameTable);
@@ -135,7 +135,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderResponssertifikat()
         {
-            var erGyldigSertifikat = Sertifikatvalidator.ErGyldigResponssertifikat(_sertifikat);
+            var erGyldigSertifikat = Sertifikatkjedevalidator.ErGyldigResponssertifikat(_sertifikat);
 
             if (!erGyldigSertifikat)
             {

@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 {
     [TestClass]
-    public class SertifikatvalidatorProduksjonTester
+    public class SertifikatkjedevalidatorProduksjonTester
     {
         static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorFunksjoneltTestmiljøTester
+        public class ErGyldigResponssertifikatMethod : SertifikatkjedevalidatorFunksjoneltTestmiljøTester
         {
             [TestMethod]
             public void ErGyldigSertifikatOgKjedestatus()
@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
 
                 //Assert
@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "DigipostVirksomhetssertifikat.pem"));
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
 
                 //Assert

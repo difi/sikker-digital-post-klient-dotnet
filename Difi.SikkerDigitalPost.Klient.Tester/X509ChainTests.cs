@@ -61,7 +61,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
                     };
-                    policy.ExtraStore.AddRange(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
+                    policy.ExtraStore.AddRange(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
 
                     return policy;
 
@@ -108,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                         UrlRetrievalTimeout = new TimeSpan(0, 1, 0),
                         VerificationFlags = X509VerificationFlags.NoFlag,
                     };
-                    policy.ExtraStore.AddRange(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
+                    policy.ExtraStore.AddRange(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
 
                     return policy;
                 }

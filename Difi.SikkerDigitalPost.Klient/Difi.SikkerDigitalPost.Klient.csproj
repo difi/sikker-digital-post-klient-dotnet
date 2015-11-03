@@ -114,15 +114,15 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
-    <Compile Include="Utilities\SertifikatUtility.cs" />
+    <Compile Include="Utilities\SertifikatkjedeUtility.cs" />
     <Compile Include="XmlValidering\KvitteringsforespørselEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\SertifikatValidator.cs" />
-    <Compile Include="XmlValidering\SertifikatValidatorProduksjon.cs" />
-    <Compile Include="XmlValidering\SertifikatValidatorFunksjoneltTestmiljø.cs" />
+    <Compile Include="XmlValidering\Sertifikatkjedevalidator.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorProduksjon.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorFunksjoneltTestmiljø.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>

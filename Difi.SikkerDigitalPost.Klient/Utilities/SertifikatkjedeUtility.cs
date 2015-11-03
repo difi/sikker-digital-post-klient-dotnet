@@ -4,7 +4,7 @@ using ApiClientShared;
 
 namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
-    public static class SertifikatUtility
+    public static class SertifikatkjedeUtility
     {
         static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Resources.sertifikater");
 

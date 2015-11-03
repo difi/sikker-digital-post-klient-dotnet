@@ -3,16 +3,16 @@
 namespace Difi.SikkerDigitalPost.Klient.Utilities.Tests
 {
     [TestClass]
-    public class SertifikatUtilityTester
+    public class SertifikatkjedeUtilityTester
     {
         [TestClass]
-        public class TestsertifikaterMethod : SertifikatUtilityTester
+        public class TestsertifikaterMethod : SertifikatkjedeUtilityTester
         {
             [TestMethod]
             public void ReturnererFireSertifikaterMedThumbprint()
             {
                 //Arrange
-                var sertifikater = SertifikatUtility.FunksjoneltTestmiljøSertifikater();
+                var sertifikater = SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 
@@ -25,13 +25,13 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities.Tests
         }
 
         [TestClass]
-        public class ProduksjonssertifikaterMethod : SertifikatUtilityTester
+        public class ProduksjonssertifikaterMethod : SertifikatkjedeUtilityTester
         {
             [TestMethod]
             public void ReturnererFireSertifikaterMedThumbprint()
             {
                 //Arrange
-                var sertifikater = SertifikatUtility.ProduksjonsSertifikater();
+                var sertifikater = SertifikatkjedeUtility.ProduksjonsSertifikater();
 
                 //Act
 

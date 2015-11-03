@@ -93,7 +93,7 @@
     <Compile Include="Utilities\Difference.cs" />
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
-    <Compile Include="Utilities\SertifikatUtilityTester.cs" />
+    <Compile Include="Utilities\SertifikatkjedeUtilityTester.cs" />
     <Compile Include="Utilities\XmlUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
@@ -104,8 +104,8 @@
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SertifikatTester.cs" />
     <Compile Include="XmlValidering\ResponsvalidatorTester.cs" />
-    <Compile Include="XmlValidering\SertifikatValidatorProduksjonTester.cs" />
-    <Compile Include="XmlValidering\SertifikatvalidatorFunksjoneltTestmiljøTester.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorProduksjonTester.cs" />
+    <Compile Include="XmlValidering\SertifikatkjedevalidatorFunksjoneltTestmiljøTester.cs" />
     <Compile Include="XmlValidering\MiljøTester.cs" />
   </ItemGroup>
   <ItemGroup>

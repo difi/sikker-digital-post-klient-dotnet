@@ -8,11 +8,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     {
         public Uri Url { get; set; }
 
-        internal Sertifikatvalidator Sertifikatvalidator { get; set; }
+        internal Sertifikatkjedevalidator Sertifikatkjedevalidator { get; set; }
 
-        private Miljø(Uri url, Sertifikatvalidator sertifikatvalidator)
+        private Miljø(Uri url, Sertifikatkjedevalidator sertifikatkjedevalidator)
         {
-            Sertifikatvalidator = sertifikatvalidator;
+            Sertifikatkjedevalidator = sertifikatkjedevalidator;
             Url = url;
         }
 
@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
-                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater())
+                    new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }
@@ -34,7 +34,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://meldingsformidler.digipost.no/api/ebms"),
-                    new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater())
+                    new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater())
                     );
             }
         }
@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/"),
-                    new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater())
+                    new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }
@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
-                    new SertifikatValidatorProduksjon(SertifikatUtility.ProduksjonsSertifikater())
+                    new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater())
                     );
             }
         }

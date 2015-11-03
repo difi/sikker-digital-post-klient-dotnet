@@ -7,12 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
 {
     [TestClass]
-    public class SertifikatvalidatorFunksjoneltTestmiljøTester
+    public class SertifikatkjedevalidatorFunksjoneltTestmiljøTester
     {
         static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
-        public class ErGyldigResponssertifikatMethod : SertifikatvalidatorFunksjoneltTestmiljøTester
+        public class ErGyldigResponssertifikatMethod : SertifikatkjedevalidatorFunksjoneltTestmiljøTester
         {
             [TestMethod]
             public void ErGyldigSertifikatOgKjedestatus()
@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 X509ChainStatus[] kjedestatus;
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat, out kjedestatus);
 
                 //Assert
@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakerFraOppslagstjenesten.pem"));
 
                 //Act
-                var sertifikatValidator = new SertifikatValidatorFunksjoneltTestmiljø(SertifikatUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
 
                 //Assert
