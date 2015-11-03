@@ -14,13 +14,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
     public class ResponsvalidatorTester
     {
         private readonly string _responsKvitteringsForespørsel = KvitteringsRespons.FunksjoneltTestmiljø;
+        private readonly string _responsTransportkvitteringXmlTestmiljø = TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø;
 
-        private readonly string _responsTransportkvitteringXmlTestmiljø =
-            TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø;
-
-        //Hent kvittering
         private readonly string _sendtKvitteringsforespørsel = Kvitteringsforespørsel.FunksjoneltTestmiljø;
-        //Send melding
         private readonly string _sendtMeldingXmlTestMiljø = SendtMelding.FunksjoneltTestMiljø;
 
         private readonly string _tomKøKvittering = KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø;
