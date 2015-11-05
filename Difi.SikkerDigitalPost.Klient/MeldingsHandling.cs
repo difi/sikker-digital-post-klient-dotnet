@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
+using Difi.SikkerDigitalPost.Klient.Handlers;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -37,7 +40,6 @@ namespace Difi.SikkerDigitalPost.Klient
 
             var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
             meldingsinnhold.Headers.ContentType = mediaTypeHeaderValue;
-
             meldingsinnhold.Headers.Add("SOAPAction", "\"\"");
 
             LeggTilInnhold(container.Envelope, meldingsinnhold);
@@ -58,10 +60,10 @@ namespace Difi.SikkerDigitalPost.Klient
             meldingsdata.Headers.ContentType = new MediaTypeHeaderValue(adjustedContentType);
             meldingsdata.Headers.Add("Content-Transfer-Encoding", vedlegg.TransferEncoding);
             meldingsdata.Headers.Add("Content-ID", string.Format("<{0}>", vedlegg.ContentId));
-            
+
             meldingsinnhold.Add(meldingsdata);
         }
-
+        
         private readonly object _threadLock = new Object();
 
         private HttpClient _httpClient;
@@ -84,14 +86,16 @@ namespace Difi.SikkerDigitalPost.Klient
                             Proxy = new WebProxy(_klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort)
                         };
 
-                        _httpClient = new HttpClient(proxyHandler)
+                        var httpHandlerChain = new VersjonHttpHandler(proxyHandler);
+                        _httpClient = new HttpClient(httpHandlerChain)
                         {
                             Timeout = timeout
                         };
                     }
                     else
                     {
-                        _httpClient = new HttpClient
+                        var httpHandlerChain = new VersjonHttpHandler(new HttpClientHandler());
+                        _httpClient = new HttpClient(httpHandlerChain)
                         {
                             Timeout = timeout
                         };
