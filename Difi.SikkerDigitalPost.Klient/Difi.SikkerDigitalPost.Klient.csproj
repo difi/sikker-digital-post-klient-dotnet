@@ -90,7 +90,7 @@
     <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Handlers\VersjonHttpHandler.cs" />
+    <Compile Include="Handlers\UserAgentHttpHandler.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\NavneromUtility.cs" />

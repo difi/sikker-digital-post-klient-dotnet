@@ -86,7 +86,7 @@ namespace Difi.SikkerDigitalPost.Klient
                             Proxy = new WebProxy(_klientkonfigurasjon.ProxyHost, _klientkonfigurasjon.ProxyPort)
                         };
 
-                        var httpHandlerChain = new VersjonHttpHandler(proxyHandler);
+                        var httpHandlerChain = new UserAgentHttpHandler(proxyHandler);
                         _httpClient = new HttpClient(httpHandlerChain)
                         {
                             Timeout = timeout
@@ -94,7 +94,7 @@ namespace Difi.SikkerDigitalPost.Klient
                     }
                     else
                     {
-                        var httpHandlerChain = new VersjonHttpHandler(new HttpClientHandler());
+                        var httpHandlerChain = new UserAgentHttpHandler(new HttpClientHandler());
                         _httpClient = new HttpClient(httpHandlerChain)
                         {
                             Timeout = timeout

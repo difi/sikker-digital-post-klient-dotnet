@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Difi.SikkerDigitalPost.Klient.Handlers
 {
-    internal class VersjonHttpHandler : DelegatingHandler
+    internal class UserAgentHttpHandler : DelegatingHandler
     {
-        public VersjonHttpHandler():base(new HttpClientHandler()) { }
-        public VersjonHttpHandler(HttpMessageHandler innerHandler) : base(innerHandler) { }
+        public UserAgentHttpHandler():base(new HttpClientHandler()) { }
+        public UserAgentHttpHandler(HttpMessageHandler innerHandler) : base(innerHandler) { }
 
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
