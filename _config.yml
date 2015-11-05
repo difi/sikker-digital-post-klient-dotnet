@@ -3,24 +3,35 @@ name: Sikker Digital Post .NET
 siteUrlText: difi.github.io/difi-sikker-digital-post-klient-dotnet
 
 # current version of the software
-version: 1.2.5540.26013
+version: 1.2
 # url of the download button
 downloadUrl: https://www.nuget.org/packages/difi-sikker-digital-post-klient/
- 
+
 # licence of the software
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
 
 #baseurl: "/sikker-digital-post-net-klient" # the subpath of your site, e.g. /blog/
-coreUrl: "/sikker-digital-post-klient-dotnet"
+baseurl: "/sikker-digital-post-klient-dotnet"
+
+##Version handling
+currentCollecion: "v1_2"
+currentVersion: "1.2"
+versions: ["1.2"]
+
+# Collection of versions
 collections:
-  doks:
+  v1_2:  
     output: true
+    permalink: /v1.2/    
+
+aboutSide: "about.html"
+## End of Version handling
 
 # list of additional links on the right of the top menu
 headerLinks:
   - title: Om sikker digital post
-    url: about.html
+    url: /sikker-digital-post-klient-dotnet/about.html
   - title: GitHub
     url: https://github.com/difi/sikker-digital-post-net-klient
   - title: Issues
@@ -50,6 +61,9 @@ analytics:
 
 # DON'T MODIFY
 highlight: rouge
+
+gems:
+  - jekyll-redirect-from
 
 exclude: ['README.md', 'Gemfile.lock', 'Gemfile']
 

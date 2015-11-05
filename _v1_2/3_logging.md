@@ -18,9 +18,9 @@ var klientkonfigurasjon = new Klientkonfigurasjon
     Logger = (severity, konversasjonsId, metode, melding) =>
     {
         System.Diagnostics.Debug.WriteLine("{0} - {1} [{2}]", 
-        	DateTime.Now, 
-        	melding, 
-        	konversasjonsId.GetValueOrDefault()
+            DateTime.Now, 
+            melding, 
+            konversasjonsId.GetValueOrDefault()
         );
     }
 };
