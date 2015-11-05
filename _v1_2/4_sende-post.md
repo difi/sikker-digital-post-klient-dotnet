@@ -130,12 +130,7 @@ Siste steg er å opprette en `SikkerDigitalPostKlient`:
 
 {% highlight csharp %}
 
-var klientKonfig = new Klientkonfigurasjon
-{
-    //Testmiljø, standard er produksjon.
-    MeldingsformidlerUrl = new Uri(
-        "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms")
-};
+var klientKonfig = new Klientkonfigurasjon();
 
 Databehandler databehandler = null; //Som initiert tidligere
 Forsendelse forsendelse = null;     //Som initiert tidligere
