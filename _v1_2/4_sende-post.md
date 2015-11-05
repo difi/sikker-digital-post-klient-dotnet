@@ -15,30 +15,59 @@ For å gjøre det lettere å komme i gang med sending av Sikker digital post så
 Først, lag en motaker av type `DigitalPostMottaker`:
 
 {% highlight csharp %}
-var mottaker = new DigitalPostMottaker(personnummer, postkasseadresse, mottakersertifikat, orgnummerPostkasse)
+
+var personnummer = "01013300002";
+var postkasseadresse = "ola.nordmann#2233";
+var mottakersertifikat = new X509Certificate2(); //sertifikat hentet fra Oppslagstjenesten
+var orgnummerPostkasse = "123456789";
+var mottaker = new DigitalPostMottaker(
+	    personnummer, 
+	    postkasseadresse, 
+	    mottakersertifikat, 
+	    orgnummerPostkasse
+    );
+
+var ikkeSensitivTittel = "En tittel som ikke er sensitiv";
+var sikkerhetsnivå = Sikkerhetsnivå.Nivå3;
+var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå);
+
 {% endhighlight%}
 
 <blockquote>Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.</blockquote>
 
-Opprett så en `DigitalPostInfo`:
-{% highlight csharp %}
-var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå)
-{% endhighlight%}
-
 <h3 id="postinfofysisk">PostInfo for fysisk post</h3>
 
-Skal du sende fysisk post må du først lage en `FysiskPostMottaker`:
+Skal du sende fysisk post må du først lage en `FysiskPostMottaker`, en `FysiskPostReturMottaker` og sette informasjon om farge og makulering:
+
 {% highlight csharp %}
-var mottaker = new FysiskPostMottaker(navn, adresse, mottakersertifikat, orgnummerPostkasse)
+
+string navn = "Ola Nordmann";
+Adresse adresse = new NorskAdresse("0001", "Oslo");
+X509Certificate2 mottakersertifikat = new X509Certificate2(); // sertifikat hentet fra Oppslagstjenesten
+var orgnummerPostkasse = "123456789";
+var mottaker = new FysiskPostMottaker(navn, adresse, mottakersertifikat, orgnummerPostkasse);
+
+FysiskPostReturmottaker returMottaker = new FysiskPostReturmottaker(
+    "John Doe", 
+    new NorskAdresse("0566", "Oslo")
+    {
+        Adresselinje1 = "Returgata 22"
+    });
+
+var postInfo = new FysiskPostInfo(
+            mottaker, 
+            Posttype.A, 
+            Utskriftsfarge.SortHvitt, 
+            Posthåndtering.MakuleringMedMelding, 
+            returMottaker
+        );
+
+
 {% endhighlight%}
 
 Her er adressen av type `NorskAdresse` eller `UtenlandskAdresse`.
 
 Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til `Posthåndtering.MakuleringMedMelding`. Oppretting av en FysiskPostInfo vil da se slik ut:
-
-{% highlight csharp %}
-var postInfo = new FysiskPostInfo(mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.MakuleringMedMelding, returMottaker);
-{% endhighlight%}
 
 <h3 id="oppsettfoersending">Oppsett før sending</h3>
 
