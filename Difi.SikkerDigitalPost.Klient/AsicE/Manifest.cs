@@ -87,7 +87,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
             foreach (var vedlegg in Forsendelse.Dokumentpakke.Vedlegg)
             {
-                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Filnavn));
+                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Tittel));
             }
 
             Logging.Log(TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke" + Environment.NewLine + _manifestXml.OuterXml);

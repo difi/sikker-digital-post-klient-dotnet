@@ -190,6 +190,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderEnhetstesterSertifikat());
         }
+        
+        internal static AsicEArkiv GetAsicEArkiv(Forsendelse forsendelse)
+        {
+            return new AsicEArkiv(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
+        }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()
         {
