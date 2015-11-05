@@ -250,7 +250,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetMottakerSertifikat()
         {
-            return CertificateUtility.ReceiverCertificate(Settings.Default.MottakerSertifikatThumbprint, Language.Norwegian);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
         }
     }
 }

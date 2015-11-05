@@ -36,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 X509ChainStatus[] kjedestatus;
                 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
 
                 //Assert
