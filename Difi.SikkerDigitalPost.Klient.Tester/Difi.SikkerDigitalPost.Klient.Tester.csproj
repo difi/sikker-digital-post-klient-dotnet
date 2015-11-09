@@ -78,6 +78,7 @@
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
     <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\ForretningskvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
