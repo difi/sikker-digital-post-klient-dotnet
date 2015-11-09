@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 
             try
             {
-                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
+                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
                 MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
 
                 var referanseTilMeldingId = DocumentNode("//ns6:RefToMessageId");
