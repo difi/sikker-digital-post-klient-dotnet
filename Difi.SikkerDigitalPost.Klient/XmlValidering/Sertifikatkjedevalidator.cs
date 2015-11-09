@@ -14,7 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         }
 
         public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
-       {
+        {
             X509ChainStatus[] kjedestatus;
             return ErGyldigResponssertifikat(sertifikat, out kjedestatus);
         }
@@ -27,8 +27,30 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             };
 
             var erGyldigResponssertifikat = chain.Build(sertifikat);
+            if (!erGyldigResponssertifikat)
+            {
+                erGyldigResponssertifikat = ErGyldigResponssertifikatHvisKunUntrustedRoot(chain);
+            }
 
             kjedestatus = chain.ChainStatus;
+            return erGyldigResponssertifikat;
+        }
+
+
+        private static bool ErGyldigResponssertifikatHvisKunUntrustedRoot(X509Chain chain)
+        {
+            var erGyldigResponssertifikat = false;
+            const int forventetKjedelengde = 3;
+            const int forventetAntallKjedeStatuselementer = 1;
+
+            var kjedeElementer = chain.ChainElements;
+            var erKjedeMedTreSertifikater = kjedeElementer.Count == forventetKjedelengde;
+            var erUntrustedRoot = chain.ChainStatus.Length == forventetAntallKjedeStatuselementer && chain.ChainStatus[0].Status == X509ChainStatusFlags.UntrustedRoot;
+            if (erKjedeMedTreSertifikater && erUntrustedRoot)
+            {
+                erGyldigResponssertifikat = true;
+            }
+
             return erGyldigResponssertifikat;
         }
 
