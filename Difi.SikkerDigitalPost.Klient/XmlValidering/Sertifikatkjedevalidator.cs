@@ -4,11 +4,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal abstract class Sertifikatkjedevalidator
+    internal class Sertifikatkjedevalidator
     {
         public X509Certificate2Collection SertifikatLager { get; set; }
 
-        protected Sertifikatkjedevalidator(X509Certificate2Collection sertifikatLager)
+        internal Sertifikatkjedevalidator(X509Certificate2Collection sertifikatLager)
         {
             SertifikatLager = sertifikatLager;
         }
@@ -36,6 +36,17 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return erGyldigResponssertifikat;
         }
 
+        public  X509ChainPolicy ChainPolicy()
+        {
+            var policy = new X509ChainPolicy()
+            {
+                RevocationMode = X509RevocationMode.NoCheck
+
+            };
+            policy.ExtraStore.AddRange(SertifikatLager);
+
+            return policy;
+        }
 
         private static bool ErGyldigResponssertifikatHvisKunUntrustedRoot(X509Chain chain)
         {
@@ -53,7 +64,5 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             return erGyldigResponssertifikat;
         }
-
-        public abstract X509ChainPolicy ChainPolicy();
     }
 }

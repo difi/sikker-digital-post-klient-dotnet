@@ -121,8 +121,6 @@
     <Compile Include="XmlValidering\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
     <Compile Include="XmlValidering\Sertifikatkjedevalidator.cs" />
-    <Compile Include="XmlValidering\SertifikatkjedevalidatorProduksjon.cs" />
-    <Compile Include="XmlValidering\SertifikatkjedevalidatorFunksjoneltTestmiljø.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>

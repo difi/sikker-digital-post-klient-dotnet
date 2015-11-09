@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var testSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat);
 
                 //Assert
@@ -36,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 X509ChainStatus[] kjedestatus;
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(testSertifikat, out kjedestatus);
 
                 //Assert
@@ -50,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
 
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat);
 
@@ -63,7 +63,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
             {
                 var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater());
 
                 X509ChainStatus[] kjedestatus;
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat, out kjedestatus);
