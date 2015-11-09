@@ -4,17 +4,17 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal abstract class Sertifikatkjedevalidator
+    internal class Sertifikatkjedevalidator
     {
         public X509Certificate2Collection SertifikatLager { get; set; }
 
-        protected Sertifikatkjedevalidator(X509Certificate2Collection sertifikatLager)
+        internal Sertifikatkjedevalidator(X509Certificate2Collection sertifikatLager)
         {
             SertifikatLager = sertifikatLager;
         }
 
         public bool ErGyldigResponssertifikat(X509Certificate2 sertifikat)
-       {
+        {
             X509ChainStatus[] kjedestatus;
             return ErGyldigResponssertifikat(sertifikat, out kjedestatus);
         }
@@ -27,11 +27,42 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             };
 
             var erGyldigResponssertifikat = chain.Build(sertifikat);
+            if (!erGyldigResponssertifikat)
+            {
+                erGyldigResponssertifikat = ErGyldigResponssertifikatHvisKunUntrustedRoot(chain);
+            }
 
             kjedestatus = chain.ChainStatus;
             return erGyldigResponssertifikat;
         }
 
-        public abstract X509ChainPolicy ChainPolicy();
+        public  X509ChainPolicy ChainPolicy()
+        {
+            var policy = new X509ChainPolicy()
+            {
+                RevocationMode = X509RevocationMode.NoCheck
+
+            };
+            policy.ExtraStore.AddRange(SertifikatLager);
+
+            return policy;
+        }
+
+        private static bool ErGyldigResponssertifikatHvisKunUntrustedRoot(X509Chain chain)
+        {
+            var erGyldigResponssertifikat = false;
+            const int forventetKjedelengde = 3;
+            const int forventetAntallKjedeStatuselementer = 1;
+
+            var kjedeElementer = chain.ChainElements;
+            var erKjedeMedTreSertifikater = kjedeElementer.Count == forventetKjedelengde;
+            var erUntrustedRoot = chain.ChainStatus.Length == forventetAntallKjedeStatuselementer && chain.ChainStatus[0].Status == X509ChainStatusFlags.UntrustedRoot;
+            if (erKjedeMedTreSertifikater && erUntrustedRoot)
+            {
+                erGyldigResponssertifikat = true;
+            }
+
+            return erGyldigResponssertifikat;
+        }
     }
 }

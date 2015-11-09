@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "produksjonsmottakersertifikatFraOppslagstjenesten.pem"));
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat);
 
                 //Assert
@@ -36,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 X509ChainStatus[] kjedestatus;
                 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
 
                 //Assert
@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater());
 
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat);
 
@@ -67,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
                 var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
 
                 //Act
-                var sertifikatValidator = new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater());
+                var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater());
 
                 X509ChainStatus[] kjedestatus;
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(selvsignertSertifikat, out kjedestatus);

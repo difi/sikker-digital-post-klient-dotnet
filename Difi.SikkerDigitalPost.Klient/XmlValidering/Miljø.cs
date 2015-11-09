@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
-                    new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
+                    new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }
@@ -34,7 +34,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://meldingsformidler.digipost.no/api/ebms"),
-                    new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater())
+                    new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater())
                     );
             }
         }
@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/"),
-                    new SertifikatkjedevalidatorFunksjoneltTestmiljø(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
+                    new Sertifikatkjedevalidator(SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater())
                     );
 
             }
@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             {
                 return new Miljø(
                     new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
-                    new SertifikatkjedevalidatorProduksjon(SertifikatkjedeUtility.ProduksjonsSertifikater())
+                    new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater())
                     );
             }
         }
