@@ -4,7 +4,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
-    public class Kvittering
+    public abstract class Kvittering
     {
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
@@ -29,9 +29,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// </summary>
         public string Rådata { get; protected set; }
 
-        public Kvittering() { }
+        protected Kvittering() { }
 
-        public Kvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
+        protected Kvittering(XmlDocument document, XmlNamespaceManager namespaceManager)
         {
             _document = document;
             _namespaceManager = namespaceManager;
