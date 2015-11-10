@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 
-
-namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 {
     public class TomKøKvittering : Transportkvittering
     {
@@ -12,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         }
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {4}",
+            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
                 GetType().Name, MeldingsId, Tidspunkt, ReferanseTilMeldingId);
         }
     }

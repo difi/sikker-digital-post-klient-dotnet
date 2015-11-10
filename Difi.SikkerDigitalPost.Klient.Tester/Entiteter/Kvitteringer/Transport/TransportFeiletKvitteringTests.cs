@@ -11,12 +11,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport.
             [TestMethod]
             public void EnkelKonstruktør()
             {
-                var transportFeiletKvitteringRådata = "";
+                var rådata = "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\"><env:Header><eb:Messaging xmlns:eb=\"http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/\" env:mustUnderstand=\"true\"><ns6:SignalMessage xmlns:ns10=\"http://uri.etsi.org/2918/v1.2.1#\" xmlns:ns11=\"http://uri.etsi.org/01903/v1.3.2#\" xmlns:ns2=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns3=\"http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader\" xmlns:ns4=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:ns5=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:ns6=\"http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/\" xmlns:ns7=\"http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0\" xmlns:ns8=\"http://www.w3.org/1999/xlink\" xmlns:ns9=\"http://begrep.difi.no/sdp/schema_v10\"><ns6:MessageInfo><ns6:Timestamp>2015-11-10T14:58:23.408+01:00</ns6:Timestamp><ns6:MessageId>e0df4e6c-c4d7-426b-a3fd-dac2e241f313</ns6:MessageId></ns6:MessageInfo><ns6:Error category=\"Processing\" errorCode=\"EBMS:0103\" origin=\"security\" severity=\"failure\" shortDescription=\"PolicyNoncompliance\"><ns6:Description xml:lang=\"en\">Invalid timestamp: The security semantics of the message have expired; nested exception is org.apache.wss4j.common.ext.WSSecurityException: Invalid timestamp: The security semantics of the message have expired</ns6:Description></ns6:Error></ns6:SignalMessage></eb:Messaging></env:Header><env:Body><env:Fault><env:Code><env:Value>env:Sender</env:Value></env:Code><env:Reason><env:Text xml:lang=\"en\">PolicyNoncompliance</env:Text></env:Reason></env:Fault></env:Body></env:Envelope>";
 
-                var kvittering = (Transportkvittering)KvitteringFactory.GetKvittering(transportFeiletKvitteringRådata);
+                var kvittering = (Transportkvittering)KvitteringFactory.GetKvittering(rådata);
 
                 Assert.IsInstanceOfType(kvittering, typeof(TransportFeiletKvittering));
-                
             }
         }
 
