@@ -84,6 +84,8 @@
     <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostkvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\ÅpningskvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\TomKøKvitteringTests.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

@@ -109,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportkvitteringRådata);
 
-            var transportKvittering = KvitteringFactory.GetTransportkvittering(transportkvitteringRådata);
+            var transportKvittering =   KvitteringFactory.GetTransportkvittering(transportkvitteringRådata);
 
             var transportkvitteringXml = new XmlDocument();
             transportkvitteringXml.LoadXml(transportkvitteringRådata);
@@ -245,12 +245,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var kvitteringsrespons = KvitteringFactory.GetForretningskvittering(kvitteringsresponsrådata);
             
-            var isTomKøKvittering = kvitteringsrespons == null;
-            if (isTomKøKvittering)
+            if (kvitteringsrespons is TomKøKvittering)
             {
                 SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope.Xml());
             }
-            else
+            else if(kvitteringsrespons is Forretningskvittering)
             {
                 SikkerhetsvalideringAvMeldingskvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope);
             }

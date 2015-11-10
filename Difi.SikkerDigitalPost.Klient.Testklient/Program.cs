@@ -115,7 +115,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
                 Kvittering kvittering = await _sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
-                if (kvittering == null)
+                if (kvittering is TomKøKvittering)
                 {
                     Console.WriteLine("  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
                     break;

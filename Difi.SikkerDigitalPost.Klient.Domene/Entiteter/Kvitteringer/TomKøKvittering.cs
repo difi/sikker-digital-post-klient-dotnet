@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
-    public class TomKøKvittering : Kvittering
+    public class TomKøKvittering : Transportkvittering
     {
-        internal TomKøKvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
-            : base(xmlDocument, namespaceManager)
+        public TomKøKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
         }
         public override string ToString()

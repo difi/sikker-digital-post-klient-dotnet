@@ -24,31 +24,15 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     internal class KvitteringFactory
     {
-        public static Kvittering GetForretningskvittering(string xml)
+
+        public static Kvittering GetKvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
-            if (IsLeveringskvittering(xmlDocument))
-                return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
-            
-            if (IsVarslingFeiletkvittering(xmlDocument))
-                return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
-               
-            if (IsFeilmelding(xmlDocument))
-                return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
-            
-            if (IsÅpningskvittering(xmlDocument))
-                return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
+            var kvittering =(Forretningskvittering) LagForretningskvittering(xmlDocument) ?? (Kvittering) LagTransportkvittering(xmlDocument);
 
-            if (IsMottaksKvittering(xmlDocument))
-                return new Mottakskvittering(xmlDocument, NamespaceManager(xmlDocument));
-
-            if (IsReturpost(xmlDocument))
-                return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
-
-            if (IsTomKøKvittering(xmlDocument))
-                return new TomKøKvittering(xmlDocument,NamespaceManager(xmlDocument));
+            if (kvittering != null) return kvittering;
 
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
@@ -58,18 +42,58 @@ namespace Difi.SikkerDigitalPost.Klient
 
             throw ingenKvitteringstypeFunnetException;
         }
+        public static Forretningskvittering GetForretningskvittering(string xml)
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xml);
+
+            var forretningskvittering = LagForretningskvittering(xmlDocument);
+            
+            if(forretningskvittering != null)
+                return forretningskvittering;
+            
+            var ingenKvitteringstypeFunnetException = new XmlParseException(
+                "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+            {
+                Rådata = xml
+            };
+
+            throw ingenKvitteringstypeFunnetException;
+        }
+
+        private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
+        {
+            if (IsLeveringskvittering(xmlDocument))
+                return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsVarslingFeiletkvittering(xmlDocument))
+                return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsFeilmelding(xmlDocument))
+                return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsÅpningskvittering(xmlDocument))
+                return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsMottaksKvittering(xmlDocument))
+                return new Mottakskvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsReturpost(xmlDocument))
+                return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            return null;
+        }
 
         public static Transportkvittering GetTransportkvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
+            var transportKvittering = LagTransportkvittering(xmlDocument);
 
-            if (IsTransportOkKvittering(xmlDocument))
-                return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
-
-            if (IsTransportFeiletKvittering(xmlDocument))
-                return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
-
+            if (transportKvittering != null)
+            {
+                return transportKvittering;
+            }
             var exception = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
@@ -77,6 +101,20 @@ namespace Difi.SikkerDigitalPost.Klient
             };
 
             throw exception;
+        }
+
+        private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)
+        {
+            if (IsTransportOkKvittering(xmlDocument))
+                return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsTransportFeiletKvittering(xmlDocument))
+                return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            if (IsTomKøKvittering(xmlDocument))
+                return new TomKøKvittering(xmlDocument, NamespaceManager(xmlDocument));
+
+            return null;
         }
 
         private static bool IsLeveringskvittering(XmlDocument document)
@@ -103,7 +141,7 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             return DocumentHasNode(document, "ns6:Error[@shortDescription = 'EmptyMessagePartitionChannel']");
         }
-        
+
         private static bool IsTransportOkKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns6:Receipt");
