@@ -14,6 +14,7 @@
 
 using System;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
@@ -23,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     internal class KvitteringFactory
     {
-        public static Forretningskvittering GetForretningskvittering(string xml)
+        public static Kvittering GetForretningskvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
@@ -47,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsTomKøKvittering(xmlDocument))
-                return null;
+                return new TomKøKvittering(xmlDocument,NamespaceManager(xmlDocument));
 
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")

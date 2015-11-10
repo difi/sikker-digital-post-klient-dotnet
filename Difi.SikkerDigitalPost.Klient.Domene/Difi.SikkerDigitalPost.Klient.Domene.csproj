@@ -66,6 +66,7 @@
     <Compile Include="Entiteter\FysiskPost\UtenlandskAdresse.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\MottaksKvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostKvittering.cs" />
+    <Compile Include="Entiteter\Kvitteringer\TomKøKvittering.cs" />
     <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />
     <Compile Include="Entiteter\Post\PostInfo.cs" />
     <Compile Include="Enums\Postmetode.cs" />
