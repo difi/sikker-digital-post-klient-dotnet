@@ -243,7 +243,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var kvitteringsresponsXml = new XmlDocument();
             kvitteringsresponsXml.LoadXml(kvitteringsresponsrådata);
 
-            var kvitteringsrespons = KvitteringFactory.GetForretningskvittering(kvitteringsresponsrådata);
+            var kvitteringsrespons = KvitteringFactory.GetKvittering(kvitteringsresponsrådata);
             
             if (kvitteringsrespons is TomKøKvittering)
             {
