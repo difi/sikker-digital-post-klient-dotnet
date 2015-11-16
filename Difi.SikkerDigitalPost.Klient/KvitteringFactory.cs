@@ -35,31 +35,14 @@ namespace Difi.SikkerDigitalPost.Klient
             if (kvittering != null) return kvittering;
 
             var ingenKvitteringstypeFunnetException = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
                 Rådata = xml
             };
 
             throw ingenKvitteringstypeFunnetException;
         }
-        public static Forretningskvittering GetForretningskvittering(string xml)
-        {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-
-            var forretningskvittering = LagForretningskvittering(xmlDocument);
-            
-            if(forretningskvittering != null)
-                return forretningskvittering;
-            
-            var ingenKvitteringstypeFunnetException = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
-            {
-                Rådata = xml
-            };
-
-            throw ingenKvitteringstypeFunnetException;
-        }
+        
 
         private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
         {
@@ -82,25 +65,6 @@ namespace Difi.SikkerDigitalPost.Klient
                 return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             return null;
-        }
-
-        public static Transportkvittering GetTransportkvittering(string xml)
-        {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-            var transportKvittering = LagTransportkvittering(xmlDocument);
-
-            if (transportKvittering != null)
-            {
-                return transportKvittering;
-            }
-            var exception = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
-            {
-                Rådata = xml
-            };
-
-            throw exception;
         }
 
         private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)

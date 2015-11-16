@@ -12,7 +12,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Tidspunktet da kvitteringen ble sendt.
         /// </summary>
-        public DateTime Tidspunkt { get; protected set; }
+        public DateTime SendtTidspunkt { get; protected set; }
 
         /// <summary>
         /// Unik identifikator for kvitteringen.
@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 
             try
             {
-                Tidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
+                SendtTidspunkt = Convert.ToDateTime(DocumentNode("//ns6:Timestamp").InnerText);
                 MeldingsId = DocumentNode("//ns6:MessageId").InnerText;
 
                 var referanseTilMeldingId = DocumentNode("//ns6:RefToMessageId");

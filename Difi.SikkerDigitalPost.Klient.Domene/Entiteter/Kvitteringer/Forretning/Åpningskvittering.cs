@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
             try
             {
-                Åpningstidspunkt = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
+                Åpningstidspunkt = LevertTidspunkt;  // Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText); //TODO:hvorfor finnes denne? Den vil alltid være lik levertTispunkt..
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nÅpningstidspunkt: {3}. \nKonversasjonsId: {4}. \nRefererer til melding med id: {5}", 
-                GetType().Name, MeldingsId, Tidspunkt, Åpningstidspunkt, KonversasjonsId, ReferanseTilMeldingId);
+                GetType().Name, MeldingsId, LevertTidspunkt, Åpningstidspunkt, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

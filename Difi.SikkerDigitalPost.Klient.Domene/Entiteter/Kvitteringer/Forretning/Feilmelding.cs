@@ -56,7 +56,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nTidspunkt feilet: {3}. \nSkyldig: {4}. \nDetaljer: {5}. \nKonversasjonsId: {6}. \nRefererer til melding med id: {7}", 
-                GetType().Name, MeldingsId, Tidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
+                GetType().Name, MeldingsId, LevertTidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

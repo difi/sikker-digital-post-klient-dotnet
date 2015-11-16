@@ -33,6 +33,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         
         internal XmlNode BodyReference { get; set; }
 
+        /// <summary>
+        /// Tidspunktet da kvitteringen ble skapt hos postkasse eller utskriftsleverandør.
+        /// </summary>
+        public DateTime LevertTidspunkt { get; protected set; }
+
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
@@ -49,6 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 _namespaceManager = namespaceManager;
 
                 KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
+                LevertTidspunkt = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
                 BodyReference = BodyReferenceNode();
             }
             catch (Exception e)
