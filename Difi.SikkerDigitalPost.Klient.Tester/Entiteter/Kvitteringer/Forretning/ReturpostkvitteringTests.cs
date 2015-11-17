@@ -24,7 +24,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
                 Assert.IsInstanceOfType(kvittering, typeof(Forretningskvittering));
                 Assert.IsInstanceOfType(kvittering,typeof(Returpostkvittering));
-
                 var returpostkvittering = (Returpostkvittering)kvittering;
                 Assert.AreEqual(konversjonsId, returpostkvittering.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, returpostkvittering.MeldingsId);

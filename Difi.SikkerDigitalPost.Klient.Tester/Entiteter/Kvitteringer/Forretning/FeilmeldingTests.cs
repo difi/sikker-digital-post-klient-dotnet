@@ -23,9 +23,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 
                 var kvittering = KvitteringFactory.GetKvittering(rådata);
 
+
                 Assert.IsInstanceOfType(kvittering, typeof(Forretningskvittering));
                 Assert.IsInstanceOfType(kvittering, typeof(Feilmelding));
-
                 var feilmelding = (Feilmelding)kvittering;
                 Assert.AreEqual(konversjonsId, feilmelding.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, feilmelding.MeldingsId);
