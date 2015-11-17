@@ -14,7 +14,6 @@
 
 using System;
 using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -24,27 +23,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Åpningskvittering : Forretningskvittering
     {
-        /// <summary>
-        /// Tidspunkt for når borger åpnet posten i sin postkasse.
-        /// </summary>
-        public DateTime Åpningstidspunkt { get; protected set; }
+
         public Åpningskvittering() { }
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
-            try
-            {
-                Åpningstidspunkt = LevertTidspunkt;  // Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText); //TODO:hvorfor finnes denne? Den vil alltid være lik levertTispunkt..
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException("Feil under bygging av Åpningskvittering. Klarte ikke finne alle felter i xml.", e);
-            }
         }
 
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nÅpningstidspunkt: {3}. \nKonversasjonsId: {4}. \nRefererer til melding med id: {5}", 
-                GetType().Name, MeldingsId, LevertTidspunkt, Åpningstidspunkt, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}.  \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}", 
+                GetType().Name, MeldingsId, LevertTidspunkt, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }
