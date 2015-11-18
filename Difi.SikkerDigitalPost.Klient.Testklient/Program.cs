@@ -1,18 +1,4 @@
-﻿/** 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -179,7 +165,10 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "Vedlegg.txt"));
-            return new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
+            var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
+            
+            return forsendelse;
+            
 
         }
 
@@ -216,7 +205,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     organisasjonsnummerPostkasse: Settings.Default.OrgnummerPosten
                     );
 
-                postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: false);
+                postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: true);
                 ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
 
                 ((DigitalPostInfo)postInfo).SmsVarsel = new SmsVarsel("12345678", "Et lite varsel pr SMS.");
