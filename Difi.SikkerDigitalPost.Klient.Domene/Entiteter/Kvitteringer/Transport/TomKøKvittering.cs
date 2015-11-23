@@ -3,17 +3,11 @@ using System.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 {
-    /// <summary>
-    /// Kvittering fra meldingsformidler som indikerer at denne har overtatt ansvaret for videre formidling av meldingen.
-    /// </summary>
-    public class TransportOkKvittering : Transportkvittering
+    public class TomKøKvittering : Transportkvittering
     {
-        public TransportOkKvittering()
-        { }
-        public TransportOkKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
+        public TomKøKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
         }
-
         public override string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
@@ -9,20 +10,40 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     internal class KvitteringFactory
     {
-        public static Forretningskvittering GetForretningskvittering(string xml)
+
+        public static Kvittering GetKvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
+            var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
+
+            if (kvittering == null)
+            {
+                var ingenKvitteringstypeFunnetException = new XmlParseException(
+                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+                {
+                    Rådata = xml
+                };
+
+                throw ingenKvitteringstypeFunnetException;
+            }
+
+            return kvittering;
+        }
+
+
+        private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
+        {
             if (IsLeveringskvittering(xmlDocument))
                 return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
-            
+
             if (IsVarslingFeiletkvittering(xmlDocument))
                 return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
-               
+
             if (IsFeilmelding(xmlDocument))
                 return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
-            
+
             if (IsÅpningskvittering(xmlDocument))
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
 
@@ -32,36 +53,21 @@ namespace Difi.SikkerDigitalPost.Klient
             if (IsReturpost(xmlDocument))
                 return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
 
-            if (IsTomKøKvittering(xmlDocument))
-                return null;
-
-            var ingenKvitteringstypeFunnetException = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Forretningskvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
-            {
-                Rådata = xml
-            };
-
-            throw ingenKvitteringstypeFunnetException;
+            return null;
         }
 
-        public static Transportkvittering GetTransportkvittering(string xml)
+        private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)
         {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-
             if (IsTransportOkKvittering(xmlDocument))
                 return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsTransportFeiletKvittering(xmlDocument))
                 return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
 
-            var exception = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Transportkvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
-            {
-                Rådata = xml
-            };
+            if (IsTomKøKvittering(xmlDocument))
+                return new TomKøKvittering(xmlDocument, NamespaceManager(xmlDocument));
 
-            throw exception;
+            return null;
         }
 
         private static bool IsLeveringskvittering(XmlDocument document)
@@ -88,7 +94,7 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             return DocumentHasNode(document, "ns6:Error[@shortDescription = 'EmptyMessagePartitionChannel']");
         }
-        
+
         private static bool IsTransportOkKvittering(XmlDocument document)
         {
             return DocumentHasNode(document, "ns6:Receipt");

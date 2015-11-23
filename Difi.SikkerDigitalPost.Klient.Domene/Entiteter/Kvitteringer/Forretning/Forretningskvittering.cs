@@ -19,6 +19,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         
         internal XmlNode BodyReference { get; set; }
 
+        protected DateTime Generert { get; set; }
+
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
@@ -35,6 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 _namespaceManager = namespaceManager;
 
                 KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
+                Generert = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
                 BodyReference = BodyReferenceNode();
             }
             catch (Exception e)

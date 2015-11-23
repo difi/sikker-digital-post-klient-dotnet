@@ -40,10 +40,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
             }
         }
 
+        public DateTime Feilet
+        {
+            get { return Generert; }
+        }
+
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nVarslingskanal: {3}. \nBeskrivelse: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
-                GetType().Name, MeldingsId, Tidspunkt, Varslingskanal, Beskrivelse, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}. \nVarslingskanal: {3}. \nBeskrivelse: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
+                GetType().Name, MeldingsId, Feilet, Varslingskanal, Beskrivelse, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

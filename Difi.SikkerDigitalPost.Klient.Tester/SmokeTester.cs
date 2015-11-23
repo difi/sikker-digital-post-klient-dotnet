@@ -105,7 +105,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
                 kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 
-                if (kvittering == null) { continue; }
+                if (kvittering is TomKøKvittering) { continue; }
                 hentKvitteringPåNytt = false;
 
                 sdpKlient.Bekreft((Forretningskvittering)kvittering);
