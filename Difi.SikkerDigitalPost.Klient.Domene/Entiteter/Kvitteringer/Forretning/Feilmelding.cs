@@ -54,8 +54,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}. \nTidspunkt feilet: {3}. \nSkyldig: {4}. \nDetaljer: {5}. \nKonversasjonsId: {6}. \nRefererer til melding med id: {7}", 
-                GetType().Name, MeldingsId, Feilet, Feilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}.. \nSkyldig: {3}. \nDetaljer: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
+                GetType().Name, MeldingsId, Feilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }
