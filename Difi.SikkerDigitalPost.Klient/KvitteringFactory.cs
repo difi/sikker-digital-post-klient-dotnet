@@ -30,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
-            var kvittering =(Forretningskvittering) LagForretningskvittering(xmlDocument) ?? (Kvittering) LagTransportkvittering(xmlDocument);
+            var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
 
             if (kvittering != null) return kvittering;
 
