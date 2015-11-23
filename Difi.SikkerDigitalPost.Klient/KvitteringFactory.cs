@@ -32,17 +32,20 @@ namespace Difi.SikkerDigitalPost.Klient
 
             var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
 
-            if (kvittering != null) return kvittering;
-
-            var ingenKvitteringstypeFunnetException = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+            if (kvittering == null)
             {
-                Rådata = xml
-            };
+                var ingenKvitteringstypeFunnetException = new XmlParseException(
+                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+                {
+                    Rådata = xml
+                };
 
-            throw ingenKvitteringstypeFunnetException;
+                throw ingenKvitteringstypeFunnetException;
+            }
+
+            return kvittering;
         }
-        
+
 
         private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
         {
