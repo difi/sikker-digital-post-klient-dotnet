@@ -13,10 +13,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
+        public DateTime Mottatt
+        {
+            get { return Generert; }
+        }
+
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}",
-                GetType().Name, MeldingsId, LevertTidspunkt, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nMottatt: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}",
+                GetType().Name, MeldingsId, Mottatt, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

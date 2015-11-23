@@ -23,16 +23,21 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Åpningskvittering : Forretningskvittering
     {
-
         public Åpningskvittering() { }
+
         internal Åpningskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
         }
 
+        public DateTime Åpnet
+        {
+            get { return Generert; }
+        }
+        
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}.  \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}", 
-                GetType().Name, MeldingsId, LevertTidspunkt, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nÅpnet: {2}.  \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}", 
+                GetType().Name, MeldingsId, Åpnet, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }

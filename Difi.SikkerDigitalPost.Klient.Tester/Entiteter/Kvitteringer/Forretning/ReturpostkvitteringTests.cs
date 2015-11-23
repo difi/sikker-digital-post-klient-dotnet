@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(konversjonsId, returpostkvittering.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, returpostkvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, returpostkvittering.ReferanseTilMeldingId);
-                Assert.AreEqual(DateTime.Parse(tidspunkt), returpostkvittering.LevertTidspunkt);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), returpostkvittering.Returnert);
             }
         }
     }

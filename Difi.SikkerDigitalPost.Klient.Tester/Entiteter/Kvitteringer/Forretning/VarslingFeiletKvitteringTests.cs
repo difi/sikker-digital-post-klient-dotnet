@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(konversjonsId, varslingfeiletkvittering.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, varslingfeiletkvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, varslingfeiletkvittering.ReferanseTilMeldingId);
-                Assert.AreEqual(DateTime.Parse(tidspunkt), varslingfeiletkvittering.LevertTidspunkt);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), varslingfeiletkvittering.Feilet);
                 Assert.AreEqual(beskrivelse,varslingfeiletkvittering.Beskrivelse);
                 Assert.AreEqual(varslingskanal,varslingfeiletkvittering.Varslingskanal);
             }

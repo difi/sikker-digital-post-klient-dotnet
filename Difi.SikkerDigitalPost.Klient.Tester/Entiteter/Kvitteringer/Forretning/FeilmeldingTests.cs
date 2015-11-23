@@ -30,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(konversjonsId, feilmelding.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, feilmelding.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, feilmelding.ReferanseTilMeldingId);
-                Assert.AreEqual(DateTime.Parse(tidspunkt), feilmelding.LevertTidspunkt);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), feilmelding.Feilet);
                 Assert.AreEqual(detaljer,feilmelding.Detaljer);
                 Assert.AreEqual(feiltype,feilmelding.Skyldig);
             }

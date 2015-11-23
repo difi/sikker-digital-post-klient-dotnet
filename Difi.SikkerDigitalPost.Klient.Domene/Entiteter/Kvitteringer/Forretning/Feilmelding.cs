@@ -32,14 +32,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public string Detaljer { get; protected set; }
 
-        public DateTime TidspunktFeilet { get; protected set; }
+        public DateTime Feilet { get { return Generert; } }
         public Feilmelding() { }
         internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
         {
             try
             {
-                TidspunktFeilet = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
-
+                
                 var feiltype = DocumentNode("//ns9:feiltype").InnerText;
                 Skyldig = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower())
                     ? Feiltype.Klient
@@ -55,8 +54,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nTidspunkt feilet: {3}. \nSkyldig: {4}. \nDetaljer: {5}. \nKonversasjonsId: {6}. \nRefererer til melding med id: {7}", 
-                GetType().Name, MeldingsId, LevertTidspunkt, TidspunktFeilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
+            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}. \nTidspunkt feilet: {3}. \nSkyldig: {4}. \nDetaljer: {5}. \nKonversasjonsId: {6}. \nRefererer til melding med id: {7}", 
+                GetType().Name, MeldingsId, Feilet, Feilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
         }
     }
 }
