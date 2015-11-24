@@ -212,5 +212,5 @@ sdpKlient.Bekreft((Forretningskvittering)kvittering);
 Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: `Leveringskvittering`,`Åpningskvittering`, `Returpostkvittering`, `Mottakskvittering` eller `Feilmelding`. Kvittering kan også være av typen`TransportFeiletKvittering`. Dette kan skje når selve kvitteringsforespørselen er feilformatert.
 
 <blockquote>
-Husk at hvis du får <code>TomKøKvittering</code>, så køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code> og <code>Prioritet</code> på Dokumentpakken som ble sendt. Hvis ikke dette ble satt spesifikt vil <code>MpcId = ""</code> og <code>Prioritet = Prioritet.Normal</code>.
+Husk at hvis du får <code>TomKøKvittering</code>, så er køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code> og <code>Prioritet</code> på Dokumentpakken som ble sendt. Hvis ikke dette ble satt spesifikt vil <code>MpcId = ""</code> og <code>Prioritet = Prioritet.Normal</code>.
 </blockquote>
