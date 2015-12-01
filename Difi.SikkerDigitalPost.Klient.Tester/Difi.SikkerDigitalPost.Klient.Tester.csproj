@@ -95,7 +95,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Security\SignedXmlWithAgnosticIdTester.cs" />
     <Compile Include="testdata\meldinger\KvitteringsRespons.cs" />
     <Compile Include="testdata\meldinger\Kvitteringsforespørsel.cs" />
     <Compile Include="testdata\meldinger\TransportKvittering.cs" />
@@ -105,7 +104,6 @@
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
     <Compile Include="Utilities\SertifikatkjedeUtilityTester.cs" />
-    <Compile Include="Utilities\XmlUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />

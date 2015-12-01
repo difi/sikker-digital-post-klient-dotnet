@@ -6,14 +6,13 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     public class Klientkonfigurasjon : GeneriskKlientkonfigurasjon
     {
-  
-    public Klientkonfigurasjon(Miljø miljø) : base(miljø)
-    {
-        MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
-        Logger = Logging.TraceLogger();
-
-    }
-
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
+
+        public Klientkonfigurasjon(Miljø miljø) : base(miljø)
+        {
+            MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
+            Logger = Logging.TraceLogger();
+
+        }
     }
 }
