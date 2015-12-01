@@ -103,7 +103,6 @@
     <Compile Include="Utilities\Difference.cs" />
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
-    <Compile Include="Utilities\SertifikatkjedeUtilityTester.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
