@@ -2,6 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 
+
 namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
     public static class SertifikatkjedeUtility
