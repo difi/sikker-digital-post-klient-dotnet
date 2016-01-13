@@ -43,12 +43,13 @@
     <AssemblyOriginatorKeyFile>C:\Keys\digipost.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApiClientShared, Version=1.0.5578.25965, Culture=neutral, PublicKeyToken=6e0e24e0c7886562, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\api-client-shared.1.0.5578.25965\lib\net45\ApiClientShared.dll</HintPath>
+    <Reference Include="ApiClientShared, Version=1.0.5637.25994, Culture=neutral, PublicKeyToken=6e0e24e0c7886562, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.2.5813.23733\lib\net45\ApiClientShared.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.1.5598.25086\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    <Reference Include="Difi.Felles.Utility, Version=0.2.5813.23733, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.2.5813.23733\lib\net45\Difi.Felles.Utility.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.3.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
       <HintPath>..\packages\CompareNETObjects.3.03.0.0\lib\net45\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
@@ -94,7 +95,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Security\SignedXmlWithAgnosticIdTester.cs" />
     <Compile Include="testdata\meldinger\KvitteringsRespons.cs" />
     <Compile Include="testdata\meldinger\Kvitteringsforespørsel.cs" />
     <Compile Include="testdata\meldinger\TransportKvittering.cs" />
@@ -103,8 +103,6 @@
     <Compile Include="Utilities\Difference.cs" />
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
-    <Compile Include="Utilities\SertifikatkjedeUtilityTester.cs" />
-    <Compile Include="Utilities\XmlUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Xml;
+using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;

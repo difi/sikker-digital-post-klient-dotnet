@@ -50,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
 
                 var manifestXml = arkiv.Manifest.Xml();
-                var manifestValidering = new ManifestValidator();
+                var manifestValidator = new ManifestValidator();
 
                 //Endre navn på hoveddokument til å være for kort
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -62,8 +62,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
                 hoveddokumentNode.Attributes["href"].Value = "abc";
 
-                var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-                Assert.IsFalse(validert, manifestValidering.ValideringsVarsler);
+                var validert = manifestValidator.ValiderDokumentMotXsd(manifestXml.OuterXml);
+                Assert.IsFalse(validert, manifestValidator.ValideringsVarsler);
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Difi.SikkerDigitalPost.Klient;
+using System;
 using System.Diagnostics;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
@@ -14,7 +15,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
         [TestClass]
         public class KonstruktørMethod : KlientkonfigurasjonTester
         {
-            [TestMethod] public void EnkelKonstruktørMedMiljø()
+            [TestMethod]
+            public void EnkelKonstruktørMedMiljø()
             {
                 //Arrange
                 var miljø = Miljø.FunksjoneltTestmiljø;

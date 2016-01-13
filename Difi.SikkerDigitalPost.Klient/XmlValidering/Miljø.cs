@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using Difi.Felles.Utility;
+using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    public class Miljø
+    public class Miljø : AbstraktMiljø
     {
-        public Uri Url { get; set; }
-
-        internal Sertifikatkjedevalidator Sertifikatkjedevalidator { get; set; }
-
+        
         private Miljø(Uri url, Sertifikatkjedevalidator sertifikatkjedevalidator)
         {
             Sertifikatkjedevalidator = sertifikatkjedevalidator;

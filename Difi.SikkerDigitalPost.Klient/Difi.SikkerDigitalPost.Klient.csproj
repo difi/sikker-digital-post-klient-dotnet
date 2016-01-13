@@ -44,12 +44,13 @@
     <AssemblyOriginatorKeyFile>C:\Keys\digipost.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApiClientShared, Version=1.0.5578.25965, Culture=neutral, PublicKeyToken=6e0e24e0c7886562, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\api-client-shared.1.0.5578.25965\lib\net45\ApiClientShared.dll</HintPath>
+    <Reference Include="ApiClientShared, Version=1.0.5637.25994, Culture=neutral, PublicKeyToken=6e0e24e0c7886562, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.2.5813.23733\lib\net45\ApiClientShared.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.1.5598.25086\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    <Reference Include="Difi.Felles.Utility, Version=0.2.5813.23733, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.2.5813.23733\lib\net45\Difi.Felles.Utility.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -103,7 +104,7 @@
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
-    <Compile Include="KlientKonfigurasjon.cs">
+    <Compile Include="Klientkonfigurasjon.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,14 +115,11 @@
     <Compile Include="Security\RsaPkCs1Sha256SignatureDescription.cs" />
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
-    <Compile Include="Security\SignedXmlWithAgnosticId.cs" />
-    <Compile Include="Utilities\SertifikatkjedeUtility.cs" />
     <Compile Include="XmlValidering\KvitteringsforespørselEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\Sertifikatkjedevalidator.cs" />
     <Compile Include="XmlValidering\Signaturvalidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>
@@ -220,7 +218,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3CA3.cer" />
     <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3RootCA.cer" />
     <EmbeddedResource Include="Resources\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
@@ -229,6 +226,7 @@
     <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
     <EmbeddedResource Include="Resources\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
     <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
