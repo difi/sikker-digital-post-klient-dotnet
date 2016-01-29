@@ -31,6 +31,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         protected Forretningskvittering() { }
 
+        public Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
+        {
+            KonversasjonsId = konversasjonsId;
+            BodyReferenceUri = bodyReferenceUri;
+            DigestValue = digestValue;
+        }
+
         protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
             try

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -26,6 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
     {
         private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
+
 
         /// <param name="databehandler">
         /// Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med 
@@ -285,13 +285,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
         /// </list>
         /// </summary>
-        /// <param name="forrigeKvittering"></param>
+        /// <param name="kvittering"></param>
         /// <remarks>
         /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public void Bekreft(Forretningskvittering forrigeKvittering)
+        public void Bekreft(Forretningskvittering kvittering)
         {
-            BekreftAsync(forrigeKvittering);
+            BekreftAsync(kvittering);
         }
 
         /// <summary>
@@ -303,24 +303,24 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
         /// </list>
         /// </summary>
-        /// <param name="forrigeKvittering"></param>
+        /// <param name="kvittering"></param>
         /// <remarks>
         /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
         /// </remarks>
-        public async Task BekreftAsync(Forretningskvittering forrigeKvittering)
+        public async Task BekreftAsync(Forretningskvittering kvittering)
         {
-            Logging.Log(TraceEventType.Information, forrigeKvittering.KonversasjonsId, "Bekrefter forrige kvittering.");
+            Logging.Log(TraceEventType.Information, kvittering.KonversasjonsId, "Bekrefter kvittering.");
 
-            var envelopeSettings = new EnvelopeSettings(forrigeKvittering, _databehandler, new GuidUtility());
-            var kvitteringMottattEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
+            var envelopeSettings = new EnvelopeSettings(kvittering, _databehandler, new GuidUtility());
+            var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
-            string filnavn = forrigeKvittering.GetType().Name + ".xml";
-            Logg(TraceEventType.Verbose, forrigeKvittering.KonversasjonsId, forrigeKvittering, true, true, filnavn);
+            string filnavn = kvittering.GetType().Name + ".xml";
+            Logg(TraceEventType.Verbose, kvittering.KonversasjonsId, kvittering, true, true, filnavn);
             
             try
             {
                 var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
-                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(kvitteringMottattEnvelope.Xml().OuterXml);
+                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(bekreftKvitteringEnvelope.Xml().OuterXml);
                 if (!kvitteringMottattEnvelopeValidert)
                     throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
             }
@@ -330,7 +330,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             }
 
 
-            var soapContainer = new SoapContainer(kvitteringMottattEnvelope);
+            var soapContainer = new SoapContainer(bekreftKvitteringEnvelope);
             await SendSoapContainer(soapContainer);
         }
 

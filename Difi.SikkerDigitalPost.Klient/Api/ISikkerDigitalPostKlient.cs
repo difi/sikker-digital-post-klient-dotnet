@@ -16,9 +16,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel);
 
-        void Bekreft(Forretningskvittering forrigeKvittering);
+        void Bekreft(Forretningskvittering kvittering);
         
-        Task BekreftAsync(Forretningskvittering forrigeKvittering);
+        Task BekreftAsync(Forretningskvittering kvittering);
 
         Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
             Forretningskvittering forrigeKvittering);
