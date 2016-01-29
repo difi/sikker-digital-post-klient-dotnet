@@ -53,7 +53,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private static Forretningskvitteringfelter HentForretningskvitteringFelter(XmlDocument forretningskvittering)
         {
-            var forretningskvittergFelter = GetBodSetBodyReferenceUriAndDigest(forretningskvittering);
+            var forretningskvittergFelter = new Forretningskvitteringfelter();
 
             try
             {
@@ -62,6 +62,11 @@ namespace Difi.SikkerDigitalPost.Klient
 
                 var tidspunktNode = GetXmlNodeFromDocument(forretningskvittering,"//ns9:tidspunkt");
                 forretningskvittergFelter.Generert = Convert.ToDateTime(tidspunktNode.InnerText);
+
+                var bodyId = SjekkForretningskvitteringForKonsistens(forretningskvittering);
+                var bodyReferenceNode = forretningskvittering.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", GetNamespaceManager(forretningskvittering));
+                forretningskvittergFelter.BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
+                forretningskvittergFelter.DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", GetNamespaceManager(forretningskvittering)).InnerText;
             }
             catch (Exception e)
             {
@@ -77,41 +82,28 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             var forretningskvittergFelter = new Forretningskvitteringfelter();
             
-            XmlNode bodyReferenceNode;
-            try
+
+            return forretningskvittergFelter;
+        }
+
+        private static string SjekkForretningskvitteringForKonsistens(XmlDocument document)
+        {
+            var partInfo = document.SelectSingleNode("//ns6:PartInfo", GetNamespaceManager(document));
+            var partInfoBodyId = String.Empty;
+            if (partInfo.Attributes.Count > 0)
+                partInfoBodyId = partInfo.Attributes["href"].Value;
+
+            string bodyId = document.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
+
+            if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
             {
-                XmlNode rotnode = document.DocumentElement;
-
-                var partInfo = rotnode.SelectSingleNode("//ns6:PartInfo", GetNamespaceManager(document));
-                var partInfoBodyId = String.Empty;
-                if (partInfo.Attributes.Count > 0)
-                    partInfoBodyId = partInfo.Attributes["href"].Value;
-
-                string bodyId = rotnode.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
-
-                if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
-                {
-                    throw new Exception(
-                        String.Format(
+                throw new Exception(
+                    String.Format(
                         "Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",
                         partInfoBodyId,
                         bodyId));
-                }
-
-                bodyReferenceNode = rotnode.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", GetNamespaceManager(document));
-
-                forretningskvittergFelter.BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
-                forretningskvittergFelter.DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", GetNamespaceManager(document)).InnerText;
-
             }
-            catch (Exception e)
-            {
-                throw new XmlParseException(
-                  String.Format("Feil under henting av referanser i {0} (av type Forretningskvittering). ",
-                  e.GetType()), e);
-            }
-
-            return forretningskvittergFelter;
+            return bodyId;
         }
 
         protected static XmlNode GetXmlNodeFromDocument(XmlDocument document, string xPath)
