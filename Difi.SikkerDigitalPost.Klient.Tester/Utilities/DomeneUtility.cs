@@ -9,6 +9,7 @@ using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
@@ -252,5 +253,28 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
         }
+
+        internal static Mottakskvittering GetMottakskvittering()
+        {
+            //Arrange
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            //Act
+            return new Mottakskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        internal static Leveringskvittering GetLeveringskvittering()
+        {
+            //Arrange
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            //Act
+            return new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
     }
 }

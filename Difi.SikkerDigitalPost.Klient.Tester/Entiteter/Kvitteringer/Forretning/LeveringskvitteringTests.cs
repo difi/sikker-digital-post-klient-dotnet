@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning.Tests
 {
@@ -18,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 var digestValue = "digestValue";
 
                 //Act
-                Leveringskvittering leveringskvittering = new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+                var leveringskvittering = new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
                 Assert.AreEqual(konversasjonsId, leveringskvittering.KonversasjonsId);
@@ -26,5 +27,22 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(digestValue, leveringskvittering.DigestValue);
             }
         }
+
+        [TestClass]
+        public class LevertMethod : MottakskvitteringTests
+        {
+            [TestMethod]
+            public void ReturnererGenerertTidspunkt()
+            {
+                //Arrange
+                var leveringskvittering = DomeneUtility.GetLeveringskvittering();
+
+                //Act
+
+                //Assert
+                Assert.AreEqual(leveringskvittering.Generert, leveringskvittering.Levert);
+            }
+        }
+
     }
 }

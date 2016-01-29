@@ -24,9 +24,20 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        public Mottakskvittering TilMottakskvittering(XmlDocument mottakskvitteringXmlDocument)
+        public static Mottakskvittering TilMottakskvittering(XmlDocument mottakskvitteringXmlDocument)
         {
-            throw new NotImplementedException();
+            var kvitteringFelter = HentKvitteringsfelter(mottakskvitteringXmlDocument);
+            var forretningskvitteringfelter = HentForretningskvitteringFelter(mottakskvitteringXmlDocument);
+
+            return new Mottakskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt
+            };
+
         }
 
         public Returpostkvittering TilReturpostkvittering(XmlDocument returpostkvitteringXmlDocument)
@@ -52,12 +63,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 kvitteringsfelter.SendtTidspunkt = Convert.ToDateTime(GetXmlNodeFromDocument(kvittering,"//ns6:Timestamp").InnerText);
                 kvitteringsfelter.MeldingsId = GetXmlNodeFromDocument(kvittering,"//ns6:MessageId").InnerText;
-
-                var referanseTilMeldingId = GetXmlNodeFromDocument(kvittering,"//ns6:RefToMessageId");
-                if (referanseTilMeldingId != null)
-                {
-                    kvitteringsfelter.ReferanseTilMeldingId = referanseTilMeldingId.InnerText;
-                }
+                kvitteringsfelter.ReferanseTilMeldingId = GetXmlNodeFromDocument(kvittering, "//ns6:RefToMessageId").InnerText;
                 kvitteringsfelter.Rådata = kvittering.OuterXml;
             }
             catch (Exception e)
@@ -81,8 +87,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
                 var tidspunktNode = GetXmlNodeFromDocument(forretningskvittering,"//ns9:tidspunkt");
                 forretningskvittergFelter.Generert = Convert.ToDateTime(tidspunktNode.InnerText);
-
-
+                
                 var bodyReferenceNode = forretningskvittering.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", GetNamespaceManager(forretningskvittering));
                 forretningskvittergFelter.BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
                 forretningskvittergFelter.DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", GetNamespaceManager(forretningskvittering)).InnerText;

@@ -13,6 +13,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
+        public Mottakskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        {
+        }
+
         public DateTime Mottatt
         {
             get { return Generert; }

@@ -44,12 +44,21 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserMottakskvittering()
             {
                 //Arrange
-                var varslingFeiletKvittering = TilXmlDokument("Mottakskvittering.xml");
-
+                var xml = TilXmlDokument("Mottakskvittering.xml");
+                const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
 
                 //Act
+                var mottakskvittering = Kvitteringsparser.TilMottakskvittering(xml);
 
                 //Assert
+                Assert.AreEqual(konversjonsId, mottakskvittering.KonversasjonsId.ToString());
+                Assert.AreEqual(meldingsId, mottakskvittering.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, mottakskvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), mottakskvittering.Mottatt);
+
             }
 
             [TestMethod]

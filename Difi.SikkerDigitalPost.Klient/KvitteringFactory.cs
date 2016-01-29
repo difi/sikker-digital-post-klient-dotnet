@@ -48,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
 
             if (IsMottaksKvittering(xmlDocument))
-                return new Mottakskvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilMottakskvittering(xmlDocument);
 
             if (IsReturpost(xmlDocument))
                 return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
