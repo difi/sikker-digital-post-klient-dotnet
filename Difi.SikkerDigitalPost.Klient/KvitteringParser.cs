@@ -11,24 +11,17 @@ namespace Difi.SikkerDigitalPost.Klient
 
         public static Leveringskvittering TilLeveringskvittering(XmlDocument leveringskvitteringXmlDocument)
         {
-            DateTime _sendtTidspunkt;
-            string _meldingsId;
-            string _referanseTilMeldingsId;
-            string _rådata;
-
-
-            Guid _konversasjonsId;
-            DateTime _generert;
-            string _bodyReferenceUri;
-            string _digestValue;
-
+            var kvitteringFelter = HentKvitteringsfelter(leveringskvitteringXmlDocument);
             var forretningskvitteringfelter = HentForretningskvitteringFelter(leveringskvitteringXmlDocument);
-            _konversasjonsId = forretningskvitteringfelter.KonversasjonsId;
-            _generert = forretningskvitteringfelter.Generert;
-            _bodyReferenceUri = forretningskvitteringfelter.BodyReferenceUri;
-            _digestValue = forretningskvitteringfelter.DigestValue;
 
-            throw new NotImplementedException();
+            return new Leveringskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt
+            };
         }
 
         public Mottakskvittering TilMottakskvittering(XmlDocument mottakskvitteringXmlDocument)
@@ -51,9 +44,35 @@ namespace Difi.SikkerDigitalPost.Klient
             throw new NotImplementedException();
         }
 
+        private static Kvitteringsfelter HentKvitteringsfelter(XmlDocument kvittering)
+        {
+            var kvitteringsfelter = new Kvitteringsfelter();
+
+            try
+            {
+                kvitteringsfelter.SendtTidspunkt = Convert.ToDateTime(GetXmlNodeFromDocument(kvittering,"//ns6:Timestamp").InnerText);
+                kvitteringsfelter.MeldingsId = GetXmlNodeFromDocument(kvittering,"//ns6:MessageId").InnerText;
+
+                var referanseTilMeldingId = GetXmlNodeFromDocument(kvittering,"//ns6:RefToMessageId");
+                if (referanseTilMeldingId != null)
+                {
+                    kvitteringsfelter.ReferanseTilMeldingId = referanseTilMeldingId.InnerText;
+                }
+                kvitteringsfelter.Rådata = kvittering.OuterXml;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Kvittering). Klarte ikke finne alle felter i xml.", e.GetType()), e);
+            }
+
+            return kvitteringsfelter;
+        }
+
         private static Forretningskvitteringfelter HentForretningskvitteringFelter(XmlDocument forretningskvittering)
         {
             var forretningskvittergFelter = new Forretningskvitteringfelter();
+
+            var bodyId = SjekkForretningskvitteringForKonsistens(forretningskvittering);
 
             try
             {
@@ -63,25 +82,15 @@ namespace Difi.SikkerDigitalPost.Klient
                 var tidspunktNode = GetXmlNodeFromDocument(forretningskvittering,"//ns9:tidspunkt");
                 forretningskvittergFelter.Generert = Convert.ToDateTime(tidspunktNode.InnerText);
 
-                var bodyId = SjekkForretningskvitteringForKonsistens(forretningskvittering);
+
                 var bodyReferenceNode = forretningskvittering.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", GetNamespaceManager(forretningskvittering));
                 forretningskvittergFelter.BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
                 forretningskvittergFelter.DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", GetNamespaceManager(forretningskvittering)).InnerText;
             }
             catch (Exception e)
             {
-                throw new XmlParseException(
-                    String.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
-                    , e.GetType()), e);
+                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml.", e.GetType()), e);
             }
-
-            return forretningskvittergFelter;
-        }
-
-        internal static Forretningskvitteringfelter GetBodSetBodyReferenceUriAndDigest(XmlDocument document)
-        {
-            var forretningskvittergFelter = new Forretningskvitteringfelter();
-            
 
             return forretningskvittergFelter;
         }
@@ -136,6 +145,17 @@ namespace Difi.SikkerDigitalPost.Klient
             manager.AddNamespace("ds", NavneromUtility.XmlDsig);
             return manager;
         }
+    }
+
+    internal class Kvitteringsfelter
+    {
+        public DateTime SendtTidspunkt { get; set; }
+        
+        public string MeldingsId { get; set; }
+
+        public string ReferanseTilMeldingId { get; set; }
+
+        public string Rådata { get; set; }
     }
 
     internal class Forretningskvitteringfelter

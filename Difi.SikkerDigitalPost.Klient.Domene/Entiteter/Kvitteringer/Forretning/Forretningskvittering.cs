@@ -12,17 +12,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         private readonly XmlDocument _document;
         private readonly XmlNamespaceManager _namespaceManager;
 
+        public string BodyReferenceUri { get; set; }
+
+        public string DigestValue { get; set; }
+
+        public DateTime Generert { get; set; }
+
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
         public Guid KonversasjonsId { get; protected set; }
-        
-        internal string BodyReferenceUri { get; set; }
-
-        internal string DigestValue { get; set; }
-
-        protected DateTime Generert { get; set; }
-
 
         /// <summary>
         /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
