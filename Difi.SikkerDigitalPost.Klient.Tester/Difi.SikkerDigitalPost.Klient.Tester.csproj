@@ -90,6 +90,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
+    <Compile Include="Kvitteringstester\LeveringskvitteringTests2.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -246,6 +247,7 @@
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\LeveringskvitteringUtenBom.xml" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>
