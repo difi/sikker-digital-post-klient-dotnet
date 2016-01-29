@@ -31,7 +31,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
                 const string tidspunkt = "2015-11-10T08:37:24.695+01:00";
 
                 //Act
-                var leveringskvittering = KvitteringParser.TilLeveringskvittering(xml);
+                var leveringskvittering = Kvitteringsparser.TilLeveringskvittering(xml);
 
                 //Assert
                 Assert.AreEqual(konversjonsId, leveringskvittering.KonversasjonsId.ToString());

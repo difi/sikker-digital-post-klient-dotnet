@@ -93,7 +93,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Handlers\UserAgentHttpHandler.cs" />
     <Compile Include="KvitteringFactory.cs" />
-    <Compile Include="KvitteringParser.cs" />
+    <Compile Include="Kvitteringsparser.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\NavneromUtility.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

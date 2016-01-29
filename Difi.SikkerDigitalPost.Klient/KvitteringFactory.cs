@@ -36,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient
         private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
         {
             if (IsLeveringskvittering(xmlDocument))
-                return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilLeveringskvittering(xmlDocument);
 
             if (IsVarslingFeiletkvittering(xmlDocument))
                 return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));

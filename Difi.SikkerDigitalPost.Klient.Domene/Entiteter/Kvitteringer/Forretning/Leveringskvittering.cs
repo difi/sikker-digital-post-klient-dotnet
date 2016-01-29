@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -15,10 +14,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
             
         }
         
-        internal Leveringskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager) : base(xmlDocument,namespaceManager)
-        {
-        }
-
         public DateTime Levert
         {
             get { return Generert; }

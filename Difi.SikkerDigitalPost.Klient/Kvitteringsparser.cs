@@ -6,7 +6,7 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    public class KvitteringParser
+    public class Kvitteringsparser
     {
 
         public static Leveringskvittering TilLeveringskvittering(XmlDocument leveringskvitteringXmlDocument)
@@ -98,19 +98,16 @@ namespace Difi.SikkerDigitalPost.Klient
         private static string SjekkForretningskvitteringForKonsistens(XmlDocument document)
         {
             var partInfo = document.SelectSingleNode("//ns6:PartInfo", GetNamespaceManager(document));
-            var partInfoBodyId = String.Empty;
+            var partInfoBodyId = string.Empty;
             if (partInfo.Attributes.Count > 0)
                 partInfoBodyId = partInfo.Attributes["href"].Value;
 
             string bodyId = document.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
 
-            if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
+            if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
             {
-                throw new Exception(
-                    String.Format(
-                        "Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",
-                        partInfoBodyId,
-                        bodyId));
+                throw new SdpSecurityException(
+                    String.Format("Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",partInfoBodyId,bodyId));
             }
             return bodyId;
         }
