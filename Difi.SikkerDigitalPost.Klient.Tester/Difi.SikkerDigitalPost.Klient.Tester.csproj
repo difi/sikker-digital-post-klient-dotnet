@@ -90,7 +90,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
-    <Compile Include="Kvitteringstester\LeveringskvitteringTests2.cs" />
+    <Compile Include="KvitteringParserTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -230,6 +230,7 @@
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Åpningskvittering" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
@@ -247,7 +248,10 @@
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\LeveringskvitteringUtenBom.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Leveringskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Mottakskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Returpostkvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\VarslingFeiletKvittering.xml" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>

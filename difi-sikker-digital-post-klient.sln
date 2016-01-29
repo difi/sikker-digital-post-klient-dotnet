@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Difi.SikkerDigitalPost.Klie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0D2CB855-84B9-4032-8096-E769E64C0646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Difi.SikkerDigitalPost.KlientTests", "Difi.SikkerDigitalPost.KlientTests\Difi.SikkerDigitalPost.KlientTests.csproj", "{6D5BBF4C-34B8-4DC6-92D6-336CD102F62C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,10 +42,6 @@ Global
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D5BBF4C-34B8-4DC6-92D6-336CD102F62C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D5BBF4C-34B8-4DC6-92D6-336CD102F62C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D5BBF4C-34B8-4DC6-92D6-336CD102F62C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D5BBF4C-34B8-4DC6-92D6-336CD102F62C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
