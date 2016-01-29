@@ -17,7 +17,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         /// </summary>
         public Guid KonversasjonsId { get; protected set; }
         
-        internal XmlNode BodyReference { get; set; }
+        internal string BodyReferenceUri { get; set; }
+
+        internal string DigestValue { get; set; }
 
         protected DateTime Generert { get; set; }
 
@@ -38,7 +40,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
                 KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
                 Generert = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
-                BodyReference = BodyReferenceNode();
+                SetBodyReferenceUriAndDigest();
             }
             catch (Exception e)
             {
@@ -48,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
             }
         }
 
-        protected XmlNode BodyReferenceNode()
+        protected XmlNode SetBodyReferenceUriAndDigest()
         {
             XmlNode bodyReferenceNode;
 
@@ -72,8 +74,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                         bodyId));
                 }
 
-                bodyReferenceNode = rotnode.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']",
-                    _namespaceManager);
+                bodyReferenceNode = rotnode.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", _namespaceManager);
+                BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
+
+                DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", _namespaceManager).InnerText;
+
             }
             catch (Exception e)
             {

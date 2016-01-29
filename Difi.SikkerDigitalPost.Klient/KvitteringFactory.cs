@@ -138,6 +138,7 @@ namespace Difi.SikkerDigitalPost.Klient
             manager.AddNamespace("ns5", NavneromUtility.XmlDsig);
             manager.AddNamespace("ns6", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+            manager.AddNamespace("ds", NavneromUtility.XmlDsig);
             return manager;
         }
     }
