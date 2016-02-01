@@ -230,7 +230,7 @@
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
-    <Content Include="Skjema\Eksempler\Kvitteringer\Åpningskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Åpningskvittering.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />

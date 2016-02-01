@@ -107,11 +107,20 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserÅpningskvittering()
             {
                 //Arrange
-                //XmlUtility.TilXmlDokument(ResourceUtility.ReadAllBytes(true, k));
+                var xml = TilXmlDokument("Åpningskvittering.xml");
+                const string konversjonsId = "1d4aff36-b6d2-4506-bc0b-bd62ae6f8966";
+                const string meldingsId = "2d476cb1-cf9a-4210-ba74-ee095f41c9f2";
+                const string referanseTilMeldingId = "b32d2b7c-2c88-456d-9d74-de348d7c30f8";
+                const string tidspunkt = "2015-11-09T16:11:31.171+01:00";
 
                 //Act
+                var åpningskvittering = Kvitteringsparser.TilÅpningskvittering(xml);
 
                 //Assert
+                Assert.AreEqual(konversjonsId, åpningskvittering.KonversasjonsId.ToString());
+                Assert.AreEqual(meldingsId, åpningskvittering.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, åpningskvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), åpningskvittering.Åpnet);
             }
 
             private XmlDocument TilXmlDokument(string kvittering)

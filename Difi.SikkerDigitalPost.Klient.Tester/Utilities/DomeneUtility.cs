@@ -288,5 +288,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             return new VarslingFeiletKvittering(konversasjonsId, bodyReferenceUri, digestValue);
         }
+
+        public static Åpningskvittering GetÅpningskvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Åpningskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
     }
 }

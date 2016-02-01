@@ -76,9 +76,19 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        public Åpningskvittering TilÅpningskvittering(XmlDocument åpningskvitteringXmlDocument)
+        public static Åpningskvittering TilÅpningskvittering(XmlDocument åpningskvitteringXmlDocument)
         {
-            throw new NotImplementedException();
+            var kvitteringFelter = HentKvitteringsfelter(åpningskvitteringXmlDocument);
+            var forretningskvitteringfelter = HentForretningskvitteringFelter(åpningskvitteringXmlDocument);
+
+            return new Åpningskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt
+            };
         }
 
         private static Kvitteringsfelter HentKvitteringsfelter(XmlDocument kvittering)
