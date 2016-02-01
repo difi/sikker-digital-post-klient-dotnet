@@ -20,16 +20,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         /// </summary>
         public Guid KonversasjonsId { get; set; }
 
-        /// <summary>
-        /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
-        /// </summary>
-        public abstract override string ToString();
-
         protected Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
         {
             KonversasjonsId = konversasjonsId;
             BodyReferenceUri = bodyReferenceUri;
             DigestValue = digestValue;
+        }
+
+        public new string ToString()
+        {
+            return string.Format("BodyReferenceUri: {0}, DigestValue: {1}, {2}", BodyReferenceUri, DigestValue, base.ToString());
         }
     }
 }

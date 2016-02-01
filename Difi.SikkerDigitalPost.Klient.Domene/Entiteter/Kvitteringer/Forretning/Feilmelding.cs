@@ -1,5 +1,6 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -19,10 +20,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public override string ToString()
+        public new string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}.. \nSkyldig: {3}. \nDetaljer: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
-                GetType().Name, MeldingsId, Feilet, Skyldig, Detaljer, KonversasjonsId, ReferanseTilMeldingId);
+            return string.Format("Skyldig: {0}, Detaljer: {1}, Feilet: {2}, {3}", Skyldig, Detaljer, Feilet.ToStringWithUtcOffset(), base.ToString());
         }
     }
 }

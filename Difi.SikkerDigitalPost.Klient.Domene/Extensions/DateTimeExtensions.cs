@@ -2,7 +2,7 @@
 
 namespace Difi.SikkerDigitalPost.Klient.Extensions
 {
-    internal static class DateTimeExtensions
+    public static class DateTimeExtensions
     {
         public static string ToStringWithUtcOffset(this DateTime dateTime)
         {

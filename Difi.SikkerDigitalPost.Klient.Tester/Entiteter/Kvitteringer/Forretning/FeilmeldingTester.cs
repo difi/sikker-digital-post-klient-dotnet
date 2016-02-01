@@ -7,10 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
     [TestClass()]
-    public class FeilmeldingTests
+    public class FeilmeldingTester
     {
         [TestClass]
-        public class KonstruktørMethod : FeilmeldingTests
+        public class KonstruktørMethod : FeilmeldingTester
         {
             [TestMethod]
             public void EnkelKonstruktør()

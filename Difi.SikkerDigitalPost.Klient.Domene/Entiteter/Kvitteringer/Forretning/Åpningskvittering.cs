@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -15,10 +16,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public override string ToString()
+        public new string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nÅpnet: {2}.  \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}", 
-                GetType().Name, MeldingsId, Åpnet, KonversasjonsId, ReferanseTilMeldingId);
+            return string.Format("Åpnet: {0}, {1}", Åpnet.ToStringWithUtcOffset(), base.ToString());
         }
     }
 }

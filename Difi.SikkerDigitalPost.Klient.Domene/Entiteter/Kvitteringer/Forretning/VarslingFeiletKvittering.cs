@@ -23,10 +23,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public override string ToString()
+        public new string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}. \nVarslingskanal: {3}. \nBeskrivelse: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
-                GetType().Name, MeldingsId, Feilet, Varslingskanal, Beskrivelse, KonversasjonsId, ReferanseTilMeldingId);
+            return "Varslingskanal: " + Varslingskanal + ", Beskrivelse: " + Beskrivelse + ", Feilet: " + Feilet + ", " + base.ToString();
         }
     }
 }

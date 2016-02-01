@@ -1,4 +1,5 @@
 ﻿using System;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -14,10 +15,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public override string ToString()
+        public new string ToString()
         {
-            return String.Format("{0} med meldingsId {1}: \nMottatt: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}",
-                GetType().Name, MeldingsId, Mottatt, KonversasjonsId, ReferanseTilMeldingId);
+            return string.Format("Mottatt: {0}, {1}", Mottatt.ToStringWithUtcOffset(), base.ToString());
         }
     }
 }
