@@ -80,8 +80,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
             var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
-
-
+            
             _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 };
 
             return _vedlegg.Take(maksAntall);
@@ -254,27 +253,40 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
         }
 
-        internal static Mottakskvittering GetMottakskvittering()
-        {
-            //Arrange
-            var konversasjonsId = Guid.NewGuid();
-            var bodyReferenceUri = "bodyReferenceUri";
-            var digestValue = "digestValue";
-
-            //Act
-            return new Mottakskvittering(konversasjonsId, bodyReferenceUri, digestValue);
-        }
-
         internal static Leveringskvittering GetLeveringskvittering()
         {
-            //Arrange
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
-
-            //Act
+            
             return new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
         }
 
+        internal static Mottakskvittering GetMottakskvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Mottakskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Returpostkvittering GetReturpostkvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Returpostkvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static VarslingFeiletKvittering GetVarslingFeiletKvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new VarslingFeiletKvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
     }
 }

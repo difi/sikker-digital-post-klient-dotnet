@@ -39,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 return Kvitteringsparser.TilLeveringskvittering(xmlDocument);
 
             if (IsVarslingFeiletkvittering(xmlDocument))
-                return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilVarslingFeiletKvittering(xmlDocument);
 
             if (IsFeilmelding(xmlDocument))
                 return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 return Kvitteringsparser.TilMottakskvittering(xmlDocument);
 
             if (IsReturpost(xmlDocument))
-                return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilReturpostkvittering(xmlDocument);
 
             return null;
         }

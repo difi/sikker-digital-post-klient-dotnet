@@ -1,24 +1,21 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Difi.SikkerDigitalPost.Klient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Tests
 {
     [TestClass()]
-    public class KvitteringParserTester
+    public class KvitteringsparserTester
     {
-        ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer");
+        readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer");
 
         [TestClass]
-        public class TilKvitteringMethod : KvitteringParserTester
+        public class TilKvitteringMethod : KvitteringsparserTester
         {
             [TestMethod]
             public void ParserLeveringskvittering()
@@ -66,10 +63,20 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             {
                 //Arrange
                 var xml = TilXmlDokument("Returpostkvittering.xml");
+                const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
 
                 //Act
+                var returpostkvittering = Kvitteringsparser.TilReturpostkvittering(xml);
 
                 //Assert
+                Assert.AreEqual(konversjonsId, returpostkvittering.KonversasjonsId.ToString());
+                Assert.AreEqual(meldingsId, returpostkvittering.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, returpostkvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), returpostkvittering.Returnert);
+
             }
 
             [TestMethod]
@@ -77,15 +84,23 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             {
                 //Arrange
                 var xml = TilXmlDokument("VarslingFeiletKvittering.xml");
+                const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                const string beskrivelse = "Selvvalgt";
+                const Varslingskanal varslingskanal = Varslingskanal.Sms;
 
                 //Act
+                var varslingfeiletkvittering = Kvitteringsparser.TilVarslingFeiletKvittering(xml);
 
                 //Assert
-            }
-
-            private XmlDocument TilXmlDokument(string kvittering)
-            {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+                Assert.AreEqual(konversjonsId, varslingfeiletkvittering.KonversasjonsId.ToString());
+                Assert.AreEqual(meldingsId, varslingfeiletkvittering.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, varslingfeiletkvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), varslingfeiletkvittering.Feilet);
+                Assert.AreEqual(beskrivelse, varslingfeiletkvittering.Beskrivelse);
+                Assert.AreEqual(varslingskanal, varslingfeiletkvittering.Varslingskanal);
             }
 
             [TestMethod]
@@ -99,6 +114,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
                 //Assert
             }
 
+            private XmlDocument TilXmlDokument(string kvittering)
+            {
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+            }
         }
 
     }

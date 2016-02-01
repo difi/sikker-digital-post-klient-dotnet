@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
@@ -8,7 +10,6 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     public class Kvitteringsparser
     {
-
         public static Leveringskvittering TilLeveringskvittering(XmlDocument leveringskvitteringXmlDocument)
         {
             var kvitteringFelter = HentKvitteringsfelter(leveringskvitteringXmlDocument);
@@ -22,6 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
+
         }
 
         public static Mottakskvittering TilMottakskvittering(XmlDocument mottakskvitteringXmlDocument)
@@ -40,14 +42,38 @@ namespace Difi.SikkerDigitalPost.Klient
 
         }
 
-        public Returpostkvittering TilReturpostkvittering(XmlDocument returpostkvitteringXmlDocument)
+        public static Returpostkvittering TilReturpostkvittering(XmlDocument returpostkvitteringXmlDocument)
         {
-            throw new NotImplementedException();
+            var kvitteringFelter = HentKvitteringsfelter(returpostkvitteringXmlDocument);
+            var forretningskvitteringfelter = HentForretningskvitteringFelter(returpostkvitteringXmlDocument);
+
+            return new Returpostkvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt
+            };
+
         }
 
-        public VarslingFeiletKvittering TilVarslingFeiletKvittering(XmlDocument varslingFeiletXmlDocument)
+        public static VarslingFeiletKvittering TilVarslingFeiletKvittering(XmlDocument varslingFeiletXmlDocument)
         {
-            throw new NotImplementedException();
+            var kvitteringFelter = HentKvitteringsfelter(varslingFeiletXmlDocument);
+            var forretningskvitteringfelter = HentForretningskvitteringFelter(varslingFeiletXmlDocument);
+            var varslingfeiletKvitteringsfelter = HentVarslingFeiletKvitteringsfelter(varslingFeiletXmlDocument);
+
+            return new VarslingFeiletKvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
+                Beskrivelse = varslingfeiletKvitteringsfelter.Beskrivelse,
+                Varslingskanal = varslingfeiletKvitteringsfelter.Varslingskanal
+            };
         }
 
         public Åpningskvittering TilÅpningskvittering(XmlDocument åpningskvitteringXmlDocument)
@@ -112,9 +138,33 @@ namespace Difi.SikkerDigitalPost.Klient
             if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
             {
                 throw new SdpSecurityException(
-                    String.Format("Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",partInfoBodyId,bodyId));
+                    string.Format("Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",partInfoBodyId,bodyId));
             }
             return bodyId;
+        }
+
+        private static VarslingFeiletKvitteringsfelter HentVarslingFeiletKvitteringsfelter(XmlDocument varslingFeiletKvittering)
+        {
+            VarslingFeiletKvitteringsfelter varslingFeiletKvitteringsfelter = new VarslingFeiletKvitteringsfelter();
+
+            try
+            {
+                var varslingskanal = GetXmlNodeFromDocument(varslingFeiletKvittering, "//ns9:varslingskanal").InnerText;
+                varslingFeiletKvitteringsfelter.Varslingskanal = varslingskanal == Varslingskanal.Epost.ToString()
+                    ? Varslingskanal.Epost
+                    : Varslingskanal.Sms;
+
+                var beskrivelseNode = GetXmlNodeFromDocument(varslingFeiletKvittering, "//ns9:beskrivelse");
+                if (beskrivelseNode != null)
+                    varslingFeiletKvitteringsfelter.Beskrivelse = beskrivelseNode.InnerText;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(
+                    "Feil under bygging av VarslingFeilet-kvittering. Klarte ikke finne alle felter i xml.", e);
+            }
+
+            return varslingFeiletKvitteringsfelter;
         }
 
         protected static XmlNode GetXmlNodeFromDocument(XmlDocument document, string xPath)
@@ -169,6 +219,13 @@ namespace Difi.SikkerDigitalPost.Klient
         public string DigestValue { get; set; }
 
         public DateTime Generert { get; set; }
+    }
+
+    internal class VarslingFeiletKvitteringsfelter
+    {
+        public Varslingskanal Varslingskanal { get; set; }
+
+        public string Beskrivelse { get; set; }
     }
 
 }
