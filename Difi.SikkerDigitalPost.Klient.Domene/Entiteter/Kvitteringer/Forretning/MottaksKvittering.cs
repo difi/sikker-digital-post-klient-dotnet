@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -9,13 +8,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Mottakskvittering : Forretningskvittering
     {
+        public DateTime Mottatt { get { return Generert; } }
+
         public Mottakskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
-        }
-
-        public DateTime Mottatt
-        {
-            get { return Generert; }
         }
 
         public override string ToString()

@@ -15,8 +15,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public DateTime Feilet { get { return Generert; } }
 
-        public Feilmelding() { }
-
         public Feilmelding(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
         }

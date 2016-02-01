@@ -17,15 +17,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         
         public string Beskrivelse { get; set; }
 
-        public VarslingFeiletKvittering() { }
+        public DateTime Feilet{ get { return Generert; } }
 
         public VarslingFeiletKvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
-        }
-
-        public DateTime Feilet
-        {
-            get { return Generert; }
         }
 
         public override string ToString()

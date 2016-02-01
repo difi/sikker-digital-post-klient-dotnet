@@ -9,13 +9,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Leveringskvittering : Forretningskvittering
     {
+        public DateTime Levert {get { return Generert; } }
+
         public Leveringskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
-        }
-        
-        public DateTime Levert
-        {
-            get { return Generert; }
         }
 
         public override string ToString()

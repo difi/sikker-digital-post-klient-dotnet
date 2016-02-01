@@ -25,8 +25,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         /// </summary>
         public abstract override string ToString();
 
-        protected Forretningskvittering() { }
-
         protected Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
         {
             KonversasjonsId = konversasjonsId;

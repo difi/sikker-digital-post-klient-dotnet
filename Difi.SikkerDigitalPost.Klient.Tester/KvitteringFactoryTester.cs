@@ -2,7 +2,7 @@
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
     public class KvitteringFactoryTester
