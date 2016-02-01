@@ -12,22 +12,22 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// <summary>
         /// Tidspunktet da kvitteringen ble sendt.
         /// </summary>
-        public DateTime SendtTidspunkt { get; protected set; }
+        public DateTime SendtTidspunkt { get; set; }
 
         /// <summary>
         /// Unik identifikator for kvitteringen.
         /// </summary>
-        public string MeldingsId { get; protected set; }
+        public string MeldingsId { get; set; }
 
         /// <summary>
         /// Refereranse til en annen relatert melding. Refererer til den relaterte meldingens MessageId.
         /// </summary>
-        public string ReferanseTilMeldingId { get; protected set; }
+        public string ReferanseTilMeldingId { get; set; }
 
         /// <summary>
         /// Kvitteringen presentert som tekststreng.
         /// </summary>
-        public string Rådata { get; protected set; }
+        public string Rådata { get; set; }
 
         protected Kvittering() { }
 
@@ -75,6 +75,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
             }
         }
 
-
+        protected string ToString()
+        {
+            return string.Format("SendtTidspunkt: {0}, MeldingsId: {1}, ReferanseTilMeldingId: {2}", SendtTidspunkt, MeldingsId, ReferanseTilMeldingId);
+        }
     }
 }

@@ -90,9 +90,9 @@
     <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseEnvelope.cs" />
     <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Handlers\UserAgentHttpHandler.cs" />
     <Compile Include="KvitteringFactory.cs" />
+    <Compile Include="Kvitteringsparser.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\NavneromUtility.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -228,7 +228,6 @@
     <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

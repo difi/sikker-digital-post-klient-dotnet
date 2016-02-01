@@ -66,7 +66,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
         }
 
 
-        public override string ToString()
+        public new string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
                 GetType().Name, MeldingsId, SendtTidspunkt, ReferanseTilMeldingId);

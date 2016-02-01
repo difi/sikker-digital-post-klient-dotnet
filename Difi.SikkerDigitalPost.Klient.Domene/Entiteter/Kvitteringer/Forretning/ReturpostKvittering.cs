@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -9,20 +10,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Returpostkvittering : Forretningskvittering
     {
-        internal Returpostkvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
-            : base(xmlDocument, namespaceManager)
+        public DateTime Returnert { get { return Generert; } }
+
+        public Returpostkvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
-        public DateTime Returnert
+        public new string ToString()
         {
-            get { return Generert; }
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0} med meldingsId {1}: \nReturnert: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}",
-                GetType().Name, MeldingsId, Returnert, KonversasjonsId, ReferanseTilMeldingId);
+            return string.Format("Returnert: {0}, {1}", Returnert.ToStringWithUtcOffset(), base.ToString());
         }
     }
 

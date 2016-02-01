@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -9,19 +9,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Mottakskvittering : Forretningskvittering
     {
-        internal Mottakskvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
+        public DateTime Mottatt { get { return Generert; } }
+
+        public Mottakskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
-        public DateTime Mottatt
+        public new string ToString()
         {
-            get { return Generert; }
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0} med meldingsId {1}: \nMottatt: {2}. \nKonversasjonsId: {3}. \nRefererer til melding med id: {4}",
-                GetType().Name, MeldingsId, Mottatt, KonversasjonsId, ReferanseTilMeldingId);
+            return string.Format("Mottatt: {0}, {1}", Mottatt.ToStringWithUtcOffset(), base.ToString());
         }
     }
 }

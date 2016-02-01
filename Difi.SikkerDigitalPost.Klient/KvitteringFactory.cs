@@ -8,14 +8,18 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    internal class KvitteringFactory
+    public class KvitteringFactory
     {
-
         public static Kvittering GetKvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
+            return GetKvittering(xmlDocument);
+        }
+
+        public static Kvittering GetKvittering(XmlDocument xmlDocument)
+        {
             var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
 
             if (kvittering == null)
@@ -23,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
                 {
-                    Rådata = xml
+                    Rådata = xmlDocument.OuterXml
                 };
 
                 throw ingenKvitteringstypeFunnetException;
@@ -32,26 +36,25 @@ namespace Difi.SikkerDigitalPost.Klient
             return kvittering;
         }
 
-
         private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
         {
             if (IsLeveringskvittering(xmlDocument))
-                return new Leveringskvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilLeveringskvittering(xmlDocument);
 
             if (IsVarslingFeiletkvittering(xmlDocument))
-                return new VarslingFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilVarslingFeiletKvittering(xmlDocument);
 
             if (IsFeilmelding(xmlDocument))
-                return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilFeilmelding(xmlDocument);
 
             if (IsÅpningskvittering(xmlDocument))
-                return new Åpningskvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilÅpningskvittering(xmlDocument);
 
             if (IsMottaksKvittering(xmlDocument))
-                return new Mottakskvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilMottakskvittering(xmlDocument);
 
             if (IsReturpost(xmlDocument))
-                return new Returpostkvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilReturpostkvittering(xmlDocument);
 
             return null;
         }
@@ -138,6 +141,7 @@ namespace Difi.SikkerDigitalPost.Klient
             manager.AddNamespace("ns5", NavneromUtility.XmlDsig);
             manager.AddNamespace("ns6", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
+            manager.AddNamespace("ds", NavneromUtility.XmlDsig);
             return manager;
         }
     }

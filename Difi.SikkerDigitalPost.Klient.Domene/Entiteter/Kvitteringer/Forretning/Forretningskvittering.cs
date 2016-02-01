@@ -9,81 +9,27 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public abstract class Forretningskvittering : Kvittering
     {
-        private readonly XmlDocument _document;
-        private readonly XmlNamespaceManager _namespaceManager;
+        public string BodyReferenceUri { get; set; }
+
+        public string DigestValue { get; set; }
+
+        public DateTime Generert { get; set; }
 
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
-        public Guid KonversasjonsId { get; protected set; }
-        
-        internal XmlNode BodyReference { get; set; }
+        public Guid KonversasjonsId { get; set; }
 
-        protected DateTime Generert { get; set; }
-
-
-        /// <summary>
-        /// Alle subklasser skal ha en ToString() som beskriver kvitteringen.
-        /// </summary>
-        public override abstract string ToString();
-
-        protected Forretningskvittering() { }
-
-        protected Forretningskvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
+        protected Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
         {
-            try
-            {
-                _document = document;
-                _namespaceManager = namespaceManager;
-
-                KonversasjonsId = new Guid(DocumentNode("//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier").InnerText);
-                Generert = Convert.ToDateTime(DocumentNode("//ns9:tidspunkt").InnerText);
-                BodyReference = BodyReferenceNode();
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException(
-                    String.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
-                    , GetType()), e);
-            }
+            KonversasjonsId = konversasjonsId;
+            BodyReferenceUri = bodyReferenceUri;
+            DigestValue = digestValue;
         }
 
-        protected XmlNode BodyReferenceNode()
+        public new string ToString()
         {
-            XmlNode bodyReferenceNode;
-
-            try
-            {
-                XmlNode rotnode = _document.DocumentElement;
-
-                var partInfo = rotnode.SelectSingleNode("//ns6:PartInfo", _namespaceManager);
-                var partInfoBodyId = String.Empty;
-                if (partInfo.Attributes.Count > 0)
-                    partInfoBodyId = partInfo.Attributes["href"].Value;
-
-                string bodyId = rotnode.SelectSingleNode("//env:Body", _namespaceManager).Attributes["wsu:Id"].Value;
-
-                if (!partInfoBodyId.Equals(String.Empty) && !bodyId.Equals(partInfoBodyId))
-                {
-                    throw new Exception(
-                        String.Format(
-                        "Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",
-                        partInfoBodyId,
-                        bodyId));
-                }
-
-                bodyReferenceNode = rotnode.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']",
-                    _namespaceManager);
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException(
-                  String.Format("Feil under henting av referanser i {0} (av type Forretningskvittering). ",
-                  GetType()), e);
-            }
-
-            return bodyReferenceNode;
+            return string.Format("BodyReferenceUri: {0}, DigestValue: {1}, {2}", BodyReferenceUri, DigestValue, base.ToString());
         }
-
     }
 }

@@ -79,17 +79,19 @@
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
     <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\FeilmeldingTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\LeveringskvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\MottakskvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostkvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\ÅpningskvitteringTests.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\FeilmeldingTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\LeveringskvitteringTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\MottakskvitteringTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostkvitteringTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvitteringTester.cs" />
+    <Compile Include="Entiteter\Kvitteringer\Forretning\ÅpningskvitteringTester.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TomKøKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
+    <Compile Include="KvitteringFactoryTester.cs" />
+    <Compile Include="KvitteringsparserTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -103,6 +105,7 @@
     <Compile Include="Utilities\Difference.cs" />
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
+    <Compile Include="Utilities\KvitteringsUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
@@ -229,6 +232,7 @@
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Åpningskvittering.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
@@ -246,6 +250,11 @@
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Leveringskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Mottakskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Returpostkvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\VarslingFeiletKvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Feilmelding.xml" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>

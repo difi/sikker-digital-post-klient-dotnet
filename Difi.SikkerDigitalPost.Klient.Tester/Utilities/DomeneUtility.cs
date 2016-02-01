@@ -9,6 +9,7 @@ using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
@@ -79,8 +80,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
             var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
-
-
+            
             _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 };
 
             return _vedlegg.Take(maksAntall);
@@ -251,6 +251,61 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static X509Certificate2 GetMottakerSertifikat()
         {
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
+        }
+
+        internal static Leveringskvittering GetLeveringskvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+            
+            return new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        internal static Mottakskvittering GetMottakskvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Mottakskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Returpostkvittering GetReturpostkvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Returpostkvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static VarslingFeiletKvittering GetVarslingFeiletKvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new VarslingFeiletKvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Åpningskvittering GetÅpningskvittering()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Åpningskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Feilmelding GetFeilmelding()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Feilmelding(konversasjonsId, bodyReferenceUri, digestValue);
+
         }
     }
 }

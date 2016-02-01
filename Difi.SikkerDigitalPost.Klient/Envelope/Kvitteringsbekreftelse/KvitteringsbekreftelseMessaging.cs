@@ -61,8 +61,26 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
                 {
                     XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", NavneromUtility.EbppSignals, Context);
                     {
-                        XmlNode reference = Settings.ForrigeKvittering.BodyReference;                        
-                        messagePartNRInformation.AppendChild(Context.ImportNode(reference, true));
+                        XmlElement reference = messagePartNRInformation.AppendChildElement("Reference", "ds", NavneromUtility.XmlDsig, Context);
+                        reference.SetAttribute("URI", Settings.ForrigeKvittering.BodyReferenceUri);
+                        {
+                            XmlElement transforms = reference.AppendChildElement("Transforms", "ds", NavneromUtility.XmlDsig, Context);
+                            {
+                                XmlElement transform = transforms.AppendChildElement("Transform", "ds", NavneromUtility.XmlDsig, Context);
+                                transform.SetAttribute("Algorithm", "http://www.w3.org/2001/10/xml-exc-c14n#");
+                                {
+                                    XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", NavneromUtility.XmlExcC14n, Context);
+                                    inclusiveNamespaces.SetAttribute("PrefixList", string.Empty);
+
+                                }
+                            }
+
+                            XmlElement digestMethod = reference.AppendChildElement("DigestMethod", "ds", NavneromUtility.XmlDsig, Context);
+                            digestMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/04/xmlenc#sha256");
+
+                            XmlElement digestValue = reference.AppendChildElement("DigestValue", "ds", NavneromUtility.XmlDsig, Context);
+                            digestValue.InnerText = Settings.ForrigeKvittering.DigestValue;
+                        }
                     }
                 }
             }

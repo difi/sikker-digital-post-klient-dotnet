@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -14,41 +13,19 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         /// <summary>
         /// Kanal for varsling til eier av postkasse. Varsling og påminnelsesmeldinger skal sendes på den kanal som blir spesifisert. Kanalen SMS er priset.
         /// </summary>
-        public Varslingskanal Varslingskanal { get; protected set; }
+        public Varslingskanal Varslingskanal { get; set; }
+        
+        public string Beskrivelse { get; set; }
 
-        /// <summary>
-        /// Beskrivelse av varsling feilet.
-        /// </summary>
-        public string Beskrivelse { get; protected set; }
-        public VarslingFeiletKvittering() { }
-        internal VarslingFeiletKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
+        public DateTime Feilet{ get { return Generert; } }
+
+        public VarslingFeiletKvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
-            try
-            {
-                var varslingskanal = DocumentNode("//ns9:varslingskanal").InnerText;
-                Varslingskanal = varslingskanal == Varslingskanal.Epost.ToString()
-                    ? Varslingskanal.Epost
-                    : Varslingskanal.Sms;
-
-                var beskrivelseNode = DocumentNode("//ns9:beskrivelse");
-                if (beskrivelseNode != null)
-                    Beskrivelse = beskrivelseNode.InnerText;
-            } catch (Exception e)
-            {
-                throw new XmlParseException(
-                    "Feil under bygging av VarslingFeilet-kvittering. Klarte ikke finne alle felter i xml.", e);
-            }
         }
 
-        public DateTime Feilet
+        public new string ToString()
         {
-            get { return Generert; }
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0} med meldingsId {1}: \nFeilet: {2}. \nVarslingskanal: {3}. \nBeskrivelse: {4}. \nKonversasjonsId: {5}. \nRefererer til melding med id: {6}", 
-                GetType().Name, MeldingsId, Feilet, Varslingskanal, Beskrivelse, KonversasjonsId, ReferanseTilMeldingId);
+            return "Varslingskanal: " + Varslingskanal + ", Beskrivelse: " + Beskrivelse + ", Feilet: " + Feilet + ", " + base.ToString();
         }
     }
 }
