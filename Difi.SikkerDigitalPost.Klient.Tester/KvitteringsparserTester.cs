@@ -4,16 +4,14 @@ using System.Text;
 using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tests
 {
     [TestClass()]
     public class KvitteringsparserTester
     {
-        readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer");
-
         [TestClass]
         public class TilKvitteringMethod : KvitteringsparserTester
         {
@@ -21,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserLeveringskvittering()
             {
                 //Arrange
-                var xml = TilXmlDokument("Leveringskvittering.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.LeveringskvitteringXml();
                 const string konversjonsId = "716cffc1-58aa-4198-98df-281f4a1a1384";
                 const string meldingsId = "5a93d7e9-e9e5-4013-ab19-c32d9eb0f3d0";
                 const string referanseTilMeldingId = "03eafe0f-43ae-4184-82f6-ab194dd1b426";
@@ -41,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserMottakskvittering()
             {
                 //Arrange
-                var xml = TilXmlDokument("Mottakskvittering.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.MottakskvitteringXml();
                 const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
                 const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
@@ -62,7 +60,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserReturpostkvittering()
             {
                 //Arrange
-                var xml = TilXmlDokument("Returpostkvittering.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.ReturpostkvitteringXml();
                 const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
                 const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
@@ -83,7 +81,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserVarslingFeiletKvittering()
             {
                 //Arrange
-                var xml = TilXmlDokument("VarslingFeiletKvittering.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.VarslingFeiletKvitteringXml();
                 const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
                 const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
@@ -107,7 +105,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserÅpningskvittering()
             {
                 //Arrange
-                var xml = TilXmlDokument("Åpningskvittering.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.ÅpningskvitteringXml();
                 const string konversjonsId = "1d4aff36-b6d2-4506-bc0b-bd62ae6f8966";
                 const string meldingsId = "2d476cb1-cf9a-4210-ba74-ee095f41c9f2";
                 const string referanseTilMeldingId = "b32d2b7c-2c88-456d-9d74-de348d7c30f8";
@@ -127,7 +125,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
             public void ParserFeilmelding()
             {
                 //Arrange
-                var xml = TilXmlDokument("Feilmelding.xml");
+                var xml = KvitteringsUtility.Forretningskvittering.FeilmeldingXml();
                 const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
                 const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
@@ -147,10 +145,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
                 Assert.AreEqual(feiltype, feilmelding.Skyldig);
             }
 
-            private XmlDocument TilXmlDokument(string kvittering)
-            {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
-            }
         }
 
     }

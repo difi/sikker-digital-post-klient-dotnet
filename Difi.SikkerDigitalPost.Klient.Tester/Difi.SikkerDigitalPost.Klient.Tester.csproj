@@ -104,6 +104,7 @@
     <Compile Include="Utilities\Difference.cs" />
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
+    <Compile Include="Utilities\KvitteringsUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomeneUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
@@ -253,7 +254,6 @@
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Returpostkvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\VarslingFeiletKvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Feilmelding.xml" />
-    <Content Include="Skjema\Eksempler\Kvitteringer\TextFile1.txt" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>

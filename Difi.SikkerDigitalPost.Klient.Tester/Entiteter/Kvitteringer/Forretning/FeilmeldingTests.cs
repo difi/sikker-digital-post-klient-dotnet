@@ -45,7 +45,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(feilmelding.Generert, feilmelding.Feilet);
             }
         }
-
-
     }
 }
