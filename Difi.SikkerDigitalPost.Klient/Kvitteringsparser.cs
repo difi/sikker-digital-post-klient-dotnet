@@ -91,6 +91,24 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
+        public static Feilmelding TilFeilmelding(XmlDocument feilmelding)
+        {
+            var kvitteringFelter = HentKvitteringsfelter(feilmelding);
+            var forretningskvitteringfelter = HentForretningskvitteringFelter(feilmelding);
+            var feilmeldingfelter = HentFeilmeldingsfelter(feilmelding);
+
+            return new Feilmelding(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            {
+                Generert = forretningskvitteringfelter.Generert,
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                Rådata = kvitteringFelter.Rådata,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
+                Skyldig = feilmeldingfelter.SkyldigFeiltype,
+                Detaljer = feilmeldingfelter.Detaljer
+            };
+        }
+
         private static Kvitteringsfelter HentKvitteringsfelter(XmlDocument kvittering)
         {
             var kvitteringsfelter = new Kvitteringsfelter();
@@ -155,7 +173,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private static VarslingFeiletKvitteringsfelter HentVarslingFeiletKvitteringsfelter(XmlDocument varslingFeiletKvittering)
         {
-            VarslingFeiletKvitteringsfelter varslingFeiletKvitteringsfelter = new VarslingFeiletKvitteringsfelter();
+            var varslingFeiletKvitteringsfelter = new VarslingFeiletKvitteringsfelter();
 
             try
             {
@@ -177,6 +195,27 @@ namespace Difi.SikkerDigitalPost.Klient
             return varslingFeiletKvitteringsfelter;
         }
 
+        private static Feilmeldingsfelter HentFeilmeldingsfelter(XmlDocument feilmelding)
+        {
+            var feilmeldingsfelter = new Feilmeldingsfelter();
+
+            try
+            {
+                var feiltype = GetXmlNodeFromDocument(feilmelding, "//ns9:feiltype").InnerText;
+                feilmeldingsfelter.SkyldigFeiltype = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower())
+                    ? Feiltype.Klient
+                    : Feiltype.Server;
+
+                feilmeldingsfelter.Detaljer = GetXmlNodeFromDocument(feilmelding, "//ns9:detaljer").InnerText;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException("Feil under bygging av Feilmelding-kvittering. Klarte ikke finne alle felter i xml.", e);
+            }
+
+            return feilmeldingsfelter;
+        }
+
         protected static XmlNode GetXmlNodeFromDocument(XmlDocument document, string xPath)
         {
             try
@@ -194,7 +233,6 @@ namespace Difi.SikkerDigitalPost.Klient
             }
         }
 
-
         private static XmlNamespaceManager GetNamespaceManager(XmlDocument document)
         {
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
@@ -207,35 +245,42 @@ namespace Difi.SikkerDigitalPost.Klient
             manager.AddNamespace("ds", NavneromUtility.XmlDsig);
             return manager;
         }
+
+        internal class Kvitteringsfelter
+        {
+            public DateTime SendtTidspunkt { get; set; }
+
+            public string MeldingsId { get; set; }
+
+            public string ReferanseTilMeldingId { get; set; }
+
+            public string Rådata { get; set; }
+        }
+
+        internal class Forretningskvitteringfelter
+        {
+            public Guid KonversasjonsId { get; set; }
+
+            public string BodyReferenceUri { get; set; }
+
+            public string DigestValue { get; set; }
+
+            public DateTime Generert { get; set; }
+        }
+
+        internal class VarslingFeiletKvitteringsfelter
+        {
+            public Varslingskanal Varslingskanal { get; set; }
+
+            public string Beskrivelse { get; set; }
+        }
+
+        internal class Feilmeldingsfelter
+        {
+            public Feiltype SkyldigFeiltype { get; set; }
+
+            public string Detaljer { get; set; }
+
+        }
     }
-
-    internal class Kvitteringsfelter
-    {
-        public DateTime SendtTidspunkt { get; set; }
-        
-        public string MeldingsId { get; set; }
-
-        public string ReferanseTilMeldingId { get; set; }
-
-        public string Rådata { get; set; }
-    }
-
-    internal class Forretningskvitteringfelter
-    {
-        public Guid KonversasjonsId { get; set; }
-
-        public string BodyReferenceUri { get; set; }
-
-        public string DigestValue { get; set; }
-
-        public DateTime Generert { get; set; }
-    }
-
-    internal class VarslingFeiletKvitteringsfelter
-    {
-        public Varslingskanal Varslingskanal { get; set; }
-
-        public string Beskrivelse { get; set; }
-    }
-
 }

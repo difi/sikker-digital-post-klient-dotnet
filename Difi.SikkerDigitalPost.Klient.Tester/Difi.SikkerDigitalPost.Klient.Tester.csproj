@@ -252,6 +252,8 @@
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Mottakskvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Returpostkvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\VarslingFeiletKvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Feilmelding.xml" />
+    <Content Include="Skjema\Eksempler\Kvitteringer\TextFile1.txt" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>

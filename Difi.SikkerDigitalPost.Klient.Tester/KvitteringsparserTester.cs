@@ -123,6 +123,30 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
                 Assert.AreEqual(DateTime.Parse(tidspunkt), åpningskvittering.Åpnet);
             }
 
+            [TestMethod]
+            public void ParserFeilmelding()
+            {
+                //Arrange
+                var xml = TilXmlDokument("Feilmelding.xml");
+                const string konversjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                const string detaljer = "detaljer";
+                const Feiltype feiltype = Feiltype.Server;
+
+                //Act
+                var feilmelding = Kvitteringsparser.TilFeilmelding(xml);
+                
+                //Assert
+                Assert.AreEqual(konversjonsId, feilmelding.KonversasjonsId.ToString());
+                Assert.AreEqual(meldingsId, feilmelding.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, feilmelding.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(tidspunkt), feilmelding.Feilet);
+                Assert.AreEqual(detaljer, feilmelding.Detaljer);
+                Assert.AreEqual(feiltype, feilmelding.Skyldig);
+            }
+
             private XmlDocument TilXmlDokument(string kvittering)
             {
                 return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));

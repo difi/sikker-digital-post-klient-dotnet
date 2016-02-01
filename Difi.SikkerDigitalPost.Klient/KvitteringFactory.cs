@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 return Kvitteringsparser.TilVarslingFeiletKvittering(xmlDocument);
 
             if (IsFeilmelding(xmlDocument))
-                return new Feilmelding(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilFeilmelding(xmlDocument);
 
             if (IsÅpningskvittering(xmlDocument))
                 return Kvitteringsparser.TilÅpningskvittering(xmlDocument);

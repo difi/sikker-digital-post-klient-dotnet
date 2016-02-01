@@ -297,5 +297,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             return new Åpningskvittering(konversasjonsId, bodyReferenceUri, digestValue);
         }
+
+        public static Feilmelding GetFeilmelding()
+        {
+            var konversasjonsId = Guid.NewGuid();
+            var bodyReferenceUri = "bodyReferenceUri";
+            var digestValue = "digestValue";
+
+            return new Feilmelding(konversasjonsId, bodyReferenceUri, digestValue);
+
+        }
     }
 }

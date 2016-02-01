@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -11,31 +9,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Feilmelding : Forretningskvittering
     {
-        /// <summary>
-        /// Beskriver hvor feilen ligger. Enten Klient eller Server.
-        /// </summary>
-        public Feiltype Skyldig { get; protected set; }
+        public Feiltype Skyldig { get; set; }
 
-        public string Detaljer { get; protected set; }
+        public string Detaljer { get; set; }
 
         public DateTime Feilet { get { return Generert; } }
-        public Feilmelding() { }
-        internal Feilmelding(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager):base(xmlDocument,namespaceManager)
-        {
-            try
-            {
-                
-                var feiltype = DocumentNode("//ns9:feiltype").InnerText;
-                Skyldig = feiltype.ToLower().Equals(Feiltype.Klient.ToString().ToLower())
-                    ? Feiltype.Klient
-                    : Feiltype.Server;
 
-                Detaljer = DocumentNode("//ns9:detaljer").InnerText;
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException("Feil under bygging av Feilmelding-kvittering. Klarte ikke finne alle felter i xml.", e);
-            }
+        public Feilmelding() { }
+
+        public Feilmelding(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        {
         }
 
         public override string ToString()

@@ -43,6 +43,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(leveringskvittering.Generert, leveringskvittering.Levert);
             }
         }
-
     }
 }

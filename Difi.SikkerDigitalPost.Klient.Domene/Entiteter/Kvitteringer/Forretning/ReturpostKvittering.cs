@@ -9,11 +9,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Returpostkvittering : Forretningskvittering
     {
-        internal Returpostkvittering(XmlDocument xmlDocument, XmlNamespaceManager namespaceManager)
-            : base(xmlDocument, namespaceManager)
-        {
-        }
-
         public Returpostkvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
