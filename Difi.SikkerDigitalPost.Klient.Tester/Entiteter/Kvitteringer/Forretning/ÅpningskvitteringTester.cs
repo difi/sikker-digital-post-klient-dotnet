@@ -1,14 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
     [TestClass()]
-    public class ÅpningskvitteringTests
+    public class ÅpningskvitteringTester
     {
         [TestClass]
-        public class KonstruktørMethod : ÅpningskvitteringTests
+        public class KonstruktørMethod : ÅpningskvitteringTester
         {
             [TestMethod]
             public void EnkelKonstruktør()
@@ -29,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         }
 
         [TestClass]
-        public class ÅpnetMethod : MottakskvitteringTests
+        public class ÅpnetMethod : ÅpningskvitteringTester
         {
             [TestMethod]
             public void ReturnererGenerertTidspunkt()

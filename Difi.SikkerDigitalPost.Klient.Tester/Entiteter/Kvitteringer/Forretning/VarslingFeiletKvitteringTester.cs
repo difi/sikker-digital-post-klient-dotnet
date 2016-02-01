@@ -1,5 +1,4 @@
 ﻿using System;
-using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,7 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     public class VarslingFeiletKvitteringTests
     {
         [TestClass]
-        public class KonstruktørMethod : ReturpostkvitteringTests
+        public class KonstruktørMethod : VarslingFeiletKvitteringTests
         {
             [TestMethod]
             public void EnkelKonstruktør()
@@ -30,18 +29,18 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         }
 
         [TestClass]
-        public class FeiletMethod : MottakskvitteringTests
+        public class FeiletMethod : VarslingFeiletKvitteringTests
         {
             [TestMethod]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
-                var mottakskvittering = DomeneUtility.GetVarslingFeiletKvittering();
+                var varslingFeiletKvittering = DomeneUtility.GetVarslingFeiletKvittering();
 
                 //Act
 
                 //Assert
-                Assert.AreEqual(mottakskvittering.Generert, mottakskvittering.Feilet);
+                Assert.AreEqual(varslingFeiletKvittering.Generert, varslingFeiletKvittering.Feilet);
             }
         }
     }

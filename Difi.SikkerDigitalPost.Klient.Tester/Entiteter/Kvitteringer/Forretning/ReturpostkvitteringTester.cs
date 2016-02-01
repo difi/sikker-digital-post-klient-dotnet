@@ -1,10 +1,12 @@
 ﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning.Tests;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass()]
+    [TestClass]
     public class ReturpostkvitteringTests
     {
         [TestClass]
@@ -29,18 +31,18 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         }
 
         [TestClass]
-        public class MottattMethod : MottakskvitteringTests
+        public class ReturnertMethod : MottakskvitteringTests
         {
             [TestMethod]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
-                var mottakskvittering = DomeneUtility.GetReturpostkvittering();
+                var returpostkvittering = DomeneUtility.GetReturpostkvittering();
 
                 //Act
 
                 //Assert
-                Assert.AreEqual(mottakskvittering.Generert, mottakskvittering.Returnert);
+                Assert.AreEqual(returpostkvittering.Generert, returpostkvittering.Returnert);
             }
         }
 
