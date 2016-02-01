@@ -8,14 +8,18 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    internal class KvitteringFactory
+    public class KvitteringFactory
     {
-
         public static Kvittering GetKvittering(string xml)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
+            return GetKvittering(xmlDocument);
+        }
+
+        public static Kvittering GetKvittering(XmlDocument xmlDocument)
+        {
             var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
 
             if (kvittering == null)
@@ -23,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
                 {
-                    Rådata = xml
+                    Rådata = xmlDocument.OuterXml
                 };
 
                 throw ingenKvitteringstypeFunnetException;
@@ -31,7 +35,6 @@ namespace Difi.SikkerDigitalPost.Klient
 
             return kvittering;
         }
-
 
         private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
         {

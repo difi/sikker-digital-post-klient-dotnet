@@ -90,6 +90,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
+    <Compile Include="KvitteringFactoryTester.cs" />
     <Compile Include="KvitteringsparserTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
