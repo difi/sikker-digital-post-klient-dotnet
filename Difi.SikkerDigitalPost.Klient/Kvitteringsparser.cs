@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -23,7 +24,6 @@ namespace Difi.SikkerDigitalPost.Klient
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
-
         }
 
         public static Mottakskvittering TilMottakskvittering(XmlDocument mottakskvitteringXmlDocument)
@@ -106,6 +106,19 @@ namespace Difi.SikkerDigitalPost.Klient
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
                 Skyldig = feilmeldingfelter.SkyldigFeiltype,
                 Detaljer = feilmeldingfelter.Detaljer
+            };
+        }
+
+        public static TomKøKvittering TilTomKøKvittering(XmlDocument tomKøkvittering)
+        {
+            var kvitteringFelter = HentKvitteringsfelter(tomKøkvittering);
+            
+            return new TomKøKvittering
+            {
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
+                Rådata = kvitteringFelter.Rådata
             };
         }
 

@@ -1,4 +1,5 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -87,6 +88,20 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Assert
                 Assert.IsInstanceOfType(kvittering, typeof(Åpningskvittering));
             }
+
+            [TestMethod]
+            public void ReturnererTomKøKvittering()
+            {
+                //Arrange
+                var xml = KvitteringsUtility.Transportkvittering.TomKøKvitteringXml();
+
+                //Act
+                var kvittering = KvitteringFactory.GetKvittering(xml);
+
+                //Assert
+                Assert.IsInstanceOfType(kvittering, typeof(TomKøKvittering));
+            }
+
 
         }
     }

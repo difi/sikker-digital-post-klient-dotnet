@@ -232,7 +232,8 @@
     <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
     <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Åpningskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Åpningskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TomKøKvittering.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
@@ -250,11 +251,11 @@
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Leveringskvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Mottakskvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Returpostkvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\VarslingFeiletKvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Feilmelding.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Leveringskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Mottakskvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Returpostkvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\VarslingFeiletKvittering.xml" />
+    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Feilmelding.xml" />
     <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>

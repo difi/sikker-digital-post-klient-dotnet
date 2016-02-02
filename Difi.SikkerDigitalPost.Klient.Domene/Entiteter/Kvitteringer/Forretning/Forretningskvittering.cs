@@ -9,16 +9,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public abstract class Forretningskvittering : Kvittering
     {
-        public string BodyReferenceUri { get; set; }
-
-        public string DigestValue { get; set; }
-
-        public DateTime Generert { get; set; }
-
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
-        public Guid KonversasjonsId { get; set; }
+        public Guid KonversasjonsId { get; }
+
+        public string BodyReferenceUri { get; }
+
+        public string DigestValue { get; }
+
+       public DateTime Generert { get; set; }
 
         protected Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
         {

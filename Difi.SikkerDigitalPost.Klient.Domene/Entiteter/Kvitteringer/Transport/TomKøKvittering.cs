@@ -8,6 +8,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
         public TomKøKvittering(XmlDocument document, XmlNamespaceManager namespaceManager) : base(document, namespaceManager)
         {
         }
+
+        public TomKøKvittering()
+        {
+            
+        }
+        
         public string ToString()
         {
             return String.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
