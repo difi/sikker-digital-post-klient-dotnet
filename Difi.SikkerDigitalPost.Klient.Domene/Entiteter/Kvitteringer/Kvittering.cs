@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
             }
         }
 
-        protected string ToString()
+        public override string ToString()
         {
             return string.Format("SendtTidspunkt: {0}, MeldingsId: {1}, ReferanseTilMeldingId: {2}", SendtTidspunkt, MeldingsId, ReferanseTilMeldingId);
         }

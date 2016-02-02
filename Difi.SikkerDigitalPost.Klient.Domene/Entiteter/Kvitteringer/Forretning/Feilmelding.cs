@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return string.Format("Skyldig: {0}, Detaljer: {1}, Feilet: {2}, {3}", Skyldig, Detaljer, Feilet.ToStringWithUtcOffset(), base.ToString());
         }
