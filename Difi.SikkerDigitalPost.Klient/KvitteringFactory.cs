@@ -62,7 +62,7 @@ namespace Difi.SikkerDigitalPost.Klient
         private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)
         {
             if (IsTransportOkKvittering(xmlDocument))
-                return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilTransportOkKvittering(xmlDocument);
 
             if (IsTransportFeiletKvittering(xmlDocument))
                 return Kvitteringsparser.TilTransportFeiletKvittering(xmlDocument);

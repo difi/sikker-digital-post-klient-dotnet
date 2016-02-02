@@ -63,6 +63,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return TilXmlDokument("TransportFeiletKvittering.xml");
             }
 
+            public static XmlDocument TransportOkKvitteringXml()
+            {
+                return TilXmlDokument("TransportOkKvittering.xml");
+            }
+
             public static XmlDocument TilXmlDokument(string kvittering)
             {
                 return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));

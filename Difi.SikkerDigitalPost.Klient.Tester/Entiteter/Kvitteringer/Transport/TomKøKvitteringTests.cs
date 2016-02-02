@@ -2,7 +2,7 @@
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
 {
-    [TestClass()]
+    [TestClass]
     public class TomKøKvitteringTests
     {
         [TestClass]

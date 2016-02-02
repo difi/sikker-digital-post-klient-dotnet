@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass()]
+    [TestClass]
     public class VarslingFeiletKvitteringTests
     {
         [TestClass]

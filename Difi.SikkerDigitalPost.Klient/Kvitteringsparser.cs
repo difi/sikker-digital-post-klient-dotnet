@@ -164,6 +164,19 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
+        public static TransportOkKvittering TilTransportOkKvittering(XmlDocument transportOkXmlDocument)
+        {
+            var kvitteringsfelter = HentKvitteringsfelter(transportOkXmlDocument);
+
+            return new TransportOkKvittering
+            {
+                MeldingsId = kvitteringsfelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringsfelter.ReferanseTilMeldingId,
+                SendtTidspunkt = kvitteringsfelter.SendtTidspunkt,
+                Rådata = kvitteringsfelter.Rådata
+            };
+        }
+
         private static Forretningskvitteringfelter HentForretningskvitteringFelter(XmlDocument forretningskvittering)
         {
             var forretningskvittergFelter = new Forretningskvitteringfelter();

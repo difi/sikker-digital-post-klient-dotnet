@@ -196,6 +196,25 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(skyldig, transportFeiletKvittering.Skyldig);
                 Assert.AreEqual(xml.OuterXml, transportFeiletKvittering.Rådata);
             }
+
+            [TestMethod]
+            public void ParserTransportOkKvittering()
+            {
+                //Arrange
+                var xml = KvitteringsUtility.Transportkvittering.TransportOkKvitteringXml();
+                const string tidspunkt = "2015-11-10T15:02:39.476+01:00";
+                const string meldingsId = "dd1f3d46-f79a-4152-bf05-4b3ceef3ce67";
+                const string referanseTilMeldingId = "8d70d61c-d15d-4d59-b0fe-17e13fca8ccb";
+
+                //Act
+                var transportOkKvittering = Kvitteringsparser.TilTransportOkKvittering(xml);
+
+                //Assert
+                Assert.AreEqual(DateTime.Parse(tidspunkt), transportOkKvittering.SendtTidspunkt);
+                Assert.AreEqual(meldingsId, transportOkKvittering.MeldingsId);
+                Assert.AreEqual(referanseTilMeldingId, transportOkKvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(xml.OuterXml, transportOkKvittering.Rådata);
+            }
         }
 
     }

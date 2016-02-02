@@ -114,6 +114,20 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Assert
                 Assert.IsInstanceOfType(kvittering, typeof(TransportFeiletKvittering));
             }
+
+            [TestMethod]
+            public void ReturnererTransportOkKvittering()
+            {
+                //Arrange
+                var xml = KvitteringsUtility.Transportkvittering.TransportOkKvitteringXml();
+
+                //Act
+                var kvittering = KvitteringFactory.GetKvittering(xml);
+
+                //Assert
+                Assert.IsInstanceOfType(kvittering, typeof(TransportOkKvittering));
+            }
+
         }
     }
 }
