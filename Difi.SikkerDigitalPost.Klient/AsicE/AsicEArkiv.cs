@@ -12,8 +12,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
-        public Manifest Manifest { get; }
-        public Signatur Signatur { get; }
+        public Manifest Manifest { get; set; }
+        public Signatur Signatur { get; set; }
         private readonly Dokumentpakke _dokumentpakke;
         private readonly Forsendelse _forsendelse;
 
