@@ -10,11 +10,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         /// <summary>
         /// Identifiserer en melding og tilhørende kvitteringer unikt.
         /// </summary>
-        public Guid KonversasjonsId { get; }
+        public Guid KonversasjonsId { get; internal set; }
 
-        public string BodyReferenceUri { get; }
+        public string BodyReferenceUri { get; internal set; }
 
-        public string DigestValue { get; }
+        public string DigestValue { get; internal set; }
 
        public DateTime Generert { get; set; }
 

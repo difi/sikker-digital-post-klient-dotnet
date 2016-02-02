@@ -10,9 +10,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     public class Dokument : IAsiceVedlegg
     {
         public string Tittel { get; private set; }
-        public string Filnavn { get; }
-        public byte[] Bytes { get; }
-        public string MimeType { get; }
+        public string Filnavn { get; private set; }
+        public byte[] Bytes { get; private set; }
+        public string MimeType { get; private set; }
         public string Id { get; set; }
         public string Språkkode { get; private set; }
         internal string FilnavnRådata { get; set; }

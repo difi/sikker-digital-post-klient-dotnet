@@ -7,7 +7,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Dokumentpakke
     {
-        public Dokument Hoveddokument { get; }
+        public Dokument Hoveddokument { get; private set; }
 
         private List<Dokument> _vedlegg;
         public IReadOnlyList<Dokument> Vedlegg
