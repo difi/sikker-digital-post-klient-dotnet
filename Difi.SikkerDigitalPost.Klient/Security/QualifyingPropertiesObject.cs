@@ -12,9 +12,9 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 {
     internal class QualifyingPropertiesObject : DataObject
     {
-        public X509Certificate2 Certificate { get; }
+        public X509Certificate2 Certificate { get; private set; }
 
-        public IAsiceVedlegg[] References { get; }
+        public IAsiceVedlegg[] References { get; private set; }
 
         /// <summary>
         /// The mandatory Target attribute refers to the XML signature in which the qualifying properties are associated.
