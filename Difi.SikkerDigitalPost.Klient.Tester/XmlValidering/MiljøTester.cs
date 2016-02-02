@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Utilities;
+﻿using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -12,9 +12,9 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 {
     internal class QualifyingPropertiesObject : DataObject
     {
-        public X509Certificate2 Certificate { get; private set; }
+        public X509Certificate2 Certificate { get; }
 
-        public IAsiceVedlegg[] References { get; private set; }
+        public IAsiceVedlegg[] References { get; }
 
         /// <summary>
         /// The mandatory Target attribute refers to the XML signature in which the qualifying properties are associated.
@@ -45,14 +45,14 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             clone.PreserveWhitespace = true;
 
             // Find where the signature is to be inserted in the cloned document. In our scenario, the signature is placed as a child of the root XAdESSignatures element.
-            var cloneContext = (XmlElement)clone.DocumentElement;
+            var cloneContext = clone.DocumentElement;
 
             // Create a 'dummy' signature node where the QualifyingProperties will be positioned.
             var signature = cloneContext.AppendChild("Signature", NavneromUtility.XmlDsig);
 
             // Add the QualifyingProperties node as normal. This node will be set as the Objects Data property.
             var root = signature.AppendChild("QualifyingProperties", NavneromUtility.UriEtsi132);
-            root.SetAttribute("Target", this.Target);
+            root.SetAttribute("Target", Target);
 
             // Create Xml Node List
             var signedProperties = root.AppendChild("SignedProperties", NavneromUtility.UriEtsi132);

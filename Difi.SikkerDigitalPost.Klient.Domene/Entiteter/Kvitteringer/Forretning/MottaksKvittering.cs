@@ -1,5 +1,5 @@
 ﻿using System;
-using Difi.SikkerDigitalPost.Klient.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {

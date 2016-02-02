@@ -12,8 +12,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
-        public Manifest Manifest { get; private set; }
-        public Signatur Signatur { get; private set; }
+        public Manifest Manifest { get; }
+        public Signatur Signatur { get; }
         private readonly Dokumentpakke _dokumentpakke;
         private readonly Forsendelse _forsendelse;
 
@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             _guidHandler = guidHandler;
         }
 
-        private X509Certificate2 _krypteringssertifikat 
+        private X509Certificate2 Krypteringssertifikat 
         {
             get { return _forsendelse.PostInfo.Mottaker.Sertifikat; }
         }
@@ -117,12 +117,12 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private byte[] KrypterteBytes(byte[] bytes)
         {
-            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Krypterer dokumentpakke med sertifikat {0}.", _krypteringssertifikat.Thumbprint));
+            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Krypterer dokumentpakke med sertifikat {0}.", Krypteringssertifikat.Thumbprint));
 
             var contentInfo = new ContentInfo(bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
-            var recipient = new CmsRecipient(_krypteringssertifikat);
+            var recipient = new CmsRecipient(Krypteringssertifikat);
             envelopedCms.Encrypt(recipient);
             return envelopedCms.Encode();
         }

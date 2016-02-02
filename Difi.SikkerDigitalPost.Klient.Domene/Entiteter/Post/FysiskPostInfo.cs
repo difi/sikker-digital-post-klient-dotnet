@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
@@ -32,16 +31,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         {
             get { return new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn,_returmottakerAbstrakt.Adresse); }
         }
-
-        [Obsolete("Denne konstruktøren skal ikke brukes. Bruk Konstruktøren med FysiskPosttMottaker og FysiskPostReturMottaker. OBS! Vil bli fjernet fom. neste versjon.")]
-        public FysiskPostInfo(PostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostMottaker returMottaker) : base(mottaker)
-        {
-            Posttype = posttype;
-            Utskriftsfarge = utskriftsfarge;
-            Posthåndtering = posthåndtering;
-            _returmottakerAbstrakt = returMottaker;
-        }
-
+              
         public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker)
             : base(mottaker)
         {

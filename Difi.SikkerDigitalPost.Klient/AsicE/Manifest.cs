@@ -15,8 +15,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-        public Avsender Avsender { get; private set; }
-        public Forsendelse Forsendelse { get; private set; }
+        public Avsender Avsender { get; }
+        public Forsendelse Forsendelse { get; }
 
 
         public Manifest(Forsendelse forsendelse)

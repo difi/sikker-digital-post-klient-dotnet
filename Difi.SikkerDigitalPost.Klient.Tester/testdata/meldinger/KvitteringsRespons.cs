@@ -1,6 +1,4 @@
-﻿using Difi.SikkerDigitalPost.Klient.XmlValidering.Tests;
-
-namespace Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger
+﻿namespace Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger
 {
     internal class KvitteringsRespons
     {

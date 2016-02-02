@@ -32,8 +32,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
-        private static readonly string fileExtension;
-
         private static Dokument _hoveddokument;
 
         private static IEnumerable<Dokument> _vedlegg;
@@ -156,7 +154,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static FysiskPostInfo GetFysiskPostInfoEnkel()
         {
             return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
-                Posthåndtering.DirekteRetur, GetFysiskPostMottaker());
+                Posthåndtering.DirekteRetur, GetFysiskPostReturMottaker());
         }
 
         internal static Forsendelse GetDigitalForsendelseEnkel()

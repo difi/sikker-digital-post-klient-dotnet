@@ -59,9 +59,9 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
             {
                 XmlElement nonRepudiationInformation = receipt.AppendChildElement("NonRepudiationInformation", "ns7", NavneromUtility.EbppSignals, Context);
                 {
-                    XmlElement messagePartNRInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", NavneromUtility.EbppSignals, Context);
+                    XmlElement messagePartNrInformation = nonRepudiationInformation.AppendChildElement("MessagePartNRInformation", "ns7", NavneromUtility.EbppSignals, Context);
                     {
-                        XmlElement reference = messagePartNRInformation.AppendChildElement("Reference", "ds", NavneromUtility.XmlDsig, Context);
+                        XmlElement reference = messagePartNrInformation.AppendChildElement("Reference", "ds", NavneromUtility.XmlDsig, Context);
                         reference.SetAttribute("URI", Settings.ForrigeKvittering.BodyReferenceUri);
                         {
                             XmlElement transforms = reference.AppendChildElement("Transforms", "ds", NavneromUtility.XmlDsig, Context);
@@ -69,7 +69,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
                                 XmlElement transform = transforms.AppendChildElement("Transform", "ds", NavneromUtility.XmlDsig, Context);
                                 transform.SetAttribute("Algorithm", "http://www.w3.org/2001/10/xml-exc-c14n#");
                                 {
-                                    XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", NavneromUtility.XmlExcC14n, Context);
+                                    XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", NavneromUtility.XmlExcC14N, Context);
                                     inclusiveNamespaces.SetAttribute("PrefixList", string.Empty);
 
                                 }

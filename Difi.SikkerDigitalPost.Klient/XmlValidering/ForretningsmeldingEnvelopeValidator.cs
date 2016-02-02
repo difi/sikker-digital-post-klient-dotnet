@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             LeggTilXsdRessurs(NavneromUtility.DifiSdpSchema10, HentRessurs("sdp-melding.xsd"));
             LeggTilXsdRessurs(NavneromUtility.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
             LeggTilXsdRessurs(NavneromUtility.Xml1998, HentRessurs("w3.xml.xsd"));
-            LeggTilXsdRessurs(NavneromUtility.XmlExcC14n, HentRessurs("w3.exc-c14n.xsd"));
+            LeggTilXsdRessurs(NavneromUtility.XmlExcC14N, HentRessurs("w3.exc-c14n.xsd"));
 
             LeggTilXsdRessurs(NavneromUtility.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.StandardBusinessDocumentHeader.xsd"));
             LeggTilXsdRessurs(NavneromUtility.StandardBusinessDocumentHeader, HentRessurs("SBDH20040506_02.DocumentIdentification.xsd"));

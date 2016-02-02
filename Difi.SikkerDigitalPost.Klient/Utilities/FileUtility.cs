@@ -18,8 +18,8 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         /// på "C:\base\mappe\hei.txt".
         /// </summary>
+        /// <param name="xml">Data som skal skrives.</param>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
-        /// <param name="data">Data som skal skrives.</param>
         public static void WriteXmlToBasePath(string xml, params string[] pathRelativeToBase)
         {
             if (String.IsNullOrEmpty(xml))

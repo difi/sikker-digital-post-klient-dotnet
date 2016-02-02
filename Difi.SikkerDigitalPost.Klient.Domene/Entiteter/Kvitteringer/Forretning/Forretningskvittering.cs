@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {

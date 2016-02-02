@@ -10,12 +10,12 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </summary>
     internal class AttachmentContentSignatureTransform : Transform
     {
-        private readonly Type[] _inputTypes = new Type[2] {
+        private readonly Type[] _inputTypes = {
             typeof(Stream),
             typeof(byte[])
         };
 
-        private readonly Type[] _outputTypes = new Type[1] {
+        private readonly Type[] _outputTypes = {
             typeof (Stream)
         };
 

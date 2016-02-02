@@ -2,7 +2,6 @@
 using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {

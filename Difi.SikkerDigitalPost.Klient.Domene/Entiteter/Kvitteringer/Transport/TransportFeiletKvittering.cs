@@ -39,8 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 
         public new string ToString()
         {
-            return string.Format("{0} med meldingsId {1}: \nTidspunkt: {2}. \nRefererer til melding med id: {3}",
-                GetType().Name, MeldingsId, SendtTidspunkt, ReferanseTilMeldingId);
+            return "Feilkode: " + Feilkode + ", Kategori: " + Kategori + ", Opprinnelse: " + Opprinnelse + ", Alvorlighetsgrad: " + Alvorlighetsgrad + ", Beskrivelse: " + Beskrivelse  + ", Skyldig: " + Skyldig + ", " + base.ToString();
         }
     }
 }
