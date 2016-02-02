@@ -62,13 +62,13 @@ namespace Difi.SikkerDigitalPost.Klient
         private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)
         {
             if (IsTransportOkKvittering(xmlDocument))
-                return new TransportOkKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilTransportOkKvittering(xmlDocument);
 
             if (IsTransportFeiletKvittering(xmlDocument))
-                return new TransportFeiletKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilTransportFeiletKvittering(xmlDocument);
 
             if (IsTomKøKvittering(xmlDocument))
-                return new TomKøKvittering(xmlDocument, NamespaceManager(xmlDocument));
+                return Kvitteringsparser.TilTomKøKvittering(xmlDocument);
 
             return null;
         }
@@ -126,7 +126,7 @@ namespace Difi.SikkerDigitalPost.Klient
         private static XmlNode DocumentNode(XmlDocument document, string node)
         {
             var rot = document.DocumentElement;
-            string nodeString = String.Format("//{0}", node);
+            string nodeString = string.Format("//{0}", node);
             var targetNode = rot.SelectSingleNode(nodeString, NamespaceManager(document));
 
             return targetNode;

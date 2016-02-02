@@ -1,6 +1,5 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning.Tests;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

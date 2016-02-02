@@ -3,10 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using Difi.Felles.Utility;
 using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.XmlValidering.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
     [TestClass]
     public class SertifikatkjedevalidatorProduksjonTester

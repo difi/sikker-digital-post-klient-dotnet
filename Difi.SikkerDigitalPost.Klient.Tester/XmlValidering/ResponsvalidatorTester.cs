@@ -4,7 +4,6 @@ using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
-using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -92,7 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sendtMeldingXmlDocument =
-                    XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput(dokumentPakkeIdRequest));
+                    XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput());
 
                 var mottattTransportKvittering =
                     XmlUtility.TilXmlDokument(

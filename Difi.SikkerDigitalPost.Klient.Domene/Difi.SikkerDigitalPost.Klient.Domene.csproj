@@ -59,7 +59,6 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Entiteter\Aktører\Avsender.cs" />
-    <Compile Include="Deprecated\Behandlingsansvarlig.cs" />
     <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
     <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs">

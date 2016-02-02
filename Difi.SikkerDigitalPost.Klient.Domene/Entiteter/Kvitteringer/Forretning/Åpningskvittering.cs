@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Xml;
-using Difi.SikkerDigitalPost.Klient.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -16,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return string.Format("Åpnet: {0}, {1}", Åpnet.ToStringWithUtcOffset(), base.ToString());
         }

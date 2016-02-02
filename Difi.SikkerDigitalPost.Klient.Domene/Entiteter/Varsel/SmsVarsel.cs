@@ -14,6 +14,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
 
         /// <param name="mobilnummer">Mobiltelefonnummer varselet skal sendes til.</param>
         /// <param name="varslingstekst">Avsenderstyrt varslingstekst som skal inngå i varselet.</param>
+        /// <param name="varselEtterDager">Hvor mange dager etter at meldingen er levert at varselet skal leveres.</param>
+
         public SmsVarsel(string mobilnummer,string varslingstekst, IEnumerable<int> varselEtterDager) : base(varslingstekst,varselEtterDager)
         {
             Mobilnummer = mobilnummer;

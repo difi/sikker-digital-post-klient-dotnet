@@ -70,7 +70,7 @@
         /// <summary>
         /// http://www.w3.org/2001/10/xml-exc-c14n#
         /// </summary>
-        public const string XmlExcC14n = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        public const string XmlExcC14N = "http://www.w3.org/2001/10/xml-exc-c14n#";
         
         /// <summary>
         /// http://www.w3.org/2001/04/xmlenc#

@@ -2,16 +2,15 @@
 using System.Xml;
 using ApiClientShared;
 using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     public static class KvitteringsUtility
     {
-        static ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer");
 
         public static class Forretningskvittering
         {
+            static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Forretning");
 
             public static XmlDocument FeilmeldingXml()
             {
@@ -43,11 +42,35 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return TilXmlDokument("Åpningskvittering.xml");
             }
 
+            public static XmlDocument TilXmlDokument(string kvittering)
+            {
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+            }
         }
 
-        public static XmlDocument TilXmlDokument(string kvittering)
+        public static class Transportkvittering
         {
-            return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+            static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Transport");
+
+            public static XmlDocument TomKøKvitteringXml()
+            {
+                return TilXmlDokument("TomKøKvittering.xml");
+            }
+
+            public static XmlDocument TransportFeiletKvitteringXml()
+            {
+                return TilXmlDokument("TransportFeiletKvittering.xml");
+            }
+
+            public static XmlDocument TransportOkKvitteringXml()
+            {
+                return TilXmlDokument("TransportOkKvittering.xml");
+            }
+
+            public static XmlDocument TilXmlDokument(string kvittering)
+            {
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+            }
         }
     }
 }

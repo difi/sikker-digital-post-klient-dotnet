@@ -1,6 +1,6 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 {
@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return string.Format("Skyldig: {0}, Detaljer: {1}, Feilet: {2}, {3}", Skyldig, Detaljer, Feilet.ToStringWithUtcOffset(), base.ToString());
         }

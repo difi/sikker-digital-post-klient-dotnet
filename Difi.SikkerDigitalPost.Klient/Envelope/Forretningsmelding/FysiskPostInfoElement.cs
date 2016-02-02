@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         public FysiskPostInfoElement(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
         {
-            _fysiskPostInfo = ((FysiskPostInfo)Settings.Forsendelse.PostInfo);
+            _fysiskPostInfo = (FysiskPostInfo)Settings.Forsendelse.PostInfo;
             _returmottaker = _fysiskPostInfo.Returpostmottaker;
         }
         

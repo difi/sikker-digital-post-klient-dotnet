@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
@@ -23,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return "Varslingskanal: " + Varslingskanal + ", Beskrivelse: " + Beskrivelse + ", Feilet: " + Feilet + ", " + base.ToString();
         }

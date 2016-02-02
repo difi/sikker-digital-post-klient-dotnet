@@ -1,15 +1,10 @@
-﻿using Difi.SikkerDigitalPost.Klient;
-using System;
-using System.Diagnostics;
-using Difi.SikkerDigitalPost.Klient.Api;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
-using Difi.SikkerDigitalPost.Klient.Utilities;
+﻿using System;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass()]
+    [TestClass]
     public class KlientkonfigurasjonTester
     {
         [TestClass]
@@ -27,10 +22,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tests
                 var loggXmlTilFil = false;
                 int proxyPort = 0;
 
-                Klientkonfigurasjon klientkonfigurasjon = new Klientkonfigurasjon(miljø);
-
                 //Act
-
+                Klientkonfigurasjon klientkonfigurasjon = new Klientkonfigurasjon(miljø);
+                
                 //Assert
                 Assert.AreEqual(miljø, klientkonfigurasjon.Miljø);
                 Assert.AreEqual(organisasjonsnummerPosten, klientkonfigurasjon.MeldingsformidlerOrganisasjon.Verdi);

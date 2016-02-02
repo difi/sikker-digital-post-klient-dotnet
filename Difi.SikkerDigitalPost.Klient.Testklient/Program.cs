@@ -68,9 +68,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             Console.ReadKey();
         }
 
-        private static async void SendPost(SikkerDigitalPostKlient _sikkerDigitalPostKlient, Forsendelse forsendelse)
+        private static async void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            Transportkvittering transportkvittering = await _sikkerDigitalPostKlient.SendAsync(forsendelse);
+            Transportkvittering transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
             Console.WriteLine(" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
@@ -86,7 +86,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             }
         }
 
-        private static async void HentKvitteringer(SikkerDigitalPostKlient _sikkerDigitalPostKlient)
+        private static async void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
         {
             Console.WriteLine();
 
@@ -99,7 +99,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Kvittering kvittering = await _sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
+                Kvittering kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
                 if (kvittering is TomKøKvittering)
                 {
@@ -139,7 +139,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 }
 
                 Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
-                _sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
+                sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
                 Console.WriteLine("   - Kvittering sendt.");
             }
         }
@@ -165,11 +165,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "Vedlegg.txt"));
-            var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId, "NO");
+            var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId);
             
             return forsendelse;
-            
-
         }
 
         private static void WriteToConsoleWithColor(string message, bool isError = false)

@@ -13,18 +13,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
         public class KontstruktørMetode
         {
             [TestMethod]
-            public void StøtteForLegacyInitialisering()
-            {
-                
-                var fysiskPostInfo =
-                    new FysiskPostInfo(DomeneUtility.GetFysiskPostMottakerMedTestSertifikat(), Posttype.A, Utskriftsfarge.Farge,
-                        Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostMottakerMedTestSertifikat());
-
-                Assert.IsInstanceOfType(fysiskPostInfo.Mottaker, typeof (FysiskPostMottaker));
-                Assert.IsInstanceOfType(fysiskPostInfo.ReturMottaker, typeof(FysiskPostMottaker));
-            }
-
-            [TestMethod]
             public void SkalFungereMedNyMåteÅInitialiserePå()
             {
                 var fysiskPostInfo =
