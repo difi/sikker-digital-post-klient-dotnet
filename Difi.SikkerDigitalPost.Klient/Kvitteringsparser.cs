@@ -109,9 +109,9 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        public static TomKøKvittering TilTomKøKvittering(XmlDocument tomKøkvittering)
+        public static TomKøKvittering TilTomKøKvittering(XmlDocument tomKøkvitteringXmlDocument)
         {
-            var kvitteringFelter = HentKvitteringsfelter(tomKøkvittering);
+            var kvitteringFelter = HentKvitteringsfelter(tomKøkvitteringXmlDocument);
             
             return new TomKøKvittering
             {
@@ -122,23 +122,46 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        private static Kvitteringsfelter HentKvitteringsfelter(XmlDocument kvittering)
+        public static TransportFeiletKvittering TilTransportFeiletKvittering(XmlDocument transportFeiletXmlDocument)
         {
-            var kvitteringsfelter = new Kvitteringsfelter();
+            var kvitteringFelter = HentKvitteringsfelter(transportFeiletXmlDocument, false);
+            var transportFeiletFelter = HentTransportFeiletKvitteringsfelter(transportFeiletXmlDocument);
 
+            return new TransportFeiletKvittering()
+            {
+                MeldingsId = kvitteringFelter.MeldingsId,
+                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
+                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
+                Rådata = kvitteringFelter.Rådata,
+                Alvorlighetsgrad = transportFeiletFelter.Alvorlighetsgrad,
+                Beskrivelse = transportFeiletFelter.Beskrivelse,
+                Feilkode = transportFeiletFelter.Feilkode,
+                Kategori = transportFeiletFelter.Kategori,
+                Opprinnelse = transportFeiletFelter.Opprinnelse
+            };
+        }
+
+        private static Kvitteringsfelter HentKvitteringsfelter(XmlDocument kvittering, bool sjekkEtterReferanseTilMeldingsId = true)
+        {
             try
             {
-                kvitteringsfelter.SendtTidspunkt = Convert.ToDateTime(GetXmlNodeFromDocument(kvittering,"//ns6:Timestamp").InnerText);
-                kvitteringsfelter.MeldingsId = GetXmlNodeFromDocument(kvittering,"//ns6:MessageId").InnerText;
-                kvitteringsfelter.ReferanseTilMeldingId = GetXmlNodeFromDocument(kvittering, "//ns6:RefToMessageId").InnerText;
-                kvitteringsfelter.Rådata = kvittering.OuterXml;
+                return  ParseKvitteringsFelter(kvittering, sjekkEtterReferanseTilMeldingsId);
             }
             catch (Exception e)
             {
-                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Kvittering). Klarte ikke finne alle felter i xml.", e.GetType()), e);
+                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Kvittering).", e.GetType()), e);
             }
+        }
 
-            return kvitteringsfelter;
+        private static Kvitteringsfelter ParseKvitteringsFelter(XmlDocument kvittering, bool sjekkEtterReferanseTilMeldingsId)
+        {
+            return new Kvitteringsfelter
+            {
+                SendtTidspunkt = Convert.ToDateTime(GetXmlNodeFromDocument(kvittering, "//ns6:Timestamp").InnerText),
+                MeldingsId = GetXmlNodeFromDocument(kvittering, "//ns6:MessageId").InnerText,
+                Rådata = kvittering.OuterXml,
+                ReferanseTilMeldingId = sjekkEtterReferanseTilMeldingsId ? GetXmlNodeFromDocument(kvittering, "//ns6:RefToMessageId").InnerText : null
+            };
         }
 
         private static Forretningskvitteringfelter HentForretningskvitteringFelter(XmlDocument forretningskvittering)
@@ -161,7 +184,7 @@ namespace Difi.SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml.", e.GetType()), e);
+                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Forretningskvittering).", e.GetType()), e);
             }
 
             return forretningskvittergFelter;
@@ -202,7 +225,7 @@ namespace Difi.SikkerDigitalPost.Klient
             catch (Exception e)
             {
                 throw new XmlParseException(
-                    "Feil under bygging av VarslingFeilet-kvittering. Klarte ikke finne alle felter i xml.", e);
+                    "Feil under bygging av VarslingFeilet-kvittering.", e);
             }
 
             return varslingFeiletKvitteringsfelter;
@@ -223,10 +246,36 @@ namespace Difi.SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlParseException("Feil under bygging av Feilmelding-kvittering. Klarte ikke finne alle felter i xml.", e);
+                throw new XmlParseException("Feil under bygging av Feilmelding-kvittering.", e);
             }
 
             return feilmeldingsfelter;
+        }
+
+        private static TransportFeiletKvitteringsfelter HentTransportFeiletKvitteringsfelter(XmlDocument document)
+        {
+            var transportFeiletKvitteringsfelter = new TransportFeiletKvitteringsfelter();
+
+            try
+            {
+                var errorNode = GetXmlNodeFromDocument(document,"//ns6:Error");
+                transportFeiletKvitteringsfelter.Kategori = errorNode.Attributes["category"].Value;
+                transportFeiletKvitteringsfelter.Feilkode = errorNode.Attributes["errorCode"].Value;
+                transportFeiletKvitteringsfelter.Opprinnelse = errorNode.Attributes["origin"].Value;
+                transportFeiletKvitteringsfelter.Alvorlighetsgrad = errorNode.Attributes["severity"].Value;
+                transportFeiletKvitteringsfelter.Beskrivelse = GetXmlNodeFromDocument(document, "//ns6:Description").InnerText;
+                var skyldig = GetXmlNodeFromDocument(document, "//env:Value").InnerText;
+                transportFeiletKvitteringsfelter.SkyldigFeiltype = skyldig == Feiltype.Klient.ToString()
+                    ? Feiltype.Klient
+                    : Feiltype.Server;
+            }
+            catch (Exception e)
+            {
+                throw new XmlParseException(
+                    "Feil under bygging av TransportFeilet-kvittering.", e);
+            }
+
+            return transportFeiletKvitteringsfelter;
         }
 
         protected static XmlNode GetXmlNodeFromDocument(XmlDocument document, string xPath)
@@ -293,6 +342,21 @@ namespace Difi.SikkerDigitalPost.Klient
             public Feiltype SkyldigFeiltype { get; set; }
 
             public string Detaljer { get; set; }
+        }
+
+        internal class TransportFeiletKvitteringsfelter
+        {
+            public string Feilkode { get; set; }
+
+            public string Kategori { get; set; }
+
+            public string Opprinnelse { get; set; }
+
+            public string Alvorlighetsgrad { get; set; }
+
+            public string Beskrivelse { get; set; }
+
+            public Feiltype SkyldigFeiltype { get; set; }
 
         }
     }

@@ -13,27 +13,27 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
         /// <summary>
         /// Spesifikk feilkode for transporten.
         /// </summary>
-        public string Feilkode { get; protected set; }
+        public string Feilkode { get; set; }
 
         /// <summary>
         /// Kategori/id for hvilken feil som oppstod.
         /// </summary>
-        public string Kategori { get; protected set; }
+        public string Kategori { get; set; }
 
         /// <summary>
         /// Opprinnelse for feilmeldingen.
         /// </summary>
-        public string Opprinnelse { get; protected set; }
+        public string Opprinnelse { get; set; }
 
         /// <summary>
         /// Hvor alvorlig er feilen som oppstod
         /// </summary>
-        public string Alvorlighetsgrad { get; protected set; }
+        public string Alvorlighetsgrad { get; set; }
 
         /// <summary>
         /// En mer detaljert beskrivelse av hva som gikk galt.
         /// </summary>
-        public string Beskrivelse { get; protected set; }
+        public string Beskrivelse { get; set; }
 
         /// <summary>
         /// Hvem man antar har skyld i feilen.
@@ -64,7 +64,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
                     "Feil under bygging av TransportFeilet-kvittering. Klarte ikke finne alle felter i xml.", e);
             }
         }
-
 
         public new string ToString()
         {

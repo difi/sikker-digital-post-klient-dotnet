@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return string.Format("Mottatt: {0}, {1}", Mottatt.ToStringWithUtcOffset(), base.ToString());
         }

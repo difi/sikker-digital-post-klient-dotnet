@@ -70,6 +70,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(meldingsId, returpostkvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, returpostkvittering.ReferanseTilMeldingId);
                 Assert.AreEqual(DateTime.Parse(tidspunkt), returpostkvittering.Returnert);
+                Assert.AreEqual(xml.OuterXml, returpostkvittering.Rådata);
+
 
             }
 
@@ -95,6 +97,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(DateTime.Parse(tidspunkt), varslingfeiletkvittering.Feilet);
                 Assert.AreEqual(beskrivelse, varslingfeiletkvittering.Beskrivelse);
                 Assert.AreEqual(varslingskanal, varslingfeiletkvittering.Varslingskanal);
+                Assert.AreEqual(xml.OuterXml, varslingfeiletkvittering.Rådata);
+
             }
 
             [TestMethod]
@@ -115,6 +119,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(meldingsId, åpningskvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, åpningskvittering.ReferanseTilMeldingId);
                 Assert.AreEqual(DateTime.Parse(tidspunkt), åpningskvittering.Åpnet);
+                Assert.AreEqual(xml.OuterXml, åpningskvittering.Rådata);
             }
 
             [TestMethod]
@@ -139,6 +144,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(DateTime.Parse(tidspunkt), feilmelding.Feilet);
                 Assert.AreEqual(detaljer, feilmelding.Detaljer);
                 Assert.AreEqual(feiltype, feilmelding.Skyldig);
+                Assert.AreEqual(xml.OuterXml, feilmelding.Rådata);
             }
 
             [TestMethod]
@@ -157,6 +163,38 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(DateTime.Parse(tidspunkt), tomKøKvittering.SendtTidspunkt);
                 Assert.AreEqual(meldingsId, tomKøKvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, tomKøKvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(xml.OuterXml, tomKøKvittering.Rådata);
+            }
+
+            [TestMethod]
+            public void ParserTransportFeiletKvittering()
+            {
+                //Arrange
+                var xml = KvitteringsUtility.Transportkvittering.TransportFeiletKvitteringXml();
+                const string alvorlighetsgrad = "failure";
+                const string beskrivelse = "Invalid timestamp: The security semantics of the message have expired; nested exception is org.apache.wss4j.common.ext.WSSecurityException: Invalid timestamp: The security semantics of the message have expired";
+                const string feilkode = "EBMS:0103";
+                const string kategori = "Processing";
+                const string meldingsId = "e0df4e6c-c4d7-426b-a3fd-dac2e241f313";
+                const string opprinnelse = "security";
+                object referanseTilMeldingId = null;
+                const string sendtTidspunkt = "2015-11-10T14:58:23.408+01:00";
+                var skyldig = Feiltype.Klient;
+                
+                //Act
+                var transportFeiletKvittering = Kvitteringsparser.TilTransportFeiletKvittering(xml);
+
+                //Assert
+                Assert.AreEqual(alvorlighetsgrad, transportFeiletKvittering.Alvorlighetsgrad);
+                Assert.AreEqual(beskrivelse, transportFeiletKvittering.Beskrivelse);
+                Assert.AreEqual(feilkode, transportFeiletKvittering.Feilkode);
+                Assert.AreEqual(kategori, transportFeiletKvittering.Kategori);
+                Assert.AreEqual(meldingsId, transportFeiletKvittering.MeldingsId);
+                Assert.AreEqual(opprinnelse, transportFeiletKvittering.Opprinnelse);
+                Assert.AreEqual(referanseTilMeldingId, transportFeiletKvittering.ReferanseTilMeldingId);
+                Assert.AreEqual(DateTime.Parse(sendtTidspunkt), transportFeiletKvittering.SendtTidspunkt);
+                Assert.AreEqual(skyldig, transportFeiletKvittering.Skyldig);
+                Assert.AreEqual(xml.OuterXml, transportFeiletKvittering.Rådata);
             }
         }
 

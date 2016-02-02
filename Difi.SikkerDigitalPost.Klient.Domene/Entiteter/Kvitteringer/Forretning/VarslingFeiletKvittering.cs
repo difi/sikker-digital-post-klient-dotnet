@@ -23,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         {
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return "Varslingskanal: " + Varslingskanal + ", Beskrivelse: " + Beskrivelse + ", Feilet: " + Feilet + ", " + base.ToString();
         }
