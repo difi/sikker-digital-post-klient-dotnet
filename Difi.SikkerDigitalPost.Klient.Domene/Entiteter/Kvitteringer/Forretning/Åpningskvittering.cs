@@ -11,13 +11,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     {
         public DateTime Åpnet { get { return Generert; } }
 
-        public Åpningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        public Åpningskvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
         public override string ToString()
         {
-            return string.Format("Åpnet: {0}, {1}", Åpnet.ToStringWithUtcOffset(), base.ToString());
+            return string.Format("{0}, Åpnet: {1}", base.ToString(), Åpnet.ToStringWithUtcOffset());
         }
     }
 }

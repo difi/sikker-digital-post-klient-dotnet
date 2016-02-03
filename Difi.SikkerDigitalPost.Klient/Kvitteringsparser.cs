@@ -15,10 +15,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var kvitteringFelter = HentKvitteringsfelter(leveringskvitteringXmlDocument);
             var forretningskvitteringfelter = HentForretningskvitteringFelter(leveringskvitteringXmlDocument);
 
-            return new Leveringskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new Leveringskvittering(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
@@ -30,10 +29,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var kvitteringFelter = HentKvitteringsfelter(mottakskvitteringXmlDocument);
             var forretningskvitteringfelter = HentForretningskvitteringFelter(mottakskvitteringXmlDocument);
 
-            return new Mottakskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new Mottakskvittering(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
@@ -46,10 +44,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var kvitteringFelter = HentKvitteringsfelter(returpostkvitteringXmlDocument);
             var forretningskvitteringfelter = HentForretningskvitteringFelter(returpostkvitteringXmlDocument);
 
-            return new Returpostkvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new Returpostkvittering(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
@@ -63,10 +60,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var forretningskvitteringfelter = HentForretningskvitteringFelter(varslingFeiletXmlDocument);
             var varslingfeiletKvitteringsfelter = HentVarslingFeiletKvitteringsfelter(varslingFeiletXmlDocument);
 
-            return new VarslingFeiletKvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new VarslingFeiletKvittering(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
@@ -80,10 +76,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var kvitteringFelter = HentKvitteringsfelter(åpningskvitteringXmlDocument);
             var forretningskvitteringfelter = HentForretningskvitteringFelter(åpningskvitteringXmlDocument);
 
-            return new Åpningskvittering(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new Åpningskvittering(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
@@ -96,10 +91,9 @@ namespace Difi.SikkerDigitalPost.Klient
             var forretningskvitteringfelter = HentForretningskvitteringFelter(feilmelding);
             var feilmeldingfelter = HentFeilmeldingsfelter(feilmelding);
 
-            return new Feilmelding(forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
+            return new Feilmelding(kvitteringFelter.MeldingsId, forretningskvitteringfelter.KonversasjonsId, forretningskvitteringfelter.BodyReferenceUri, forretningskvitteringfelter.DigestValue)
             {
                 Generert = forretningskvitteringfelter.Generert,
-                MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,

@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
        public DateTime Generert { get; set; }
 
-        protected Forretningskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue)
+        protected Forretningskvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue):base(meldingsId)
         {
             KonversasjonsId = konversasjonsId;
             BodyReferenceUri = bodyReferenceUri;
@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return string.Format("BodyReferenceUri: {0}, DigestValue: {1}, {2}", BodyReferenceUri, DigestValue, base.ToString());
+            return string.Format("{0}, BodyReferenceUri: {1}, DigestValue: {2}", base.ToString(), BodyReferenceUri, DigestValue);
         }
     }
 }

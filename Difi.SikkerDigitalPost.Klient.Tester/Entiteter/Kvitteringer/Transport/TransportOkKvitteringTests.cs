@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
 {
@@ -12,11 +13,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
             public void EnkelKonstruktør()
             {
                 //Arrange
+                var transportOkKvittering = new TransportOkKvittering();
 
                 //Act
 
                 //Assert
-                //Nothing to test - constructor is default constructor now
+                Assert.AreEqual(string.Empty, transportOkKvittering.MeldingsId);
             }
         }
 

@@ -71,7 +71,6 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
                                 {
                                     XmlElement inclusiveNamespaces = transform.AppendChildElement("InclusiveNamespaces", "ec", NavneromUtility.XmlExcC14N, Context);
                                     inclusiveNamespaces.SetAttribute("PrefixList", string.Empty);
-
                                 }
                             }
 
