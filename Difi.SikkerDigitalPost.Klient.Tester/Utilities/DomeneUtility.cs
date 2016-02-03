@@ -253,57 +253,62 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Leveringskvittering GetLeveringskvittering()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
             
-            return new Leveringskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+            return new Leveringskvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 
         internal static Mottakskvittering GetMottakskvittering()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
 
-            return new Mottakskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+            return new Mottakskvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 
         public static Returpostkvittering GetReturpostkvittering()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
 
-            return new Returpostkvittering(konversasjonsId, bodyReferenceUri, digestValue);
+            return new Returpostkvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 
         public static VarslingFeiletKvittering GetVarslingFeiletKvittering()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
 
-            return new VarslingFeiletKvittering(konversasjonsId, bodyReferenceUri, digestValue);
+            return new VarslingFeiletKvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 
         public static Åpningskvittering GetÅpningskvittering()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
 
-            return new Åpningskvittering(konversasjonsId, bodyReferenceUri, digestValue);
+            return new Åpningskvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 
         public static Feilmelding GetFeilmelding()
         {
+            var meldingsId = "MeldingsId";
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
 
-            return new Feilmelding(konversasjonsId, bodyReferenceUri, digestValue);
-
+            return new Feilmelding(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
     }
 }

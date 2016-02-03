@@ -18,13 +18,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public DateTime Feilet{ get { return Generert; } }
 
-        public VarslingFeiletKvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        public VarslingFeiletKvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
         public override string ToString()
         {
-            return "Varslingskanal: " + Varslingskanal + ", Beskrivelse: " + Beskrivelse + ", Feilet: " + Feilet + ", " + base.ToString();
+            return string.Format("{0}, Varslingskanal: {1}, Beskrivelse: {2}, Feilet: {3}", base.ToString(), Varslingskanal, Beskrivelse, Feilet);
         }
     }
 }

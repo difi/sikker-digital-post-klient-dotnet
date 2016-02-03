@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -16,20 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
     [TestClass]
     public class SmokeTester
-    {      
-        [TestMethod]
-        public void SendDigitalPostIntegrasjonEnkel()
-        {
-            //Arrange
-            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
-            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-
-            //Act
-            var transportkvittering = SendDokumentpakke(sdpklient, enkelForsendelse);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
-            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
-        }
-
+    {
         [TestMethod]
         public void SendDigitalPostIntegrasjonDekkende()
         {
@@ -91,6 +80,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             return sikkerDigitalPostKlient.Send(forsendelse);
         }
 
+        [TestMethod]
+        public void SendDigitalPostIntegrasjonEnkel()
+        {
+            //Arrange
+            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
+            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+
+            //Act
+            var transportkvittering = SendDokumentpakke(sdpklient, enkelForsendelse);
+            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
+            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+        }
+
         private static Kvittering HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
             Forsendelse forsendelse)
         {
@@ -106,6 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
 
                 if (kvittering is TomKøKvittering) { continue; }
+
                 hentKvitteringPåNytt = false;
 
                 sdpKlient.Bekreft((Forretningskvittering)kvittering);

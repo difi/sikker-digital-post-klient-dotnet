@@ -15,12 +15,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             public void EnkelKonstruktør()
             {
                 //Arrange
+                var meldingsId = "meldingsId";
                 var konversasjonsId = Guid.NewGuid();
                 var bodyReferenceUri = "bodyReferenceUri";
                 var digestValue = "digestValue";
 
                 //Act
-                var feilmelding = new Feilmelding(konversasjonsId, bodyReferenceUri, digestValue);
+                var feilmelding = new Feilmelding(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
                 Assert.AreEqual(konversasjonsId, feilmelding.KonversasjonsId);

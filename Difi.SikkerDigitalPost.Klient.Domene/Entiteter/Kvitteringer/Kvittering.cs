@@ -24,9 +24,14 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// </summary>
         public string Rådata { get; set; }
 
+        protected Kvittering(string meldingsId)
+        {
+            MeldingsId = meldingsId;
+        }
+
         public override string ToString()
         {
-            return string.Format("SendtTidspunkt: {0}, MeldingsId: {1}, ReferanseTilMeldingId: {2}", SendtTidspunkt, MeldingsId, ReferanseTilMeldingId);
+            return string.Format("[{0}] SendtTidspunkt: {1}, MeldingsId: {2}, ReferanseTilMeldingId: {3}", GetType().Name, SendtTidspunkt, MeldingsId, ReferanseTilMeldingId);
         }
     }
 }

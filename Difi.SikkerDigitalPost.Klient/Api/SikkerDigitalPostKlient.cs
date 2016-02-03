@@ -69,7 +69,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var guidHandler = new GuidUtility();
             
             var arkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
-
             var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, arkiv, guidHandler);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
@@ -291,7 +290,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public void Bekreft(Forretningskvittering kvittering)
         {
-            BekreftAsync(kvittering);
+            BekreftAsync(kvittering).Wait();
         }
 
         /// <summary>
@@ -328,7 +327,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
-
 
             var soapContainer = new SoapContainer(bekreftKvitteringEnvelope);
             await SendSoapContainer(soapContainer);

@@ -16,13 +16,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public DateTime Feilet { get { return Generert; } }
 
-        public Feilmelding(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        public Feilmelding(String meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
         public override string ToString()
         {
-            return string.Format("Skyldig: {0}, Detaljer: {1}, Feilet: {2}, {3}", Skyldig, Detaljer, Feilet.ToStringWithUtcOffset(), base.ToString());
+            return string.Format("{0}, Skyldig: {1}, Detaljer: {2}, Feilet: {3}, {4}", base.ToString(), Skyldig, Detaljer, Feilet.ToStringWithUtcOffset());
         }
     }
 }

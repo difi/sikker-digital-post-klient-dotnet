@@ -12,13 +12,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     {
         public DateTime Levert {get { return Generert; } }
 
-        public Leveringskvittering(Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(konversasjonsId, bodyReferenceUri, digestValue)
+        public Leveringskvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId,konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
         public override string ToString()
         {
-            return string.Format("Levert: {0}, {1}", Levert.ToStringWithUtcOffset(), base.ToString());
+            return string.Format("{0}, Levert: {1}", base.ToString(), Levert.ToStringWithUtcOffset());
         }
     }
 }
