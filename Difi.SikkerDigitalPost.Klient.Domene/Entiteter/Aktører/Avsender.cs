@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
+﻿namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     /// <summary>
     /// Offentlig virksomhet som produserer informasjon/brev/post som skal fomidles. Vil i de aller fleste tilfeller være synonymt med Avsender.

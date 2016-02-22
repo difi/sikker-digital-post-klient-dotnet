@@ -40,8 +40,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
         {
-            int startId = Vedlegg.Count();
-            for (int i = 0; i < dokumenter.Count(); i++)
+            var startId = Vedlegg.Count;
+            for (var i = 0; i < dokumenter.Count(); i++)
             {
                 var dokument = dokumenter.ElementAt(i);
 
@@ -49,12 +49,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
                 
                 if (likeFiler)
                 {
-                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til, eksisterer allerede med samme filnavn. Det er ikke tillatt å ha likt filnavn på to vedlegg, eller vedlegg med samme filnavn som hoveddokument.", dokument.Filnavn));
+                    throw new KonfigurasjonsException(
+                        $"Dokumentet {dokument.Filnavn} som du prøver å legge til, eksisterer allerede med samme filnavn. Det er ikke tillatt å ha likt filnavn på to vedlegg, eller vedlegg med samme filnavn som hoveddokument.");
                 }
 
                 if (dokument.Bytes.Length == 0)
-                    throw new KonfigurasjonsException(string.Format("Dokumentet {0} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.", dokument.Filnavn));
-                dokument.Id = string.Format("Id_{0}", i + 3 + startId);
+                    throw new KonfigurasjonsException(
+                        $"Dokumentet {dokument.Filnavn} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.");
+
+                dokument.Id = $"Id_{i + 3 + startId}";
                 _vedlegg.Add(dokument);
             }
         }

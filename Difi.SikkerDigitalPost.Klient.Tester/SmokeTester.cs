@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -88,7 +86,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
-            var transportkvittering = SendDokumentpakke(sdpklient, enkelForsendelse);
+            SendDokumentpakke(sdpklient, enkelForsendelse);
             var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }

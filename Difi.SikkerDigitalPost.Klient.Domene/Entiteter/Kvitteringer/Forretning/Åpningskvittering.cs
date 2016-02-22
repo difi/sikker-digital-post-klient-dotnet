@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return string.Format("{0}, Åpnet: {1}", base.ToString(), Åpnet.ToStringWithUtcOffset());
+            return $"{base.ToString()}, Åpnet: {Åpnet.ToStringWithUtcOffset()}";
         }
     }
 }

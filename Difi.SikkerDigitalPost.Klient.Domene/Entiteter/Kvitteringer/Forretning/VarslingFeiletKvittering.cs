@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return string.Format("{0}, Varslingskanal: {1}, Beskrivelse: {2}, Feilet: {3}", base.ToString(), Varslingskanal, Beskrivelse, Feilet);
+            return $"{base.ToString()}, Varslingskanal: {Varslingskanal}, Beskrivelse: {Beskrivelse}, Feilet: {Feilet}";
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 //Assert
                 Assert.IsTrue(erGyldigResponssertifikat);
-                Assert.IsTrue(kjedestatus.Count() == 0 || kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
+                Assert.IsTrue(kjedestatus.Length == 0 || kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
             }
 
             [TestMethod] public void FeilerMedSertifikatUtenGyldigKjede()

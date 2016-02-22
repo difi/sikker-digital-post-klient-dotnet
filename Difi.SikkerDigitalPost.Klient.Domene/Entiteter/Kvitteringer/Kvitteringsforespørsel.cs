@@ -1,5 +1,4 @@
-﻿using System;
-using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {

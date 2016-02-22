@@ -6,7 +6,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
     internal class Logging
     {
-        private static Action<TraceEventType, Guid?, string, string> _logAction = null;
+        private static Action<TraceEventType, Guid?, string, string> _logAction;
 
         internal static void Initialize(Klientkonfigurasjon konfigurasjon)
         {

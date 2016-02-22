@@ -13,7 +13,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
         protected readonly EnvelopeSettings Settings;
         protected AbstractHeader Header;
 
-        private bool _isXmlGenerated = false;
+        private bool _isXmlGenerated;
         private byte[] _bytes;
         private string _contentId;
 

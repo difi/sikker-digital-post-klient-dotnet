@@ -27,8 +27,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         static void Main(string[] args)
         {
             SendPost();
-            var uri = new Uri("http://qaoffentlig.meldingsformidler.digipost.no/api/ebms");
-            var uris = uri.ToString();
         }
  
         private static void SendPost()
@@ -38,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              * Posten som er databehandler, og det er Digipostkassen som skal motta meldingen. 
              */
 
-            Console.WriteLine("--- STARTER Å SENDE POST ---");
+            Console.WriteLine(@"--- STARTER Å SENDE POST ---");
 
             /*
              * SETT OPP MOTTAKER OG INNSTILLINGER
@@ -59,19 +57,19 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              */
             SendPost(sikkerDigitalPostKlient, forsendelse);
 
-            Console.WriteLine("--- STARTER Å HENTE KVITTERINGER ---");
+            Console.WriteLine(@"--- STARTER Å HENTE KVITTERINGER ---");
 
             HentKvitteringer(sikkerDigitalPostKlient);
 
             Console.WriteLine();
-            Console.WriteLine("--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
+            Console.WriteLine(@"--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
 
         private static async void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            Transportkvittering transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
-            Console.WriteLine(" > Post sendt. Status er ...");
+            var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
+            Console.WriteLine(@" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof(TransportOkKvittering))
             {
@@ -81,8 +79,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
             {
                 var feiletkvittering = (TransportFeiletKvittering)transportkvittering;
-                WriteToConsoleWithColor(String.Format(" > {0}. Nå gikk det galt her. {1}", feiletkvittering.Alvorlighetsgrad,
-                    feiletkvittering.Beskrivelse), true);
+                WriteToConsoleWithColor(
+                    $" > {feiletkvittering.Alvorlighetsgrad}. Nå gikk det galt her. {feiletkvittering.Beskrivelse}", true);
             }
         }
 
@@ -90,20 +88,20 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             Console.WriteLine();
 
-            Console.WriteLine(" > Starter å hente kvitteringer ...");
+            Console.WriteLine(@" > Starter å hente kvitteringer ...");
 
             Thread.Sleep(3000);
 
             while (true)
             {
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
-                Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
+                Console.WriteLine(@" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
 
-                Kvittering kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
+                var kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
                 if (kvittering is TomKøKvittering)
                 {
-                    Console.WriteLine("  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
+                    Console.WriteLine(@"  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
                     break;
                 }
 
@@ -138,9 +136,9 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     WriteToConsoleWithColor("  - En feilmelding ble hentet :" + feil.Detaljer, true);
                 }
 
-                Console.WriteLine("  - Bekreftelse på mottatt kvittering sendes ...");
+                Console.WriteLine(@"  - Bekreftelse på mottatt kvittering sendes ...");
                 sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
-                Console.WriteLine("   - Kvittering sendt.");
+                Console.WriteLine(@"   - Kvittering sendt.");
             }
         }
 

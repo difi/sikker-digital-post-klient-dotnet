@@ -31,7 +31,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 
         public override string ToString()
         {
-            return string.Format("[{0}] SendtTidspunkt: {1}, MeldingsId: {2}, ReferanseTilMeldingId: {3}", GetType().Name, SendtTidspunkt, MeldingsId, ReferanseTilMeldingId);
+            return
+                $"[{GetType().Name}] SendtTidspunkt: {SendtTidspunkt}, MeldingsId: {MeldingsId}, ReferanseTilMeldingId: {ReferanseTilMeldingId}";
         }
     }
 }

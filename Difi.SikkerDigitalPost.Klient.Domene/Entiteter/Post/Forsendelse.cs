@@ -92,14 +92,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// <summary>
         /// Returnerer en ferdig formattert mpc-Forretningskvittering.
         /// </summary>
-        public string Mpc
-        {
-            get
-            {
-                return MpcId == String.Empty
-                ? String.Format("urn:{0}", Prioritet.ToString().ToLower())
-                : String.Format("urn:{0}:{1}", Prioritet.ToString().ToLower(), MpcId);
-            }
-        }
+        public string Mpc => MpcId == string.Empty 
+            ? $"urn:{Prioritet.ToString().ToLower()}" 
+            : $"urn:{Prioritet.ToString().ToLower()}:{MpcId}";
     }
 }

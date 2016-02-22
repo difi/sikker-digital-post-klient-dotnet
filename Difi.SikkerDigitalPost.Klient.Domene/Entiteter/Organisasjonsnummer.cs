@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
         /// <returns>Organisasjonsnummer, prefikset med '9908':, som er id for 'Enhetsregistret ved Brønnøysundregisterne'</returns>
         public string Iso6523()
         {
-            return Verdi.StartsWith("9908:") ? Verdi : String.Format("9908:{0}", Verdi);
+            return Verdi.StartsWith("9908:") ? Verdi : $"9908:{Verdi}";
         }
 
         public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
@@ -34,8 +34,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
             
             if (!match.Success)
             {
-                throw new KonfigurasjonsException(String.Format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
-                                                          "fikk følgende organisasjonsnummer: {0}.", iso6523Orgnr));
+                throw new KonfigurasjonsException("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +
+                                                  $"fikk følgende organisasjonsnummer: {iso6523Orgnr}.");
             }
             return new Organisasjonsnummer(match.Groups[2].ToString());
         }
