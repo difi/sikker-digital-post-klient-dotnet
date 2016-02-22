@@ -190,7 +190,7 @@ namespace Difi.SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Forretningskvittering).", e.GetType()), e);
+                throw new XmlParseException($"Feil under bygging av {e.GetType()} (av type Forretningskvittering).", e);
             }
 
             return forretningskvittergFelter;

@@ -10,10 +10,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </summary>
     internal class AttachmentContentSignatureTransform : Transform
     {
-        private readonly Type[] _outputTypes = {
-            typeof (Stream)
-        };
-
         private Stream _result;
 
         /// <summary>
@@ -72,6 +68,8 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             }
         }
 
-        public override Type[] OutputTypes => _outputTypes;
+        public override Type[] OutputTypes { get; } = {
+            typeof (Stream)
+        };
     }
 }

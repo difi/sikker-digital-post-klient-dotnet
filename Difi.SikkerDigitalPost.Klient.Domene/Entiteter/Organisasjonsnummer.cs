@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter

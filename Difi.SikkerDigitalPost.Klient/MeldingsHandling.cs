@@ -57,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             meldingsdata.Headers.ContentType = new MediaTypeHeaderValue(adjustedContentType);
             meldingsdata.Headers.Add("Content-Transfer-Encoding", vedlegg.TransferEncoding);
-            meldingsdata.Headers.Add("Content-ID", string.Format("<{0}>", vedlegg.ContentId));
+            meldingsdata.Headers.Add("Content-ID", $"<{vedlegg.ContentId}>");
 
             meldingsinnhold.Add(meldingsdata);
         }

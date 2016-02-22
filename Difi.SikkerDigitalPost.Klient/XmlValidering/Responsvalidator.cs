@@ -153,7 +153,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 var erGyldigDigest = ValiderDigestElement(sendtMeldingDigestSti, mottattSvarDigestSti, id, out sendtMeldingDigest, out mottattSvarDigest);
                 if (!erGyldigDigest)
                 {
-                    throw new SdpSecurityException(string.Format("Digest verdien av uri {0} for sendt melding ({1}) matcher ikke motatt digest ({2}).", id,sendtMeldingDigest, mottattSvarDigest));
+                    throw new SdpSecurityException($"Digest verdien av uri {id} for sendt melding ({sendtMeldingDigest}) matcher ikke motatt digest ({mottattSvarDigest}).");
                 }
             }
         }

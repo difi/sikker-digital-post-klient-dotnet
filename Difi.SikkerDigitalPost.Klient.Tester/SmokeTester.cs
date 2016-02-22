@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -18,37 +19,36 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     public class SmokeTester
     {
         [TestMethod]
-        public void SendDigitalPostIntegrasjonDekkende()
+        public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
             var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
-            SendDokumentpakke(sdpklient, dekkendeDigitalForsendelse);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse);
+            await SendDokumentpakkeAsync(sdpklient, dekkendeDigitalForsendelse);
+            var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
-
         }
 
         [TestMethod]
-        public void SendFysiskPostIntegrasjon()
+        public async Task SendFysiskPostIntegrasjon()
         {
             //Arrange
             var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
-            var transportKvittering = SendDokumentpakke(sdpklient, enkelFysiskForsendelse);
+            var transportKvittering = await SendDokumentpakkeAsync(sdpklient, enkelFysiskForsendelse);
 
             //Assert
             Assert.IsTrue(transportKvittering is TransportOkKvittering);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse);
+            var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse);
             Assert.IsTrue(kvittering is Mottakskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         [TestMethod]
-        public void SendDigitaltPåVegneAvIntegrasjon()
+        public async Task SendDigitaltPåVegneAvIntegrasjon()
         {
             //Arrange
             const string testDepartementetAvsenderOrgnummer = "987656789";
@@ -64,34 +64,36 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             //Act
             var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
-            var transportkvittering = sdpKlient.Send(forsendelse, true);
-
-
+            var transportkvittering = await sdpKlient.SendAsync(forsendelse, true);
+            
             //Assert
             Assert.IsNotNull(transportkvittering);
-            var kvittering = HentKvitteringOgBekreft(sdpKlient, "Send digital paa vegne av", forsendelse);
+            var kvittering = await HentKvitteringOgBekreftAsync(sdpKlient, "Send digital paa vegne av", forsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+            
         }
 
-        private Transportkvittering SendDokumentpakke(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
+        private async Task<Transportkvittering> SendDokumentpakkeAsync(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            return sikkerDigitalPostKlient.Send(forsendelse);
+            return await sikkerDigitalPostKlient.SendAsync(forsendelse);
         }
 
         [TestMethod]
-        public void SendDigitalPostIntegrasjonEnkel()
+        public async Task SendDigitalPostIntegrasjonEnkel()
         {
             //Arrange
             var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
-            SendDokumentpakke(sdpklient, enkelForsendelse);
-            var kvittering = HentKvitteringOgBekreft(sdpklient, "Enkel Digital Post", enkelForsendelse);
+            await SendDokumentpakkeAsync(sdpklient, enkelForsendelse);
+            var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Digital Post", enkelForsendelse);
+
+            //Await
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
-        private static Kvittering HentKvitteringOgBekreft(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
+        private static async Task<Kvittering> HentKvitteringOgBekreftAsync(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,
             Forsendelse forsendelse)
         {
             const int hentKvitteringMaksAntallGanger = 10;
@@ -103,13 +105,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 Thread.Sleep(500);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
-                kvittering = sdpKlient.HentKvittering(kvitteringsforespørsel);
+                kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
                 if (kvittering is TomKøKvittering) { continue; }
 
                 hentKvitteringPåNytt = false;
 
-                sdpKlient.Bekreft((Forretningskvittering)kvittering);
+                await sdpKlient.BekreftAsync((Forretningskvittering)kvittering);
 
                 var konversasjonsId = HentKonversasjonsIdFraKvittering(kvittering);
                 if (konversasjonsId != forsendelse.KonversasjonsId)
@@ -124,21 +126,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         private static Guid HentKonversasjonsIdFraKvittering(Kvittering kvittering)
         {
-            Guid konversasjonsId = Guid.Empty;
+            var konversasjonsId = Guid.Empty;
 
             if (kvittering is Feilmelding)
             {
                 var feilmelding = (Feilmelding)kvittering;
                 konversasjonsId = feilmelding.KonversasjonsId;
             }
-
-            if (kvittering is Leveringskvittering)
+            else if (kvittering is Leveringskvittering)
             {
                 var leveringskvittering = (Leveringskvittering)kvittering;
                 konversasjonsId = leveringskvittering.KonversasjonsId;
             }
-
-            if (kvittering is Mottakskvittering)
+            else if (kvittering is Mottakskvittering)
             {
                 var mottakskvittering = (Mottakskvittering)kvittering;
                 konversasjonsId = mottakskvittering.KonversasjonsId;
