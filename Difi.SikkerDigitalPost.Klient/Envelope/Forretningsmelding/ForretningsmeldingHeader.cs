@@ -52,8 +52,10 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
             //Partinfo/Dokumentpakke
             {
-                var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes);
-                partInfoReference.Uri = String.Format("cid:{0}", Settings.GuidHandler.DokumentpakkeId);
+                var partInfoReference = new Sha256Reference(Settings.AsicEArkiv.Bytes)
+                {
+                    Uri = $"cid:{Settings.GuidHandler.DokumentpakkeId}"
+                };
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);
             }

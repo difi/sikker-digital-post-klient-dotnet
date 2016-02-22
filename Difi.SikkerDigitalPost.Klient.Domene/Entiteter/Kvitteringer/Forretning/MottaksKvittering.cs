@@ -9,7 +9,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Mottakskvittering : Forretningskvittering
     {
-        public DateTime Mottatt { get { return Generert; } }
+        public DateTime Mottatt => Generert;
 
         public Mottakskvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {
@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return string.Format("{0}, Mottatt: {1}", base.ToString(), Mottatt.ToStringWithUtcOffset());
+            return $"{base.ToString()}, Mottatt: {Mottatt.ToStringWithUtcOffset()}";
         }
     }
 }

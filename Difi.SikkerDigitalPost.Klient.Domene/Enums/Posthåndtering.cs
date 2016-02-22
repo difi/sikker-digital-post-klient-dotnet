@@ -32,7 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
                 case Posthåndtering.MakuleringMedMelding:
                     return "MAKULERING_MED_MELDING";
                 default:
-                    throw new ArgumentOutOfRangeException("posthåndtering");
+                    throw new ArgumentOutOfRangeException(nameof(posthåndtering));
             }
         }
     }

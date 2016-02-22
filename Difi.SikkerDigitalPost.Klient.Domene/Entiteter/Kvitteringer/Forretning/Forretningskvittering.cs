@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return string.Format("{0}, BodyReferenceUri: {1}, DigestValue: {2}", base.ToString(), BodyReferenceUri, DigestValue);
+            return $"{base.ToString()}, BodyReferenceUri: {BodyReferenceUri}, DigestValue: {DigestValue}";
         }
     }
 }

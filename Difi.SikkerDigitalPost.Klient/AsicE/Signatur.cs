@@ -98,8 +98,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private static IEnumerable<IAsiceVedlegg> Referanser(Dokument hoveddokument, IEnumerable<IAsiceVedlegg> vedlegg, Manifest manifest)
         {
-            var referanser = new List<IAsiceVedlegg>();
-            referanser.Add(hoveddokument);
+            var referanser = new List<IAsiceVedlegg> {hoveddokument};
             referanser.AddRange(vedlegg);
             referanser.Add(manifest);
             return referanser;

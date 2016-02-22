@@ -14,15 +14,15 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public string Detaljer { get; set; }
 
-        public DateTime Feilet { get { return Generert; } }
+        public DateTime Feilet => Generert;
 
-        public Feilmelding(String meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
+        public Feilmelding(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {
         }
 
         public override string ToString()
         {
-            return string.Format("{0}, Skyldig: {1}, Detaljer: {2}, Feilet: {3}", base.ToString(), Skyldig, Detaljer, Feilet.ToStringWithUtcOffset());
+            return $"{base.ToString()}, Skyldig: {Skyldig}, Detaljer: {Detaljer}, Feilet: {Feilet.ToStringWithUtcOffset()}";
         }
     }
 }

@@ -142,7 +142,7 @@ namespace Difi.SikkerDigitalPost.Klient
             }
             catch (Exception e)
             {
-                throw new XmlParseException(string.Format("Feil under bygging av {0} (av type Kvittering).", e.GetType()), e);
+                throw new XmlParseException($"Feil under bygging av {e.GetType()} (av type Kvittering).", e);
             }
         }
 
@@ -208,7 +208,7 @@ namespace Difi.SikkerDigitalPost.Klient
             if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
             {
                 throw new SdpSecurityException(
-                    string.Format("Id i PartInfo og i Body matcher er ikke like. Partinfo har '{0}', body har '{1}'",partInfoBodyId,bodyId));
+                    $"Id i PartInfo og i Body matcher er ikke like. Partinfo har '{partInfoBodyId}', body har '{bodyId}'");
             }
             return bodyId;
         }
@@ -296,8 +296,7 @@ namespace Difi.SikkerDigitalPost.Klient
             catch (Exception e)
             {
                 throw new XmlParseException(
-                    String.Format("Feil under henting av dokumentnode i {0} (av type Forretningskvittering). Klarte ikke finne alle felter i xml."
-                    , e.GetType()), e);
+                    $"Feil under henting av dokumentnode i {e.GetType()} (av type Forretningskvittering). Klarte ikke finne alle felter i xml.", e);
             }
         }
 

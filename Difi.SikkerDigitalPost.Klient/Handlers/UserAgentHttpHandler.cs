@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Handlers
 
             var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-            return string.Format("difi-sikker-digital-post-klient/{0} (.NET/{1})", assemblyVersion, netVersion);
+            return $"difi-sikker-digital-post-klient/{assemblyVersion} (.NET/{netVersion})";
         }
 
     }

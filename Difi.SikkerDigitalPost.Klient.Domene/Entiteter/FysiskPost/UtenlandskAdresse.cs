@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
                 case 4:
                     return Adresselinje4;
                 default:
-                    throw new ArgumentOutOfRangeException("index1", "Utenlandsk postadrese har bare adresselinje 1, 2, 3 og 4");
+                    throw new ArgumentOutOfRangeException(nameof(index1), "Utenlandsk postadrese har bare adresselinje 1, 2, 3 og 4");
             }
         }
 

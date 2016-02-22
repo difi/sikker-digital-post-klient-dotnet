@@ -116,7 +116,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 throw new SdpSecurityException("Signaturen i motatt svar er ikke gyldig.");
 
             if (asymmetricAlgorithm.ToXmlString(false) != _sertifikat.PublicKey.Key.ToXmlString(false))
-                throw new SdpSecurityException(string.Format("Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {0} elementet.", path));
+                throw new SdpSecurityException(
+                    $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
         private void ValiderResponssertifikat()
@@ -140,8 +141,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             var ider = new List<string>
             {
-                string.Format("#{0}", guidHandler.BodyId),
-                string.Format("cid:{0}", guidHandler.DokumentpakkeId)
+                $"#{guidHandler.BodyId}",
+                $"cid:{guidHandler.DokumentpakkeId}"
             };
 
            foreach (var id in ider)
@@ -190,7 +191,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
                 var targetNode = HentMålnode(elementId);
                 if (targetNode != nodes[0])
-                    throw new SdpSecurityException(string.Format("Signaturreferansen med id '{0}' må refererer til node med sti '{1}'", elementId, elementXPath));
+                    throw new SdpSecurityException(
+                        $"Signaturreferansen med id '{elementId}' må refererer til node med sti '{elementXPath}'");
             }
         }
 
@@ -202,12 +204,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void FinnReferanseTilNodeISignaturElement(string elementId, string elementXPath)
         {
-            var references = _signaturnode.SelectNodes(string.Format("./ds:SignedInfo/ds:Reference[@URI='#{0}']", elementId),
+            var references = _signaturnode.SelectNodes($"./ds:SignedInfo/ds:Reference[@URI='#{elementId}']",
                 _nsMgr);
             if (references == null || references.Count == 0)
-                throw new SdpSecurityException(string.Format("Kan ikke finne påkrevet refereanse til element '{0}' i signatur fra meldingsformidler.",elementXPath));
+                throw new SdpSecurityException(
+                    $"Kan ikke finne påkrevet refereanse til element '{elementXPath}' i signatur fra meldingsformidler.");
             if (references.Count > 1)
-                throw new SdpSecurityException(string.Format("Påkrevet refereanse til element '{0}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {1} ganger.",elementXPath, references.Count));
+                throw new SdpSecurityException(
+                    $"Påkrevet refereanse til element '{elementXPath}' kan kun forekomme én gang i signatur fra meldingsformidler. Ble funnet {references.Count} ganger.");
         }
 
         private static string ElementId(XmlNodeList nodes)
@@ -220,9 +224,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             nodes = Respons.SelectNodes(elementXPath, _nsMgr);
             if (nodes == null || nodes.Count == 0)
-                throw new SdpSecurityException(string.Format("Kan ikke finne påkrevet element '{0}' i svar fra meldingsformidler.",elementXPath));
+                throw new SdpSecurityException(
+                    $"Kan ikke finne påkrevet element '{elementXPath}' i svar fra meldingsformidler.");
             if (nodes.Count > 1)
-                throw new SdpSecurityException(string.Format("Påkrevet element '{0}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {1} ganger.",elementXPath, nodes.Count));
+                throw new SdpSecurityException(
+                    $"Påkrevet element '{elementXPath}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {nodes.Count} ganger.");
         }
     }
 }

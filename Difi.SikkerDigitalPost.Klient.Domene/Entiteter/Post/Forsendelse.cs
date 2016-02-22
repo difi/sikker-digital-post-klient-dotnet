@@ -53,7 +53,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
                 case Postmetode.Digital:
                     return PostInfo.GetType() == typeof(DigitalPostInfo);
                 default:
-                    throw new ArgumentOutOfRangeException("posttype", posttype, "Posttype er ikke gyldig.");
+                    throw new ArgumentOutOfRangeException(nameof(posttype), posttype, "Posttype er ikke gyldig.");
             }
         }
         

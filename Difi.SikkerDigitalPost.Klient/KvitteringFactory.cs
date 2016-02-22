@@ -126,7 +126,7 @@ namespace Difi.SikkerDigitalPost.Klient
         private static XmlNode DocumentNode(XmlDocument document, string node)
         {
             var rot = document.DocumentElement;
-            string nodeString = string.Format("//{0}", node);
+            string nodeString = $"//{node}";
             var targetNode = rot.SelectSingleNode(nodeString, NamespaceManager(document));
 
             return targetNode;

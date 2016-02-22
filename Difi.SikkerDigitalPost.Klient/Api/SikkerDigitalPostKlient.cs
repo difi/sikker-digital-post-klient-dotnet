@@ -404,7 +404,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 fullFilsti[i] = sti;
             }
 
-            filnavn = datoPrefiks ? String.Format("{0} - {1}", DateUtility.DateForFile(), filnavn) : filnavn;
+            filnavn = datoPrefiks ? $"{DateUtility.DateForFile()} - {filnavn}" : filnavn;
             fullFilsti[filsti.Length] = filnavn;
 
             if (_klientkonfigurasjon.LoggXmlTilFil && filnavn!= null)

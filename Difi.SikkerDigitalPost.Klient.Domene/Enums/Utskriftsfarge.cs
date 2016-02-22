@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
                 case Utskriftsfarge.Farge:
                     return "FARGE";
                 default:
-                    throw new ArgumentOutOfRangeException("utskriftsfarge");
+                    throw new ArgumentOutOfRangeException(nameof(utskriftsfarge));
             }
         }
     }

@@ -103,7 +103,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private byte[] KrypterteBytes(byte[] bytes)
         {
-            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Krypterer dokumentpakke med sertifikat {0}.", Krypteringssertifikat.Thumbprint));
+            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId,
+                $"Krypterer dokumentpakke med sertifikat {Krypteringssertifikat.Thumbprint}.");
 
             var contentInfo = new ContentInfo(bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            

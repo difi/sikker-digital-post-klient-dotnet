@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
                 case PMode.KvitteringsForespoersel:
                     return FormidleDigitalPostReferanse;
                 default:
-                    throw new ArgumentOutOfRangeException("pMode", pMode.ToString(), "Fant ingen referanse for angitt pMode");
+                    throw new ArgumentOutOfRangeException(nameof(pMode), pMode.ToString(), "Fant ingen referanse for angitt pMode");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
             if (type == typeof (DigitalPostInfo))
                 return PMode.FormidleDigitalPost;
 
-            throw new ArgumentOutOfRangeException("postInfo", type, "PostInfo har feil type.");
+            throw new ArgumentOutOfRangeException(nameof(postInfo), type, "PostInfo har feil type.");
 
         }
     }

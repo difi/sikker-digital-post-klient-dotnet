@@ -21,8 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlNode StandardBusinessDocumentElement()
         {
-            XmlDocument sbdContext = new XmlDocument();
-            sbdContext.PreserveWhitespace = true;
+            XmlDocument sbdContext = new XmlDocument {PreserveWhitespace = true};
             var standardBusinessDocument = new StandardBusinessDocument(Settings, sbdContext);
             return standardBusinessDocument.Xml();
         }

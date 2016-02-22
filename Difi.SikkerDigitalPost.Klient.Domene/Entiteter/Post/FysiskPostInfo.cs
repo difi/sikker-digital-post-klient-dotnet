@@ -27,10 +27,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         }
         
         public FysiskPostReturmottaker Returpostmottaker
-        {
-            get { return new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn,_returmottakerAbstrakt.Adresse); }
-        }
-              
+            => new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn,_returmottakerAbstrakt.Adresse);
+
         public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker)
             : base(mottaker)
         {
