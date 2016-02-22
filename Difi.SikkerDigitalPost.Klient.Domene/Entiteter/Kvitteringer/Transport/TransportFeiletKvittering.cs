@@ -39,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
 
         public new string ToString()
         {
-            return string.Format("{0}, Feilkode: {1}, Kategori: {2}, Opprinnelse: {3}, Alvorlighetsgrad: {4}, Beskrivelse: {5}, Skyldig: {6},", base.ToString(), Feilkode, Kategori, Opprinnelse, Alvorlighetsgrad, Beskrivelse, Skyldig);
+            return string.Format("{0}, Feilkode: {1}, Kategori: {2}, Opprinnelse: {3}, Alvorlighetsgrad: {4}, Beskrivelse: {5}, Skyldig: {6}", base.ToString(), Feilkode, Kategori, Opprinnelse, Alvorlighetsgrad, Beskrivelse, Skyldig);
         }
     }
 }

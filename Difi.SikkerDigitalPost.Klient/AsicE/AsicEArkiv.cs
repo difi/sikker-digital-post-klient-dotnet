@@ -33,15 +33,9 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             _guidHandler = guidHandler;
         }
 
-        private X509Certificate2 Krypteringssertifikat 
-        {
-            get { return _forsendelse.PostInfo.Mottaker.Sertifikat; }
-        }
-        
-        public string Filnavn
-        {
-            get { return "post.asice.zip"; }
-        }
+        private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
+
+        public string Filnavn => "post.asice.zip";
 
         internal byte[] UkrypterteBytes
         {
@@ -67,20 +61,11 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             }
         }
 
-        public string Innholdstype
-        {
-            get { return "application/cms"; }
-        }
+        public string Innholdstype => "application/cms";
 
-        public string ContentId
-        {
-            get { return _guidHandler.DokumentpakkeId; }
-        }
+        public string ContentId => _guidHandler.DokumentpakkeId;
 
-        public string TransferEncoding
-        {
-            get { return "binary"; }
-        }
+        public string TransferEncoding => "binary";
 
         private byte[] LagBytes()
         {
@@ -106,12 +91,13 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
         {
-            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId, string.Format("Legger til '{0}' på {1} bytes til dokumentpakke.", filename, data.Length));
+            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId,
+                $"Legger til '{filename}' på {data.Length} bytes til dokumentpakke.");
 
             var entry = archive.CreateEntry(filename, CompressionLevel.Optimal);
-            using (Stream s = entry.Open())
+            using (var stream = entry.Open())
             {
-                s.Write(data, 0, data.Length);
+                stream.Write(data, 0, data.Length);
             }
         }
 

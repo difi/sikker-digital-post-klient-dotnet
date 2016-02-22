@@ -30,28 +30,13 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             _sertifikat = sertifikat;
         }
 
-        public string Filnavn
-        {
-            get { return "META-INF/signatures.xml"; }
-        }
+        public string Filnavn => "META-INF/signatures.xml";
 
-        public byte[] Bytes
-        {
-            get
-            {
-                return Encoding.UTF8.GetBytes(Xml().OuterXml);
-            }
-        }
+        public byte[] Bytes => Encoding.UTF8.GetBytes(Xml().OuterXml);
 
-        public string MimeType
-        {
-            get { return "application/xml"; }
-        }
+        public string MimeType => "application/xml";
 
-        public string Id
-        {
-            get { return "Id_0"; }
-        }
+        public string Id => "Id_0";
 
         public XmlDocument Xml()
         {
@@ -122,7 +107,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private SignedXml Signaturnode()
         {
-            SignedXml signedXml = new SignedXmlWithAgnosticId(_xml, _sertifikat);
+            var signedXml = new SignedXmlWithAgnosticId(_xml, _sertifikat);
             signedXml.SignedInfo.CanonicalizationMethod = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
             signedXml.Signature.Id = "Signature";
             return signedXml;

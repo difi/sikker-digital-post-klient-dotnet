@@ -1,9 +1,10 @@
 ﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Tests
+namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
     [TestClass()]
     public class ForsendelseTester

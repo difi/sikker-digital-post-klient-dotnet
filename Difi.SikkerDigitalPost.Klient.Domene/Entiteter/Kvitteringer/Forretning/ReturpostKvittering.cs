@@ -9,7 +9,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
     /// </summary>
     public class Returpostkvittering : Forretningskvittering
     {
-        public DateTime Returnert { get { return Generert; } }
+        public DateTime Returnert => Generert;
 
         public Returpostkvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {

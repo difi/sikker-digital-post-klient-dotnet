@@ -10,17 +10,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
     {
         public Organisasjonsnummer Organisasjonsnummer { get; private set; }
 
-        private string _avsenderidentifikator = String.Empty;
         /// <summary>
         /// Brukes for å identifisere en ansvarlig enhet innenfor en virksomhet. Benyttes dersom det er behov for å skille mellom ulike enheter hos avsender.
         /// I Sikker digital posttjenteste tildeles avsenderidentifikator ved tilkobling til tjenesten.
         /// </summary>
-        public string Avsenderidentifikator
-        {
-            get { return _avsenderidentifikator; }
-            set { _avsenderidentifikator = value; }
-        }
-
+        public string Avsenderidentifikator { get; set; } = string.Empty;
 
         /// <summary>
         /// Maks 40 tegn.

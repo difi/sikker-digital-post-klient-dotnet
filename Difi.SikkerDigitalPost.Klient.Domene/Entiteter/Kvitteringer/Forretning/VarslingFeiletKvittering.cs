@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
         
         public string Beskrivelse { get; set; }
 
-        public DateTime Feilet{ get { return Generert; } }
+        public DateTime Feilet => Generert;
 
         public VarslingFeiletKvittering(string meldingsId, Guid konversasjonsId, string bodyReferenceUri, string digestValue) : base(meldingsId, konversasjonsId, bodyReferenceUri, digestValue)
         {

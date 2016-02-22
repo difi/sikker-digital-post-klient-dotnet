@@ -10,11 +10,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
     /// </summary>
     internal class AttachmentContentSignatureTransform : Transform
     {
-        private readonly Type[] _inputTypes = {
-            typeof(Stream),
-            typeof(byte[])
-        };
-
         private readonly Type[] _outputTypes = {
             typeof (Stream)
         };
@@ -47,10 +42,10 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         /// <summary>
         /// Returns a list of the valid input types for this transformer. Valid types are Stream and byte[].
         /// </summary>
-        public override Type[] InputTypes
-        {
-            get { return _inputTypes; }
-        }
+        public override Type[] InputTypes { get; } = {
+            typeof(Stream),
+            typeof(byte[])
+        };
 
         public override void LoadInnerXml(XmlNodeList nodeList)
         {
@@ -77,10 +72,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             }
         }
 
-        public override Type[] OutputTypes
-        {
-            get { return _outputTypes; }
-        }
-        
+        public override Type[] OutputTypes => _outputTypes;
     }
 }

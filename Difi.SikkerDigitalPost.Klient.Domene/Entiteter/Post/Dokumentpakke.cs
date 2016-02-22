@@ -7,13 +7,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Dokumentpakke
     {
-        public Dokument Hoveddokument { get; private set; }
+        private readonly List<Dokument> _vedlegg;
 
-        private List<Dokument> _vedlegg;
-        public IReadOnlyList<Dokument> Vedlegg
-        {
-            get { return new ReadOnlyCollection<Dokument>(_vedlegg); }
-        }
+        public Dokument Hoveddokument { get; }
+
+        public IReadOnlyList<Dokument> Vedlegg => new ReadOnlyCollection<Dokument>(_vedlegg);
 
         /// <param name="hoveddokument">Dokumentpakkens hoveddokument</param>
         public Dokumentpakke(Dokument hoveddokument)

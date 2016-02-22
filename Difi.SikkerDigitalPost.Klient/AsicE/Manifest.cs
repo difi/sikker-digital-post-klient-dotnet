@@ -15,8 +15,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-        public Avsender Avsender { get; private set; }
-        public Forsendelse Forsendelse { get; private set; }
+        public Avsender Avsender { get; }
+        public Forsendelse Forsendelse { get; }
 
 
         public Manifest(Forsendelse forsendelse)
@@ -25,31 +25,13 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             Avsender = forsendelse.Avsender;
         }
 
-        public string Filnavn
-        {
-            get { return "manifest.xml"; }
-        }
+        public string Filnavn => "manifest.xml";
 
-        public string MimeType
-        {
-            get { return "application/xml"; }
-        }
+        public string MimeType => "application/xml";
 
-        public string Id
-        {
-            get
-            {
-                return "Id_1";
-            }
-        }
+        public string Id => "Id_1";
 
-        public byte[] Bytes
-        {
-            get
-            {
-                return Encoding.UTF8.GetBytes(Xml().OuterXml);
-            }
-        }
+        public byte[] Bytes => Encoding.UTF8.GetBytes(Xml().OuterXml);
 
         public XmlDocument Xml()
         {
@@ -109,7 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
                 organisasjon.InnerText = Avsender.Organisasjonsnummer.Iso6523();
 
                 var avsenderId = Avsender.Avsenderidentifikator;
-                if (!String.IsNullOrWhiteSpace(avsenderId))
+                if (!string.IsNullOrWhiteSpace(avsenderId))
                 {
                     XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NavneromUtility.DifiSdpSchema10, _manifestXml);
                     avsenderidentifikator.InnerText = Avsender.Avsenderidentifikator;

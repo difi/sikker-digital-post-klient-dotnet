@@ -2,7 +2,7 @@
 {
     public abstract class Transportkvittering : Kvittering
     {
-        public Transportkvittering():base(meldingsId: string.Empty)
+        protected Transportkvittering():base(meldingsId: string.Empty)
         {
             
         }
