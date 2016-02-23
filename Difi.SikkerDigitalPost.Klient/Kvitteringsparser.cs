@@ -36,7 +36,6 @@ namespace Difi.SikkerDigitalPost.Klient
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
-
         }
 
         public static Returpostkvittering TilReturpostkvittering(XmlDocument returpostkvitteringXmlDocument)
@@ -51,7 +50,6 @@ namespace Difi.SikkerDigitalPost.Klient
                 Rådata = kvitteringFelter.Rådata,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
-
         }
 
         public static VarslingFeiletKvittering TilVarslingFeiletKvittering(XmlDocument varslingFeiletXmlDocument)
@@ -105,7 +103,7 @@ namespace Difi.SikkerDigitalPost.Klient
         public static TomKøKvittering TilTomKøKvittering(XmlDocument tomKøkvitteringXmlDocument)
         {
             var kvitteringFelter = HentKvitteringsfelter(tomKøkvitteringXmlDocument);
-            
+
             return new TomKøKvittering
             {
                 MeldingsId = kvitteringFelter.MeldingsId,
@@ -120,7 +118,7 @@ namespace Difi.SikkerDigitalPost.Klient
             var kvitteringFelter = HentKvitteringsfelter(transportFeiletXmlDocument, false);
             var transportFeiletFelter = HentTransportFeiletKvitteringsfelter(transportFeiletXmlDocument);
 
-            return new TransportFeiletKvittering()
+            return new TransportFeiletKvittering
             {
                 MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
@@ -138,7 +136,7 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             try
             {
-                return  ParseKvitteringsFelter(kvittering, sjekkEtterReferanseTilMeldingsId);
+                return ParseKvitteringsFelter(kvittering, sjekkEtterReferanseTilMeldingsId);
             }
             catch (Exception e)
             {
@@ -178,12 +176,12 @@ namespace Difi.SikkerDigitalPost.Klient
 
             try
             {
-                var guidNode = GetXmlNodeFromDocument(forretningskvittering,"//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier");
+                var guidNode = GetXmlNodeFromDocument(forretningskvittering, "//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier");
                 forretningskvittergFelter.KonversasjonsId = new Guid(guidNode.InnerText);
 
-                var tidspunktNode = GetXmlNodeFromDocument(forretningskvittering,"//ns9:tidspunkt");
+                var tidspunktNode = GetXmlNodeFromDocument(forretningskvittering, "//ns9:tidspunkt");
                 forretningskvittergFelter.Generert = Convert.ToDateTime(tidspunktNode.InnerText);
-                
+
                 var bodyReferenceNode = forretningskvittering.SelectSingleNode("//ns5:Reference[@URI = '#" + bodyId + "']", GetNamespaceManager(forretningskvittering));
                 forretningskvittergFelter.BodyReferenceUri = bodyReferenceNode.Attributes["URI"].Value;
                 forretningskvittergFelter.DigestValue = bodyReferenceNode.SelectSingleNode("//ds:DigestValue", GetNamespaceManager(forretningskvittering)).InnerText;
@@ -203,7 +201,7 @@ namespace Difi.SikkerDigitalPost.Klient
             if (partInfo.Attributes.Count > 0)
                 partInfoBodyId = partInfo.Attributes["href"].Value;
 
-            string bodyId = document.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
+            var bodyId = document.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
 
             if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
             {
@@ -264,7 +262,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             try
             {
-                var errorNode = GetXmlNodeFromDocument(document,"//ns6:Error");
+                var errorNode = GetXmlNodeFromDocument(document, "//ns6:Error");
                 transportFeiletKvitteringsfelter.Kategori = errorNode.Attributes["category"].Value;
                 transportFeiletKvitteringsfelter.Feilkode = errorNode.Attributes["errorCode"].Value;
                 transportFeiletKvitteringsfelter.Opprinnelse = errorNode.Attributes["origin"].Value;
@@ -302,7 +300,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private static XmlNamespaceManager GetNamespaceManager(XmlDocument document)
         {
-            XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
+            var manager = new XmlNamespaceManager(document.NameTable);
             manager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             manager.AddNamespace("eb", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns3", NavneromUtility.StandardBusinessDocumentHeader);
@@ -362,7 +360,6 @@ namespace Difi.SikkerDigitalPost.Klient
             public string Beskrivelse { get; set; }
 
             public Feiltype SkyldigFeiltype { get; set; }
-
         }
     }
 }

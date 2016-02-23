@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <!-- Schema for Exclusive Canonicalization
     http://www.w3.org/2001/10/xml-exc-c14n#
     $Revision: 1.1 $ on $Date: 2002/07/11 17:26:47 $ by $Author: reagle $
@@ -18,10 +19,11 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"
         targetNamespace="http://www.w3.org/2001/10/xml-exc-c14n#"
-        version="0.1" elementFormDefault="qualified">    <element name="InclusiveNamespaces"
-                                                                  type="ec:InclusiveNamespaces"/>
+        version="0.1" elementFormDefault="qualified">
+  <element name="InclusiveNamespaces"
+           type="ec:InclusiveNamespaces" />
 
-	<complexType name="InclusiveNamespaces">
-		<attribute name="PrefixList" type="NMTOKENS"/>
-	</complexType>
+  <complexType name="InclusiveNamespaces">
+    <attribute name="PrefixList" type="NMTOKENS" />
+  </complexType>
 </schema>

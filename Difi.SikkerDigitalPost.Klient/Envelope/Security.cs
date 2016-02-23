@@ -8,7 +8,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 {
     internal class Security : EnvelopeXmlPart
     {
-        public Security(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public Security(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 
@@ -24,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         private XmlElement BinarySecurityTokenElement()
         {
-            XmlElement binarySecurityToken = Context.CreateElement("wsse", "BinarySecurityToken", NavneromUtility.WssecuritySecext10);
+            var binarySecurityToken = Context.CreateElement("wsse", "BinarySecurityToken", NavneromUtility.WssecuritySecext10);
             binarySecurityToken.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.BinarySecurityTokenId);
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
@@ -34,15 +35,15 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         private XmlElement TimestampElement()
         {
-            XmlElement timestamp = Context.CreateElement("wsu", "Timestamp", NavneromUtility.WssecurityUtility10);
+            var timestamp = Context.CreateElement("wsu", "Timestamp", NavneromUtility.WssecurityUtility10);
             {
                 var utcNow = DateTime.UtcNow;
-                XmlElement created = timestamp.AppendChildElement("Created", "wsu", NavneromUtility.WssecurityUtility10, Context);
+                var created = timestamp.AppendChildElement("Created", "wsu", NavneromUtility.WssecurityUtility10, Context);
                 created.InnerText = utcNow.ToString(DateUtility.DateFormat);
-                
+
                 // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/WebserviceSecurity
                 // Time-to-live skal være 120 sekunder
-                XmlElement expires = timestamp.AppendChildElement("Expires", "wsu", NavneromUtility.WssecurityUtility10, Context);
+                var expires = timestamp.AppendChildElement("Expires", "wsu", NavneromUtility.WssecurityUtility10, Context);
                 expires.InnerText = utcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
             }
 

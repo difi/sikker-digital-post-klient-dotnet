@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     new Dokument("Dokument 4", new byte[] {0x00}, "text/plain"));
 
                 Assert.AreEqual(dokumentpakke.Hoveddokument.Id, "Id_2");
-                for (int i = 0; i < dokumentpakke.Vedlegg.Count; i++)
+                for (var i = 0; i < dokumentpakke.Vedlegg.Count; i++)
                 {
                     var vedlegg = dokumentpakke.Vedlegg[i];
                     Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
@@ -65,6 +65,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     "NO", dokumentpakke.Hoveddokument.Filnavn));
             }
         }
-
     }
 }

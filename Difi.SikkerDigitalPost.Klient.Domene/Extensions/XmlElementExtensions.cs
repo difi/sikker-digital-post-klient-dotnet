@@ -27,6 +27,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Extensions
 
             return newElement;
         }
-
     }
 }

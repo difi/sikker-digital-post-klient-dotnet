@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 
                 //Assert
                 Assert.AreEqual(mottakskvittering.Generert, mottakskvittering.Mottatt);
-            } 
+            }
         }
     }
 }

@@ -2,18 +2,17 @@
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 {
-
     public class NorskAdresse : Adresse
     {
-        public string Postnummer { get; set; }
-
-        public string Poststed { get; set; }
-
         public NorskAdresse(string postnummer, string poststed)
         {
             Postnummer = postnummer;
             Poststed = poststed;
         }
+
+        public string Postnummer { get; set; }
+
+        public string Poststed { get; set; }
 
         public override string AdresseLinje(int index1)
         {

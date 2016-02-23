@@ -15,15 +15,15 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-        public Avsender Avsender { get; }
-        public Forsendelse Forsendelse { get; }
-
 
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
             Avsender = forsendelse.Avsender;
         }
+
+        public Avsender Avsender { get; }
+        public Forsendelse Forsendelse { get; }
 
         public string Filnavn => "manifest.xml";
 
@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             if (_manifestXml != null)
                 return _manifestXml;
 
-            _manifestXml = new XmlDocument { PreserveWhitespace = true };
+            _manifestXml = new XmlDocument {PreserveWhitespace = true};
             var xmlDeclaration = _manifestXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             _manifestXml.AppendChild(_manifestXml.CreateElement("manifest", NavneromUtility.DifiSdpSchema10));
             _manifestXml.InsertBefore(xmlDeclaration, _manifestXml.DocumentElement);
@@ -65,16 +65,16 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private XmlElement MottakerNode()
         {
-           var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
+            var digitalMottaker = (DigitalPostMottaker) Forsendelse.PostInfo.Mottaker;
 
             var mottaker = _manifestXml.CreateElement("mottaker", NavneromUtility.DifiSdpSchema10);
 
-            XmlElement person = _manifestXml.CreateElement("person", NavneromUtility.DifiSdpSchema10);
+            var person = _manifestXml.CreateElement("person", NavneromUtility.DifiSdpSchema10);
             {
-                XmlElement personidentifikator = person.AppendChildElement("personidentifikator", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                var personidentifikator = person.AppendChildElement("personidentifikator", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 personidentifikator.InnerText = digitalMottaker.Personidentifikator;
 
-                XmlElement postkasseadresse = person.AppendChildElement("postkasseadresse", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                var postkasseadresse = person.AppendChildElement("postkasseadresse", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 postkasseadresse.InnerText = digitalMottaker.Postkasseadresse;
             }
 
@@ -84,20 +84,20 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private XmlElement AvsenderNode()
         {
-            XmlElement avsender = _manifestXml.CreateElement("avsender", NavneromUtility.DifiSdpSchema10);
+            var avsender = _manifestXml.CreateElement("avsender", NavneromUtility.DifiSdpSchema10);
             {
-                XmlElement organisasjon = avsender.AppendChildElement("organisasjon", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                var organisasjon = avsender.AppendChildElement("organisasjon", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
                 organisasjon.InnerText = Avsender.Organisasjonsnummer.Iso6523();
 
                 var avsenderId = Avsender.Avsenderidentifikator;
                 if (!string.IsNullOrWhiteSpace(avsenderId))
                 {
-                    XmlElement avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                    var avsenderidentifikator = avsender.AppendChildElement("avsenderidentifikator", NavneromUtility.DifiSdpSchema10, _manifestXml);
                     avsenderidentifikator.InnerText = Avsender.Avsenderidentifikator;
                 }
 
-                XmlElement fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                var fakturaReferanse = avsender.AppendChildElement("fakturaReferanse", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 fakturaReferanse.InnerText = Avsender.Fakturareferanse;
             }
 
@@ -106,16 +106,15 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
         {
-            XmlElement dokumentXml = _manifestXml.CreateElement(elementnavn, NavneromUtility.DifiSdpSchema10);
+            var dokumentXml = _manifestXml.CreateElement(elementnavn, NavneromUtility.DifiSdpSchema10);
             dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
             dokumentXml.SetAttribute("mime", dokument.MimeType);
             {
-                XmlElement tittel = dokumentXml.AppendChildElement("tittel", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                var tittel = dokumentXml.AppendChildElement("tittel", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);
                 tittel.InnerText = innholdstekst;
             }
             return dokumentXml;
         }
-
     }
 }

@@ -45,6 +45,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 Assert.AreEqual(returpostkvittering.Generert, returpostkvittering.Returnert);
             }
         }
-
     }
 }

@@ -6,7 +6,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingBody : EnvelopeXmlPart
     {
-        public ForretningsmeldingBody(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingBody(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 
@@ -21,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
         private XmlNode StandardBusinessDocumentElement()
         {
-            XmlDocument sbdContext = new XmlDocument {PreserveWhitespace = true};
+            var sbdContext = new XmlDocument {PreserveWhitespace = true};
             var standardBusinessDocument = new StandardBusinessDocument(Settings, sbdContext);
             return standardBusinessDocument.Xml();
         }

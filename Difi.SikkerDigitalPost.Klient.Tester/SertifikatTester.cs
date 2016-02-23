@@ -8,7 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     public class SertifikatTester
     {
         [TestClass]
-        public class ThumbprintTester 
+        public class ThumbprintTester
         {
             private static X509Store _store;
             private static X509Certificate2 _certificate;
@@ -19,8 +19,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 _store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                 _store.Open(OpenFlags.ReadOnly);
 
-                try {
-                    _certificate = _store.Certificates[0]; }
+                try
+                {
+                    _certificate = _store.Certificates[0];
+                }
                 catch
                 {
                     Assert.Fail("Klarte ikke å finne noen sertifikater til å gjøre tester på. " +
@@ -37,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void TestLowercaseThumbprint()
             {
-                string lowercaseThumbprint = _certificate.Thumbprint.ToLower();
+                var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
                 var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint,
                     lowercaseThumbprint, false)[0];
 
@@ -48,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void TestRandomSpacingThumbprint()
             {
-                var randomSpacingThumb = String.Empty;
+                var randomSpacingThumb = string.Empty;
 
                 var random = new Random();
                 for (var i = 0; i < _certificate.Thumbprint.Length; i++)

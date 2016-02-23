@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
                 var signaturnode = Signaturnode();
 
-                IEnumerable<IAsiceVedlegg> referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument,
+                var referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument,
                     _forsendelse.Dokumentpakke.Vedlegg, _manifest);
                 OpprettReferanser(signaturnode, referanser);
 
@@ -91,7 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             signaturnode.AddObject(
                 new QualifyingPropertiesObject(
                     _sertifikat, "#Signature", referanser.ToArray(), _xml.DocumentElement)
-                    );
+                );
 
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
@@ -114,7 +114,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
         private XmlDocument OpprettXmlDokument()
         {
-            var signaturXml = new XmlDocument { PreserveWhitespace = true };
+            var signaturXml = new XmlDocument {PreserveWhitespace = true};
             var xmlDeclaration = signaturXml.CreateXmlDeclaration("1.0", "UTF-8", null);
             signaturXml.AppendChild(signaturXml.CreateElement("xades", "XAdESSignatures", NavneromUtility.UriEtsi121));
             signaturXml.DocumentElement.SetAttribute("xmlns:ns11", NavneromUtility.UriEtsi132);

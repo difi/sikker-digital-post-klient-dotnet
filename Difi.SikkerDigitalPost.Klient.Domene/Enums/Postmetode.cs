@@ -2,6 +2,7 @@
 {
     public enum Postmetode
     {
-        Fysisk, Digital
+        Fysisk,
+        Digital
     }
 }

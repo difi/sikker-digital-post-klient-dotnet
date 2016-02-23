@@ -19,8 +19,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                     new FysiskPostInfo(DomeneUtility.GetFysiskPostMottakerMedTestSertifikat(), Posttype.A, Utskriftsfarge.Farge,
                         Posthåndtering.DirekteRetur, DomeneUtility.GetFysiskPostReturMottaker());
 
-                
-                Assert.IsInstanceOfType(fysiskPostInfo.Returpostmottaker, typeof(FysiskPostReturmottaker));
+
+                Assert.IsInstanceOfType(fysiskPostInfo.Returpostmottaker, typeof (FysiskPostReturmottaker));
             }
         }
     }

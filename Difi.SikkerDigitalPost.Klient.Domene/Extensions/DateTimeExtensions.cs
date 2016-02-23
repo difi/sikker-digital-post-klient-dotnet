@@ -8,6 +8,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Extensions
         {
             return dateTime.ToString("O");
         }
-
     }
 }

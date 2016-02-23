@@ -19,12 +19,12 @@ namespace Difi.SikkerDigitalPost.Klient
 
         public static Kvittering GetKvittering(XmlDocument xmlDocument)
         {
-            var kvittering = (Kvittering)LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
+            var kvittering = (Kvittering) LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
 
             if (kvittering == null)
             {
                 var ingenKvitteringstypeFunnetException = new XmlParseException(
-                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+                    "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
                 {
                     Rådata = xmlDocument.OuterXml
                 };
@@ -133,7 +133,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
         private static XmlNamespaceManager NamespaceManager(XmlDocument document)
         {
-            XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
+            var manager = new XmlNamespaceManager(document.NameTable);
             manager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             manager.AddNamespace("eb", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns3", NavneromUtility.StandardBusinessDocumentHeader);

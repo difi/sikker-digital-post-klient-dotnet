@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -28,16 +28,18 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
 
         /// <param name="databehandler">
-        /// Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med 
-        /// formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra 
-        /// Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har 
-        /// ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
+        ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
+        ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
+        ///     Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har
+        ///     ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
         /// </param>
-        /// <param name="klientkonfigurasjon">Klientkonfigurasjon for klienten. Brukes for å sette parametere
-        /// som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
-        /// SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.</param>
+        /// <param name="klientkonfigurasjon">
+        ///     Klientkonfigurasjon for klienten. Brukes for å sette parametere
+        ///     som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
+        ///     SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.
+        /// </param>
         /// <remarks>
-        /// Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
+        ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
@@ -48,9 +50,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
+        ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
+        ///     exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
+        /// <param name="forsendelse">
+        ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
+        ///     vedlegg mm), enten digitalt eller fysisk.
+        /// </param>
         /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
         public Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
@@ -58,23 +64,27 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        /// Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en exception.
+        ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
+        ///     exception.
         /// </summary>
-        /// <param name="forsendelse">Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater, vedlegg mm), enten digitalt eller fysisk.</param>
+        /// <param name="forsendelse">
+        ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
+        ///     vedlegg mm), enten digitalt eller fysisk.
+        /// </param>
         /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
 
             var guidHandler = new GuidUtility();
-            
+
             var arkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
             var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, arkiv, guidHandler);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
-            
+
             try
             {
                 ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
@@ -90,11 +100,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var transportkvitteringRådata = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, transportkvitteringRådata, true, true, "Mottatt - Meldingsformidlerespons.txt");
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, new byte[1], true,false, "Sendt - SOAPContainer.txt");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, new byte[1], true, false, "Sendt - SOAPContainer.txt");
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportkvitteringRådata);
 
-            var transportKvittering =   (Transportkvittering)KvitteringFactory.GetKvittering(transportkvitteringRådata);
+            var transportKvittering = (Transportkvittering) KvitteringFactory.GetKvittering(transportkvitteringRådata);
 
             var transportkvitteringXml = new XmlDocument();
             transportkvitteringXml.LoadXml(transportkvitteringRådata);
@@ -103,7 +113,255 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             return transportKvittering;
         }
-        
+
+        /// <summary>
+        ///     Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i
+        ///     meldingsformidler.
+        ///     Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        /// </summary>
+        /// <param name="kvitteringsforespørsel"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <description>
+        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>normal</term><description>Minimum 10 minutter</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
+        public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
+        {
+            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
+        }
+
+        /// <summary>
+        ///     Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i
+        ///     meldingsformidler.
+        ///     Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        /// </summary>
+        /// <param name="kvitteringsforespørsel"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <description>
+        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>normal</term><description>Minimum 10 minutter</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
+        public async Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel)
+        {
+            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null);
+        }
+
+        /// <summary>
+        ///     Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å
+        ///     kjøre eget kall for bekreft.
+        ///     Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre
+        ///     kvittering for en
+        ///     spesifikk forsendelse.
+        /// </summary>
+        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="forrigeKvittering"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <description>
+        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>normal</term><description>Minimum 10 minutter</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
+        public Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
+            Forretningskvittering forrigeKvittering)
+        {
+            return HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, forrigeKvittering).Result;
+        }
+
+        /// <summary>
+        ///     Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å
+        ///     kjøre eget kall for bekreft.
+        ///     Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre
+        ///     kvittering for en
+        ///     spesifikk forsendelse.
+        /// </summary>
+        /// <param name="kvitteringsforespørsel"></param>
+        /// <param name="forrigeKvittering"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///     <list type="table">
+        ///         <listheader>
+        ///             <description>
+        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <term>normal</term><description>Minimum 10 minutter</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
+        ///         </item>
+        ///     </list>
+        /// </remarks>
+        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        {
+            if (forrigeKvittering != null)
+            {
+                Bekreft(forrigeKvittering);
+            }
+
+            Logging.Log(TraceEventType.Information, "Henter kvittering for " + kvitteringsforespørsel.Mpc);
+
+            var guidUtility = new GuidUtility();
+            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, guidUtility);
+            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
+
+            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespørsel" + Environment.NewLine + kvitteringsforespørselEnvelope.Xml().OuterXml);
+
+            ValiderKvitteringsEnvelope(kvitteringsforespørselEnvelope);
+
+            var soapContainer = new SoapContainer(kvitteringsforespørselEnvelope);
+            var kvitteringsresponsrådata = await SendSoapContainer(soapContainer);
+
+            Logg(TraceEventType.Verbose, Guid.Empty, kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
+
+            var kvitteringsresponsXml = new XmlDocument();
+            kvitteringsresponsXml.LoadXml(kvitteringsresponsrådata);
+
+            var kvitteringsrespons = KvitteringFactory.GetKvittering(kvitteringsresponsrådata);
+
+            if (kvitteringsrespons is TomKøKvittering)
+            {
+                SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope.Xml());
+            }
+            else if (kvitteringsrespons is Forretningskvittering)
+            {
+                SikkerhetsvalideringAvMeldingskvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope);
+            }
+
+            return kvitteringsrespons;
+        }
+
+        /// <summary>
+        ///     Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     <list type="bullet">
+        ///         <listheader>
+        ///             <description>
+        ///                 <para>Dette legger opp til følgende arbeidsflyt</para>
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <description>
+        ///                 <para>
+        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />
+        ///                 </para>
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para>
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <para>Bekreft mottak av kvittering</para>
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="kvittering"></param>
+        /// <remarks>
+        ///     <see cref="HentKvittering(Kvitteringsforespørsel)" /> kommer ikke til å returnere en ny kvittering før mottak av
+        ///     den forrige er bekreftet.
+        /// </remarks>
+        public void Bekreft(Forretningskvittering kvittering)
+        {
+            BekreftAsync(kvittering).Wait();
+        }
+
+        /// <summary>
+        ///     Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     <list type="bullet">
+        ///         <listheader>
+        ///             <description>
+        ///                 <para>Dette legger opp til følgende arbeidsflyt</para>
+        ///             </description>
+        ///         </listheader>
+        ///         <item>
+        ///             <description>
+        ///                 <para>
+        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />
+        ///                 </para>
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para>
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <para>Bekreft mottak av kvittering</para>
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="kvittering"></param>
+        /// <remarks>
+        ///     <see cref="HentKvittering(Kvitteringsforespørsel)" /> kommer ikke til å returnere en ny kvittering før mottak av
+        ///     den forrige er bekreftet.
+        /// </remarks>
+        public async Task BekreftAsync(Forretningskvittering kvittering)
+        {
+            Logging.Log(TraceEventType.Information, kvittering.KonversasjonsId, "Bekrefter kvittering.");
+
+            var envelopeSettings = new EnvelopeSettings(kvittering, _databehandler, new GuidUtility());
+            var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
+
+            var filnavn = kvittering.GetType().Name + ".xml";
+            Logg(TraceEventType.Verbose, kvittering.KonversasjonsId, kvittering, true, true, filnavn);
+
+            try
+            {
+                var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
+                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(bekreftKvitteringEnvelope.Xml().OuterXml);
+                if (!kvitteringMottattEnvelopeValidert)
+                    throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
+            }
+            catch (Exception e)
+            {
+                throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
+            }
+
+            var soapContainer = new SoapContainer(bekreftKvitteringEnvelope);
+            await SendSoapContainer(soapContainer);
+        }
+
         private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
         {
             var arkiv = new AsicEArkiv(forsendelse, guidHandler, _databehandler.Sertifikat);
@@ -130,117 +388,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             soapContainer.Vedlegg.Add(arkiv);
             return soapContainer;
         }
-        
-        /// <summary>
-        /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
-        /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
-        /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
-        /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
-        /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
-        /// </list>
-        /// </remarks>
-        public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
-        {
-            return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
-        }
-
-        /// <summary>
-        /// Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler.
-        /// Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
-        /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
-        /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
-        /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
-        /// </list>
-        /// </remarks>
-        public async Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel)
-        {
-            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null);
-        }
-
-        /// <summary>
-        /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
-        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
-        /// spesifikk forsendelse. 
-        /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
-        /// <param name="forrigeKvittering"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
-        /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
-        /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
-        /// </list>
-        /// </remarks>
-        public Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
-            Forretningskvittering forrigeKvittering)
-        {
-            return HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, forrigeKvittering).Result;
-        }
-
-        /// <summary>
-        /// Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å kjøre eget kall for bekreft. 
-        /// Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre kvittering for en 
-        /// spesifikk forsendelse. 
-        /// </summary>
-        /// <param name="kvitteringsforespørsel"></param>
-        /// <param name="forrigeKvittering"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// <list type="table">
-        /// <listheader><description>Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en ny forespørsel gjøres</description></listheader>
-        /// <item><term>normal</term><description>Minimum 10 minutter</description></item>
-        /// <item><term>prioritert</term><description>Minimum 1 minutt</description></item>
-        /// </list>
-        /// </remarks>
-        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
-        {
-            if (forrigeKvittering != null)
-            {
-                Bekreft(forrigeKvittering);
-            }
-
-            Logging.Log(TraceEventType.Information, "Henter kvittering for " + kvitteringsforespørsel.Mpc);
-
-            var guidUtility = new GuidUtility();
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, _databehandler, guidUtility);
-            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
-
-            Logging.Log(TraceEventType.Verbose, "Envelope for kvitteringsforespørsel" + Environment.NewLine + kvitteringsforespørselEnvelope.Xml().OuterXml);
-
-            ValiderKvitteringsEnvelope(kvitteringsforespørselEnvelope);
-
-            var soapContainer = new SoapContainer(kvitteringsforespørselEnvelope);
-            var kvitteringsresponsrådata = await SendSoapContainer(soapContainer);
-
-            Logg(TraceEventType.Verbose, Guid.Empty , kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
-
-            var kvitteringsresponsXml = new XmlDocument();
-            kvitteringsresponsXml.LoadXml(kvitteringsresponsrådata);
-
-            var kvitteringsrespons = KvitteringFactory.GetKvittering(kvitteringsresponsrådata);
-            
-            if (kvitteringsrespons is TomKøKvittering)
-            {
-                SikkerhetsvalideringAvTomKøKvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope.Xml());
-            }
-            else if(kvitteringsrespons is Forretningskvittering)
-            {
-                SikkerhetsvalideringAvMeldingskvittering(kvitteringsresponsXml, kvitteringsforespørselEnvelope);
-            }
-
-            return kvitteringsrespons;
-        }
 
         private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
         {
@@ -257,79 +404,23 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 throw new XmlValidationException("Kvitteringsforespørsel validerer ikke mot xsd:" + e.Message);
             }
         }
+
         private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
-            var responsvalidator = new Responsvalidator(sendtMelding: forretningsmelding, respons: kvittering, sertifikatkjedevalidator: _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
             responsvalidator.ValiderTransportkvittering(guidUtility);
         }
 
         private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var responsvalidator = new Responsvalidator(sendtMelding: forretningsmelding, respons: kvittering, sertifikatkjedevalidator: _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
             responsvalidator.ValiderTomKøKvittering();
         }
 
         private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var valideringAvResponsSignatur = new Responsvalidator(sendtMelding: kvitteringsforespørselEnvelope.Xml(), respons: kvittering, sertifikatkjedevalidator: _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, _klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
-        }
-
-        /// <summary>
-        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
-        /// <list type="bullet">
-        /// <listheader><description><para>Dette legger opp til følgende arbeidsflyt</para></description></listheader>
-        /// <item><description><para><see cref="HentKvittering(Kvitteringsforespørsel)"/></para></description></item>
-        /// <item><description><para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para></description></item>
-        /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
-        /// </list>
-        /// </summary>
-        /// <param name="kvittering"></param>
-        /// <remarks>
-        /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
-        /// </remarks>
-        public void Bekreft(Forretningskvittering kvittering)
-        {
-            BekreftAsync(kvittering).Wait();
-        }
-
-        /// <summary>
-        /// Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)"/>.
-        /// <list type="bullet">
-        /// <listheader><description><para>Dette legger opp til følgende arbeidsflyt</para></description></listheader>
-        /// <item><description><para><see cref="HentKvittering(Kvitteringsforespørsel)"/></para></description></item>
-        /// <item><description><para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para></description></item>
-        /// <item><description><para>Bekreft mottak av kvittering</para></description></item>
-        /// </list>
-        /// </summary>
-        /// <param name="kvittering"></param>
-        /// <remarks>
-        /// <see cref="HentKvittering(Kvitteringsforespørsel)"/> kommer ikke til å returnere en ny kvittering før mottak av den forrige er bekreftet.
-        /// </remarks>
-        public async Task BekreftAsync(Forretningskvittering kvittering)
-        {
-            Logging.Log(TraceEventType.Information, kvittering.KonversasjonsId, "Bekrefter kvittering.");
-
-            var envelopeSettings = new EnvelopeSettings(kvittering, _databehandler, new GuidUtility());
-            var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
-
-            string filnavn = kvittering.GetType().Name + ".xml";
-            Logg(TraceEventType.Verbose, kvittering.KonversasjonsId, kvittering, true, true, filnavn);
-            
-            try
-            {
-                var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
-                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(bekreftKvitteringEnvelope.Xml().OuterXml);
-                if (!kvitteringMottattEnvelopeValidert)
-                    throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
-            }
-            catch (Exception e)
-            {
-                throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
-            }
-
-            var soapContainer = new SoapContainer(bekreftKvitteringEnvelope);
-            await SendSoapContainer(soapContainer);
         }
 
         private async Task<string> SendSoapContainer(SoapContainer soapContainer)
@@ -340,7 +431,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var responseMessage = await sender.Send(soapContainer);
 
             try
-            {               
+            {
                 data = await responseMessage.Content.ReadAsStringAsync();
             }
             catch (WebException we)
@@ -353,11 +444,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                     }
 
 
-                    using (Stream errorStream = response.GetResponseStream())
+                    using (var errorStream = response.GetResponseStream())
                     {
-                        XDocument soap = XDocument.Load(errorStream);
+                        var soap = XDocument.Load(errorStream);
                         data = soap.ToString();
-               
+
                         Logg(TraceEventType.Critical, Guid.Empty, data, true, true, "Sendt - SoapException.xml");
                     }
                 }
@@ -397,8 +488,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
         {
-            string[] fullFilsti = new string[filsti.Length + 1];
-            for (int i = 0; i < filsti.Length; i ++ )
+            var fullFilsti = new string[filsti.Length + 1];
+            for (var i = 0; i < filsti.Length; i ++)
             {
                 var sti = filsti[i];
                 fullFilsti[i] = sti;
@@ -407,7 +498,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             filnavn = datoPrefiks ? $"{DateUtility.DateForFile()} - {filnavn}" : filnavn;
             fullFilsti[filsti.Length] = filnavn;
 
-            if (_klientkonfigurasjon.LoggXmlTilFil && filnavn!= null)
+            if (_klientkonfigurasjon.LoggXmlTilFil && filnavn != null)
             {
                 if (isXml)
                     FileUtility.WriteXmlToBasePath(melding, "logg", filnavn);
@@ -420,14 +511,14 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, byte[] melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)
         {
-            string data = System.Text.Encoding.UTF8.GetString(melding);
-            Logg(viktighet, konversasjonsId, data,datoPrefiks,isXml,filnavn,filsti);
+            var data = Encoding.UTF8.GetString(melding);
+            Logg(viktighet, konversasjonsId, data, datoPrefiks, isXml, filnavn, filsti);
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, Forretningskvittering kvittering, bool datoPrefiks, bool isXml, params string[] filsti)
         {
             var fileSuffix = isXml ? ".xml" : ".txt";
-            Logg(viktighet,konversasjonsId,kvittering.Rådata, datoPrefiks, isXml,"Mottatt - " + kvittering.GetType().Name + fileSuffix);
+            Logg(viktighet, konversasjonsId, kvittering.Rådata, datoPrefiks, isXml, "Mottatt - " + kvittering.GetType().Name + fileSuffix);
         }
     }
 }

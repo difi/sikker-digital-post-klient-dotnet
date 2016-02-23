@@ -7,10 +7,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     public static class KvitteringsUtility
     {
-
         public static class Forretningskvittering
         {
-            static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Forretning");
+            private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Forretning");
 
             public static XmlDocument FeilmeldingXml()
             {
@@ -50,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         public static class Transportkvittering
         {
-            static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Transport");
+            private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Transport");
 
             public static XmlDocument TomKøKvitteringXml()
             {

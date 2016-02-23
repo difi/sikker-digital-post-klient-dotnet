@@ -8,5 +8,4 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         bool AreEqual(object expected, object actual, out IEnumerable<IDifference> differences);
     }
-
 }

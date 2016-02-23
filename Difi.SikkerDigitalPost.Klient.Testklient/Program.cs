@@ -17,18 +17,18 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
-    class Program
+    internal class Program
     {
         private const string MpcId = "queue1";
         private const bool ErDigitalPostMottaker = true;
         private const bool ErNorskBrev = true;
 
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             SendPost();
         }
- 
+
         private static void SendPost()
         {
             /*
@@ -44,7 +44,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var postInfo = GenererPostInfo(ErDigitalPostMottaker, ErNorskBrev);
             var avsender = new Avsender(Settings.Default.OrgnummerPosten);
 
-            var databehandler = new Databehandler(Settings.Default.OrgnummerPosten, Settings.Default.DatabehandlerSertifikatThumbprint);
+            var databehandler = new Databehandler(Settings.Default.OrgnummerPosten,
+                Settings.Default.DatabehandlerSertifikatThumbprint);
             avsender.Avsenderidentifikator = "digipost";
 
             var forsendelse = GenererForsendelse(avsender, postInfo);
@@ -71,16 +72,17 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
             Console.WriteLine(@" > Post sendt. Status er ...");
 
-            if (transportkvittering.GetType() == typeof(TransportOkKvittering))
+            if (transportkvittering.GetType() == typeof (TransportOkKvittering))
             {
                 WriteToConsoleWithColor(" > OK! En transportkvittering ble hentet og alt gikk fint.");
             }
 
-            if (transportkvittering.GetType() == typeof(TransportFeiletKvittering))
+            if (transportkvittering.GetType() == typeof (TransportFeiletKvittering))
             {
-                var feiletkvittering = (TransportFeiletKvittering)transportkvittering;
+                var feiletkvittering = (TransportFeiletKvittering) transportkvittering;
                 WriteToConsoleWithColor(
-                    $" > {feiletkvittering.Alvorlighetsgrad}. Nå gikk det galt her. {feiletkvittering.Beskrivelse}", true);
+                    $" > {feiletkvittering.Alvorlighetsgrad}. Nå gikk det galt her. {feiletkvittering.Beskrivelse}",
+                    true);
             }
         }
 
@@ -107,10 +109,10 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
                 if (kvittering is TransportFeiletKvittering)
                 {
-                    var feil = ((TransportFeiletKvittering)kvittering).Beskrivelse;
+                    var feil = ((TransportFeiletKvittering) kvittering).Beskrivelse;
                     WriteToConsoleWithColor(
                         "En feil skjedde under transport. Forespørsel for kvittering ble ikke godtatt av Meldingsformidler: " +
-                        feil, isError: true);
+                        feil, true);
                     break;
                 }
 
@@ -132,12 +134,12 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
                 if (kvittering is Feilmelding)
                 {
-                    var feil = (Feilmelding)kvittering;
+                    var feil = (Feilmelding) kvittering;
                     WriteToConsoleWithColor("  - En feilmelding ble hentet :" + feil.Detaljer, true);
                 }
 
                 Console.WriteLine(@"  - Bekreftelse på mottatt kvittering sendes ...");
-                sikkerDigitalPostKlient.Bekreft((Forretningskvittering)kvittering);
+                sikkerDigitalPostKlient.Bekreft((Forretningskvittering) kvittering);
                 Console.WriteLine(@"   - Kvittering sendt.");
             }
         }
@@ -146,25 +148,25 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.LoggXmlTilFil = false; 
+            klientkonfigurasjon.LoggXmlTilFil = false;
             klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
 
         private static Forsendelse GenererForsendelse(Avsender avsender, PostInfo postInfo)
         {
-            ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources");
-            
+            var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources");
+
             var hoveddokument = resourceUtility.ReadAllBytes(true, "Hoveddokument.pdf");
             var vedlegg = resourceUtility.ReadAllBytes(true, "Vedlegg.txt");
-            
+
             //Forsendelse
             var dokumentpakke =
                 new Dokumentpakke(new Dokument("Sendt" + DateTime.Now, hoveddokument, "application/pdf", "NO",
                     "OWASP TOP 10.pdf"));
             dokumentpakke.LeggTilVedlegg(new Dokument("Vedlegg", vedlegg, "text/plain", "NO", "Vedlegg.txt"));
             var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke, Prioritet.Prioritert, MpcId);
-            
+
             return forsendelse;
         }
 
@@ -178,33 +180,30 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
         {
             // Legger til logging til outputvinduet
-            klientkonfigurasjon.Logger = (severity, konversasjonsId, metode, melding) =>
-            {
-                Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault());
-            };
+            klientkonfigurasjon.Logger =
+                (severity, konversasjonsId, metode, melding) => { Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault()); };
         }
 
         private static PostInfo GenererPostInfo(bool erDigitalPostMottaker, bool erNorskBrev)
         {
-            ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources.Sertifikater");
+            var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources.Sertifikater");
 
             PostInfo postInfo;
             PostMottaker mottaker;
-            var sertifikat = new X509Certificate2(resourceUtility.ReadAllBytes(true, "testmottakerFraOppslagstjenesten.pem"));
+            var sertifikat =
+                new X509Certificate2(resourceUtility.ReadAllBytes(true, "testmottakerFraOppslagstjenesten.pem"));
 
             if (erDigitalPostMottaker)
             {
-                mottaker = new DigitalPostMottaker(
-                    personidentifikator: Settings.Default.MottakerPersonnummer, 
-                    postkasseadresse: Settings.Default.MottakerDigipostadresse, 
-                    sertifikat: sertifikat , 
-                    organisasjonsnummerPostkasse: Settings.Default.OrgnummerPosten
+                mottaker = new DigitalPostMottaker(Settings.Default.MottakerPersonnummer,
+                    Settings.Default.MottakerDigipostadresse, sertifikat, Settings.Default.OrgnummerPosten
                     );
 
-                postInfo = new DigitalPostInfo((DigitalPostMottaker)mottaker, "Ikke-sensitiv tittel", Sikkerhetsnivå.Nivå3, åpningskvittering: true);
-                ((DigitalPostInfo)postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
+                postInfo = new DigitalPostInfo((DigitalPostMottaker) mottaker, "Ikke-sensitiv tittel",
+                    Sikkerhetsnivå.Nivå3, true);
+                ((DigitalPostInfo) postInfo).Virkningstidspunkt = DateTime.Now.AddMinutes(0);
 
-                ((DigitalPostInfo)postInfo).SmsVarsel = new SmsVarsel("12345678", "Et lite varsel pr SMS.");
+                ((DigitalPostInfo) postInfo).SmsVarsel = new SmsVarsel("12345678", "Et lite varsel pr SMS.");
             }
             else
             {
@@ -218,9 +217,10 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     sertifikat, Settings.Default.OrgnummerPosten);
 
                 var returMottaker = new FysiskPostReturmottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"));
-                
-                  
-                postInfo = new FysiskPostInfo((FysiskPostMottaker)mottaker, Posttype.A, Utskriftsfarge.SortHvitt, Posthåndtering.DirekteRetur, returMottaker);
+
+
+                postInfo = new FysiskPostInfo((FysiskPostMottaker) mottaker, Posttype.A, Utskriftsfarge.SortHvitt,
+                    Posthåndtering.DirekteRetur, returMottaker);
             }
             return postInfo;
         }

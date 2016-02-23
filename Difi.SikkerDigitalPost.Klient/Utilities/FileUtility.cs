@@ -7,7 +7,8 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
     internal class FileUtility
     {
         private static string _basePath;
-        public static String BasePath
+
+        public static string BasePath
         {
             get { return _basePath ?? Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); }
             set { _basePath = value; }
@@ -15,14 +16,14 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 
 
         /// <summary>
-        /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
-        /// på "C:\base\mappe\hei.txt".
+        ///     Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        ///     på "C:\base\mappe\hei.txt".
         /// </summary>
         /// <param name="xml">Data som skal skrives.</param>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         public static void WriteXmlToBasePath(string xml, params string[] pathRelativeToBase)
         {
-            if (String.IsNullOrEmpty(xml))
+            if (string.IsNullOrEmpty(xml))
                 return;
 
             var doc = XDocument.Parse(xml);
@@ -30,8 +31,8 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         }
 
         /// <summary>
-        /// Hvis BasePath er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
-        /// på "C:\base\mappe\hei.txt".
+        ///     Hvis BasePath er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        ///     på "C:\base\mappe\hei.txt".
         /// </summary>
         /// <param name="data">Data som skal skrives.</param>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
@@ -44,14 +45,14 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         public static void WriteToBasePath(byte[] data, params string[] pathRelativeToBase)
         {
             var absolutePath = AbsolutePath(pathRelativeToBase);
-            Write(data,absolutePath);
+            Write(data, absolutePath);
         }
-        
+
         public static void Write(string data, string absolutePath)
         {
-            if (String.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(data))
                 return;
-            
+
             CreateDirectory(absolutePath);
             File.WriteAllText(absolutePath, data);
         }
@@ -66,14 +67,14 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         }
 
         /// <summary>
-        /// Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
-        /// på "C:\base\mappe\hei.txt". Legg er tekst til allerede eksisterende tekst.
+        ///     Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
+        ///     på "C:\base\mappe\hei.txt". Legg er tekst til allerede eksisterende tekst.
         /// </summary>
         /// <param name="data">Data som skal skrives.</param>
         /// <param name="pathRelativeToBase">Relativ del av stien. Den absolutte delen er i FileUtility.BasePath </param>
         public static void AppendToFileInBasePath(string data, params string[] pathRelativeToBase)
         {
-            if (String.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(data))
                 return;
 
             var absolutePath = AbsolutePath(pathRelativeToBase);
@@ -93,4 +94,3 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         }
     }
 }
-

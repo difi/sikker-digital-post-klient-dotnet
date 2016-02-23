@@ -8,7 +8,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselHeader : AbstractHeader
     {
-        public KvitteringsforespørselHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public KvitteringsforespørselHeader(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 
@@ -47,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
                 ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(ebMessagingReference);
             }
-            
+
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
 

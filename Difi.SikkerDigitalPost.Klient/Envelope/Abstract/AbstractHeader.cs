@@ -7,7 +7,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
     {
         protected XmlNode Security;
 
-        protected AbstractHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        protected AbstractHeader(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 

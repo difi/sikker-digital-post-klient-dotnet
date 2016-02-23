@@ -12,7 +12,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
     {
         private readonly DateTime _creationDateAndtime;
 
-        public StandardBusinessDocument(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public StandardBusinessDocument(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
             _creationDateAndtime = DateTime.UtcNow;
         }

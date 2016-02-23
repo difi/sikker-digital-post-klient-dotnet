@@ -5,7 +5,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
 {
     internal class KvitteringsforespørselEnvelope : AbstractEnvelope
     {
-        public KvitteringsforespørselEnvelope(EnvelopeSettings settings) : base(settings)
+        public KvitteringsforespørselEnvelope(EnvelopeSettings settings)
+            : base(settings)
         {
         }
 

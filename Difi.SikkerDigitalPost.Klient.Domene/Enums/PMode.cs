@@ -33,15 +33,14 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
         internal static PMode FromPostInfo(PostInfo postInfo)
         {
             var type = postInfo.GetType();
-            
-            if(type == typeof(FysiskPostInfo))
+
+            if (type == typeof (FysiskPostInfo))
                 return PMode.FormidleFysiskPost;
 
             if (type == typeof (DigitalPostInfo))
                 return PMode.FormidleDigitalPost;
 
             throw new ArgumentOutOfRangeException(nameof(postInfo), type, "PostInfo har feil type.");
-
         }
     }
 }

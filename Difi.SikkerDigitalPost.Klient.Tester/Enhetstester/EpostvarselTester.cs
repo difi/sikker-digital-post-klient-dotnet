@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
                 postInfo.EpostVarsel = new EpostVarsel(epostadresse, varsel);
-                var forventedeVarslingerEtterDager = new List<int> { 0 };
+                var forventedeVarslingerEtterDager = new List<int> {0};
 
                 //Act
 
@@ -28,8 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
                 Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(forventedeVarslingerEtterDager, (ICollection)epostVarsel.VarselEtterDager);
-
+                CollectionAssert.AreEqual(forventedeVarslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
             [TestMethod]
@@ -39,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
-                var varslingerEtterDager = new List<int> { 0, 10, 15 };
+                var varslingerEtterDager = new List<int> {0, 10, 15};
                 postInfo.EpostVarsel = new EpostVarsel(epostadresse, varsel, varslingerEtterDager);
 
                 //Act
@@ -48,7 +47,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
                 Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection)epostVarsel.VarselEtterDager);
+                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
             [TestMethod]
@@ -58,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
-                var varslingerEtterDager = new List<int> { 0, 10, 15 };
+                var varslingerEtterDager = new List<int> {0, 10, 15};
                 postInfo.EpostVarsel = new EpostVarsel(epostadresse, varsel, 0, 10, 15);
 
                 //Act
@@ -67,9 +66,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
                 Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection)epostVarsel.VarselEtterDager);
+                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
-
         }
     }
 }

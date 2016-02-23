@@ -10,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
     [TestClass]
     public class SertifikatkjedevalidatorFunksjoneltTestmiljøTester
     {
-        static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
         public class ErGyldigResponssertifikatMethod : SertifikatkjedevalidatorFunksjoneltTestmiljøTester
@@ -45,7 +45,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 Assert.IsTrue(kjedestatus.Length == 0 || kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
             }
 
-            [TestMethod] public void FeilerMedSertifikatUtenGyldigKjede()
+            [TestMethod]
+            public void FeilerMedSertifikatUtenGyldigKjede()
             {
                 //Arrange
                 var selvsignertSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "enhetstester", "difi-enhetstester.cer"));
@@ -72,7 +73,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.IsFalse(erGyldigResponssertifikat);
                 Assert.IsTrue(kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
-
             }
         }
     }

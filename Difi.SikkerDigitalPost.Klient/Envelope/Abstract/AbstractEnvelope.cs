@@ -11,17 +11,18 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
     {
         protected readonly XmlDocument EnvelopeXml;
         protected readonly EnvelopeSettings Settings;
-        protected AbstractHeader Header;
-
-        private bool _isXmlGenerated;
         private byte[] _bytes;
         private string _contentId;
+
+        private bool _isXmlGenerated;
+        protected AbstractHeader Header;
 
         protected AbstractEnvelope(EnvelopeSettings settings)
         {
             Settings = settings;
             EnvelopeXml = LagXmlRotnode();
         }
+
         public string Filnavn => "envelope.xml";
 
         public byte[] Bytes => _bytes ?? (_bytes = Encoding.UTF8.GetBytes(Xml().OuterXml));

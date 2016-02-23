@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography.Xml;
+﻿using System.Security.Cryptography.Xml;
 using System.Xml;
 using Difi.Felles.Utility.Security;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -9,8 +8,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingHeader : AbstractHeader
     {
-        
-        public ForretningsmeldingHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public ForretningsmeldingHeader(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 
@@ -62,7 +61,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
             signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
             signed.ComputeSignature();
-            
+
             Security.AppendChild(Context.ImportNode(signed.GetXml(), true));
         }
     }

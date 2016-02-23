@@ -8,7 +8,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 {
     internal class KvitteringsbekreftelseHeader : AbstractHeader
     {
-        public KvitteringsbekreftelseHeader(EnvelopeSettings settings, XmlDocument context) : base(settings, context)
+        public KvitteringsbekreftelseHeader(EnvelopeSettings settings, XmlDocument context)
+            : base(settings, context)
         {
         }
 

@@ -4,8 +4,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class EnvelopeXmlPart
     {
-        protected readonly EnvelopeSettings Settings;
         protected readonly XmlDocument Context;
+        protected readonly EnvelopeSettings Settings;
 
         protected EnvelopeXmlPart(EnvelopeSettings settings, XmlDocument context)
         {

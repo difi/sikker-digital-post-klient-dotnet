@@ -10,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
     [TestClass]
     public class SertifikatkjedevalidatorProduksjonTester
     {
-        static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
         [TestClass]
         public class ErGyldigResponssertifikatMethod : SertifikatkjedevalidatorFunksjoneltTestmiljøTester
@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 var produksjonssertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "prod", "produksjonsmottakersertifikatFraOppslagstjenesten.pem"));
                 X509ChainStatus[] kjedestatus;
-                
+
                 //Act
                 var sertifikatValidator = new Sertifikatkjedevalidator(SertifikatkjedeUtility.ProduksjonsSertifikater());
                 var erGyldigResponssertifikat = sertifikatValidator.ErGyldigResponssertifikat(produksjonssertifikat, out kjedestatus);
@@ -76,7 +76,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.IsFalse(erGyldigResponssertifikat);
                 Assert.IsTrue(kjedestatus.ElementAt(0).Status == X509ChainStatusFlags.UntrustedRoot);
-
             }
         }
     }

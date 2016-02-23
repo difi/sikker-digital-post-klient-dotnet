@@ -11,13 +11,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false);
 
         Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false);
-        
+
         Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel);
 
         Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel);
 
         void Bekreft(Forretningskvittering kvittering);
-        
+
         Task BekreftAsync(Forretningskvittering kvittering);
 
         Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,

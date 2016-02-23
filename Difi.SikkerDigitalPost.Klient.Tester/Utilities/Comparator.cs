@@ -8,22 +8,21 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     {
         public bool AreEqual(object expected, object actual)
         {
-            CompareLogic compareLogic = new CompareLogic();
+            var compareLogic = new CompareLogic();
             return compareLogic.Compare(expected, actual).AreEqual;
         }
 
         public bool AreEqual(object expected, object actual, out IEnumerable<IDifference> differences)
         {
-            CompareLogic compareLogic = new CompareLogic(new ComparisonConfig() { MaxDifferences = 5 });
+            var compareLogic = new CompareLogic(new ComparisonConfig {MaxDifferences = 5});
             var compareResult = compareLogic.Compare(expected, actual);
 
-            differences = compareResult.Differences.Select(d => new Difference()
+            differences = compareResult.Differences.Select(d => new Difference
             {
                 PropertyName = d.PropertyName,
                 WhatIsCompared = d.GetWhatIsCompared(),
                 ExpectedValue = d.Object1Value,
                 ActualValue = d.Object2Value
-
             }).ToList<IDifference>();
 
             return compareResult.AreEqual;

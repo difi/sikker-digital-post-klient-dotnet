@@ -9,10 +9,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     {
         private readonly List<Dokument> _vedlegg;
 
-        public Dokument Hoveddokument { get; }
-
-        public IReadOnlyList<Dokument> Vedlegg => new ReadOnlyCollection<Dokument>(_vedlegg);
-
         /// <param name="hoveddokument">Dokumentpakkens hoveddokument</param>
         public Dokumentpakke(Dokument hoveddokument)
         {
@@ -25,8 +21,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Hoveddokument.Id = "Id_2";
         }
 
+        public Dokument Hoveddokument { get; }
+
+        public IReadOnlyList<Dokument> Vedlegg => new ReadOnlyCollection<Dokument>(_vedlegg);
+
         /// <summary>
-        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
+        ///     Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
         /// </summary>
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(params Dokument[] dokumenter)
@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         }
 
         /// <summary>
-        /// Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
+        ///     Legger til vedlegg i tillegg til allerede eksisterende vedlegg.
         /// </summary>
         /// <param name="dokumenter"></param>
         public void LeggTilVedlegg(IEnumerable<Dokument> dokumenter)
@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
                 var dokument = dokumenter.ElementAt(i);
 
                 var likeFiler = Vedlegg.Any(v => dokument.Filnavn == v.Filnavn) || dokument.Filnavn == Hoveddokument.Filnavn;
-                
+
                 if (likeFiler)
                 {
                     throw new KonfigurasjonsException(

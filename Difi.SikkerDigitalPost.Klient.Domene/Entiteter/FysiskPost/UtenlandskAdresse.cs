@@ -4,15 +4,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 {
     public class UtenlandskAdresse : Adresse
     {
-        public string Landkode { get; set; }
-        public string Land { get; set; }
-        public string Adresselinje4 { get; set; }
-
         /// <summary>
-        /// Utenlandsk adresse
+        ///     Utenlandsk adresse
         /// </summary>
-        /// <param name="land">Landkode eller navn på mottakerland (f.eks. 'SE' eller 'Sverige')
-        ///  Om land skrives feil, blir porto satt til 'verden'.</param>
+        /// <param name="land">
+        ///     Landkode eller navn på mottakerland (f.eks. 'SE' eller 'Sverige')
+        ///     Om land skrives feil, blir porto satt til 'verden'.
+        /// </param>
         /// <param name="adresselinje1">Første adresselinje er obligatorisk for utenlandsk adresse.</param>
         public UtenlandskAdresse(string land, string adresselinje1)
         {
@@ -23,6 +21,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
 
             Adresselinje1 = adresselinje1;
         }
+
+        public string Landkode { get; set; }
+        public string Land { get; set; }
+        public string Adresselinje4 { get; set; }
 
         public override string AdresseLinje(int index1)
         {
@@ -40,6 +42,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
                     throw new ArgumentOutOfRangeException(nameof(index1), "Utenlandsk postadrese har bare adresselinje 1, 2, 3 og 4");
             }
         }
-
     }
 }

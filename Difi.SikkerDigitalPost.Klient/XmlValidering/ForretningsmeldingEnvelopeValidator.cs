@@ -10,7 +10,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
-        public ForretningsmeldingEnvelopeValidator(){
+        public ForretningsmeldingEnvelopeValidator()
+        {
             LeggTilXsdRessurs(NavneromUtility.SoapEnvelopeEnv12, HentRessurs("w3.soap-envelope.xsd"));
             LeggTilXsdRessurs(NavneromUtility.SoapEnvelope, HentRessurs("xmlsoap.envelope.xsd"));
             LeggTilXsdRessurs(NavneromUtility.EbXmlCore, HentRessurs("ebxml.ebms-header-3_0-200704.xsd"));
@@ -29,7 +30,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             LeggTilXsdRessurs(NavneromUtility.WssecurityUtility10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
             LeggTilXsdRessurs(NavneromUtility.WssecuritySecext10, HentRessurs("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
-         
         }
 
         private XmlReader HentRessurs(string path)

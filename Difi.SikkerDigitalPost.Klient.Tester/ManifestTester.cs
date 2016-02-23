@@ -14,7 +14,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     [TestClass]
     public class ManifestTester
     {
-
         [TestClass]
         public class KonstruktørMethod : ManifestTester
         {
@@ -28,16 +27,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 var forsendelse = DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat();
                 var manifest = new Manifest(forsendelse);
-                
+
                 //Act
 
                 //Assert
-                Assert.AreEqual(forsendelse,manifest.Forsendelse);
-                Assert.AreEqual(forsendelse.Avsender,manifest.Avsender);
-                Assert.AreEqual(id,manifest.Id);
-                Assert.AreEqual(mimeType,manifest.MimeType);
-                Assert.AreEqual(filnavn,manifest.Filnavn);
-            } 
+                Assert.AreEqual(forsendelse, manifest.Forsendelse);
+                Assert.AreEqual(forsendelse.Avsender, manifest.Avsender);
+                Assert.AreEqual(id, manifest.Id);
+                Assert.AreEqual(mimeType, manifest.MimeType);
+                Assert.AreEqual(filnavn, manifest.Filnavn);
+            }
         }
 
 
@@ -77,7 +76,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 //Arrange
                 //Arrange
-                ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+                var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
                 var vedleggTittel = "tittel";
                 var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
@@ -87,7 +86,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
                 var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
@@ -97,10 +96,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Act
 
                 //Assert
-                
+
                 var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg",
                     namespaceManager).InnerText;
-                Assert.AreEqual(vedleggTittel,vedleggNodeInnerText);
+                Assert.AreEqual(vedleggTittel, vedleggNodeInnerText);
             }
 
             [TestMethod]
@@ -108,10 +107,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 //Arrange
                 //Arrange
-                ResourceUtility resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+                var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 const string hoveddokumentTittel = "hoveddokument tittel";
                 var dokument = new Dokument(hoveddokumentTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
-                
+
                 var vedlegg = new Dokument("vedlegg tittel", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
@@ -119,7 +118,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
                 var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();

@@ -12,15 +12,13 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
-        public Manifest Manifest { get; set; }
-        public Signatur Signatur { get; set; }
         private readonly Dokumentpakke _dokumentpakke;
         private readonly Forsendelse _forsendelse;
 
+        private readonly GuidUtility _guidHandler;
+
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
-
-        private readonly GuidUtility _guidHandler;
 
 
         public AsicEArkiv(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
@@ -33,9 +31,10 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             _guidHandler = guidHandler;
         }
 
-        private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
+        public Manifest Manifest { get; set; }
+        public Signatur Signatur { get; set; }
 
-        public string Filnavn => "post.asice.zip";
+        private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
 
         internal byte[] UkrypterteBytes
         {
@@ -48,6 +47,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
                 return _ukrypterteBytes;
             }
         }
+
+        public string Filnavn => "post.asice.zip";
 
         public byte[] Bytes
         {
@@ -78,7 +79,6 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 
                 foreach (var dokument in _dokumentpakke.Vedlegg)
                     LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
-
             }
 
             return stream.ToArray();

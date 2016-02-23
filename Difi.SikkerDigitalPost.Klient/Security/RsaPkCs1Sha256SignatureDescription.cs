@@ -3,8 +3,10 @@
 namespace Difi.SikkerDigitalPost.Klient.Security
 {
     /// <remarks>
-    /// From: http://stackoverflow.com/questions/17258800/c-sharp-support-for-rsa-sha-256-signing-for-individual-xml-elements 
-    /// Usage: CryptoConfig.AddAlgorithm(typeof(RsaPkCs1Sha256SignatureDescription), @"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256");
+    ///     From:
+    ///     http://stackoverflow.com/questions/17258800/c-sharp-support-for-rsa-sha-256-signing-for-individual-xml-elements
+    ///     Usage: CryptoConfig.AddAlgorithm(typeof(RsaPkCs1Sha256SignatureDescription),
+    ///     @"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256");
     /// </remarks>
     public class RsaPkCs1Sha256SignatureDescription : SignatureDescription
     {
@@ -18,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
         public override AsymmetricSignatureDeformatter CreateDeformatter(AsymmetricAlgorithm key)
         {
-            var asymmetricSignatureDeformatter = (AsymmetricSignatureDeformatter)CryptoConfig.CreateFromName(DeformatterAlgorithm);
+            var asymmetricSignatureDeformatter = (AsymmetricSignatureDeformatter) CryptoConfig.CreateFromName(DeformatterAlgorithm);
             asymmetricSignatureDeformatter.SetKey(key);
             asymmetricSignatureDeformatter.SetHashAlgorithm("SHA256");
             return asymmetricSignatureDeformatter;

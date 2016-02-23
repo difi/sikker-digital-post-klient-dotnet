@@ -9,6 +9,6 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         public static string DateForFile()
         {
             return DateTime.Now.ToString("yyyy'-'MM'-'dd HH'.'mm'.'ss");
-        } 
+        }
     }
 }

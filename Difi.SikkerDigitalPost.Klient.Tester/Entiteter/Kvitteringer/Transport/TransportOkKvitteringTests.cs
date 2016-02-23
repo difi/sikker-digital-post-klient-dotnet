@@ -21,6 +21,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
                 Assert.AreEqual(string.Empty, transportOkKvittering.MeldingsId);
             }
         }
-
     }
 }

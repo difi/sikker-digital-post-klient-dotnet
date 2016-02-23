@@ -14,7 +14,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-
     [TestClass]
     public class SmokeTester
     {
@@ -65,12 +64,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Act
             var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
             var transportkvittering = await sdpKlient.SendAsync(forsendelse, true);
-            
+
             //Assert
             Assert.IsNotNull(transportkvittering);
             var kvittering = await HentKvitteringOgBekreftAsync(sdpKlient, "Send digital paa vegne av", forsendelse);
             Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
-            
         }
 
         private async Task<Transportkvittering> SendDokumentpakkeAsync(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
@@ -107,11 +105,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
                 kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
-                if (kvittering is TomKøKvittering) { continue; }
+                if (kvittering is TomKøKvittering)
+                {
+                    continue;
+                }
 
                 hentKvitteringPåNytt = false;
 
-                await sdpKlient.BekreftAsync((Forretningskvittering)kvittering);
+                await sdpKlient.BekreftAsync((Forretningskvittering) kvittering);
 
                 var konversasjonsId = HentKonversasjonsIdFraKvittering(kvittering);
                 if (konversasjonsId != forsendelse.KonversasjonsId)
@@ -130,17 +131,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             if (kvittering is Feilmelding)
             {
-                var feilmelding = (Feilmelding)kvittering;
+                var feilmelding = (Feilmelding) kvittering;
                 konversasjonsId = feilmelding.KonversasjonsId;
             }
             else if (kvittering is Leveringskvittering)
             {
-                var leveringskvittering = (Leveringskvittering)kvittering;
+                var leveringskvittering = (Leveringskvittering) kvittering;
                 konversasjonsId = leveringskvittering.KonversasjonsId;
             }
             else if (kvittering is Mottakskvittering)
             {
-                var mottakskvittering = (Mottakskvittering)kvittering;
+                var mottakskvittering = (Mottakskvittering) kvittering;
                 konversasjonsId = mottakskvittering.KonversasjonsId;
             }
 

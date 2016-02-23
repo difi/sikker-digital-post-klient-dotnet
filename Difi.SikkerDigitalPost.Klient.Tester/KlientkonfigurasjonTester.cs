@@ -17,14 +17,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var organisasjonsnummerPosten = "984661185";
                 object proxyhost = null;
-                string proxyScheme = "https";
-                var timeoutIMillisekunder = (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
+                var proxyScheme = "https";
+                var timeoutIMillisekunder = (int) TimeSpan.FromSeconds(30).TotalMilliseconds;
                 var loggXmlTilFil = false;
-                int proxyPort = 0;
+                var proxyPort = 0;
 
                 //Act
-                Klientkonfigurasjon klientkonfigurasjon = new Klientkonfigurasjon(miljø);
-                
+                var klientkonfigurasjon = new Klientkonfigurasjon(miljø);
+
                 //Assert
                 Assert.AreEqual(miljø, klientkonfigurasjon.Miljø);
                 Assert.AreEqual(organisasjonsnummerPosten, klientkonfigurasjon.MeldingsformidlerOrganisasjon.Verdi);

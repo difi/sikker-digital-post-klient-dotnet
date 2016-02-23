@@ -49,7 +49,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(meldingsId, mottakskvittering.MeldingsId);
                 Assert.AreEqual(referanseTilMeldingId, mottakskvittering.ReferanseTilMeldingId);
                 Assert.AreEqual(DateTime.Parse(tidspunkt), mottakskvittering.Mottatt);
-
             }
 
             [TestMethod]
@@ -71,8 +70,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(referanseTilMeldingId, returpostkvittering.ReferanseTilMeldingId);
                 Assert.AreEqual(DateTime.Parse(tidspunkt), returpostkvittering.Returnert);
                 Assert.AreEqual(xml.OuterXml, returpostkvittering.Rådata);
-
-
             }
 
             [TestMethod]
@@ -98,7 +95,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(beskrivelse, varslingfeiletkvittering.Beskrivelse);
                 Assert.AreEqual(varslingskanal, varslingfeiletkvittering.Varslingskanal);
                 Assert.AreEqual(xml.OuterXml, varslingfeiletkvittering.Rådata);
-
             }
 
             [TestMethod]
@@ -136,7 +132,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 //Act
                 var feilmelding = Kvitteringsparser.TilFeilmelding(xml);
-                
+
                 //Assert
                 Assert.AreEqual(konversasjonsId, feilmelding.KonversasjonsId.ToString());
                 Assert.AreEqual(meldingsId, feilmelding.MeldingsId);
@@ -180,7 +176,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 object referanseTilMeldingId = null;
                 const string sendtTidspunkt = "2015-11-10T14:58:23.408+01:00";
                 var skyldig = Feiltype.Klient;
-                
+
                 //Act
                 var transportFeiletKvittering = Kvitteringsparser.TilTransportFeiletKvittering(xml);
 
@@ -216,6 +212,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(xml.OuterXml, transportOkKvittering.Rådata);
             }
         }
-
     }
 }

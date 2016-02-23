@@ -9,16 +9,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 {
     internal class EnvelopeSettings
     {
-        public Forsendelse Forsendelse { get; private set; }
-        public Databehandler Databehandler { get; private set; }
-        public KvitteringsForespørsel Kvitteringsforespørsel { get; private set; }
-        public Forretningskvittering ForrigeKvittering { get; private set; }
-        internal AsicEArkiv AsicEArkiv { get; private set; }
-        internal GuidUtility GuidHandler { get; private set; }
-        internal Klientkonfigurasjon Konfigurasjon { get; private set; }
-        
         /// <summary>
-        /// Settings for KvitteringsEnvelope
+        ///     Settings for KvitteringsEnvelope
         /// </summary>
         public EnvelopeSettings(KvitteringsForespørsel kvitteringsforespørsel, Databehandler databehandler, GuidUtility guidHandler)
         {
@@ -28,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         }
 
         /// <summary>
-        /// Settings for DigitalPostForsendelse
+        ///     Settings for DigitalPostForsendelse
         /// </summary>
         public EnvelopeSettings(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
         {
@@ -38,9 +30,9 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
             GuidHandler = guidHandler;
             Konfigurasjon = konfigurasjon;
         }
-        
+
         /// <summary>
-        /// Settings for BekreftKvittering
+        ///     Settings for BekreftKvittering
         /// </summary>
         public EnvelopeSettings(Forretningskvittering forrigeKvittering, Databehandler databehandler, GuidUtility guidHandler)
         {
@@ -48,5 +40,13 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
             Databehandler = databehandler;
             GuidHandler = guidHandler;
         }
+
+        public Forsendelse Forsendelse { get; private set; }
+        public Databehandler Databehandler { get; private set; }
+        public KvitteringsForespørsel Kvitteringsforespørsel { get; private set; }
+        public Forretningskvittering ForrigeKvittering { get; private set; }
+        internal AsicEArkiv AsicEArkiv { get; private set; }
+        internal GuidUtility GuidHandler { get; private set; }
+        internal Klientkonfigurasjon Konfigurasjon { get; private set; }
     }
 }

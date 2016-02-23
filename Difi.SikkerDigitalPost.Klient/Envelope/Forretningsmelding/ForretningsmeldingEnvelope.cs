@@ -4,8 +4,9 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class ForretningsmeldingEnvelope : AbstractEnvelope
-    {        
-        public ForretningsmeldingEnvelope(EnvelopeSettings settings) : base (settings)
+    {
+        public ForretningsmeldingEnvelope(EnvelopeSettings settings)
+            : base(settings)
         {
         }
 
@@ -19,6 +20,6 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
         {
             var body = new ForretningsmeldingBody(Settings, EnvelopeXml);
             return body.Xml();
-        }       
+        }
     }
 }

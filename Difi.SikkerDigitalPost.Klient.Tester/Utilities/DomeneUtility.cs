@@ -22,9 +22,11 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     /// <summary>
-    /// Hjelpeklasse for instansiering av domeneobjekter. Klassen kan virke tilstandsløs, og vil for alle praktiske formål være det,
-    /// da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses fra disk kun èn
-    /// gang for økt ytelse.
+    ///     Hjelpeklasse for instansiering av domeneobjekter. Klassen kan virke tilstandsløs, og vil for alle praktiske formål
+    ///     være det,
+    ///     da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses
+    ///     fra disk kun èn
+    ///     gang for økt ytelse.
     /// </summary>
     internal static class DomeneUtility
     {
@@ -78,11 +80,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
             var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
-            
-            _vedlegg = new[] { vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2 };
+
+            _vedlegg = new[] {vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2};
 
             return _vedlegg.Take(maksAntall);
-
         }
 
         internal static string GetMimeType(string fileName)
@@ -93,7 +94,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Avsender GetAvsender()
         {
             var orgNrAvsender = new Organisasjonsnummer(Settings.Default.OrganisasjonsnummerAvsender);
-            return new Avsender(orgNrAvsender) { Avsenderidentifikator = Settings.Default.Avsenderidentifikator };
+            return new Avsender(orgNrAvsender) {Avsenderidentifikator = Settings.Default.Avsenderidentifikator};
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
@@ -118,7 +119,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
         {
-
             return new FysiskPostReturmottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"));
         }
 
@@ -159,17 +159,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetDigitalForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalForsendelseEnkelMedTestSertifikat()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkelMedTestSertifikat(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkelMedTestSertifikat(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetFysiskForsendelseEnkel()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, mpcId: Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
@@ -179,16 +179,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static AsicEArkiv GetAsicEArkivEnkel()
         {
-
             return new AsicEArkiv(GetDigitalForsendelseEnkel(), GuidUtility, GetAvsenderSertifikat());
         }
 
         internal static AsicEArkiv GetAsicEArkivEnkelMedTestSertifikat()
         {
-
             return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderEnhetstesterSertifikat());
         }
-        
+
         internal static AsicEArkiv GetAsicEArkiv(Forsendelse forsendelse)
         {
             return new AsicEArkiv(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
@@ -238,7 +236,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 EvigTestSertifikatMedPrivatnøkkel()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater","enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderSertifikat()
@@ -257,7 +255,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var konversasjonsId = Guid.NewGuid();
             var bodyReferenceUri = "bodyReferenceUri";
             var digestValue = "digestValue";
-            
+
             return new Leveringskvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
         }
 

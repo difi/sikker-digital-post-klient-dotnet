@@ -11,26 +11,23 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     /// <summary>
-    /// Inneholder funksjonalitet for å validere motatte svar fra meldingsformidleren.
+    ///     Inneholder funksjonalitet for å validere motatte svar fra meldingsformidleren.
     /// </summary>
     internal class Responsvalidator
     {
-        public XmlDocument Respons { get; internal set; }
-
-        public XmlDocument SendtMelding { get; internal set; }
-
-        public Sertifikatkjedevalidator Sertifikatkjedevalidator { get; internal set; }
-        
         private readonly XmlNamespaceManager _nsMgr;
-        private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
-        private XmlElement _signaturnode;
         private X509Certificate2 _sertifikat;
+        private XmlElement _signaturnode;
+        private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
 
         /// <summary>
-        /// Oppretter en ny instanse av responsvalidatoren.
+        ///     Oppretter en ny instanse av responsvalidatoren.
         /// </summary>
         /// <param name="sendtMelding">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
-        /// <param name="respons">Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en forsendelse av brev eller kvittering.</param>
+        /// <param name="respons">
+        ///     Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en
+        ///     forsendelse av brev eller kvittering.
+        /// </param>
         /// <param name="sertifikatkjedevalidator"></param>
         public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, Sertifikatkjedevalidator sertifikatkjedevalidator)
         {
@@ -38,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             SendtMelding = sendtMelding;
             Sertifikatkjedevalidator = sertifikatkjedevalidator;
 
-            
+
             _nsMgr = new XmlNamespaceManager(Respons.NameTable);
             _nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             _nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
@@ -49,6 +46,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _nsMgr.AddNamespace("sbd", NavneromUtility.StandardBusinessDocumentHeader);
             _nsMgr.AddNamespace("difi", NavneromUtility.DifiSdpSchema10);
         }
+
+        public XmlDocument Respons { get; internal set; }
+
+        public XmlDocument SendtMelding { get; internal set; }
+
+        public Sertifikatkjedevalidator Sertifikatkjedevalidator { get; internal set; }
 
         public void ValiderMeldingskvittering()
         {
@@ -70,7 +73,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private void ValiderHeaderSignatur()
         {
             XmlNode responsRot = Respons.DocumentElement;
-            _signaturnode = (XmlElement)responsRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", _nsMgr);
+            _signaturnode = (XmlElement) responsRot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", _nsMgr);
             _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(Respons);
 
             ValiderSignaturelementer();
@@ -99,7 +102,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private static XmlDocument XmlNodeToXmlDocument(XmlNode standardBusinessDocument)
         {
-            XmlDocument sbd = new XmlDocument();
+            var sbd = new XmlDocument();
             sbd.LoadXml(standardBusinessDocument.OuterXml);
             return sbd;
         }
@@ -131,11 +134,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         }
 
         /// <summary>
-        /// Sjekker at motatt soap dokument har samme digest verdier for body og dokumentpakke i avsendt brev vha motatt NonRepudiationInformation element. 
+        ///     Sjekker at motatt soap dokument har samme digest verdier for body og dokumentpakke i avsendt brev vha motatt
+        ///     NonRepudiationInformation element.
         /// </summary>
         /// <param name="guidHandler">Samme guid handler som ble benyttet for å generere det avsendte brevet.</param>
         private void ValiderDigest(GuidUtility guidHandler)
-       {
+        {
             var sendtMeldingDigestSti = "/env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo/ds:Reference[@URI='{0}']/ds:DigestValue";
             var mottattSvarDigestSti = "/env:Envelope/env:Header/eb:Messaging/eb:SignalMessage/eb:Receipt/ebbp:NonRepudiationInformation/ebbp:MessagePartNRInformation/ds:Reference[@URI='{0}']/ds:DigestValue";
 
@@ -145,8 +149,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 $"cid:{guidHandler.DokumentpakkeId}"
             };
 
-           foreach (var id in ider)
-           {
+            foreach (var id in ider)
+            {
                 string sendtMeldingDigest;
                 string mottattSvarDigest;
 
@@ -175,11 +179,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         }
 
         /// <summary>
-        /// Sjekker at soap envelopen inneholder timestamp, body og messaging element med korrekt id og referanser i security signaturen.
+        ///     Sjekker at soap envelopen inneholder timestamp, body og messaging element med korrekt id og referanser i security
+        ///     signaturen.
         /// </summary>
         private void ValiderSignaturelementer()
         {
-            string[] requiredSignatureElements = { "/env:Envelope/env:Header/wsse:Security/wsu:Timestamp", "/env:Envelope/env:Body", "/env:Envelope/env:Header/eb:Messaging" };
+            string[] requiredSignatureElements = {"/env:Envelope/env:Header/wsse:Security/wsu:Timestamp", "/env:Envelope/env:Body", "/env:Envelope/env:Header/eb:Messaging"};
 
             foreach (var elementXPath in requiredSignatureElements)
             {

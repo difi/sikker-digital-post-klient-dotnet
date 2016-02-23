@@ -6,12 +6,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
     public class Organisasjonsnummer
     {
         public static readonly string Iso6523Pattern = "^([0-9]{4}:)?([0-9]{9})$";
-        
+
         /// <summary>
-        /// Stringrepresentasjon av organisasjonsnummeret
+        ///     Stringrepresentasjon av organisasjonsnummeret
         /// </summary>
         public readonly string Verdi;
-        
+
         /// <param name="verdi">Stringrepresentasjon av organisasjonsnummeret</param>
         public Organisasjonsnummer(string verdi)
         {
@@ -19,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
         }
 
         /// <summary>
-        /// Organisasjonsnummer på ISO6523-format 
+        ///     Organisasjonsnummer på ISO6523-format
         /// </summary>
         /// <returns>Organisasjonsnummer, prefikset med '9908':, som er id for 'Enhetsregistret ved Brønnøysundregisterne'</returns>
         public string Iso6523()
@@ -30,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
         public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
         {
             var match = Regex.Match(iso6523Orgnr, Iso6523Pattern);
-            
+
             if (!match.Success)
             {
                 throw new KonfigurasjonsException("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, " +

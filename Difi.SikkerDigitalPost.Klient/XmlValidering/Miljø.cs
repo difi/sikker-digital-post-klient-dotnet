@@ -6,7 +6,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     public class Miljø : AbstraktMiljø
     {
-        
         private Miljø(Uri url, Sertifikatkjedevalidator sertifikatkjedevalidator)
         {
             Sertifikatkjedevalidator = sertifikatkjedevalidator;

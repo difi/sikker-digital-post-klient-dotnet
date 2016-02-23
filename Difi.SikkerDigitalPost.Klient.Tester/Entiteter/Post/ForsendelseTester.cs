@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
-    [TestClass()]
+    [TestClass]
     public class ForsendelseTester
     {
         [TestClass]
@@ -16,9 +16,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
             public void EnkelKonstruktør()
             {
                 //Arrange
-                Forsendelse forsendelse = new Forsendelse(
-                    DomeneUtility.GetAvsender(), 
-                    DomeneUtility.GetDigitalPostInfoEnkel(), 
+                var forsendelse = new Forsendelse(
+                    DomeneUtility.GetAvsender(),
+                    DomeneUtility.GetDigitalPostInfoEnkel(),
                     DomeneUtility.GetDokumentpakkeUtenVedlegg()
                     );
 
@@ -38,12 +38,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 var mpcId = "mpcId";
                 var språkkode = "NO";
 
-                Forsendelse forsendelse = new Forsendelse(
+                var forsendelse = new Forsendelse(
                     DomeneUtility.GetAvsender(),
                     DomeneUtility.GetDigitalPostInfoEnkel(),
                     DomeneUtility.GetDokumentpakkeUtenVedlegg(),
-                    prioritet, 
-                    mpcId, 
+                    prioritet,
+                    mpcId,
                     språkkode
                     );
 
@@ -68,13 +68,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 var språkkode = "NO";
 
                 var konversasjonsid = Guid.NewGuid();
-                Forsendelse forsendelse = new Forsendelse(
+                var forsendelse = new Forsendelse(
                     DomeneUtility.GetAvsender(),
                     DomeneUtility.GetDigitalPostInfoEnkel(),
                     DomeneUtility.GetDokumentpakkeUtenVedlegg(),
-                    konversasjonsid, 
+                    konversasjonsid,
                     prioritet,
-                    mpcId, 
+                    mpcId,
                     språkkode);
 
                 //Act
@@ -88,10 +88,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 Assert.AreEqual(prioritet, forsendelse.Prioritet);
                 Assert.AreEqual(mpcId, forsendelse.MpcId);
                 Assert.AreEqual(språkkode, forsendelse.Språkkode);
-
             }
-            
-                      
         }
     }
 }
