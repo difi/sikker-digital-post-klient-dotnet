@@ -39,7 +39,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-
         [TestClass]
         public class Hoveddokument : ManifestTester
         {

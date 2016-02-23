@@ -31,7 +31,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 }
             }
 
-
             public X509ChainPolicy ChainPolicyWithOnlineCheckOgUkjentRotnode
             {
                 get

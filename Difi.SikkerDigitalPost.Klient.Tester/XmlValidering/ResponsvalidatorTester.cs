@@ -181,7 +181,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
         }
 
-
         [TestClass]
         public class ValiderMeldingsKvitteringMethod : ResponsvalidatorTester
         {

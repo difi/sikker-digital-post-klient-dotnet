@@ -23,7 +23,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         private const bool ErDigitalPostMottaker = true;
         private const bool ErNorskBrev = true;
 
-
         private static void Main(string[] args)
         {
             SendPost();
