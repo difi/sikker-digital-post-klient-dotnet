@@ -11,6 +11,7 @@
         }
 
         public string Personidentifikator { get; set; }
+
         public string Postkasseadresse { get; set; }
     }
 }

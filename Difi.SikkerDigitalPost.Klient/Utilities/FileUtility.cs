@@ -14,7 +14,6 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
             set { _basePath = value; }
         }
 
-
         /// <summary>
         ///     Hvis din basesti er "C:\base" og du sender inn "mappe\hei.txt", så vil filen lagres
         ///     på "C:\base\mappe\hei.txt".

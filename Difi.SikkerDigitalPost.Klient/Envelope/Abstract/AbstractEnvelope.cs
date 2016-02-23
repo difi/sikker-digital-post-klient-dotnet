@@ -63,6 +63,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
         }
 
         protected abstract XmlNode HeaderElement();
+
         protected abstract XmlNode BodyElement();
     }
 }

@@ -42,11 +42,17 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         }
 
         public Forsendelse Forsendelse { get; private set; }
+
         public Databehandler Databehandler { get; private set; }
+
         public KvitteringsForespørsel Kvitteringsforespørsel { get; private set; }
+
         public Forretningskvittering ForrigeKvittering { get; private set; }
+
         internal AsicEArkiv AsicEArkiv { get; private set; }
+
         internal GuidUtility GuidHandler { get; private set; }
+
         internal Klientkonfigurasjon Konfigurasjon { get; private set; }
     }
 }

@@ -15,7 +15,6 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
     {
         private XmlDocument _manifestXml;
 
-
         public Manifest(Forsendelse forsendelse)
         {
             Forsendelse = forsendelse;
@@ -23,6 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         }
 
         public Avsender Avsender { get; }
+
         public Forsendelse Forsendelse { get; }
 
         public string Filnavn => "manifest.xml";

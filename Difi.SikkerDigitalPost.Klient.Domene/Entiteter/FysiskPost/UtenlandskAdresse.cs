@@ -23,7 +23,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         }
 
         public string Landkode { get; set; }
+
         public string Land { get; set; }
+
         public string Adresselinje4 { get; set; }
 
         public override string AdresseLinje(int index1)

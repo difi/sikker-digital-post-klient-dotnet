@@ -16,6 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         }
 
         public X509Certificate2 Sertifikat { get; set; }
+
         public Organisasjonsnummer OrganisasjonsnummerPostkasse { get; internal set; }
     }
 }

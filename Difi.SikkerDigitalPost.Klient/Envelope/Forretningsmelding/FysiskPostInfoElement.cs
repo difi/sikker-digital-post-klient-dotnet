@@ -46,7 +46,6 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             return fysiskPostInfoElement;
         }
 
-
         private XmlNode MottakerElement(string mottakerNavn, Adresse adresse)
         {
             var mottaker = Context.CreateElement("ns9", "mottaker", NavneromUtility.DifiSdpSchema10);

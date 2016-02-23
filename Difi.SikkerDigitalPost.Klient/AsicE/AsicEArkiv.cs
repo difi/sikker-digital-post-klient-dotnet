@@ -20,7 +20,6 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
 
-
         public AsicEArkiv(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
         {
             Manifest = new Manifest(forsendelse);
@@ -32,6 +31,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
         }
 
         public Manifest Manifest { get; set; }
+
         public Signatur Signatur { get; set; }
 
         private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;

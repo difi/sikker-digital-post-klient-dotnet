@@ -26,7 +26,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         private readonly Databehandler _databehandler;
         private readonly Klientkonfigurasjon _klientkonfigurasjon;
 
-
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra

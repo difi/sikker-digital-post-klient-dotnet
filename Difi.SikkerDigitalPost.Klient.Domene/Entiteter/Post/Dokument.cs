@@ -57,11 +57,17 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         }
 
         public string Tittel { get; private set; }
+
         public string Språkkode { get; set; }
+
         internal string FilnavnRådata { get; set; }
+
         public string Filnavn { get; }
+
         public byte[] Bytes { get; }
+
         public string MimeType { get; }
+
         public string Id { get; set; }
 
         private string UrlEncode(string raw)

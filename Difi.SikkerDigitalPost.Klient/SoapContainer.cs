@@ -16,6 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient
         }
 
         public IList<ISoapVedlegg> Vedlegg { get; set; }
+
         public ISoapVedlegg Envelope { get; set; }
     }
 }
