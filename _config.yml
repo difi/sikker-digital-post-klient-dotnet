@@ -68,8 +68,7 @@ analytics:
   account:
   domain:
 
-# DON'T MODIFY
-highlight: rouge
+highlighter: pygments 
 
 gems:
   - jekyll-redirect-from

@@ -1,13 +1,11 @@
 ---
+id: index
 layout: default
-title: .NET-klient for integrasjon mot Sikker digital post-tjenesten
-description:
-isHome: true
 redirect_from: /
 ---
 
 {% for dok in site.v1_5 %}
-	{% if dok.id %}
+	{% if dok.id != 'index' %}
 		<h2 id="{{dok.id}}">{{dok.title}}</h2>
 		<div class="body">
 			<p>{{dok.content}}</p>
