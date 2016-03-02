@@ -115,8 +115,6 @@
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SertifikatTester.cs" />
     <Compile Include="XmlValidering\ResponsvalidatorTester.cs" />
-    <Compile Include="XmlValidering\SertifikatkjedevalidatorProduksjonTester.cs" />
-    <Compile Include="XmlValidering\SertifikatkjedevalidatorFunksjoneltTestmiljøTester.cs" />
     <Compile Include="XmlValidering\MiljøTester.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,7 +256,6 @@
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Feilmelding.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TransportFeiletKvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TransportOkKvittering.xml" />
-    <Content Include="testdata\sertifikater\scripts\GenererSertifikatScripts.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
