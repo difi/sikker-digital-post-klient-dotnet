@@ -125,7 +125,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderResponssertifikat()
         {
-            var erGyldigSertifikat = Sertifikatkjedevalidator.ErGyldigResponssertifikat(_sertifikat);
+            var erGyldigSertifikat = Sertifikatkjedevalidator.ErGyldigSertifikatkjede(_sertifikat);
 
             if (!erGyldigSertifikat)
             {

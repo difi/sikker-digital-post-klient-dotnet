@@ -1,4 +1,5 @@
-﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+﻿using Difi.Felles.Utility;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 

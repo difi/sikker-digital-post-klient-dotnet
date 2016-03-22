@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Xml;
 using ApiClientShared;
-using Difi.Felles.Utility.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
