@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Xml;
 using ApiClientShared;
-using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
@@ -44,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             public static XmlDocument TilXmlDokument(string kvittering)
             {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility. ReadAllBytes(true, kvittering)));
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
             }
         }
 
@@ -73,6 +72,4 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             }
         }
     }
-
-   
 }
