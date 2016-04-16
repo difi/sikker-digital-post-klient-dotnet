@@ -6,5 +6,7 @@
             : base(string.Empty)
         {
         }
+
+        public long BytesCount { get; set; }
     }
 }

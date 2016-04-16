@@ -77,25 +77,25 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var guidHandler = new GuidUtility();
 
-            var arkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
-            var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, arkiv, guidHandler);
+            var asicEArkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
+            var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, asicEArkiv, guidHandler);
 
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, arkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, asicEArkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
+            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, asicEArkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
 
             try
             {
                 ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
-                ValiderArkivManifest(arkiv.Manifest.Xml());
-                ValiderArkivSignatur(arkiv.Signatur.Xml());
+                ValiderArkivManifest(asicEArkiv.Manifest.Xml());
+                ValiderArkivSignatur(asicEArkiv.Signatur.Xml());
             }
             catch (Exception e)
             {
                 throw new Exception("Sending av forsendelse feilet under validering. Feilmelding: " + e.GetBaseException(), e.InnerException);
             }
 
-            var soapContainer = LagSoapContainer(forretningsmeldingEnvelope, arkiv);
+            var soapContainer = LagSoapContainer(forretningsmeldingEnvelope, asicEArkiv);
             var transportkvitteringRådata = await SendSoapContainer(soapContainer);
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, transportkvitteringRådata, true, true, "Mottatt - Meldingsformidlerespons.txt");
@@ -104,6 +104,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportkvitteringRådata);
 
             var transportKvittering = (Transportkvittering) KvitteringFactory.GetKvittering(transportkvitteringRådata);
+            transportKvittering.BytesCount = asicEArkiv.ContentBytesCount;
 
             var transportkvitteringXml = new XmlDocument();
             transportkvitteringXml.LoadXml(transportkvitteringRådata);
