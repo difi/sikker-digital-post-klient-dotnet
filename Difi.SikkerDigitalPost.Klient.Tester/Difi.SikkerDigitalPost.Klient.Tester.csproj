@@ -76,6 +76,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
     <Compile Include="AsicE\AsicEArkivTester.cs" />
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
+    <Compile Include="Internal\RequestHelperTests.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
     <Compile Include="KvitteringFactoryTester.cs" />
     <Compile Include="KvitteringsparserTester.cs" />

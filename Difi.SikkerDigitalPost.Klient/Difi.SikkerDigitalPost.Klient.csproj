@@ -91,6 +91,7 @@
     <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
     <Compile Include="Handlers\UserAgentHttpHandler.cs" />
+    <Compile Include="Internal\RequestHelper.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Kvitteringsparser.cs" />
     <Compile Include="Utilities\Logging.cs" />
@@ -100,7 +101,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="MeldingsHandling.cs" />
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
