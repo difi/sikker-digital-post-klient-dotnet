@@ -101,7 +101,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             Kvittering kvittering = null;
             while (hentKvitteringPåNytt && (prøvdPåNytt++ <= hentKvitteringMaksAntallGanger))
             {
-                Thread.Sleep(500);
+                Thread.Sleep(2000);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
                 kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
