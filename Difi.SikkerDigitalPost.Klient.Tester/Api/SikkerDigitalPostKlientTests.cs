@@ -62,7 +62,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
             [ExpectedException(typeof(SdpSecurityException))]
             [TestMethod]
-            public async Task ThrowsExceptionOnWrongResponse()
+            public async Task ThrowsExceptionOnResponseNotMatchingRequest()
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();

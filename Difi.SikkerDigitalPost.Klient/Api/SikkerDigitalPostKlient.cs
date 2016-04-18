@@ -110,7 +110,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportReceipt);
 
-            if (!(transportReceipt is TransportFeiletKvittering))
+            if (transportReceipt is TransportOkKvittering)
             {
                 SikkerhetsvalideringAvTransportkvittering(transportReceiptXml, forretningsmeldingEnvelope.Xml(), guidHandler);
             }
