@@ -90,6 +90,7 @@
     <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseEnvelope.cs" />
     <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
     <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
+    <Compile Include="ForsendelseExtensions.cs" />
     <Compile Include="Handlers\UserAgentHttpHandler.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Kvitteringsparser.cs" />
