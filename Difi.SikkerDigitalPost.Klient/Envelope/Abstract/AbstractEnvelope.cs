@@ -10,16 +10,16 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
         protected readonly XmlDocument EnvelopeXml;
-        protected readonly EnvelopeSettings Settings;
+        protected readonly EnvelopeSettings EnvelopeSettings;
         private byte[] _bytes;
         private string _contentId;
 
         private bool _isXmlGenerated;
         protected AbstractHeader Header;
 
-        protected AbstractEnvelope(EnvelopeSettings settings)
+        protected AbstractEnvelope(EnvelopeSettings envelopeSettings)
         {
-            Settings = settings;
+            EnvelopeSettings = envelopeSettings;
             EnvelopeXml = LagXmlRotnode();
         }
 
