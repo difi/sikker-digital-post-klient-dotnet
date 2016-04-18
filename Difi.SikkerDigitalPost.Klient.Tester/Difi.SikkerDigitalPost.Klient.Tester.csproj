@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -76,6 +77,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
     <Compile Include="AsicE\AsicEArkivTester.cs" />
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
@@ -91,6 +95,8 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
+    <Compile Include="Fakes\FakeHttpClientHandler.cs" />
+    <Compile Include="Fakes\FakeHttpClientHandlerResponse.cs" />
     <Compile Include="Internal\RequestHelperTests.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
     <Compile Include="KvitteringFactoryTester.cs" />
@@ -124,6 +130,10 @@
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj">
+      <Project>{dc581ec3-ca16-473b-bdd5-07b30a8b4f05}</Project>
+      <Name>Difi.SikkerDigitalPost.Klient.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
       <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>

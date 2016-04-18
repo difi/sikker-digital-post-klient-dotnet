@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CC279EA-A5FB-4BB0-AE55-946B5A7E8834}"
 	ProjectSection(SolutionItems) = preProject
 		C:\Keys\digipost.pfx = C:\Keys\digipost.pfx
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		VersionInfo.cs = VersionInfo.cs
 		VersionInfo.ps1 = VersionInfo.ps1
 	EndProjectSection
@@ -19,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Difi.SikkerDigitalPost.Klient.Testklient", "Difi.SikkerDigitalPost.Klient.Testklient\Difi.SikkerDigitalPost.Klient.Testklient.csproj", "{146BB10B-B9FB-4ED9-8486-BD427765B82A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0D2CB855-84B9-4032-8096-E769E64C0646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Difi.SikkerDigitalPost.Klient.Resources", "Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj", "{DC581EC3-CA16-473B-BDD5-07B30A8B4F05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +45,10 @@ Global
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146BB10B-B9FB-4ED9-8486-BD427765B82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC581EC3-CA16-473B-BDD5-07B30A8B4F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC581EC3-CA16-473B-BDD5-07B30A8B4F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC581EC3-CA16-473B-BDD5-07B30A8B4F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC581EC3-CA16-473B-BDD5-07B30A8B4F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,14 @@
-﻿using Difi.SikkerDigitalPost.Klient.Internal;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Difi.SikkerDigitalPost.Klient.AsicE;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,41 +38,25 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
         public class SendMethod : RequestHelperTests
         {
             [TestMethod]
-            public void SendsNewMessageSuccessfully()
+            public async Task ReturnsReceiptSuccessfully()
             {
                 //Arrange
+                var forretningsmeldingEnvelope = DomeneUtility.GetForretningsmeldingEnvelope();
+                var asiceArkiv = new AsicEArkiv(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
+
+                var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
+                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                requestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
+
                 
-
-                //Act
-
-                //Assert
-                Assert.Fail();
-            }
-
-            [TestMethod]
-            public void ThrowSendExceptionOnNoConnection()
-            {
-                //Arrange
-                
-
-                //Act
+                //Act 
+                var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
+                soapContainer.Vedlegg.Add(asiceArkiv);
+                var kvittering = await requestHelper.Send(soapContainer);
 
                 //Assert
-                Assert.Fail();
+                Assert.IsInstanceOfType(kvittering, typeof(TransportOkKvittering));
             }
-
-            [TestMethod]
-            public void ReturnsTransportErrorReceiptOnError()
-            {
-                //Arrange
-                //Todo: There is done special parsing if message has no content in case of error. We need to check that this is done correctly somehow.
-
-                //Act
-
-                //Assert
-                Assert.Fail();
-            }
-
         }
     }
 }

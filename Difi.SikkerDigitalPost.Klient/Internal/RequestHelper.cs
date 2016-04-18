@@ -48,39 +48,17 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                     ClientConfiguration.ProxyHost, ClientConfiguration.ProxyPort).Uri);
         }
 
-        public async Task<Kvittering> Send(SoapContainer soapContainer)
+      public async Task<Kvittering> Send(SoapContainer soapContainer)
         {
-            string data;
-
+            //Todo: Ta inn forretningsmeldingEnvelope! Soap maa gjemmes bort
+            
             var httpContent = CreateHttpContent(soapContainer);
-
-            //GetThreadSafeClient.DefaultRequestHeaders.Add("Accept", "*/*");
 
             var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent);
 
-            try
-            {
-                data = await responseMessage.Content.ReadAsStringAsync();
-            }
-            catch (WebException we)
-            {
-                using (var response = we.Response as HttpWebResponse)
-                {
-                    if (response == null)
-                    {
-                        throw new SendException("Får ikke kontakt med meldingsformidleren. Sjekk tilkoblingsdetaljer og prøv på nytt.");
-                    }
-
-
-                    using (var errorStream = response.GetResponseStream())
-                    {
-                        var soap = XDocument.Load(errorStream);
-                        data = soap.ToString();
-
-                    }
-                }
-            }
-
+            var data = await responseMessage.Content.ReadAsStringAsync();
+          
+            //Todo: Stygg hack for handtere void return. Splitt opp send etter forskjellige actions. Denne er for bekreft kvittering.
             if (data == string.Empty)
             {
                 return null;
@@ -92,7 +70,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         private HttpContent CreateHttpContent(SoapContainer container)
         {
             var meldingsinnhold = new MultipartFormDataContent(container.Boundary);
-
+        
+            //Todo: Dette er ullent og boer vaere kompilert kode.
             var contentType = string.Format(
                 "Multipart/Related; boundary=\"{0}\"; " +
                 "type=\"application/soap+xml\"; " +

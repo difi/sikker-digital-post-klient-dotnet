@@ -5,20 +5,20 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 {
     internal class KvitteringsbekreftelseEnvelope : AbstractEnvelope
     {
-        public KvitteringsbekreftelseEnvelope(EnvelopeSettings settings)
-            : base(settings)
+        public KvitteringsbekreftelseEnvelope(EnvelopeSettings envelopeSettings)
+            : base(envelopeSettings)
         {
         }
 
         protected override XmlNode HeaderElement()
         {
-            Header = new KvitteringsbekreftelseHeader(Settings, EnvelopeXml);
+            Header = new KvitteringsbekreftelseHeader(EnvelopeSettings, EnvelopeXml);
             return Header.Xml();
         }
 
         protected override XmlNode BodyElement()
         {
-            var body = new UtenInnholdBody(Settings, EnvelopeXml);
+            var body = new UtenInnholdBody(EnvelopeSettings, EnvelopeXml);
             return body.Xml();
         }
     }
