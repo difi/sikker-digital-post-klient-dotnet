@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
@@ -12,7 +13,8 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
-        private readonly Dokumentpakke _dokumentpakke;
+        public Dokumentpakke Dokumentpakke { get; }
+
         private readonly Forsendelse _forsendelse;
 
         private readonly GuidUtility _guidHandler;
@@ -26,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
 
             _forsendelse = forsendelse;
-            _dokumentpakke = _forsendelse.Dokumentpakke;
+            Dokumentpakke = _forsendelse.Dokumentpakke;
             _guidHandler = guidHandler;
         }
 
@@ -73,15 +75,29 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
-                LeggFilTilArkiv(archive, _dokumentpakke.Hoveddokument.FilnavnRådata, _dokumentpakke.Hoveddokument.Bytes);
+                LeggFilTilArkiv(archive, Dokumentpakke.Hoveddokument.FilnavnRådata, Dokumentpakke.Hoveddokument.Bytes);
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
                 LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
 
-                foreach (var dokument in _dokumentpakke.Vedlegg)
+                foreach (var dokument in Dokumentpakke.Vedlegg)
                     LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
             }
 
             return stream.ToArray();
+        }
+
+        public long ContentBytesCount
+        {
+            get
+            {
+                var bytesCount = 0L;
+                bytesCount += Manifest.Bytes.Length;
+                bytesCount += Signatur.Bytes.Length;
+                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
+                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
+
+                return bytesCount;
+            }
         }
 
         public void LagreTilDisk(params string[] filsti)
