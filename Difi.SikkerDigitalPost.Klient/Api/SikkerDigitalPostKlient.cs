@@ -104,7 +104,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportkvitteringRådata);
 
             var transportKvittering = (Transportkvittering) KvitteringFactory.GetKvittering(transportkvitteringRådata);
-            transportKvittering.BytesCount = asicEArkiv.ContentBytesCount;
+            transportKvittering.AntallBytesDokumentpakke = asicEArkiv.ContentBytesCount;
 
             var transportkvitteringXml = new XmlDocument();
             transportkvitteringXml.LoadXml(transportkvitteringRådata);

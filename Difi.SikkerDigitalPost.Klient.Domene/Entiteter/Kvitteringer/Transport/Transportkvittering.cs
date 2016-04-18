@@ -7,6 +7,11 @@
         {
         }
 
-        public long BytesCount { get; set; }
+        /// <summary>
+        /// Angir hvor mange bytes som er i dokumentpakken som ble sendt i henhold til Difis spesifikasjon: 
+        /// http://begrep.difi.no/SikkerDigitalPost/1.2.1/forretningslag/meldingsstorrelse og 
+        /// http://begrep.difi.no/SikkerDigitalPost/1.2.1/forretningslag/Dokumentpakke/langtidslagring 
+        /// </summary>
+        public long AntallBytesDokumentpakke { get; set; }
     }
 }
