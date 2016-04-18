@@ -7,6 +7,6 @@
         {
         }
 
-        public long BytesCount { get; set; }
+        public long AntallBytesDokumentpakke { get; set; }
     }
 }
