@@ -9,7 +9,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
-namespace Difi.SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class Manifest : IAsiceVedlegg
     {

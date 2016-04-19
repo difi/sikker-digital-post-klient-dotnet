@@ -14,7 +14,7 @@ using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
 
-namespace Difi.SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class Signatur : IAsiceVedlegg
     {

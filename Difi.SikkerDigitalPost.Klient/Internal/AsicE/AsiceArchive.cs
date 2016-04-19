@@ -9,7 +9,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
-namespace Difi.SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsicEArkiv : ISoapVedlegg
     {
