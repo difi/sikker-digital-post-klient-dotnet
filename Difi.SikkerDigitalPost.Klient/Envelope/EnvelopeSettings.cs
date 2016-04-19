@@ -1,7 +1,7 @@
-﻿using Difi.SikkerDigitalPost.Klient.AsicE;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using KvitteringsForespørsel = Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel;
 
