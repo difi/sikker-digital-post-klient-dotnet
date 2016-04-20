@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
@@ -177,26 +179,26 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static AsicEArkiv GetAsicEArkivEnkel()
+        internal static DocumentBundle GetAsicEArkivEnkel()
         {
-            return new AsicEArkiv(GetDigitalForsendelseEnkel(), GuidUtility, GetAvsenderSertifikat());
+            return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat(), string.Empty);
         }
 
-        internal static AsicEArkiv GetAsicEArkivEnkelMedTestSertifikat()
+        internal static AsiceArchive GetAsicEArkivEnkelMedTestSertifikat()
         {
-            return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderEnhetstesterSertifikat());
+            return new AsiceArchive(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderSertifikat());
         }
 
-        internal static AsicEArkiv GetAsicEArkiv(Forsendelse forsendelse)
+        internal static AsiceArchive GetAsicEArkiv(Forsendelse forsendelse)
         {
-            return new AsicEArkiv(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
+            return new AsiceArchive(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()
         {
             var envelopeSettings = new EnvelopeSettings(
                 GetDigitalForsendelseEnkelMedTestSertifikat(),
-                GetAsicEArkivEnkelMedTestSertifikat(),
+                AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat()),  
                 GetDatabehandlerMedTestSertifikat(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));

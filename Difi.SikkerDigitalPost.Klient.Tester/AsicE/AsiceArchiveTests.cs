@@ -4,10 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 {
     [TestClass()]
-    public class AsicEArkivTester
+    public class AsiceArchiveTests
     {
         [TestClass]
-        public class ContentBytesCountMethod : AsicEArkivTester
+        public class ContentBytesCountMethod : AsiceArchiveTests
         {
             [TestMethod]
             public void ReturnsProperBytesCount()
@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 
                 var expectedBytesCount = 0L;
                 expectedBytesCount += asicEArkiv.Manifest.Bytes.Length;
-                expectedBytesCount += asicEArkiv.Signatur.Bytes.Length;
+                expectedBytesCount += asicEArkiv.Signature.Bytes.Length;
                 expectedBytesCount += asicEArkiv.Dokumentpakke.Hoveddokument.Bytes.Length;
 
                 foreach (var dokument in asicEArkiv.Dokumentpakke.Vedlegg)
@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                 }
 
                 //Act
-                var actualBytesCount = asicEArkiv.ContentBytesCount;
+                var actualBytesCount = asicEArkiv.UnzippedContentBytesCount;
 
                 //Assert
                 Assert.AreEqual(expectedBytesCount, actualBytesCount);

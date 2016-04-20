@@ -16,14 +16,14 @@ using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class Signatur : IAsiceVedlegg
+    internal class Signature : IAsiceVedlegg
     {
         private readonly Forsendelse _forsendelse;
         private readonly Manifest _manifest;
         private readonly X509Certificate2 _sertifikat;
         private XmlDocument _xml;
 
-        public Signatur(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat)
+        public Signature(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat)
         {
             _forsendelse = forsendelse;
             _manifest = manifest;

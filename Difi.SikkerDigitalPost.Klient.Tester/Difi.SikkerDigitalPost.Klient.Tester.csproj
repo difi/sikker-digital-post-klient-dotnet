@@ -59,6 +59,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -81,7 +82,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
-    <Compile Include="AsicE\AsicEArkivTester.cs" />
+    <Compile Include="AsicE\AsiceArchiveTests.cs" />
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
     <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Fakes\FakeHttpClientHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientHandlerResponse.cs" />
+    <Compile Include="Internal\AsicE\DocumentBundleTests.cs" />
     <Compile Include="Internal\RequestHelperTests.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />
     <Compile Include="KvitteringFactoryTester.cs" />

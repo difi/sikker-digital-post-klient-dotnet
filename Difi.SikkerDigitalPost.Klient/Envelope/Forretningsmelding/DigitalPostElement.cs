@@ -166,7 +166,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
                 var digestValue = dokumentpakkefingeravtrykk.AppendChildElement("DigestValue", "ns5", NavneromUtility.XmlDsig, Context);
                 digestValue.InnerText = Convert.ToBase64String(_managedSha256.ComputeHash(
-                    Settings.AsicEArkiv.Bytes));
+                    Settings.AsiceArchiveDocumentBundle.BundleBytes));
             }
             return dokumentpakkefingeravtrykk;
         }

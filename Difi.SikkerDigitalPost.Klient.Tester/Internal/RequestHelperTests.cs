@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
@@ -42,7 +40,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
             {
                 //Arrange
                 var forretningsmeldingEnvelope = DomeneUtility.GetForretningsmeldingEnvelope();
-                var asiceArkiv = new AsicEArkiv(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
+
+                var documentBundle = AsiceGenerator.Create(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
 
                 var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
@@ -50,13 +49,44 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 
                 //Act 
-                var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
-                soapContainer.Vedlegg.Add(asiceArkiv);
-                var kvittering = await requestHelper.Send(soapContainer);
+                var kvittering = await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
 
                 //Assert
                 Assert.IsInstanceOfType(kvittering, typeof(TransportOkKvittering));
             }
         }
+
+        [TestClass]
+        public class GetReceiptMethod : RequestHelperTests
+        {
+            [TestMethod]
+            public void GetsReceiptSuccessfully()
+            {
+                //Arrange
+                
+
+                //Act
+
+                //Assert
+                Assert.Fail();
+            } 
+        }
+
+        [TestClass]
+        public class ConfirmReceiptMethod : RequestHelperTests
+        {
+            [TestMethod]
+            public void ConfirmsReceiptSuccessfully()
+            {
+                //Arrange
+
+
+                //Act
+
+                //Assert
+                Assert.Fail();
+            }
+        }
+
     }
 }

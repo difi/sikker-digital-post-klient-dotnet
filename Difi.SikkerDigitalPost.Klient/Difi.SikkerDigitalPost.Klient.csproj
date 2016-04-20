@@ -67,9 +67,11 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
-    <Compile Include="AsicE\AsicEArkiv.cs" />
-    <Compile Include="AsicE\Manifest.cs" />
-    <Compile Include="AsicE\Signatur.cs" />
+    <Compile Include="Internal\AsicE\AsiceArchive.cs" />
+    <Compile Include="Internal\AsicE\AsiceGenerator.cs" />
+    <Compile Include="Internal\AsicE\DocumentBundle.cs" />
+    <Compile Include="Internal\AsicE\Manifest.cs" />
+    <Compile Include="Internal\AsicE\Signature.cs" />
     <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
     <Compile Include="Envelope\Abstract\AbstractHeader.cs" />
     <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingBody.cs" />
@@ -102,7 +104,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
-    <Compile Include="SoapContainer.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="Klientkonfigurasjon.cs">
       <SubType>Code</SubType>
@@ -119,9 +120,9 @@
     <Compile Include="XmlValidering\KvitteringsforespørselEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\KvitteringMottattEnvelopeValidator.cs" />
     <Compile Include="XmlValidering\ForretningsmeldingEnvelopeValidator.cs" />
-    <Compile Include="XmlValidering\ManifestValidator.cs" />
+    <Compile Include="Internal\AsicE\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\Signaturvalidator.cs" />
+    <Compile Include="XmlValidering\SignatureValidator.cs" />
     <Compile Include="XmlValidering\Responsvalidator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -74,7 +74,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void VedleggTittelSkalSettesIManifestet()
             {
                 //Arrange
-                //Arrange
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
                 var vedleggTittel = "tittel";
@@ -85,7 +84,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
                 var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
@@ -96,8 +95,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 //Assert
 
-                var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg",
-                    namespaceManager).InnerText;
+                var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg", namespaceManager).InnerText;
                 Assert.AreEqual(vedleggTittel, vedleggNodeInnerText);
             }
 

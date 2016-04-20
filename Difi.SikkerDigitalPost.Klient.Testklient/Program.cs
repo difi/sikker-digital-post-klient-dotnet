@@ -56,7 +56,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              * SEND POST OG MOTTA KVITTERINGER
              */
             SendPost(sikkerDigitalPostKlient, forsendelse);
-
+                
             Console.WriteLine(@"--- STARTER Å HENTE KVITTERINGER ---");
 
             HentKvitteringer(sikkerDigitalPostKlient);
@@ -147,8 +147,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
             LeggTilLogging(klientkonfigurasjon);
-            klientkonfigurasjon.LoggXmlTilFil = false;
-            klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
+            //klientkonfigurasjon.LoggXmlTilFil = false;
+            //klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
         }
 
