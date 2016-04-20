@@ -5,13 +5,17 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
+using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class AsicEArkiv : ISoapVedlegg
+    internal class AsiceArchive : ISoapVedlegg
     {
         public Dokumentpakke Dokumentpakke { get; }
 
@@ -22,19 +26,31 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
 
-        public AsicEArkiv(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
+        public AsiceArchive(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
         {
             Manifest = new Manifest(forsendelse);
-            Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
+            ValidateXmlAndThrowIfInvalid(new ManifestValidator(), Manifest.Xml(), messagePrefix: "Manifest");
 
+            Signature = new Signature(forsendelse, Manifest, avsenderSertifikat);
+            ValidateXmlAndThrowIfInvalid(new SignatureValidator(), Signature.Xml(), messagePrefix: "Signatur");
+            
             _forsendelse = forsendelse;
             Dokumentpakke = _forsendelse.Dokumentpakke;
             _guidHandler = guidHandler;
         }
 
+        private void ValidateXmlAndThrowIfInvalid(XmlValidator xmlValidator, XmlDocument xmlDocument, string messagePrefix)
+        {
+            var isValid = xmlValidator.ValiderDokumentMotXsd(xmlDocument.OuterXml);
+            if (!isValid)
+            {
+                throw new XmlValidationException($"{messagePrefix} er ikke gyldig: {xmlValidator.ValideringsVarsler}");
+            }
+        }
+
         public Manifest Manifest { get; set; }
 
-        public Signatur Signatur { get; set; }
+        public Signature Signature { get; set; }
 
         private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
 
@@ -77,7 +93,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             {
                 LeggFilTilArkiv(archive, Dokumentpakke.Hoveddokument.FilnavnRådata, Dokumentpakke.Hoveddokument.Bytes);
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
-                LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
+                LeggFilTilArkiv(archive, Signature.Filnavn, Signature.Bytes);
 
                 foreach (var dokument in Dokumentpakke.Vedlegg)
                     LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
@@ -86,13 +102,13 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             return stream.ToArray();
         }
 
-        public long ContentBytesCount
+        public long UnzippedContentBytesCount
         {
             get
             {
                 var bytesCount = 0L;
                 bytesCount += Manifest.Bytes.Length;
-                bytesCount += Signatur.Bytes.Length;
+                bytesCount += Signature.Bytes.Length;
                 bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
                 bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
 

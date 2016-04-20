@@ -6,11 +6,11 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
-    internal class Signaturvalidator : XmlValidator
+    internal class SignatureValidator : XmlValidator
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
-        public Signaturvalidator()
+        public SignatureValidator()
         {
             LeggTilXsdRessurs(NavneromUtility.UriEtsi121, HentRessurs("w3.ts_102918v010201.xsd"));
             LeggTilXsdRessurs(NavneromUtility.UriEtsi132, HentRessurs("w3.XAdES.xsd"));
