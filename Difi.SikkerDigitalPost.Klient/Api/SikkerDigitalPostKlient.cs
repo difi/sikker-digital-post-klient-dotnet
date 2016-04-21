@@ -83,17 +83,17 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var guidUtility = new GuidUtility();
 
-            var asiceArchiveDocumentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon.StandardLoggSti);
+            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon.StandardLoggSti);
 
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, asiceArchiveDocumentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
 
             ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
             
             
-            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, asiceArchiveDocumentBundle);
-            transportReceipt.AntallBytesDokumentpakke = asiceArchiveDocumentBundle.BillableBytes;
+            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
+            transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportReceipt);

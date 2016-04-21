@@ -41,31 +41,15 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         private X509Certificate2 Krypteringssertifikat => Message.PostInfo.Mottaker.Sertifikat;
 
+        private byte[] _unencryptedBytes;
         internal byte[] UnencryptedBytes
         {
-            get
-            {
-                if (_ukrypterteBytes != null)
-                    return _ukrypterteBytes;
-
-                _ukrypterteBytes = LagBytes();
-                return _ukrypterteBytes;
-            }
+            get { return _unencryptedBytes = _unencryptedBytes ?? LagBytes(); }
         }
 
         public string Filnavn => "post.asice.zip";
 
-        public byte[] Bytes
-        {
-            get
-            {
-                if (_bytes != null)
-                    return _bytes;
-
-                _bytes = KrypterteBytes(UnencryptedBytes);
-                return _bytes;
-            }
-        }
+        public byte[] Bytes => KrypterteBytes(UnencryptedBytes);
 
         public string Innholdstype => "application/cms";
 
