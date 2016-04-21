@@ -5,19 +5,17 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
     [Serializable]
     public class XmlValidationException : KonfigurasjonsException
     {
-        private const string StartAvMelding = " Validering av Xml feilet: ";
-
         public XmlValidationException()
         {
         }
 
         public XmlValidationException(string message)
-            : base(StartAvMelding + message)
+            : base(message)
         {
         }
 
         public XmlValidationException(string message, Exception inner)
-            : base(message + StartAvMelding, inner)
+            : base(message, inner)
         {
         }
     }

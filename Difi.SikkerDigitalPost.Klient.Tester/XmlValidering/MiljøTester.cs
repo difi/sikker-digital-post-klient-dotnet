@@ -16,14 +16,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms";
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                var sertifikater = SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater();
+                var sertifikater = CertificateChainUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.Sertifikatkjedevalidator);
+                Assert.IsNotNull(miljø.CertificateChainValidator);
                 Assert.AreEqual(url, miljø.Url.AbsoluteUri);
-                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatkjedevalidator.SertifikatLager);
+                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
             [TestMethod]
@@ -32,14 +32,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 var url = "https://meldingsformidler.digipost.no/api/ebms";
                 var miljø = Miljø.Produksjonsmiljø;
-                var sertifikater = SertifikatkjedeUtility.ProduksjonsSertifikater();
+                var sertifikater = CertificateChainUtility.ProduksjonsSertifikater();
 
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.Sertifikatkjedevalidator);
+                Assert.IsNotNull(miljø.CertificateChainValidator);
                 Assert.AreEqual(url, miljø.Url.ToString());
-                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatkjedevalidator.SertifikatLager);
+                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
             [TestMethod]
@@ -48,14 +48,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/";
                 var miljø = Miljø.FunksjoneltTestmiljøNorskHelsenett;
-                var sertifikater = SertifikatkjedeUtility.FunksjoneltTestmiljøSertifikater();
+                var sertifikater = CertificateChainUtility.FunksjoneltTestmiljøSertifikater();
 
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.Sertifikatkjedevalidator);
+                Assert.IsNotNull(miljø.CertificateChainValidator);
                 Assert.AreEqual(url, miljø.Url.AbsoluteUri);
-                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatkjedevalidator.SertifikatLager);
+                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
             [TestMethod]
@@ -64,14 +64,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 var url = "https://meldingsformidler.nhn.digipost.no:4444/api/";
                 var miljø = Miljø.ProduksjonsmiljøNorskHelsenett;
-                var sertifikater = SertifikatkjedeUtility.ProduksjonsSertifikater();
+                var sertifikater = CertificateChainUtility.ProduksjonsSertifikater();
 
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.Sertifikatkjedevalidator);
+                Assert.IsNotNull(miljø.CertificateChainValidator);
                 Assert.AreEqual(url, miljø.Url.ToString());
-                CollectionAssert.AreEqual(sertifikater, miljø.Sertifikatkjedevalidator.SertifikatLager);
+                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
         }
     }

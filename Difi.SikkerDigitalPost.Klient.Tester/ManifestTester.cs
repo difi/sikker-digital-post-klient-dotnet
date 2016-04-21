@@ -60,8 +60,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
                 hoveddokumentNode.Attributes["href"].Value = "abc";
 
-                var validert = manifestValidator.ValiderDokumentMotXsd(manifestXml.OuterXml);
-                Assert.IsFalse(validert, manifestValidator.ValideringsVarsler);
+                var validert = manifestValidator.Validate(manifestXml.OuterXml);
+                Assert.IsFalse(validert, manifestValidator.ValidationWarnings);
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
             }
@@ -143,8 +143,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var manifestXml = arkiv.Manifest.Xml();
 
                 var manifestValidering = new ManifestValidator();
-                var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-                Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
+                var validert = manifestValidering.Validate(manifestXml.OuterXml);
+                Assert.IsTrue(validert, manifestValidering.ValidationWarnings);
             }
         }
     }
