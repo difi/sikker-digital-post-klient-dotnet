@@ -5,26 +5,18 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using System.Xml;
-using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceArchive : ISoapVedlegg
     {
-        public Dokumentpakke Dokumentpakke { get; }
-
-        public Forsendelse Message { get; }
-
-        private GuidUtility GuidUtility { get; }
-
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
+
+        private byte[] _unencryptedBytes;
 
         public AsiceArchive(Forsendelse message, Manifest manifest, Signature signature, GuidUtility guidUtility)
         {
@@ -35,16 +27,35 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             GuidUtility = guidUtility;
         }
 
+        public Dokumentpakke Dokumentpakke { get; }
+
+        public Forsendelse Message { get; }
+
+        private GuidUtility GuidUtility { get; }
+
         public Manifest Manifest { get; set; }
 
         public Signature Signature { get; set; }
 
         private X509Certificate2 Krypteringssertifikat => Message.PostInfo.Mottaker.Sertifikat;
 
-        private byte[] _unencryptedBytes;
         internal byte[] UnencryptedBytes
         {
             get { return _unencryptedBytes = _unencryptedBytes ?? LagBytes(); }
+        }
+
+        public long UnzippedContentBytesCount
+        {
+            get
+            {
+                var bytesCount = 0L;
+                bytesCount += Manifest.Bytes.Length;
+                bytesCount += Signature.Bytes.Length;
+                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
+                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
+
+                return bytesCount;
+            }
         }
 
         public string Filnavn => "post.asice.zip";
@@ -71,20 +82,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             }
 
             return stream.ToArray();
-        }
-
-        public long UnzippedContentBytesCount
-        {
-            get
-            {
-                var bytesCount = 0L;
-                bytesCount += Manifest.Bytes.Length;
-                bytesCount += Signature.Bytes.Length;
-                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
-                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
-
-                return bytesCount;
-            }
         }
 
         public void LagreTilDisk(params string[] filsti)

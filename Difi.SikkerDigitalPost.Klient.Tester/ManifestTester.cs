@@ -6,7 +6,6 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -80,7 +79,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
-
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
@@ -110,7 +108,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 var vedlegg = new Dokument("vedlegg tittel", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
-
 
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);

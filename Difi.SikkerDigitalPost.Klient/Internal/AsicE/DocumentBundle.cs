@@ -15,7 +15,7 @@
 
         public string ContentId { get; set; }
 
-       public string TransferEncoding { get; } = "binary";
+        public string TransferEncoding { get; } = "binary";
 
         public string ContentType { get; } = "application/cms";
     }

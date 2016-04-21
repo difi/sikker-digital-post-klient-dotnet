@@ -13,12 +13,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
             public void SimpleConstructor()
             {
                 //Arrange
-                var bundleBytes = new byte[] { 0x21, 0x22 };
+                var bundleBytes = new byte[] {0x21, 0x22};
                 const int billableBytes = 2;
                 const string id = "id";
 
                 //Act
-                var documentBundle = new DocumentBundle(bundleBytes,billableBytes, id);
+                var documentBundle = new DocumentBundle(bundleBytes, billableBytes, id);
 
                 //Assert
                 Assert.AreEqual(bundleBytes, documentBundle.BundleBytes);

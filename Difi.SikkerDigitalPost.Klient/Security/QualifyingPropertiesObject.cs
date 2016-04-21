@@ -39,7 +39,6 @@ namespace Difi.SikkerDigitalPost.Klient.Security
             // to the document until after the signature has been calculated. To circumvent this, we take the position where the signature will be added (XmlElement context parameter), clone its document
             // and add the QualifyingProperties inside a 'dummy' signature element. This ensures that the canoncalization process will process the QualifyingProperties parent nodes for namespaces.
 
-
             // Clone of the target document for the signature.
             var clone = (XmlDocument) context.OwnerDocument.Clone();
             clone.PreserveWhitespace = true;

@@ -35,7 +35,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             SendtMelding = sendtMelding;
             CertificateChainValidator = certificateChainValidator;
 
-
             _nsMgr = new XmlNamespaceManager(Respons.NameTable);
             _nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             _nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);

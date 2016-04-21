@@ -28,19 +28,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             SetLanguageIfNotSetOnContainingDocuments();
         }
 
-        private void SetLanguageIfNotSetOnContainingDocuments()
-        {
-            Dokumentpakke.Hoveddokument.Språkkode = Dokumentpakke.Hoveddokument.Språkkode ?? Språkkode;
-            Dokumentpakke.Vedlegg.Select(p => p.Språkkode = p.Språkkode ?? Språkkode);
-        }
-
         /// <param name="avsender">
         ///     Ansvarlig avsender av forsendelsen. Dette vil i de aller fleste tilfeller være den offentlige
         ///     virksomheten som er ansvarlig for brevet som skal sendes.
         /// </param>
         /// <param name="postInfo">Informasjon som brukes av postkasseleverandør for å behandle den digitale posten.</param>
         /// <param name="dokumentpakke">Pakke med hoveddokument og ev. vedlegg som skal sendes.</param>
-        /// <param name="konversasjonsId">Sett en eksplisitt konversasjonsid. Dette er id som kan brukes for spore alle ledd i opprettelse av et brev, og vil være i svar fra Meldingsformidler. </param>
+        /// <param name="konversasjonsId">
+        ///     Sett en eksplisitt konversasjonsid. Dette er id som kan brukes for spore alle ledd i
+        ///     opprettelse av et brev, og vil være i svar fra Meldingsformidler.
+        /// </param>
         /// <param name="prioritet">Setter forsendelsens prioritet. Standard er Prioritet.Normal</param>
         /// <param name="språkkode">
         ///     Språkkode i henhold til ISO-639-1 (2 bokstaver). Brukes til å informere postkassen om hvilket
@@ -113,6 +110,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         public string Mpc => MpcId == string.Empty
             ? $"urn:{Prioritet.ToString().ToLower()}"
             : $"urn:{Prioritet.ToString().ToLower()}:{MpcId}";
+
+        private void SetLanguageIfNotSetOnContainingDocuments()
+        {
+            Dokumentpakke.Hoveddokument.Språkkode = Dokumentpakke.Hoveddokument.Språkkode ?? Språkkode;
+            Dokumentpakke.Vedlegg.Select(p => p.Språkkode = p.Språkkode ?? Språkkode);
+        }
 
         public bool Sendes(Postmetode posttype)
         {
