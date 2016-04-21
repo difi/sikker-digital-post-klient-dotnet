@@ -8,9 +8,11 @@ using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
+using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
@@ -48,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task SuccessfullyReturnsTransportErrorReceipt()
             {
                 //Arrange
-                var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var sikkerDigitalPostKlient =  DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportError().OuterXml, HttpStatusCode.BadRequest);
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 

@@ -19,42 +19,29 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
     {
         public Dokumentpakke Dokumentpakke { get; }
 
-        private readonly Forsendelse _forsendelse;
+        public Forsendelse Message { get; }
 
-        private readonly GuidUtility _guidHandler;
+        private GuidUtility GuidUtility { get; }
 
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
 
-        public AsiceArchive(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
+        public AsiceArchive(Forsendelse message, Manifest manifest, Signature signature, GuidUtility guidUtility)
         {
-            Manifest = new Manifest(forsendelse);
-            ValidateXmlAndThrowIfInvalid(new ManifestValidator(), Manifest.Xml(), messagePrefix: "Manifest");
-
-            Signature = new Signature(forsendelse, Manifest, avsenderSertifikat);
-            ValidateXmlAndThrowIfInvalid(new SignatureValidator(), Signature.Xml(), messagePrefix: "Signatur");
-            
-            _forsendelse = forsendelse;
-            Dokumentpakke = _forsendelse.Dokumentpakke;
-            _guidHandler = guidHandler;
-        }
-
-        private void ValidateXmlAndThrowIfInvalid(XmlValidator xmlValidator, XmlDocument xmlDocument, string messagePrefix)
-        {
-            var isValid = xmlValidator.ValiderDokumentMotXsd(xmlDocument.OuterXml);
-            if (!isValid)
-            {
-                throw new XmlValidationException($"{messagePrefix} er ikke gyldig: {xmlValidator.ValideringsVarsler}");
-            }
+            Manifest = manifest;
+            Signature = signature;
+            Message = message;
+            Dokumentpakke = Message.Dokumentpakke;
+            GuidUtility = guidUtility;
         }
 
         public Manifest Manifest { get; set; }
 
         public Signature Signature { get; set; }
 
-        private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
+        private X509Certificate2 Krypteringssertifikat => Message.PostInfo.Mottaker.Sertifikat;
 
-        internal byte[] UkrypterteBytes
+        internal byte[] UnencryptedBytes
         {
             get
             {
@@ -75,14 +62,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 if (_bytes != null)
                     return _bytes;
 
-                _bytes = KrypterteBytes(UkrypterteBytes);
+                _bytes = KrypterteBytes(UnencryptedBytes);
                 return _bytes;
             }
         }
 
         public string Innholdstype => "application/cms";
 
-        public string ContentId => _guidHandler.DokumentpakkeId;
+        public string ContentId => GuidUtility.DokumentpakkeId;
 
         public string TransferEncoding => "binary";
 
@@ -118,7 +105,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         public void LagreTilDisk(params string[] filsti)
         {
-            FileUtility.WriteToBasePath(UkrypterteBytes, filsti);
+            FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
         }
 
         private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
