@@ -2,12 +2,11 @@
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using KellermanSoftware.CompareNetObjects.TypeComparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
-    [TestClass()]
+    [TestClass]
     public class ForsendelseTests
     {
         [TestClass]
@@ -21,10 +20,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 var simpleDigitalPostInfo = DomeneUtility.GetDigitalPostInfoEnkel();
 
                 string undefinedLanguageCode = null;
-                var primaryDocument = new Dokument("Tiitle", new byte[3],"application/pdf",språkkode: undefinedLanguageCode);
+                var primaryDocument = new Dokument("Tiitle", new byte[3], "application/pdf", undefinedLanguageCode);
                 var documentBundle = new Dokumentpakke(primaryDocument);
                 var definedLanguageCode = "en";
-                documentBundle.LeggTilVedlegg(new Dokument("Appendix", new byte[2], "application/pdf", språkkode: definedLanguageCode));
+                documentBundle.LeggTilVedlegg(new Dokument("Appendix", new byte[2], "application/pdf", definedLanguageCode));
 
                 var messageLanguageCode = "no";
                 //Act

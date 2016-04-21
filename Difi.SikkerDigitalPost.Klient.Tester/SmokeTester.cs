@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -36,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Arrange
             var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-            
+
             //Act
             var transportKvittering = await SendDokumentpakkeAsync(sdpklient, enkelFysiskForsendelse);
 

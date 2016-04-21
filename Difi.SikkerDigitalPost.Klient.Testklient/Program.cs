@@ -51,12 +51,11 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
-
             /**
              * SEND POST OG MOTTA KVITTERINGER
              */
             SendPost(sikkerDigitalPostKlient, forsendelse);
-                
+
             Console.WriteLine(@"--- STARTER Å HENTE KVITTERINGER ---");
 
             HentKvitteringer(sikkerDigitalPostKlient);
@@ -216,7 +215,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     sertifikat, Settings.Default.OrgnummerPosten);
 
                 var returMottaker = new FysiskPostReturmottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"));
-
 
                 postInfo = new FysiskPostInfo((FysiskPostMottaker) mottaker, Posttype.A, Utskriftsfarge.SortHvitt,
                     Posthåndtering.DirekteRetur, returMottaker);

@@ -13,18 +13,18 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         internal static DocumentBundle Create(Forsendelse message, GuidUtility guidUtility, X509Certificate2 senderCertificate, string standardLogPath = "")
         {
             var manifest = new Manifest(message);
-            ValidateXmlAndThrowIfInvalid(new ManifestValidator(), manifest.Xml(), messagePrefix: "Manifest");
+            ValidateXmlAndThrowIfInvalid(new ManifestValidator(), manifest.Xml(), "Manifest");
 
             var signature = new Signature(message, manifest, senderCertificate);
-            ValidateXmlAndThrowIfInvalid(new SignatureValidator(), signature.Xml(), messagePrefix: "Signatur");
+            ValidateXmlAndThrowIfInvalid(new SignatureValidator(), signature.Xml(), "Signatur");
 
             var asiceArchive = new AsiceArchive(message, manifest, signature, guidUtility);
-            
+
             if (!string.IsNullOrEmpty(standardLogPath))
             {
                 asiceArchive.LagreTilDisk(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
             }
-            
+
             return new DocumentBundle(asiceArchive.Bytes, asiceArchive.UnzippedContentBytesCount, asiceArchive.ContentId);
         }
 

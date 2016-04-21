@@ -1,26 +1,21 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ApiClientShared;
-using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Resources.Xml;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
-using Difi.SikkerDigitalPost.Klient.Tester.Properties;
-using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 {
-    [TestClass()]
+    [TestClass]
     public class SikkerDigitalPostKlientTests
     {
         [TestClass]
@@ -34,13 +29,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                var sikkerDigitalPostKlient = new  SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
+                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
                 //Assert
                 Assert.AreEqual(klientkonfigurasjon, sikkerDigitalPostKlient.Klientkonfigurasjon);
                 Assert.AreEqual(databehandler, sikkerDigitalPostKlient.Databehandler);
-                Assert.IsInstanceOfType(sikkerDigitalPostKlient.RequestHelper, typeof(RequestHelper));
-            } 
+                Assert.IsInstanceOfType(sikkerDigitalPostKlient.RequestHelper, typeof (RequestHelper));
+            }
         }
 
         [TestClass]
@@ -50,8 +45,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task SuccessfullyReturnsTransportErrorReceipt()
             {
                 //Arrange
-                var sikkerDigitalPostKlient =  DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportError().OuterXml, HttpStatusCode.BadRequest);
+                var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportError().OuterXml, HttpStatusCode.BadRequest);
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
@@ -59,16 +54,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var receipt = await sikkerDigitalPostKlient.SendAsync(message);
 
                 //Assert
-                Assert.IsInstanceOfType(receipt, typeof(TransportFeiletKvittering));
+                Assert.IsInstanceOfType(receipt, typeof (TransportFeiletKvittering));
             }
 
-            [ExpectedException(typeof(SdpSecurityException))]
+            [ExpectedException(typeof (SdpSecurityException))]
             [TestMethod]
             public async Task ThrowsExceptionOnResponseNotMatchingRequest()
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
@@ -76,7 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var receipt = await sikkerDigitalPostKlient.SendAsync(message);
 
                 //Assert
-                Assert.IsInstanceOfType(receipt, typeof(TransportFeiletKvittering));
+                Assert.IsInstanceOfType(receipt, typeof (TransportFeiletKvittering));
             }
         }
     }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -24,12 +22,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 {
     public class SikkerDigitalPostKlient : ISikkerDigitalPostKlient
     {
-        public Databehandler Databehandler { get; }
-
-        public Klientkonfigurasjon Klientkonfigurasjon { get; }
-
-        internal RequestHelper RequestHelper { get; set; }
-
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
@@ -49,10 +41,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
-            
+
             Logging.Initialize(klientkonfigurasjon);
             FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
+
+        public Databehandler Databehandler { get; }
+
+        public Klientkonfigurasjon Klientkonfigurasjon { get; }
+
+        internal RequestHelper RequestHelper { get; set; }
 
         /// <summary>
         ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
@@ -90,8 +88,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
 
             ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
-            
-            
+
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
@@ -345,7 +342,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
-            
+
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
         }
 

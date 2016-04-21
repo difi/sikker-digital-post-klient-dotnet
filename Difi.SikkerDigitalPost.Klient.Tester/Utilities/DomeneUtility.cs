@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
@@ -188,7 +186,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             var envelopeSettings = new EnvelopeSettings(
                 GetDigitalForsendelseEnkelMedTestSertifikat(),
-                AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat()),  
+                AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat()),
                 GetDatabehandlerMedTestSertifikat(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));

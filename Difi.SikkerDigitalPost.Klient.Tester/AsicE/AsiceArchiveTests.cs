@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 {
-    [TestClass()]
+    [TestClass]
     public class AsiceArchiveTests
     {
         [TestClass]
@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             {
                 //Arrange
                 var forsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
-               
+
                 var manifest = new Manifest(forsendelse);
                 var asiceArchive = new AsiceArchive(forsendelse, manifest, new Signature(forsendelse, manifest, DomeneUtility.GetAvsenderEnhetstesterSertifikat()), new GuidUtility());
 
@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 
                 foreach (var dokument in asiceArchive.Dokumentpakke.Vedlegg)
                 {
-                    expectedBytesCount+= dokument.Bytes.Length;
+                    expectedBytesCount += dokument.Bytes.Length;
                 }
 
                 //Act

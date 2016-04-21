@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
         public class CreateMethod : AsiceGeneratorTests
         {
             [TestMethod]
-            [ExpectedExceptionAttribute(typeof(XmlValidationException))]
+            [ExpectedException(typeof (XmlValidationException))]
             public void ThrowsExceptionOnInvalidManifest()
             {
                 //Arrange

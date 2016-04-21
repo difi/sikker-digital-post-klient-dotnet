@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
@@ -18,15 +15,15 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 {
     internal class RequestHelper
     {
-        public Klientkonfigurasjon ClientConfiguration { get; }
-
-        public HttpClient HttpClient { get; set; }
-
         public RequestHelper(Klientkonfigurasjon clientConfiguration)
         {
             ClientConfiguration = clientConfiguration;
             HttpClient = new HttpClient(HttpClientHandlerChain());
         }
+
+        public Klientkonfigurasjon ClientConfiguration { get; }
+
+        public HttpClient HttpClient { get; set; }
 
         private HttpMessageHandler HttpClientHandlerChain()
         {
@@ -83,9 +80,9 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
-            string boundary = Guid.NewGuid().ToString();
+            var boundary = Guid.NewGuid().ToString();
             var meldingsinnhold = new MultipartFormDataContent(boundary);
-        
+
             //Todo: Dette er ullent og boer vaere kompilert kode.
             var contentType = string.Format(
                 "Multipart/Related; boundary=\"{0}\"; " +
@@ -101,7 +98,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             AddEnvelopeToMultipart(envelope, meldingsinnhold);
 
             AddDocumentBundleToMultipart(asiceDocumentBundle, meldingsinnhold);
-            
 
             return meldingsinnhold;
         }

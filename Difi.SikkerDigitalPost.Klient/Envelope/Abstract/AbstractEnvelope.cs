@@ -9,8 +9,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
-        protected readonly XmlDocument EnvelopeXml;
         protected readonly EnvelopeSettings EnvelopeSettings;
+        protected readonly XmlDocument EnvelopeXml;
         private byte[] _bytes;
         private string _contentId;
 
