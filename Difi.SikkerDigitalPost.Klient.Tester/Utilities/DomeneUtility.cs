@@ -36,14 +36,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
-        private static Dokument _hoveddokument;
-
         private static IEnumerable<Dokument> _vedlegg;
 
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
-            var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
-            return dokumentpakke;
+            return new Dokumentpakke(GetHoveddokumentEnkel());
         }
 
         internal static Dokumentpakke GetDokumentpakkeMedFlereVedlegg(int antall = 3)
@@ -55,12 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Dokument GetHoveddokumentEnkel()
         {
-            if (_hoveddokument != null)
-            {
-                return _hoveddokument;
-            }
-
-            return _hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+            return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
         internal static string[] GetVedleggsFilerStier()
@@ -184,14 +176,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat(), string.Empty);
         }
 
-        internal static AsiceArchive GetAsicEArkivEnkelMedTestSertifikat()
+        internal static AsiceArchive GetAsiceArchive(Forsendelse forsendelse)
         {
-            return new AsiceArchive(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderSertifikat());
-        }
+            var manifest = new Manifest(forsendelse);
+            var signature = new Signature(forsendelse, manifest, GetAvsenderEnhetstesterSertifikat());
 
-        internal static AsiceArchive GetAsicEArkiv(Forsendelse forsendelse)
-        {
-            return new AsiceArchive(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
+            return new AsiceArchive(forsendelse, manifest, signature, new GuidUtility());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()

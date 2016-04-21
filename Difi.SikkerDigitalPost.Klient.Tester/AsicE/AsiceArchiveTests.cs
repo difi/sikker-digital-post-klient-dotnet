@@ -1,4 +1,6 @@
-﻿using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+﻿using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
@@ -14,20 +16,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             {
                 //Arrange
                 var forsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
-                var asicEArkiv = DomeneUtility.GetAsicEArkiv(forsendelse);
+               
+                var manifest = new Manifest(forsendelse);
+                var asiceArchive = new AsiceArchive(forsendelse, manifest, new Signature(forsendelse, manifest, DomeneUtility.GetAvsenderEnhetstesterSertifikat()), new GuidUtility());
 
                 var expectedBytesCount = 0L;
-                expectedBytesCount += asicEArkiv.Manifest.Bytes.Length;
-                expectedBytesCount += asicEArkiv.Signature.Bytes.Length;
-                expectedBytesCount += asicEArkiv.Dokumentpakke.Hoveddokument.Bytes.Length;
+                expectedBytesCount += asiceArchive.Manifest.Bytes.Length;
+                expectedBytesCount += asiceArchive.Signature.Bytes.Length;
+                expectedBytesCount += asiceArchive.Dokumentpakke.Hoveddokument.Bytes.Length;
 
-                foreach (var dokument in asicEArkiv.Dokumentpakke.Vedlegg)
+                foreach (var dokument in asiceArchive.Dokumentpakke.Vedlegg)
                 {
                     expectedBytesCount+= dokument.Bytes.Length;
                 }
 
                 //Act
-                var actualBytesCount = asicEArkiv.UnzippedContentBytesCount;
+                var actualBytesCount = asiceArchive.UnzippedContentBytesCount;
 
                 //Assert
                 Assert.AreEqual(expectedBytesCount, actualBytesCount);

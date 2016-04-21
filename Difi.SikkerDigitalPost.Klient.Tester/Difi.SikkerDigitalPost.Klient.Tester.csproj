@@ -96,8 +96,10 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
+    <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
     <Compile Include="Fakes\FakeHttpClientHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientHandlerResponse.cs" />
+    <Compile Include="Internal\AsicE\AsiceGeneratorTests.cs" />
     <Compile Include="Internal\AsicE\DocumentBundleTests.cs" />
     <Compile Include="Internal\RequestHelperTests.cs" />
     <Compile Include="KlientkonfigurasjonTester.cs" />

@@ -55,38 +55,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 Assert.IsInstanceOfType(kvittering, typeof(TransportOkKvittering));
             }
         }
-
-        [TestClass]
-        public class GetReceiptMethod : RequestHelperTests
-        {
-            [TestMethod]
-            public void GetsReceiptSuccessfully()
-            {
-                //Arrange
-                
-
-                //Act
-
-                //Assert
-                Assert.Fail();
-            } 
-        }
-
-        [TestClass]
-        public class ConfirmReceiptMethod : RequestHelperTests
-        {
-            [TestMethod]
-            public void ConfirmsReceiptSuccessfully()
-            {
-                //Arrange
-
-
-                //Act
-
-                //Assert
-                Assert.Fail();
-            }
-        }
-
     }
 }

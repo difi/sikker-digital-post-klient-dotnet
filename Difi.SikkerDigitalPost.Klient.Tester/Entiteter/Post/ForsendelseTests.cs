@@ -1,0 +1,39 @@
+﻿using System.Linq;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using KellermanSoftware.CompareNetObjects.TypeComparers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
+{
+    [TestClass()]
+    public class ForsendelseTests
+    {
+        [TestClass]
+        public class ConstructorMethod : ForsendelseTests
+        {
+            [TestMethod]
+            public void SuccessfullySetsLanguageOnDocumentsWithNoLanguageCodeFromMessage()
+            {
+                //Arrange
+                var sender = DomeneUtility.GetAvsender();
+                var simpleDigitalPostInfo = DomeneUtility.GetDigitalPostInfoEnkel();
+
+                string undefinedLanguageCode = null;
+                var primaryDocument = new Dokument("Tiitle", new byte[3],"application/pdf",språkkode: undefinedLanguageCode);
+                var documentBundle = new Dokumentpakke(primaryDocument);
+                var definedLanguageCode = "en";
+                documentBundle.LeggTilVedlegg(new Dokument("Appendix", new byte[2], "application/pdf", språkkode: definedLanguageCode));
+
+                var messageLanguageCode = "no";
+                //Act
+                var forsendelse = new Forsendelse(sender, simpleDigitalPostInfo, documentBundle, Prioritet.Normal, "mpcId", messageLanguageCode);
+
+                //Assert
+                Assert.AreEqual(messageLanguageCode, documentBundle.Hoveddokument.Språkkode);
+                Assert.AreEqual(definedLanguageCode, documentBundle.Vedlegg.First().Språkkode);
+            }
+        }
+    }
+}

@@ -45,9 +45,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
+                var manifest = new Manifest(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
 
-                var manifestXml = arkiv.Manifest.Xml();
+                var manifestXml = manifest.Xml();
                 var manifestValidator = new ManifestValidator();
 
                 //Endre navn på hoveddokument til å være for kort
@@ -85,7 +85,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
                 var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -116,7 +116,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
                 var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -138,7 +138,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereManifestMotXsdValiderer()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
+                var arkiv = DomeneUtility.GetAsiceArchive(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
 
                 var manifestXml = arkiv.Manifest.Xml();
 
