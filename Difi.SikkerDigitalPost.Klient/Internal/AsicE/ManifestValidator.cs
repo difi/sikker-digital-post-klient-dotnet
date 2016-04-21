@@ -12,9 +12,9 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         public ManifestValidator()
         {
-            LeggTilXsdRessurs(NavneromUtility.DifiSdpSchema10, GetResource("sdp-manifest.xsd"));
-            LeggTilXsdRessurs(NavneromUtility.DifiSdpSchema10, GetResource("sdp-felles.xsd"));
-            LeggTilXsdRessurs(NavneromUtility.XmlDsig, GetResource("w3.xmldsig-core-schema.xsd"));
+            AddXsd(NavneromUtility.DifiSdpSchema10, GetResource("sdp-manifest.xsd"));
+            AddXsd(NavneromUtility.DifiSdpSchema10, GetResource("sdp-felles.xsd"));
+            AddXsd(NavneromUtility.XmlDsig, GetResource("w3.xmldsig-core-schema.xsd"));
         }
 
         private static XmlReader GetResource(string path)

@@ -337,9 +337,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             try
             {
                 var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
-                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(bekreftKvitteringEnvelope.Xml().OuterXml);
+                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.Validate(bekreftKvitteringEnvelope.Xml().OuterXml);
                 if (!kvitteringMottattEnvelopeValidert)
-                    throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
+                    throw new Exception(kvitteringMottattEnvelopeValidering.ValidationWarnings);
             }
             catch (Exception e)
             {
@@ -355,9 +355,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
                 var kvitteringForespørselEnvelopeValidert =
-                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                    kvitteringForespørselEnvelopeValidering.Validate(kvitteringsenvelope.Xml().OuterXml);
                 if (!kvitteringForespørselEnvelopeValidert)
-                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
+                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValidationWarnings);
             }
             catch (Exception e)
             {
@@ -367,19 +367,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             responsvalidator.ValiderTransportkvittering(guidUtility);
         }
 
         private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             responsvalidator.ValiderTomKøKvittering();
         }
 
         private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
         }
 
@@ -388,9 +388,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             const string preMessage = "Envelope validerer ikke: ";
 
             var envelopeValidering = new ForretningsmeldingEnvelopeValidator();
-            var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            var envelopeValidert = envelopeValidering.Validate(forretningsmeldingEnvelopeXml.OuterXml);
             if (!envelopeValidert)
-                throw new XmlValidationException(preMessage + envelopeValidering.ValideringsVarsler);
+                throw new XmlValidationException(preMessage + envelopeValidering.ValidationWarnings);
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)

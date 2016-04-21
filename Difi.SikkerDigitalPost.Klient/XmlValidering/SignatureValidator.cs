@@ -12,9 +12,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public SignatureValidator()
         {
-            LeggTilXsdRessurs(NavneromUtility.UriEtsi121, HentRessurs("w3.ts_102918v010201.xsd"));
-            LeggTilXsdRessurs(NavneromUtility.UriEtsi132, HentRessurs("w3.XAdES.xsd"));
-            LeggTilXsdRessurs(NavneromUtility.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
+            AddXsd(NavneromUtility.UriEtsi121, HentRessurs("w3.ts_102918v010201.xsd"));
+            AddXsd(NavneromUtility.UriEtsi132, HentRessurs("w3.XAdES.xsd"));
+            AddXsd(NavneromUtility.XmlDsig, HentRessurs("w3.xmldsig-core-schema.xsd"));
         }
 
         private XmlReader HentRessurs(string path)

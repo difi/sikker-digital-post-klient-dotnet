@@ -18,9 +18,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var envelope = DomeneUtility.GetForretningsmeldingEnvelopeMedTestSertifikat();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
                 var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
-                var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml);
 
-                Assert.IsTrue(validert, envelopeValidator.ValideringsVarsler);
+                Assert.IsTrue(validert, envelopeValidator.ValidationWarnings);
             }
 
             [TestMethod]
@@ -47,8 +47,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = securityNode.Attributes["mustUnderstand"].Value;
                 securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
-                var validert = envelopeValidator.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
-                Assert.IsFalse(validert, envelopeValidator.ValideringsVarsler);
+                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml);
+                Assert.IsFalse(validert, envelopeValidator.ValidationWarnings);
 
                 securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
             }
