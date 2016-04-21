@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
             //Partinfo/Dokumentpakke
             {
-                var partInfoReference = new Sha256Reference(Settings.AsiceArchiveDocumentBundle.BundleBytes)
+                var partInfoReference = new Sha256Reference(Settings.DocumentBundle.BundleBytes)
                 {
                     Uri = $"cid:{Settings.GuidHandler.DokumentpakkeId}"
                 };

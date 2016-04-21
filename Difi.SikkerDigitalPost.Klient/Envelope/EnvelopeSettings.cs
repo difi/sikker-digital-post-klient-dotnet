@@ -22,10 +22,10 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         /// <summary>
         ///     Settings for DigitalPostForsendelse
         /// </summary>
-        public EnvelopeSettings(Forsendelse forsendelse, DocumentBundle asiceArchiveDocumentBundle, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
+        public EnvelopeSettings(Forsendelse forsendelse, DocumentBundle documentBundle, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
         {
             Forsendelse = forsendelse;
-            AsiceArchiveDocumentBundle = asiceArchiveDocumentBundle;
+            DocumentBundle = documentBundle;
             Databehandler = databehandler;
             GuidHandler = guidHandler;
             Konfigurasjon = konfigurasjon;
@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         public Forretningskvittering ForrigeKvittering { get; private set; }
 
-        internal DocumentBundle AsiceArchiveDocumentBundle { get; private set; }
+        internal DocumentBundle DocumentBundle { get; private set; }
 
         internal GuidUtility GuidHandler { get; private set; }
 
