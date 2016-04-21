@@ -28,13 +28,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         ///     Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en
         ///     forsendelse av brev eller kvittering.
         /// </param>
-        /// <param name="sertifikatkjedevalidator"></param>
-        public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, Sertifikatkjedevalidator sertifikatkjedevalidator)
+        /// <param name="certificateChainValidator"></param>
+        public Responsvalidator(XmlDocument sendtMelding, XmlDocument respons, CertificateChainValidator certificateChainValidator)
         {
             Respons = respons;
             SendtMelding = sendtMelding;
-            Sertifikatkjedevalidator = sertifikatkjedevalidator;
-
+            CertificateChainValidator = certificateChainValidator;
 
             _nsMgr = new XmlNamespaceManager(Respons.NameTable);
             _nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
@@ -51,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SendtMelding { get; internal set; }
 
-        public Sertifikatkjedevalidator Sertifikatkjedevalidator { get; internal set; }
+        public CertificateChainValidator CertificateChainValidator { get; internal set; }
 
         public void ValiderMeldingskvittering()
         {
@@ -125,7 +124,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValiderResponssertifikat()
         {
-            var erGyldigSertifikat = Sertifikatkjedevalidator.ErGyldigSertifikatkjede(_sertifikat);
+            var erGyldigSertifikat = CertificateChainValidator.ErGyldigSertifikatkjede(_sertifikat);
 
             if (!erGyldigSertifikat)
             {

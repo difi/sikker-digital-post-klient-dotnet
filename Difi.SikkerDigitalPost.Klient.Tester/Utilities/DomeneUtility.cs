@@ -5,7 +5,6 @@ using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using ApiClientShared.Enums;
 using Difi.SikkerDigitalPost.Klient.Api;
-using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
@@ -15,6 +14,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
@@ -34,14 +34,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
-        private static Dokument _hoveddokument;
-
         private static IEnumerable<Dokument> _vedlegg;
 
         internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
         {
-            var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
-            return dokumentpakke;
+            return new Dokumentpakke(GetHoveddokumentEnkel());
         }
 
         internal static Dokumentpakke GetDokumentpakkeMedFlereVedlegg(int antall = 3)
@@ -53,12 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Dokument GetHoveddokumentEnkel()
         {
-            if (_hoveddokument != null)
-            {
-                return _hoveddokument;
-            }
-
-            return _hoveddokument = new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+            return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
         internal static string[] GetVedleggsFilerStier()
@@ -177,26 +169,24 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static AsicEArkiv GetAsicEArkivEnkel()
+        internal static DocumentBundle GetAsicEArkivEnkel()
         {
-            return new AsicEArkiv(GetDigitalForsendelseEnkel(), GuidUtility, GetAvsenderSertifikat());
+            return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat(), string.Empty);
         }
 
-        internal static AsicEArkiv GetAsicEArkivEnkelMedTestSertifikat()
+        internal static AsiceArchive GetAsiceArchive(Forsendelse forsendelse)
         {
-            return new AsicEArkiv(GetDigitalForsendelseEnkelMedTestSertifikat(), GuidUtility, GetAvsenderEnhetstesterSertifikat());
-        }
+            var manifest = new Manifest(forsendelse);
+            var signature = new Signature(forsendelse, manifest, GetAvsenderEnhetstesterSertifikat());
 
-        internal static AsicEArkiv GetAsicEArkiv(Forsendelse forsendelse)
-        {
-            return new AsicEArkiv(forsendelse, GuidUtility, GetAvsenderEnhetstesterSertifikat());
+            return new AsiceArchive(forsendelse, manifest, signature, new GuidUtility());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()
         {
             var envelopeSettings = new EnvelopeSettings(
                 GetDigitalForsendelseEnkelMedTestSertifikat(),
-                GetAsicEArkivEnkelMedTestSertifikat(),
+                AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat()),
                 GetDatabehandlerMedTestSertifikat(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));

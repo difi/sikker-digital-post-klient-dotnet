@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Xml;
 using ApiClientShared;
-using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -45,9 +44,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
+                var manifest = new Manifest(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
 
-                var manifestXml = arkiv.Manifest.Xml();
+                var manifestXml = manifest.Xml();
                 var manifestValidator = new ManifestValidator();
 
                 //Endre navn på hoveddokument til å være for kort
@@ -60,8 +59,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
                 hoveddokumentNode.Attributes["href"].Value = "abc";
 
-                var validert = manifestValidator.ValiderDokumentMotXsd(manifestXml.OuterXml);
-                Assert.IsFalse(validert, manifestValidator.ValideringsVarsler);
+                var validert = manifestValidator.Validate(manifestXml.OuterXml);
+                Assert.IsFalse(validert, manifestValidator.ValidationWarnings);
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
             }
@@ -74,19 +73,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void VedleggTittelSkalSettesIManifestet()
             {
                 //Arrange
-                //Arrange
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
                 var vedleggTittel = "tittel";
                 var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
-
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
+                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -96,8 +93,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 //Assert
 
-                var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg",
-                    namespaceManager).InnerText;
+                var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg", namespaceManager).InnerText;
                 Assert.AreEqual(vedleggTittel, vedleggNodeInnerText);
             }
 
@@ -113,12 +109,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var vedlegg = new Dokument("vedlegg tittel", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
-
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
                 var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsicEArkiv(enkelForsendelse);
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
 
                 var manifestXml = asiceArkiv.Manifest.Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -140,13 +135,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereManifestMotXsdValiderer()
             {
-                var arkiv = DomeneUtility.GetAsicEArkivEnkelMedTestSertifikat();
+                var arkiv = DomeneUtility.GetAsiceArchive(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
 
                 var manifestXml = arkiv.Manifest.Xml();
 
                 var manifestValidering = new ManifestValidator();
-                var validert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-                Assert.IsTrue(validert, manifestValidering.ValideringsVarsler);
+                var validert = manifestValidering.Validate(manifestXml.OuterXml);
+                Assert.IsTrue(validert, manifestValidering.ValidationWarnings);
             }
         }
     }

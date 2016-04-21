@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
-using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -17,6 +14,7 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -24,12 +22,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 {
     public class SikkerDigitalPostKlient : ISikkerDigitalPostKlient
     {
-        public Databehandler Databehandler { get; }
-
-        public Klientkonfigurasjon Klientkonfigurasjon { get; }
-
-        internal RequestHelper RequestHelper { get; set; }
-
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
@@ -49,10 +41,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
-            
+
             Logging.Initialize(klientkonfigurasjon);
             FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
+
+        public Databehandler Databehandler { get; }
+
+        public Klientkonfigurasjon Klientkonfigurasjon { get; }
+
+        internal RequestHelper RequestHelper { get; set; }
 
         /// <summary>
         ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
@@ -81,38 +79,25 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Sender ny forsendelse til meldingsformidler.");
 
-            var guidHandler = new GuidUtility();
+            var guidUtility = new GuidUtility();
 
-           var asicEArkiv = LagAsicEArkiv(forsendelse, lagreDokumentpakke, guidHandler);
-            var forretningsmeldingEnvelope = LagForretningsmeldingEnvelope(forsendelse, asicEArkiv, guidHandler);
+            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon.StandardLoggSti);
 
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, asicEArkiv.Signatur.Xml().OuterXml, true, true, "Sendt - Signatur.xml");
-            Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, asicEArkiv.Manifest.Xml().OuterXml, true, true, "Sendt - Manifest.xml");
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
+
             Logg(TraceEventType.Verbose, forsendelse.KonversasjonsId, forretningsmeldingEnvelope.Xml().OuterXml, true, true, "Sendt - Envelope.xml");
 
-            try
-            {
-                ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
-                ValiderArkivManifest(asicEArkiv.Manifest.Xml());
-                ValiderArkivSignatur(asicEArkiv.Signatur.Xml());
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Sending av forsendelse feilet under validering. Feilmelding: " + e.GetBaseException(), e.InnerException);
-            }
-            
-            var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
-            soapContainer.Vedlegg.Add(asicEArkiv);
-            
-            var transportReceipt = (Transportkvittering) await RequestHelper.Send(soapContainer);
-            transportReceipt.AntallBytesDokumentpakke = asicEArkiv.ContentBytesCount;
+            ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
+
+            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
+            transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
 
             Logging.Log(TraceEventType.Information, forsendelse.KonversasjonsId, "Kvittering for forsendelse" + Environment.NewLine + transportReceipt);
 
             if (transportReceipt is TransportOkKvittering)
             {
-                SikkerhetsvalideringAvTransportkvittering(transportReceiptXml, forretningsmeldingEnvelope.Xml(), guidHandler);
+                SikkerhetsvalideringAvTransportkvittering(transportReceiptXml, forretningsmeldingEnvelope.Xml(), guidUtility);
             }
 
             return transportReceipt;
@@ -249,8 +234,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             ValiderKvitteringsEnvelope(kvitteringsforespørselEnvelope);
 
-            var soapContainer = new SoapContainer(kvitteringsforespørselEnvelope);
-            var transportReceipt = await RequestHelper.Send(soapContainer);
+            var transportReceipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
 
             Logg(TraceEventType.Verbose, Guid.Empty, kvitteringsforespørselEnvelope.Xml().OuterXml, true, true, "Sendt - Kvitteringsenvelope.xml");
 
@@ -350,37 +334,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             try
             {
                 var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
-                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.ValiderDokumentMotXsd(bekreftKvitteringEnvelope.Xml().OuterXml);
+                var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.Validate(bekreftKvitteringEnvelope.Xml().OuterXml);
                 if (!kvitteringMottattEnvelopeValidert)
-                    throw new Exception(kvitteringMottattEnvelopeValidering.ValideringsVarsler);
+                    throw new Exception(kvitteringMottattEnvelopeValidering.ValidationWarnings);
             }
             catch (Exception e)
             {
                 throw new XmlValidationException("Kvitteringsbekreftelse validerer ikke:" + e.Message);
             }
 
-            var soapContainer = new SoapContainer(bekreftKvitteringEnvelope);
-            await RequestHelper.Send(soapContainer);
-        }
-
-        private AsicEArkiv LagAsicEArkiv(Forsendelse forsendelse, bool lagreDokumentpakke, GuidUtility guidHandler)
-        {
-            var arkiv = new AsicEArkiv(forsendelse, guidHandler, Databehandler.Sertifikat);
-            if (lagreDokumentpakke)
-            {
-                arkiv.LagreTilDisk(Klientkonfigurasjon.StandardLoggSti, "dokumentpakke",
-                    DateUtility.DateForFile() + " - Dokumentpakke.zip");
-            }
-            return arkiv;
-        }
-
-        private ForretningsmeldingEnvelope LagForretningsmeldingEnvelope(Forsendelse forsendelse, AsicEArkiv arkiv,
-            GuidUtility guidHandler)
-        {
-            var forretningsmeldingEnvelope =
-                new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, arkiv, Databehandler, guidHandler,
-                    Klientkonfigurasjon));
-            return forretningsmeldingEnvelope;
+            await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
         }
 
         private static void ValiderKvitteringsEnvelope(KvitteringsforespørselEnvelope kvitteringsenvelope)
@@ -389,9 +352,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
                 var kvitteringForespørselEnvelopeValidert =
-                    kvitteringForespørselEnvelopeValidering.ValiderDokumentMotXsd(kvitteringsenvelope.Xml().OuterXml);
+                    kvitteringForespørselEnvelopeValidering.Validate(kvitteringsenvelope.Xml().OuterXml);
                 if (!kvitteringForespørselEnvelopeValidert)
-                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValideringsVarsler);
+                    throw new Exception(kvitteringForespørselEnvelopeValidering.ValidationWarnings);
             }
             catch (Exception e)
             {
@@ -401,19 +364,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
         {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             responsvalidator.ValiderTransportkvittering(guidUtility);
         }
 
         private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             responsvalidator.ValiderTomKøKvittering();
         }
 
         private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.Sertifikatkjedevalidator);
+            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
             valideringAvResponsSignatur.ValiderMeldingskvittering();
         }
 
@@ -422,29 +385,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             const string preMessage = "Envelope validerer ikke: ";
 
             var envelopeValidering = new ForretningsmeldingEnvelopeValidator();
-            var envelopeValidert = envelopeValidering.ValiderDokumentMotXsd(forretningsmeldingEnvelopeXml.OuterXml);
+            var envelopeValidert = envelopeValidering.Validate(forretningsmeldingEnvelopeXml.OuterXml);
             if (!envelopeValidert)
-                throw new XmlValidationException(preMessage + envelopeValidering.ValideringsVarsler);
-        }
-
-        private static void ValiderArkivSignatur(XmlDocument signaturXml)
-        {
-            const string preMessage = "Envelope validerer ikke: ";
-
-            var signaturValidering = new Signaturvalidator();
-            var signaturValidert = signaturValidering.ValiderDokumentMotXsd(signaturXml.OuterXml);
-            if (!signaturValidert)
-                throw new XmlValidationException(preMessage + signaturValidering.ValideringsVarsler);
-        }
-
-        private static void ValiderArkivManifest(XmlDocument manifestXml)
-        {
-            const string preMessage = "Envelope validerer ikke: ";
-
-            var manifestValidering = new ManifestValidator();
-            var manifestValidert = manifestValidering.ValiderDokumentMotXsd(manifestXml.OuterXml);
-            if (!manifestValidert)
-                throw new XmlValidationException(preMessage + manifestValidering.ValideringsVarsler);
+                throw new XmlValidationException(preMessage + envelopeValidering.ValidationWarnings);
         }
 
         private void Logg(TraceEventType viktighet, Guid konversasjonsId, string melding, bool datoPrefiks, bool isXml, string filnavn, params string[] filsti)

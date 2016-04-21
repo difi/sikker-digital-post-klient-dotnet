@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Difi.SikkerDigitalPost.Klient.AsicE;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
+using Difi.SikkerDigitalPost.Klient.Resources.Xml;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -31,7 +30,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 //Assert
                 Assert.AreEqual(clientConfiguration, requestHelper.ClientConfiguration);
-            } 
+            }
         }
 
         [TestClass]
@@ -42,20 +41,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
             {
                 //Arrange
                 var forretningsmeldingEnvelope = DomeneUtility.GetForretningsmeldingEnvelope();
-                var asiceArkiv = new AsicEArkiv(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
+
+                var documentBundle = AsiceGenerator.Create(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
 
                 var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(Resources.Xml.XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
                 requestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
-                
                 //Act 
-                var soapContainer = new SoapContainer(forretningsmeldingEnvelope);
-                soapContainer.Vedlegg.Add(asiceArkiv);
-                var kvittering = await requestHelper.Send(soapContainer);
+                var kvittering = await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof(TransportOkKvittering));
+                Assert.IsInstanceOfType(kvittering, typeof (TransportOkKvittering));
             }
         }
     }

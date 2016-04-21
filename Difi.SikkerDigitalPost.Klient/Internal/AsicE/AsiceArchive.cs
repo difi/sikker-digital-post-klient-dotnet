@@ -9,64 +9,62 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
-namespace Difi.SikkerDigitalPost.Klient.AsicE
+namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class AsicEArkiv : ISoapVedlegg
+    internal class AsiceArchive : ISoapVedlegg
     {
-        public Dokumentpakke Dokumentpakke { get; }
-
-        private readonly Forsendelse _forsendelse;
-
-        private readonly GuidUtility _guidHandler;
-
         private byte[] _bytes;
         private byte[] _ukrypterteBytes;
 
-        public AsicEArkiv(Forsendelse forsendelse, GuidUtility guidHandler, X509Certificate2 avsenderSertifikat)
-        {
-            Manifest = new Manifest(forsendelse);
-            Signatur = new Signatur(forsendelse, Manifest, avsenderSertifikat);
+        private byte[] _unencryptedBytes;
 
-            _forsendelse = forsendelse;
-            Dokumentpakke = _forsendelse.Dokumentpakke;
-            _guidHandler = guidHandler;
+        public AsiceArchive(Forsendelse message, Manifest manifest, Signature signature, GuidUtility guidUtility)
+        {
+            Manifest = manifest;
+            Signature = signature;
+            Message = message;
+            Dokumentpakke = Message.Dokumentpakke;
+            GuidUtility = guidUtility;
         }
+
+        public Dokumentpakke Dokumentpakke { get; }
+
+        public Forsendelse Message { get; }
+
+        private GuidUtility GuidUtility { get; }
 
         public Manifest Manifest { get; set; }
 
-        public Signatur Signatur { get; set; }
+        public Signature Signature { get; set; }
 
-        private X509Certificate2 Krypteringssertifikat => _forsendelse.PostInfo.Mottaker.Sertifikat;
+        private X509Certificate2 Krypteringssertifikat => Message.PostInfo.Mottaker.Sertifikat;
 
-        internal byte[] UkrypterteBytes
+        internal byte[] UnencryptedBytes
+        {
+            get { return _unencryptedBytes = _unencryptedBytes ?? LagBytes(); }
+        }
+
+        public long UnzippedContentBytesCount
         {
             get
             {
-                if (_ukrypterteBytes != null)
-                    return _ukrypterteBytes;
+                var bytesCount = 0L;
+                bytesCount += Manifest.Bytes.Length;
+                bytesCount += Signature.Bytes.Length;
+                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
+                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
 
-                _ukrypterteBytes = LagBytes();
-                return _ukrypterteBytes;
+                return bytesCount;
             }
         }
 
         public string Filnavn => "post.asice.zip";
 
-        public byte[] Bytes
-        {
-            get
-            {
-                if (_bytes != null)
-                    return _bytes;
-
-                _bytes = KrypterteBytes(UkrypterteBytes);
-                return _bytes;
-            }
-        }
+        public byte[] Bytes => KrypterteBytes(UnencryptedBytes);
 
         public string Innholdstype => "application/cms";
 
-        public string ContentId => _guidHandler.DokumentpakkeId;
+        public string ContentId => GuidUtility.DokumentpakkeId;
 
         public string TransferEncoding => "binary";
 
@@ -77,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             {
                 LeggFilTilArkiv(archive, Dokumentpakke.Hoveddokument.FilnavnRådata, Dokumentpakke.Hoveddokument.Bytes);
                 LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
-                LeggFilTilArkiv(archive, Signatur.Filnavn, Signatur.Bytes);
+                LeggFilTilArkiv(archive, Signature.Filnavn, Signature.Bytes);
 
                 foreach (var dokument in Dokumentpakke.Vedlegg)
                     LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
@@ -86,23 +84,9 @@ namespace Difi.SikkerDigitalPost.Klient.AsicE
             return stream.ToArray();
         }
 
-        public long ContentBytesCount
-        {
-            get
-            {
-                var bytesCount = 0L;
-                bytesCount += Manifest.Bytes.Length;
-                bytesCount += Signatur.Bytes.Length;
-                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
-                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
-
-                return bytesCount;
-            }
-        }
-
         public void LagreTilDisk(params string[] filsti)
         {
-            FileUtility.WriteToBasePath(UkrypterteBytes, filsti);
+            FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
         }
 
         private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)

@@ -47,7 +47,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                     språkkode
                     );
 
-
                 //Act
 
                 //Assert

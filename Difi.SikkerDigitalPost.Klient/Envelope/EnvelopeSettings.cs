@@ -1,7 +1,7 @@
-﻿using Difi.SikkerDigitalPost.Klient.AsicE;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using KvitteringsForespørsel = Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Kvitteringsforespørsel;
 
@@ -22,10 +22,10 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         /// <summary>
         ///     Settings for DigitalPostForsendelse
         /// </summary>
-        public EnvelopeSettings(Forsendelse forsendelse, AsicEArkiv asicEArkiv, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
+        public EnvelopeSettings(Forsendelse forsendelse, DocumentBundle documentBundle, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
         {
             Forsendelse = forsendelse;
-            AsicEArkiv = asicEArkiv;
+            DocumentBundle = documentBundle;
             Databehandler = databehandler;
             GuidHandler = guidHandler;
             Konfigurasjon = konfigurasjon;
@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         public Forretningskvittering ForrigeKvittering { get; private set; }
 
-        internal AsicEArkiv AsicEArkiv { get; private set; }
+        internal DocumentBundle DocumentBundle { get; private set; }
 
         internal GuidUtility GuidHandler { get; private set; }
 

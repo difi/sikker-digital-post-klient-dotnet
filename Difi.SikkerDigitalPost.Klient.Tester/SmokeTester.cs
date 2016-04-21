@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -36,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Arrange
             var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
             var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-            
+
             //Act
             var transportKvittering = await SendDokumentpakkeAsync(sdpklient, enkelFysiskForsendelse);
 
@@ -101,7 +100,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             Kvittering kvittering = null;
             while (hentKvitteringPåNytt && (prøvdPåNytt++ <= hentKvitteringMaksAntallGanger))
             {
-                Thread.Sleep(2000);
+                await Task.Delay(2000);
                 var kvitteringsforespørsel = new Kvitteringsforespørsel(forsendelse.Prioritet, forsendelse.MpcId);
                 kvittering = await sdpKlient.HentKvitteringAsync(kvitteringsforespørsel);
 
