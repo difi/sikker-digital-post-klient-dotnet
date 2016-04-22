@@ -11,7 +11,7 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class Manifest : IAsiceVedlegg
+    internal class Manifest : IAsiceAttachable
     {
         private XmlDocument _manifestXml;
 
