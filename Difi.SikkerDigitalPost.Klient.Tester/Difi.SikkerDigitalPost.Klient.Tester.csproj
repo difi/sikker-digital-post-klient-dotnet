@@ -47,6 +47,14 @@
       <HintPath>..\packages\difi-felles-utility-dotnet.0.5.5955.25016\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Difi.Felles.Utility, Version=0.5.5955.25016, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
       <HintPath>..\packages\difi-felles-utility-dotnet.0.5.5955.25016\lib\net45\Difi.Felles.Utility.dll</HintPath>
       <Private>True</Private>
@@ -78,7 +86,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
+    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
@@ -229,7 +237,9 @@
     <EmbeddedResource Include="testdata\Post\manifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="..\SolutionItems\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

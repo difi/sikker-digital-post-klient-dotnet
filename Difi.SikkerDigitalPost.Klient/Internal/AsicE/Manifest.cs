@@ -58,8 +58,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Tittel));
             }
 
-            Logging.Log(TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke" + Environment.NewLine + _manifestXml.OuterXml);
-
             return _manifestXml;
         }
 

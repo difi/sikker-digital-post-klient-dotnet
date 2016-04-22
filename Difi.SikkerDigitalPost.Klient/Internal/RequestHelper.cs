@@ -25,6 +25,25 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
+        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope kvitteringsbekreftelseEnvelope, DocumentBundle asiceDocumentBundle)
+        {
+            var result = await Send(kvitteringsbekreftelseEnvelope, asiceDocumentBundle);
+
+            return KvitteringFactory.GetKvittering(result);
+        }
+
+        public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        {
+            var result = await Send(kvitteringsforespørselEnvelope);
+
+            return KvitteringFactory.GetKvittering(result);
+        }
+
+        public Task ConfirmReceipt(KvitteringsbekreftelseEnvelope kvitteringsbekreftelseEnvelope)
+        {
+            return Send(kvitteringsbekreftelseEnvelope);
+        }
+
         private HttpMessageHandler HttpClientHandlerChain()
         {
             HttpClientHandler httpClientHandler;
@@ -48,25 +67,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             return new WebProxy(
                 new UriBuilder(ClientConfiguration.ProxyScheme,
                     ClientConfiguration.ProxyHost, ClientConfiguration.ProxyPort).Uri);
-        }
-
-        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope kvitteringsbekreftelseEnvelope, DocumentBundle asiceDocumentBundle)
-        {
-            var result = await Send(kvitteringsbekreftelseEnvelope, asiceDocumentBundle);
-
-            return KvitteringFactory.GetKvittering(result);
-        }
-
-        public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
-        {
-            var result = await Send(kvitteringsforespørselEnvelope);
-
-            return KvitteringFactory.GetKvittering(result);
-        }
-
-        public Task ConfirmReceipt(KvitteringsbekreftelseEnvelope kvitteringsbekreftelseEnvelope)
-        {
-            return Send(kvitteringsbekreftelseEnvelope);
         }
 
         private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)

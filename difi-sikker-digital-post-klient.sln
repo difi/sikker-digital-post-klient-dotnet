@@ -5,10 +5,11 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CC279EA-A5FB-4BB0-AE55-946B5A7E8834}"
 	ProjectSection(SolutionItems) = preProject
+		SolutionItems\App.config = SolutionItems\App.config
 		C:\Keys\digipost.pfx = C:\Keys\digipost.pfx
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-		VersionInfo.cs = VersionInfo.cs
-		VersionInfo.ps1 = VersionInfo.ps1
+		SolutionItems\SharedAssemblyInfo.cs = SolutionItems\SharedAssemblyInfo.cs
+		SolutionItems\VersionInfo.cs = SolutionItems\VersionInfo.cs
+		SolutionItems\VersionInfo.ps1 = SolutionItems\VersionInfo.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Difi.SikkerDigitalPost.Klient.Domene", "Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj", "{C7666E57-D563-40A5-AE3C-B36E29824E87}"

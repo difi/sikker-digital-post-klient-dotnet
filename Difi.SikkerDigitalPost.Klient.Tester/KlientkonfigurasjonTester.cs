@@ -31,7 +31,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(proxyhost, klientkonfigurasjon.ProxyHost);
                 Assert.AreEqual(proxyScheme, klientkonfigurasjon.ProxyScheme);
                 Assert.AreEqual(timeoutIMillisekunder, klientkonfigurasjon.TimeoutIMillisekunder);
-                Assert.IsNotNull(klientkonfigurasjon.Logger);
                 Assert.AreEqual(loggXmlTilFil, klientkonfigurasjon.LoggXmlTilFil);
                 Assert.AreEqual(proxyPort, klientkonfigurasjon.ProxyPort);
             }

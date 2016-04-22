@@ -66,8 +66,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 throw new XmlParseException("Kunne ikke bygge Xml for signatur.", e);
             }
 
-            Logging.Log(TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke" + Environment.NewLine + _xml.OuterXml);
-
             return _xml;
         }
 

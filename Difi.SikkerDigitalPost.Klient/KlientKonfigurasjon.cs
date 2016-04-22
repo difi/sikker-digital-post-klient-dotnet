@@ -12,7 +12,6 @@ namespace Difi.SikkerDigitalPost.Klient
         public Klientkonfigurasjon(Miljø miljø)
         {
             MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
-            Logger = Logging.TraceLogger();
             Miljø = miljø;
             ProxyHost = null;
             ProxyScheme = "https";
@@ -45,13 +44,6 @@ namespace Difi.SikkerDigitalPost.Klient
         ///     Angir timeout for komunikasjonen fra og til meldingsformindleren. Default tid er 30 sekunder.
         /// </summary>
         public int TimeoutIMillisekunder { get; set; }
-
-        /// <summary>
-        ///     Eksponerer et grensesnitt for logging hvor brukere kan integrere sin egen loggefunksjonalitet eller en
-        ///     tredjepartsløsning som f.eks log4net. For bruk, angi en annonym funksjon med
-        ///     følgende parametre: severity, konversasjonsid, metode, melding.
-        /// </summary>
-        public Action<TraceEventType, Guid?, string, string> Logger { get; set; }
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
