@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             {
                 //Arrange
                 var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeMedFlereVedlegg());
-                
+
                 var asiceArchive = DomeneUtility.GetAsiceArchive(message);
 
                 //Act

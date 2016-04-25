@@ -114,7 +114,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sendtMeldingXmlDocument = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput());
 
                 var receivedTransportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(securityBinary: corruptSecurityBinaryResponse));
-                var responseValidator = new ResponseValidator(sendtMeldingXmlDocument,receivedTransportReceipt, miljø.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sendtMeldingXmlDocument, receivedTransportReceipt, miljø.CertificateChainValidator);
                 var guidUtility = new GuidUtility
                 {
                     BinarySecurityTokenId = "X509-513ffecb-cd7e-4bb3-a4c5-47eff314683f",

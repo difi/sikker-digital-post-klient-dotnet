@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
@@ -24,11 +21,10 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Api
 {
-
     public class SikkerDigitalPostKlient : ISikkerDigitalPostKlient
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
@@ -87,11 +83,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"konversasjonsid {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());
-            
+
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
-            
+
             if (transportReceipt is TransportOkKvittering)
             {
                 Log.Debug($"{transportReceipt}");
@@ -251,18 +247,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             return receipt;
         }
 
-        private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
-        {
-            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
-            responseValidator.ValidateEmptyQueueReceipt();
-        }
-
-        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
-        {
-            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
-            valideringAvResponsSignatur.ValidateMessageReceipt();
-        }
-
         /// <summary>
         ///     Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///     <list type="bullet">
@@ -341,7 +325,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"konversasjonsid {kvittering.KonversasjonsId}", receivedReceiptValidator);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
-            Log.Debug("$Bekreftet");
+            Log.Debug($"Bekreftet kvittering, konversasjonsId {kvittering.KonversasjonsId}");
+        }
+
+        private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
+        {
+            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            responseValidator.ValidateEmptyQueueReceipt();
+        }
+
+        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        {
+            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
         private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description, XmlValidator envelopeValidator)

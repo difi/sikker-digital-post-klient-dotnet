@@ -20,16 +20,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             UnencryptedBytes = CreateZipFile();
         }
 
-        public string Filnavn => "post.asice.zip";
-
-        public byte[] Bytes => EncryptedBytes(UnencryptedBytes);
-
-        public string Innholdstype => "application/cms";
-
-        public string ContentId => GuidUtility.DokumentpakkeId;
-
-        public string TransferEncoding => "binary";
-
         internal byte[] UnencryptedBytes { get; }
 
         public IAsiceAttachable[] AsiceAttachables { get; }
@@ -42,6 +32,16 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         {
             get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
         }
+
+        public string Filnavn => "post.asice.zip";
+
+        public byte[] Bytes => EncryptedBytes(UnencryptedBytes);
+
+        public string Innholdstype => "application/cms";
+
+        public string ContentId => GuidUtility.DokumentpakkeId;
+
+        public string TransferEncoding => "binary";
 
         private byte[] CreateZipFile()
         {

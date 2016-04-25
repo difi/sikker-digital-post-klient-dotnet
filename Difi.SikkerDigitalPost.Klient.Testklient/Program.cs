@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -27,7 +26,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-
         private static void Main(string[] args)
         {
             SendPost();
@@ -47,7 +45,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              */
             var postInfo = GenererPostInfo(ErDigitalPostMottaker, ErNorskBrev);
             var avsender = new Avsender(Settings.Default.OrgnummerPosten);
-
 
             var databehandler = new Databehandler(Settings.Default.OrgnummerPosten,
                 Settings.Default.DatabehandlerSertifikatThumbprint);
@@ -179,7 +176,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             Console.WriteLine(message);
             Console.ResetColor();
         }
-        
+
         private static PostInfo GenererPostInfo(bool erDigitalPostMottaker, bool erNorskBrev)
         {
             var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources.Sertifikater");
