@@ -97,7 +97,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             }
             else
             {
-                Log.Warn($"{transportReceipt}");
+                Log.Error($"{transportReceipt}");
             }
 
             return transportReceipt;
