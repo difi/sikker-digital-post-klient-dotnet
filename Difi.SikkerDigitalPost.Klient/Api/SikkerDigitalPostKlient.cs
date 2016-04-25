@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
+using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -12,6 +13,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Envelope;
+using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
@@ -84,17 +86,18 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon.StandardLoggSti);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
-            ValiderForretningsmeldingEnvelope(forretningsmeldingEnvelope.Xml());
-
+            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"konversasjonsid {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());
+            
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
-
-
+            
             if (transportReceipt is TransportOkKvittering)
             {
                 Log.Debug($"{transportReceipt}");
-                SikkerhetsvalideringAvTransportkvittering(transportReceiptXml, forretningsmeldingEnvelope.Xml(), guidUtility);
+
+                var responsvalidator = new ResponseValidator(forretningsmeldingEnvelope.Xml(), transportReceiptXml, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+                responsvalidator.ValidateTransportReceipt(guidUtility);
             }
             else
             {
@@ -229,12 +232,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
             var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
-            var kvitteringForespørselEnvelopeValidering = new KvitteringsforespørselEnvelopeValidator();
-            var kvitteringForespørselEnvelopeValidert = kvitteringForespørselEnvelopeValidering.Validate(kvitteringsforespørselEnvelope.Xml().OuterXml);
-            if (!kvitteringForespørselEnvelopeValidert)
-            {
-                throw new XmlValidationException($"Kvitteringsforespørsel er ikke gyldig: {kvitteringForespørselEnvelopeValidering.ValidationWarnings}");
-            }
+            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, "", new KvitteringsforespørselEnvelopeValidator());
 
             var transportReceipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
@@ -242,15 +240,27 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             if (transportReceipt is TomKøKvittering)
             {
                 Log.Debug($"{transportReceipt}");
-                SikkerhetsvalideringAvTomKøKvittering(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
+                SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
             }
             else if (transportReceipt is Forretningskvittering)
             {
                 Log.Debug($"{transportReceipt}");
-                SikkerhetsvalideringAvMeldingskvittering(transportReceiptXml, kvitteringsforespørselEnvelope);
+                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
             }
 
             return transportReceipt;
+        }
+
+        private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
+        {
+            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            responseValidator.ValidateEmptyQueueReceipt();
+        }
+
+        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        {
+            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
         /// <summary>
@@ -327,43 +337,23 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeSettings = new EnvelopeSettings(kvittering, Databehandler, new GuidUtility());
             var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
-            var kvitteringMottattEnvelopeValidering = new KvitteringMottattEnvelopeValidator();
-            var kvitteringMottattEnvelopeValidert = kvitteringMottattEnvelopeValidering.Validate(bekreftKvitteringEnvelope.Xml().OuterXml);
-            if (!kvitteringMottattEnvelopeValidert)
-            {
-                Log.Warn($"Kvitteringsbekreftelse er ikke gyldig: KonversasjonsId {kvittering.KonversasjonsId}. {kvitteringMottattEnvelopeValidering.ValidationWarnings}  ");
-                throw new XmlValidationException($"Kvitteringsbekreftelse er ikke gyldig: {kvitteringMottattEnvelopeValidering.ValidationWarnings}");
-            }
+            var receivedReceiptValidator = new KvitteringMottattEnvelopeValidator();
+            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"konversasjonsid {kvittering.KonversasjonsId}", receivedReceiptValidator);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
         }
 
-        private void SikkerhetsvalideringAvTransportkvittering(XmlDocument kvittering, XmlDocument forretningsmelding, GuidUtility guidUtility)
+        private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description, XmlValidator envelopeValidator)
         {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
-            responsvalidator.ValiderTransportkvittering(guidUtility);
-        }
+            var isValid = envelopeValidator.Validate(envelope.Xml().OuterXml);
+            if (!isValid)
+            {
+                var validatorName = envelopeValidator.GetType().Name;
+                var errorDescription = $"{validatorName}: Ikke gyldig respons for {description}. {envelopeValidator.ValidationWarnings}";
 
-        private void SikkerhetsvalideringAvTomKøKvittering(XmlDocument kvittering, XmlDocument forretningsmelding)
-        {
-            var responsvalidator = new Responsvalidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
-            responsvalidator.ValiderTomKøKvittering();
-        }
-
-        private void SikkerhetsvalideringAvMeldingskvittering(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
-        {
-            var valideringAvResponsSignatur = new Responsvalidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
-            valideringAvResponsSignatur.ValiderMeldingskvittering();
-        }
-
-        private static void ValiderForretningsmeldingEnvelope(XmlDocument forretningsmeldingEnvelopeXml)
-        {
-            const string preMessage = "Envelope validerer ikke: ";
-
-            var envelopeValidering = new ForretningsmeldingEnvelopeValidator();
-            var envelopeValidert = envelopeValidering.Validate(forretningsmeldingEnvelopeXml.OuterXml);
-            if (!envelopeValidert)
-                throw new XmlValidationException(preMessage + envelopeValidering.ValidationWarnings);
+                Log.Warn(errorDescription);
+                throw new XmlValidationException(errorDescription);
+            }
         }
     }
 }
