@@ -110,7 +110,7 @@
     <Compile Include="Internal\AsicE\AsiceGeneratorTests.cs" />
     <Compile Include="Internal\AsicE\DocumentBundleTests.cs" />
     <Compile Include="Internal\RequestHelperTests.cs" />
-    <Compile Include="KlientkonfigurasjonTester.cs" />
+    <Compile Include="KlientkonfigurasjonTests.cs" />
     <Compile Include="KvitteringFactoryTester.cs" />
     <Compile Include="KvitteringsparserTester.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

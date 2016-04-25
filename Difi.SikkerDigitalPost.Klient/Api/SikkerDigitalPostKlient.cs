@@ -44,7 +44,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
-            FileUtility.BasePath = klientkonfigurasjon.StandardLoggSti;
         }
 
         public Databehandler Databehandler { get; }
@@ -79,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             var guidUtility = new GuidUtility();
-            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon.StandardLoggSti);
+            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"konversasjonsid {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());

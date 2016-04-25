@@ -12,7 +12,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     public static class AsiceGenerator
     {
-        internal static DocumentBundle Create(Forsendelse message, GuidUtility guidUtility, X509Certificate2 senderCertificate, string standardLogPath = "")
+        internal static DocumentBundle Create(Forsendelse message, GuidUtility guidUtility, X509Certificate2 senderCertificate)
         {
             var manifest = new Manifest(message);
             ValidateXmlAndThrowIfInvalid(new ManifestValidator(), manifest.Xml(), "Manifest");
@@ -28,10 +28,10 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
             var asiceArchive = new AsiceArchive(message.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachables.ToArray());
 
-            if (!string.IsNullOrEmpty(standardLogPath))
-            {
-                asiceArchive.SaveToFile(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
-            }
+            //if (!string.IsNullOrEmpty(standardLogPath))
+            //{
+            //    asiceArchive.SaveToFile(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
+            //}
 
             return new DocumentBundle(asiceArchive.Bytes, asiceArchive.UnzippedContentBytesCount, asiceArchive.ContentId);
         }

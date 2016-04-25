@@ -172,7 +172,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static DocumentBundle GetAsicEArkivEnkel()
         {
-            return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat(), string.Empty);
+            return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat());
         }
 
         internal static AsiceArchive GetAsiceArchive(Forsendelse message)

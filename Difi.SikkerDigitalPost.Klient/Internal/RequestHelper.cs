@@ -2,7 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
+using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -15,6 +17,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 {
     internal class RequestHelper
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public RequestHelper(Klientkonfigurasjon clientConfiguration)
         {
             ClientConfiguration = clientConfiguration;
@@ -27,8 +31,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope kvitteringsbekreftelseEnvelope, DocumentBundle asiceDocumentBundle)
         {
-            var result = await Send(kvitteringsbekreftelseEnvelope, asiceDocumentBundle);
-
+           var result = await Send(kvitteringsbekreftelseEnvelope, asiceDocumentBundle);
+            
             return KvitteringFactory.GetKvittering(result);
         }
 
@@ -71,48 +75,52 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)
         {
+            //TODO: Fiks slik at vi får kvitteringstype på responsen ut på en skikkelig måte, for sporbarhetens skyld.
+
+            if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
+            {
+                Log.Debug($"Utgående {envelope.GetType().Name}: {envelope.Xml().OuterXml}");
+            }
+
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
-
             var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent);
+            var responseContent = await responseMessage.Content.ReadAsStringAsync();
 
-            return await responseMessage.Content.ReadAsStringAsync();
+            if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
+            {
+                Log.Debug($" Innkommende {responseContent}");
+            }
+
+            return responseContent;
         }
 
         private HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
             var boundary = Guid.NewGuid().ToString();
-            var meldingsinnhold = new MultipartFormDataContent(boundary);
+            var multipartFormDataContent = new MultipartFormDataContent(boundary);
 
-            //Todo: Dette er ullent og boer vaere kompilert kode.
-            var contentType = string.Format(
-                "Multipart/Related; boundary=\"{0}\"; " +
-                "type=\"application/soap+xml\"; " +
-                "start=\"<{1}>\"",
-                boundary,
-                envelope.ContentId);
+            var contentType = $"Multipart/Related; boundary=\"{boundary}\"; " + "type=\"application/soap+xml\"; " + $"start=\"<{envelope.ContentId}>\"";
 
             var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
-            meldingsinnhold.Headers.ContentType = mediaTypeHeaderValue;
-            meldingsinnhold.Headers.Add("SOAPAction", "\"\"");
+            multipartFormDataContent.Headers.ContentType = mediaTypeHeaderValue;
 
-            AddEnvelopeToMultipart(envelope, meldingsinnhold);
+            AddEnvelopeToMultipart(envelope, multipartFormDataContent);
+            AddDocumentBundleToMultipart(asiceDocumentBundle, multipartFormDataContent);
 
-            AddDocumentBundleToMultipart(asiceDocumentBundle, meldingsinnhold);
-
-            return meldingsinnhold;
+            return multipartFormDataContent;
         }
 
         private void AddEnvelopeToMultipart(ISoapVedlegg vedlegg, MultipartFormDataContent meldingsinnhold)
         {
-            var meldingsdata = new ByteArrayContent(vedlegg.Bytes);
+            var byteArrayContent = new ByteArrayContent(vedlegg.Bytes);
 
             var adjustedContentType = vedlegg.Innholdstype.Split(';')[0];
 
-            meldingsdata.Headers.ContentType = new MediaTypeHeaderValue(adjustedContentType);
-            meldingsdata.Headers.Add("Content-Transfer-Encoding", vedlegg.TransferEncoding);
-            meldingsdata.Headers.Add("Content-ID", $"<{vedlegg.ContentId}>");
+            byteArrayContent.Headers.ContentType = new MediaTypeHeaderValue(adjustedContentType);
+            byteArrayContent.Headers.Add("Content-Transfer-Encoding", vedlegg.TransferEncoding);
+            byteArrayContent.Headers.Add("Content-ID", $"<{vedlegg.ContentId}>");
 
-            meldingsinnhold.Add(meldingsdata);
+            meldingsinnhold.Add(byteArrayContent);
         }
 
         private void AddDocumentBundleToMultipart(DocumentBundle documentBundle, MultipartFormDataContent meldingsinnhold)

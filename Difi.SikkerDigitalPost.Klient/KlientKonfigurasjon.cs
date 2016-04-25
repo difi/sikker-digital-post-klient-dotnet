@@ -9,28 +9,22 @@ namespace Difi.SikkerDigitalPost.Klient
     {
         public Klientkonfigurasjon(Miljø miljø)
         {
-            MeldingsformidlerOrganisasjon = new Organisasjonsnummer("984661185");
             Miljø = miljø;
-            ProxyHost = null;
-            ProxyScheme = "https";
-            TimeoutIMillisekunder = (int) TimeSpan.FromSeconds(30).TotalMilliseconds;
-            LoggXmlTilFil = false;
-            StandardLoggSti = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Digipost");
         }
 
-        public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; }
+        public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; } = new Organisasjonsnummer("984661185");
 
         public Miljø Miljø { get; set; }
 
         /// <summary>
         ///     Angir host som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en
         ///     proxy skal benyttes.
-        public string ProxyHost { get; set; }
+        public string ProxyHost { get; set; } = null;
 
         /// <summary>
         ///     Angir schema ved bruk av proxy. Standardverdien er 'https'.
         /// </summary>
-        public string ProxyScheme { get; set; }
+        public string ProxyScheme { get; set; } = "https";
 
         /// <summary>
         ///     Angir portnummeret som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres
@@ -41,12 +35,11 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <summary>
         ///     Angir timeout for komunikasjonen fra og til meldingsformindleren. Default tid er 30 sekunder.
         /// </summary>
-        public int TimeoutIMillisekunder { get; set; } = 3000;
+        public int TimeoutIMillisekunder { get; set; } = (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
-        public bool LoggXmlTilFil { get; set; }
+        public bool LoggForespørselOgRespons { get; set; } = false;
 
-        public string StandardLoggSti { get; set; }
     }
 }
