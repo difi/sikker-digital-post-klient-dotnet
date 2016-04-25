@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using ApiClientShared;
+using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
@@ -23,6 +24,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         private const bool ErDigitalPostMottaker = true;
         private const bool ErNorskBrev = true;
 
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private static void Main(string[] args)
         {
             SendPost();
@@ -35,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              * Posten som er databehandler, og det er Digipostkassen som skal motta meldingen. 
              */
 
-            Console.WriteLine(@"--- STARTER Å SENDE POST ---");
+            Log.Debug(@"--- STARTER Å SENDE POST ---");
 
             /*
              * SETT OPP MOTTAKER OG INNSTILLINGER
@@ -56,19 +59,19 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              */
             SendPost(sikkerDigitalPostKlient, forsendelse);
 
-            Console.WriteLine(@"--- STARTER Å HENTE KVITTERINGER ---");
+            Log.Debug(@"--- STARTER Å HENTE KVITTERINGER ---");
 
             HentKvitteringer(sikkerDigitalPostKlient);
 
             Console.WriteLine();
-            Console.WriteLine(@"--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
+            Log.Debug(@"--- FERDIG Å SENDE POST OG MOTTA KVITTERINGER :) --- ");
             Console.ReadKey();
         }
 
         private static async void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
             var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
-            Console.WriteLine(@" > Post sendt. Status er ...");
+            Log.Debug(@" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof (TransportOkKvittering))
             {
@@ -86,22 +89,22 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static async void HentKvitteringer(SikkerDigitalPostKlient sikkerDigitalPostKlient)
         {
-            Console.WriteLine();
+            Log.Debug("");
 
-            Console.WriteLine(@" > Starter å hente kvitteringer ...");
+            Log.Debug(@" > Starter å hente kvitteringer ...");
 
             Thread.Sleep(3000);
 
             while (true)
             {
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
-                Console.WriteLine(@" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
+                Log.Debug($" > Henter kvittering på kø '{kvitteringsForespørsel.Mpc}'...");
 
                 var kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
 
                 if (kvittering is TomKøKvittering)
                 {
-                    Console.WriteLine(@"  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
+                    Console.WriteLine($"  - Kø '{kvitteringsForespørsel.Mpc}' er tom. Stopper å hente meldinger. ");
                     break;
                 }
 
@@ -145,7 +148,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         private static Klientkonfigurasjon SettOppKlientkonfigurasjon()
         {
             var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-            LeggTilLogging(klientkonfigurasjon);
             //klientkonfigurasjon.LoggXmlTilFil = false;
             //klientkonfigurasjon.StandardLoggSti = @"Z:\aleksander sjafjell On My Mac\Development\Shared\sdp-data\Logg";
             return klientkonfigurasjon;
@@ -173,13 +175,6 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             Console.ForegroundColor = isError ? ConsoleColor.Red : ConsoleColor.Green;
             Console.WriteLine(message);
             Console.ResetColor();
-        }
-
-        private static void LeggTilLogging(Klientkonfigurasjon klientkonfigurasjon)
-        {
-            // Legger til logging til outputvinduet
-            klientkonfigurasjon.Logger =
-                (severity, konversasjonsId, metode, melding) => { Debug.WriteLine("{0} - {1} [{2}]", DateTime.Now, melding, konversasjonsId.GetValueOrDefault()); };
         }
 
         private static PostInfo GenererPostInfo(bool erDigitalPostMottaker, bool erNorskBrev)

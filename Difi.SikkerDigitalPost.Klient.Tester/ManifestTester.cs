@@ -82,10 +82,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
+                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(message);
 
-                var manifestXml = asiceArkiv.Manifest.Xml();
+                var manifestXml = new Manifest(message).Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
                 namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
                 namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
@@ -112,10 +112,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var enkelForsendelse = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsiceArchive(enkelForsendelse);
+                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var asiceArkiv = DomeneUtility.GetAsiceArchive(message);
 
-                var manifestXml = asiceArkiv.Manifest.Xml();
+                var manifestXml = new Manifest(message).Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
                 namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
                 namespaceManager.AddNamespace("ds", NavneromUtility.XmlDsig);
@@ -135,9 +135,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereManifestMotXsdValiderer()
             {
-                var arkiv = DomeneUtility.GetAsiceArchive(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
+                var message = DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat();
+                var arkiv = DomeneUtility.GetAsiceArchive(message);
 
-                var manifestXml = arkiv.Manifest.Xml();
+                var manifestXml = new Manifest(message).Xml();
 
                 var manifestValidering = new ManifestValidator();
                 var validert = manifestValidering.Validate(manifestXml.OuterXml);

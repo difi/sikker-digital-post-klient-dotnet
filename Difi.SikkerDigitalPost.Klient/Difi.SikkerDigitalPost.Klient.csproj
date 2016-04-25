@@ -48,6 +48,14 @@
       <HintPath>..\packages\difi-felles-utility-dotnet.0.5.5955.25016\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Difi.Felles.Utility, Version=0.5.5955.25016, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
       <HintPath>..\packages\difi-felles-utility-dotnet.0.5.5955.25016\lib\net45\Difi.Felles.Utility.dll</HintPath>
       <Private>True</Private>
@@ -63,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
+    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
@@ -96,13 +104,7 @@
     <Compile Include="Internal\RequestHelper.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Kvitteringsparser.cs" />
-    <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\NavneromUtility.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="Klientkonfigurasjon.cs">
@@ -123,19 +125,13 @@
     <Compile Include="Internal\AsicE\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
     <Compile Include="XmlValidering\SignatureValidator.cs" />
-    <Compile Include="XmlValidering\Responsvalidator.cs" />
+    <Compile Include="XmlValidering\ResponseValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
       <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
       <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">

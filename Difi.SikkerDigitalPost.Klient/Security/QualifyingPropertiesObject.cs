@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
         /// <param name="target">The target attribute value of the QualifyingProperties element.</param>
         /// <param name="references">List of DataObjectFormat elements to be included.</param>
         /// <param name="context">The element where the signature will be placed. Used for extracting namespaces.</param>
-        public QualifyingPropertiesObject(X509Certificate2 certificate, string target, IAsiceVedlegg[] references, XmlElement context)
+        public QualifyingPropertiesObject(X509Certificate2 certificate, string target, IAsiceAttachable[] references, XmlElement context)
         {
             Certificate = certificate;
             Target = target;
@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Security
 
         public X509Certificate2 Certificate { get; }
 
-        public IAsiceVedlegg[] References { get; }
+        public IAsiceAttachable[] References { get; }
 
         /// <summary>
         ///     The mandatory Target attribute refers to the XML signature in which the qualifying properties are associated.

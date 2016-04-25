@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
@@ -11,7 +9,7 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class Manifest : IAsiceVedlegg
+    internal class Manifest : IAsiceAttachable
     {
         private XmlDocument _manifestXml;
 
@@ -57,8 +55,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             {
                 _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Tittel));
             }
-
-            Logging.Log(TraceEventType.Verbose, Forsendelse.KonversasjonsId, "Generert manifest for dokumentpakke" + Environment.NewLine + _manifestXml.OuterXml);
 
             return _manifestXml;
         }

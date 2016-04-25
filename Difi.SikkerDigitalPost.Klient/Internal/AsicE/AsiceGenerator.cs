@@ -1,6 +1,8 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.Felles.Utility;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -18,11 +20,17 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             var signature = new Signature(message, manifest, senderCertificate);
             ValidateXmlAndThrowIfInvalid(new SignatureValidator(), signature.Xml(), "Signatur");
 
-            var asiceArchive = new AsiceArchive(message, manifest, signature, guidUtility);
+            var asiceAttachables = new List<IAsiceAttachable>();
+            asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
+            asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+            asiceAttachables.Add(manifest);
+            asiceAttachables.Add(signature);
+
+            var asiceArchive = new AsiceArchive(message.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachables.ToArray());
 
             if (!string.IsNullOrEmpty(standardLogPath))
             {
-                asiceArchive.LagreTilDisk(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
+                asiceArchive.SaveToFile(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
             }
 
             return new DocumentBundle(asiceArchive.Bytes, asiceArchive.UnzippedContentBytesCount, asiceArchive.ContentId);

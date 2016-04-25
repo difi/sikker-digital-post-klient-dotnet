@@ -8,6 +8,7 @@ using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
@@ -174,12 +175,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat(), string.Empty);
         }
 
-        internal static AsiceArchive GetAsiceArchive(Forsendelse forsendelse)
+        internal static AsiceArchive GetAsiceArchive(Forsendelse message)
         {
-            var manifest = new Manifest(forsendelse);
-            var signature = new Signature(forsendelse, manifest, GetAvsenderEnhetstesterSertifikat());
+            var manifest = new Manifest(message);
+            var signature = new Signature(message, manifest, GetAvsenderEnhetstesterSertifikat());
+            var cryptographicCertificate = message.PostInfo.Mottaker.Sertifikat;
 
-            return new AsiceArchive(forsendelse, manifest, signature, new GuidUtility());
+            var asiceAttachables = new List<IAsiceAttachable>();
+            asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
+            asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+            asiceAttachables.Add(manifest);
+            asiceAttachables.Add(signature);
+
+            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachables.ToArray());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()

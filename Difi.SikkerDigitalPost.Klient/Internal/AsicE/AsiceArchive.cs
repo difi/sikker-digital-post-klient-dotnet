@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
@@ -13,54 +12,30 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceArchive : ISoapVedlegg
     {
-        private byte[] _bytes;
-        private byte[] _ukrypterteBytes;
-
-        private byte[] _unencryptedBytes;
-
-        public AsiceArchive(Forsendelse message, Manifest manifest, Signature signature, GuidUtility guidUtility)
+        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, params IAsiceAttachable[] asiceAttachables)
         {
-            Manifest = manifest;
-            Signature = signature;
-            Message = message;
-            Dokumentpakke = Message.Dokumentpakke;
+            CryptographicCertificate = cryptographicCertificate;
             GuidUtility = guidUtility;
+            AsiceAttachables = asiceAttachables;
+            UnencryptedBytes = CreateZipFile();
         }
 
-        public Dokumentpakke Dokumentpakke { get; }
+        internal byte[] UnencryptedBytes { get; }
 
-        public Forsendelse Message { get; }
+        public IAsiceAttachable[] AsiceAttachables { get; }
 
         private GuidUtility GuidUtility { get; }
 
-        public Manifest Manifest { get; set; }
-
-        public Signature Signature { get; set; }
-
-        private X509Certificate2 Krypteringssertifikat => Message.PostInfo.Mottaker.Sertifikat;
-
-        internal byte[] UnencryptedBytes
-        {
-            get { return _unencryptedBytes = _unencryptedBytes ?? LagBytes(); }
-        }
+        private X509Certificate2 CryptographicCertificate { get; }
 
         public long UnzippedContentBytesCount
         {
-            get
-            {
-                var bytesCount = 0L;
-                bytesCount += Manifest.Bytes.Length;
-                bytesCount += Signature.Bytes.Length;
-                bytesCount += Dokumentpakke.Hoveddokument.Bytes.Length;
-                bytesCount += Dokumentpakke.Vedlegg.Aggregate(0L, (current, dokument) => current + dokument.Bytes.Length);
-
-                return bytesCount;
-            }
+            get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
         }
 
         public string Filnavn => "post.asice.zip";
 
-        public byte[] Bytes => KrypterteBytes(UnencryptedBytes);
+        public byte[] Bytes => EncryptedBytes(UnencryptedBytes);
 
         public string Innholdstype => "application/cms";
 
@@ -68,32 +43,29 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         public string TransferEncoding => "binary";
 
-        private byte[] LagBytes()
+        private byte[] CreateZipFile()
         {
             var stream = new MemoryStream();
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
             {
-                LeggFilTilArkiv(archive, Dokumentpakke.Hoveddokument.FilnavnRådata, Dokumentpakke.Hoveddokument.Bytes);
-                LeggFilTilArkiv(archive, Manifest.Filnavn, Manifest.Bytes);
-                LeggFilTilArkiv(archive, Signature.Filnavn, Signature.Bytes);
-
-                foreach (var dokument in Dokumentpakke.Vedlegg)
-                    LeggFilTilArkiv(archive, dokument.FilnavnRådata, dokument.Bytes);
+                foreach (var asiceAttachable in AsiceAttachables)
+                {
+                    if (asiceAttachable is Dokument)
+                    {
+                        AddFilesToArchive(archive, ((Dokument) asiceAttachable).FilnavnRådata, asiceAttachable.Bytes);
+                    }
+                    else
+                    {
+                        AddFilesToArchive(archive, asiceAttachable.Filnavn, asiceAttachable.Bytes);
+                    }
+                }
             }
 
             return stream.ToArray();
         }
 
-        public void LagreTilDisk(params string[] filsti)
+        private static void AddFilesToArchive(ZipArchive archive, string filename, byte[] data)
         {
-            FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
-        }
-
-        private void LeggFilTilArkiv(ZipArchive archive, string filename, byte[] data)
-        {
-            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId,
-                $"Legger til '{filename}' på {data.Length} bytes til dokumentpakke.");
-
             var entry = archive.CreateEntry(filename, CompressionLevel.Optimal);
             using (var stream = entry.Open())
             {
@@ -101,20 +73,22 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             }
         }
 
-        private byte[] KrypterteBytes(byte[] bytes)
+        public void SaveToFile(params string[] filsti)
         {
-            Logging.Log(TraceEventType.Information, Manifest.Forsendelse.KonversasjonsId,
-                $"Krypterer dokumentpakke med sertifikat {Krypteringssertifikat.Thumbprint}.");
+            FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
+        }
 
+        private byte[] EncryptedBytes(byte[] bytes)
+        {
             var contentInfo = new ContentInfo(bytes);
             var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
             var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
-            var recipient = new CmsRecipient(Krypteringssertifikat);
+            var recipient = new CmsRecipient(CryptographicCertificate);
             envelopedCms.Encrypt(recipient);
             return envelopedCms.Encode();
         }
 
-        public static byte[] Dekrypter(byte[] kryptertData)
+        public static byte[] Decrypt(byte[] kryptertData)
         {
             var envelopedCms = new EnvelopedCms();
             envelopedCms.Decode(kryptertData);

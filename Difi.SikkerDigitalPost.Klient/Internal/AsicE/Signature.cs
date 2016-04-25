@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
@@ -16,7 +15,7 @@ using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
-    internal class Signature : IAsiceVedlegg
+    internal class Signature : IAsiceAttachable
     {
         private readonly Forsendelse _forsendelse;
         private readonly Manifest _manifest;
@@ -66,8 +65,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 throw new XmlParseException("Kunne ikke bygge Xml for signatur.", e);
             }
 
-            Logging.Log(TraceEventType.Verbose, _forsendelse.KonversasjonsId, "Generert signatur for dokumentpakke" + Environment.NewLine + _xml.OuterXml);
-
             return _xml;
         }
 
@@ -81,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             return signedPropertiesReference;
         }
 
-        private void OpprettReferanser(SignedXml signaturnode, IEnumerable<IAsiceVedlegg> referanser)
+        private void OpprettReferanser(SignedXml signaturnode, IEnumerable<IAsiceAttachable> referanser)
         {
             foreach (var item in referanser)
             {
@@ -96,9 +93,9 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
 
-        private static IEnumerable<IAsiceVedlegg> Referanser(Dokument hoveddokument, IEnumerable<IAsiceVedlegg> vedlegg, Manifest manifest)
+        private static IEnumerable<IAsiceAttachable> Referanser(Dokument hoveddokument, IEnumerable<IAsiceAttachable> vedlegg, Manifest manifest)
         {
-            var referanser = new List<IAsiceVedlegg> {hoveddokument};
+            var referanser = new List<IAsiceAttachable> {hoveddokument};
             referanser.AddRange(vedlegg);
             referanser.Add(manifest);
             return referanser;
@@ -123,7 +120,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             return signaturXml;
         }
 
-        private Sha256Reference Sha256Referanse(IAsiceVedlegg dokument)
+        private Sha256Reference Sha256Referanse(IAsiceAttachable dokument)
         {
             return new Sha256Reference(dokument.Bytes)
             {
