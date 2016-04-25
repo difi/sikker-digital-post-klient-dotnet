@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <summary>
         ///     Angir timeout for komunikasjonen fra og til meldingsformindleren. Default tid er 30 sekunder.
         /// </summary>
-        public int TimeoutIMillisekunder { get; set; }
+        public int TimeoutIMillisekunder { get; set; } = 3000;
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
