@@ -135,7 +135,7 @@
     <Compile Include="ArkivTester.cs" />
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SertifikatTester.cs" />
-    <Compile Include="XmlValidering\ResponsvalidatorTester.cs" />
+    <Compile Include="XmlValidering\ResponseValidatorTests.cs" />
     <Compile Include="XmlValidering\MiljøTester.cs" />
   </ItemGroup>
   <ItemGroup>

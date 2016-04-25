@@ -234,21 +234,21 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, "", new KvitteringsforespørselEnvelopeValidator());
 
-            var transportReceipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
-            var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
+            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
+            var transportReceiptXml = XmlUtility.TilXmlDokument(receipt.Rådata);
 
-            if (transportReceipt is TomKøKvittering)
+            if (receipt is TomKøKvittering)
             {
-                Log.Debug($"{transportReceipt}");
+                Log.Debug($"{receipt}");
                 SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
             }
-            else if (transportReceipt is Forretningskvittering)
+            else if (receipt is Forretningskvittering)
             {
-                Log.Debug($"{transportReceipt}");
+                Log.Debug($"{receipt}");
                 SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
             }
 
-            return transportReceipt;
+            return receipt;
         }
 
         private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
@@ -341,6 +341,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"konversasjonsid {kvittering.KonversasjonsId}", receivedReceiptValidator);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
+            Log.Debug("$Bekreftet");
         }
 
         private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description, XmlValidator envelopeValidator)
