@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/MessageInfo
                 // Unik identifikator, satt av MSH. Kan med fordel benytte SBDH.InstanceIdentifier 
                 var messageId = messageInfo.AppendChildElement("MessageId", "eb", NavneromUtility.EbXmlCore, Context);
-                messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
+                messageId.InnerText = Settings.GuidHandler.MessageId;
             }
             return messageInfo;
         }

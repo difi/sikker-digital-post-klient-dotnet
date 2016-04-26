@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
 
                 var messageId = messageInfo.AppendChildElement("MessageId", "eb", NavneromUtility.EbXmlCore, Context);
-                messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
+                messageId.InnerText = Settings.GuidHandler.MessageId;
             }
             return messageInfo;
         }
