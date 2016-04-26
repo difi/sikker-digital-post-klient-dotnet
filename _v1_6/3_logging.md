@@ -9,7 +9,7 @@ isHome: false
 <h3 id="genereltOmlogging">Generelt</h3>
 Klienten bruker _Common.Logging API_ som API for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk.
 
-<blockquote>_Common Logging API_ er en lettvekts loggplattform som gjør at man lettere kan fokusere på krav til logger i stedet for hvilke loggverktøy og konfigurasjon man bruker. Dette gjør det lett å bytte loggrammeverk.</blockquote>
+<blockquote>Common Logging API er en lettvekts loggplattform som gjør at man lettere kan fokusere på krav til logger i stedet for hvilke loggverktøy og konfigurasjon man bruker. Dette gjør det lett å bytte loggrammeverk.</blockquote>
 
 Settes loggnivå til `DEBUG` vil logge resultat for forespørsler som går bra og de  som feiler, `WARN` bare for feilede forespørsler eller verre, mens `ERROR`  bare skjer om sending av brev feilet. Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient`
 
@@ -74,7 +74,7 @@ Klientkonfigurasjon.LoggForespørselOgRespons = true;
 
 Da  vil det logges til en logger med navn `Difi.SikkerDigitalPost.Klient.RequestResponse`.
 
-<blockquote> Merk at logging av forespørsel og respons så kan ytelsen på klienten bli mye dårligere. Det er ingen grunn til å logge dette i et produksjonsmiljø</blockquote>
+<blockquote> Merk at logging av forespørsel og respons så kan ytelsen på klienten bli mye dårligere. Det er ingen grunn til å logge dette i et produksjonsmiljø.</blockquote>
 
 <h3 id="dokumentpakkelogger">Lagre dokumentpakke som sendes</h3>
 
