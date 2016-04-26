@@ -17,6 +17,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
     public class SmokeTester
     {
         [TestMethod]
+        public async Task SendDigitalPostIntegrasjonEnkel()
+        {
+            //Arrange
+            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
+            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            sdpklient.Klientkonfigurasjon.LoggForespørselOgRespons = true;
+
+            //Act
+            await SendDokumentpakkeAsync(sdpklient, enkelForsendelse);
+            var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Digital Post", enkelForsendelse);
+
+            //Await
+            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+        }
+
+        [TestMethod]
         public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
@@ -55,13 +71,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
             var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
-            var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
-            {
-                LoggXmlTilFil = true
-            };
+            var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
             //Act
             var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
+
             var transportkvittering = await sdpKlient.SendAsync(forsendelse, true);
 
             //Assert
@@ -73,21 +87,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         private async Task<Transportkvittering> SendDokumentpakkeAsync(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
             return await sikkerDigitalPostKlient.SendAsync(forsendelse);
-        }
-
-        [TestMethod]
-        public async Task SendDigitalPostIntegrasjonEnkel()
-        {
-            //Arrange
-            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
-            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
-
-            //Act
-            await SendDokumentpakkeAsync(sdpklient, enkelForsendelse);
-            var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Digital Post", enkelForsendelse);
-
-            //Await
-            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         private static async Task<Kvittering> HentKvitteringOgBekreftAsync(SikkerDigitalPostKlient sdpKlient, string testBeskrivelse,

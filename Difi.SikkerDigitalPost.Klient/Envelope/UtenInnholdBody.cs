@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         {
             var body = Context.CreateElement("env", "Body", NavneromUtility.SoapEnvelopeEnv12);
             body.SetAttribute("xmlns:wsu", NavneromUtility.WssecurityUtility10);
-            body.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.BodyId);
+            body.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidUtility.BodyId);
             return body;
         }
     }

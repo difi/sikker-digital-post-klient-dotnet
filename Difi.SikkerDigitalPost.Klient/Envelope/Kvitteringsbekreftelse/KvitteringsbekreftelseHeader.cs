@@ -30,26 +30,26 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
 
             //Body
             {
-                var bodyReference = new Sha256Reference("#" + Settings.GuidHandler.BodyId);
+                var bodyReference = new Sha256Reference("#" + Settings.GuidUtility.BodyId);
                 bodyReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(bodyReference);
             }
 
             //TimestampElement
             {
-                var timestampReference = new Sha256Reference("#" + Settings.GuidHandler.TimestampId);
+                var timestampReference = new Sha256Reference("#" + Settings.GuidUtility.TimestampId);
                 timestampReference.AddTransform(new XmlDsigExcC14NTransform("wsse env"));
                 signed.AddReference(timestampReference);
             }
 
             //EbMessaging
             {
-                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidHandler.EbMessagingId);
+                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidUtility.EbMessagingId);
                 ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(ebMessagingReference);
             }
 
-            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
+            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidUtility.BinarySecurityTokenId));
             signed.ComputeSignature();
 
             Security.AppendChild(Context.ImportNode(signed.GetXml(), true));

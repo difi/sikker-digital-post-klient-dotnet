@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         private XmlElement BinarySecurityTokenElement()
         {
             var binarySecurityToken = Context.CreateElement("wsse", "BinarySecurityToken", NavneromUtility.WssecuritySecext10);
-            binarySecurityToken.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.BinarySecurityTokenId);
+            binarySecurityToken.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidUtility.BinarySecurityTokenId);
             binarySecurityToken.SetAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
             binarySecurityToken.SetAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
             binarySecurityToken.InnerText = Convert.ToBase64String(Settings.Databehandler.Sertifikat.RawData);
@@ -47,7 +47,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
                 expires.InnerText = utcNow.AddSeconds(120).ToString(DateUtility.DateFormat);
             }
 
-            timestamp.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.TimestampId);
+            timestamp.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidUtility.TimestampId);
             return timestamp;
         }
     }

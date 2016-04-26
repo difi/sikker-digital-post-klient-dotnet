@@ -4,7 +4,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 {
     internal class GuidUtility
     {
-        public string StandardBusinessDocumentHeaderId { get; internal set; } = Guid.NewGuid().ToString();
+        public string MessageId { get; internal set; } = Guid.NewGuid().ToString();
 
         public string BodyId { get; internal set; } = "soapBody";
 
@@ -16,10 +16,12 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 
         public string DokumentpakkeId { get; internal set; } = $"{Guid.NewGuid()}@meldingsformidler.sdp.difi.no";
 
+        public string InstanceIdentifier { get; internal set; } = Guid.NewGuid().ToString();
+
         public override string ToString()
         {
             return
-                $"StandardBusinessDocumentHeaderId: {StandardBusinessDocumentHeaderId}, BodyId: {BodyId}, EbMessagingId: {EbMessagingId}, BinarySecurityTokenId: {BinarySecurityTokenId}, TimestampId: {TimestampId}, DokumentpakkeId: {DokumentpakkeId}";
+                $"StandardBusinessDocumentHeaderId: {MessageId}, BodyId: {BodyId}, EbMessagingId: {EbMessagingId}, BinarySecurityTokenId: {BinarySecurityTokenId}, TimestampId: {TimestampId}, DokumentpakkeId: {DokumentpakkeId}";
         }
     }
 }

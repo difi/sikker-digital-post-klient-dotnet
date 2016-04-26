@@ -9,7 +9,6 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
 {
     internal abstract class AbstractEnvelope : ISoapVedlegg
     {
-        protected readonly EnvelopeSettings EnvelopeSettings;
         protected readonly XmlDocument EnvelopeXml;
         private byte[] _bytes;
         private string _contentId;
@@ -22,6 +21,8 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract
             EnvelopeSettings = envelopeSettings;
             EnvelopeXml = LagXmlRotnode();
         }
+
+        public EnvelopeSettings EnvelopeSettings { get; }
 
         public string Filnavn => "envelope.xml";
 

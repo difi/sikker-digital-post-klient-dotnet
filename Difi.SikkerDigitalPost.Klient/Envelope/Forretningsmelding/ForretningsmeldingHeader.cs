@@ -30,21 +30,21 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 
             //Body
             {
-                var bodyReference = new Sha256Reference("#" + Settings.GuidHandler.BodyId);
+                var bodyReference = new Sha256Reference("#" + Settings.GuidUtility.BodyId);
                 bodyReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(bodyReference);
             }
 
             //TimestampElement
             {
-                var timestampReference = new Sha256Reference("#" + Settings.GuidHandler.TimestampId);
+                var timestampReference = new Sha256Reference("#" + Settings.GuidUtility.TimestampId);
                 timestampReference.AddTransform(new XmlDsigExcC14NTransform("wsse env"));
                 signed.AddReference(timestampReference);
             }
 
             //EbMessaging
             {
-                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidHandler.EbMessagingId);
+                var ebMessagingReference = new Sha256Reference("#" + Settings.GuidUtility.EbMessagingId);
                 ebMessagingReference.AddTransform(new XmlDsigExcC14NTransform());
                 signed.AddReference(ebMessagingReference);
             }
@@ -53,13 +53,13 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 var partInfoReference = new Sha256Reference(Settings.DocumentBundle.BundleBytes)
                 {
-                    Uri = $"cid:{Settings.GuidHandler.DokumentpakkeId}"
+                    Uri = $"cid:{Settings.GuidUtility.DokumentpakkeId}"
                 };
                 partInfoReference.AddTransform(new AttachmentContentSignatureTransform());
                 signed.AddReference(partInfoReference);
             }
 
-            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidHandler.BinarySecurityTokenId));
+            signed.KeyInfo.AddClause(new SecurityTokenReferenceClause("#" + Settings.GuidUtility.BinarySecurityTokenId));
             signed.ComputeSignature();
 
             Security.AppendChild(Context.ImportNode(signed.GetXml(), true));

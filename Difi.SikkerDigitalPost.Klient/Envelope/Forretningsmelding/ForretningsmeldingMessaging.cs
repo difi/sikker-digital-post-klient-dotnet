@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             mustUnderstand.InnerText = "true";
             messaging.Attributes.Append(mustUnderstand);
 
-            messaging.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.EbMessagingId);
+            messaging.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidUtility.EbMessagingId);
 
             messaging.AppendChild(UserMessageElement());
 
@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 // http://begrep.difi.no/SikkerDigitalPost/1.0.2/transportlag/UserMessage/MessageInfo
                 // Unik identifikator, satt av MSH. Kan med fordel benytte SBDH.InstanceIdentifier 
                 var messageId = messageInfo.AppendChildElement("MessageId", "eb", NavneromUtility.EbXmlCore, Context);
-                messageId.InnerText = Settings.GuidHandler.StandardBusinessDocumentHeaderId;
+                messageId.InnerText = Settings.GuidUtility.MessageId;
             }
             return messageInfo;
         }
@@ -113,10 +113,10 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             var payloadInfo = Context.CreateElement("eb", "PayloadInfo", NavneromUtility.EbXmlCore);
             {
                 var partInfoBody = payloadInfo.AppendChildElement("PartInfo", "eb", NavneromUtility.EbXmlCore, Context);
-                partInfoBody.SetAttribute("href", "#" + Settings.GuidHandler.BodyId);
+                partInfoBody.SetAttribute("href", "#" + Settings.GuidUtility.BodyId);
 
                 var partInfoDokumentpakke = payloadInfo.AppendChildElement("PartInfo", "eb", NavneromUtility.EbXmlCore, Context);
-                partInfoDokumentpakke.SetAttribute("href", "cid:" + Settings.GuidHandler.DokumentpakkeId);
+                partInfoDokumentpakke.SetAttribute("href", "cid:" + Settings.GuidUtility.DokumentpakkeId);
                 {
                     var partProperties = partInfoDokumentpakke.AppendChildElement("PartProperties", "eb", NavneromUtility.EbXmlCore, Context);
                     {
