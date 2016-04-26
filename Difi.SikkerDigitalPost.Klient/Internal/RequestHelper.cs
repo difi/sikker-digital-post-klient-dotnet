@@ -75,11 +75,9 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)
         {
-            //TODO: Fiks slik at vi får kvitteringstype på responsen ut på en skikkelig måte, for sporbarhetens skyld.
-
             if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
             {
-                Log.Debug($"Utgående {envelope.GetType().Name}, conversationId {envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}, messageId {envelope.EnvelopeSettings.GuidUtility.MessageId}: {envelope.Xml().OuterXml}");
+                Log.Debug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
             }
 
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);

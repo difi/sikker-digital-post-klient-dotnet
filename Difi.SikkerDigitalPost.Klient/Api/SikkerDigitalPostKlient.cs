@@ -78,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false)
         {
             var guidUtility = new GuidUtility();
-            Log.Debug($"Utgaende forsendelse, konversasjonsId {forsendelse.KonversasjonsId}, meldingsId {guidUtility.MessageId}.");
+            Log.Debug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
@@ -226,6 +226,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             }
 
             var guidUtility = new GuidUtility();
+
+            Log.Debug($"Utgående kvitteringsforespørsel, messageId '{guidUtility.MessageId}'.");
+
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
             var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
@@ -323,10 +326,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
             var receivedReceiptValidator = new KvitteringMottattEnvelopeValidator();
-            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"conversationId {kvittering.KonversasjonsId}", receivedReceiptValidator);
+            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"conversationId '{kvittering.KonversasjonsId}'", receivedReceiptValidator);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
-            Log.Debug($"Bekreftet kvittering, conversationId {kvittering.KonversasjonsId}");
+            Log.Debug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
         }
 
         private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
