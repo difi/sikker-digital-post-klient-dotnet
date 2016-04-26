@@ -6,7 +6,7 @@ description: Integrer SDP.NET mot din loggplattform
 isHome: false
 ---
 
-<h3 id="loggingrequestflow">Logging request flow</h3>
+<h3 id="genereltOmlogging">Generelt</h3>
 Klienten bruker _Common.Logging API_ som API for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk.
 
 <blockquote>_Common Logging API_ er en lettvekts loggplattform som gjør at man lettere kan fokusere på krav til logger i stedet for hvilke loggverktøy og konfigurasjon man bruker. Dette gjør det lett å bytte loggrammeverk.</blockquote>
@@ -62,18 +62,19 @@ En fullstendig App.config med Log4Net-adapter og en `RollingFileAppender`:
 {% endhighlight %}
 
 
-<h3 id="lagrexmltilfil"> Lagre XML som sendes</h3>
+<h3 id="loggeforsporselogrespons"> Logge forespørsel og respons</h3>
 
-Når det sendes brev gjennom Sikker Digital Post, så sendes legges det også ved en del ekstra informasjon. Denne informasjonen er strukturert som XML og er nødvending for at brevet skal leveres til mottaker. Ofte kan dette være svært nyttig informasjon å logge for å se hva som faktisk sendes. 
+Når det sendes brev gjennom Sikker Digital Post, så legges det også ved en del ekstra informasjon. Denne informasjonen er strukturert som XML og er nødvending for at brevet skal leveres til mottaker. Ofte kan dette være svært nyttig informasjon å logge. 
 
-For å aktivere logging av XML så setter du følgende på <code>Klientkonfigurasjon</code>:
+For å aktivere logging av forespørsel og respons XML så setter du følgende på <code>Klientkonfigurasjon</code>:
 
 {% highlight csharp %}
-Klientkonfigurasjon.LoggXmlTilFil = true;
+Klientkonfigurasjon.LoggForespørselOgRespons = true;
 {% endhighlight%}
 
-Hvis <code> Klientkonfigurasjon.StandardLoggSti </code> ikke settes, så finner du loggfilene i _%AppData%/Digipost/Logg_.
+Da  vil det logges til en logger med navn `Difi.SikkerDigitalPost.Klient.RequestResponse`.
 
+<blockquote> Merk at logging av forespørsel og respons så kan ytelsen på klienten bli mye dårligere. Det er ingen grunn til å logge dette i et produksjonsmiljø</blockquote>
 
 <h3 id="dokumentpakkelogger">Lagre dokumentpakke som sendes</h3>
 
