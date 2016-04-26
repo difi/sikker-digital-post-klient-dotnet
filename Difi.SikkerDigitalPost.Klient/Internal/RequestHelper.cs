@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 {
     internal class RequestHelper
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog RequestResponseLog = LogManager.GetLogger("Difi.SikkerDigitalPost.Klient.RequestResponse");
 
         public RequestHelper(Klientkonfigurasjon clientConfiguration)
         {
@@ -75,18 +75,18 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)
         {
-            if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
+            if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
             {
-                Log.Debug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
+                RequestResponseLog.Debug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
             }
 
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
             var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent);
             var responseContent = await responseMessage.Content.ReadAsStringAsync();
 
-            if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
+            if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
             {
-                Log.Debug($" Innkommende {responseContent}");
+                RequestResponseLog.Debug($" Innkommende {responseContent}");
             }
 
             return responseContent;
