@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -35,11 +34,10 @@ namespace Difi.SikkerDigitalPost.Klient
         /// <summary>
         ///     Angir timeout for komunikasjonen fra og til meldingsformindleren. Default tid er 30 sekunder.
         /// </summary>
-        public int TimeoutIMillisekunder { get; set; } = (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
+        public int TimeoutIMillisekunder { get; set; } = (int) TimeSpan.FromSeconds(30).TotalMilliseconds;
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
         public bool LoggForespørselOgRespons { get; set; } = false;
-
     }
 }
