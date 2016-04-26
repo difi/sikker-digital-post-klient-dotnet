@@ -50,7 +50,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         private HttpMessageHandler HttpClientHandlerChain()
         {
             HttpClientHandler httpClientHandler;
-            if (!string.IsNullOrEmpty(ClientConfiguration.ProxyHost))
+            if (ClientConfiguration.BrukProxy)
             {
                 httpClientHandler = new HttpClientHandler
                 {
