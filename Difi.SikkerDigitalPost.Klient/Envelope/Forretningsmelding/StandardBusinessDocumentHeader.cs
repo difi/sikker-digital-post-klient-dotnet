@@ -71,7 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 typeVersion.InnerText = "1.0";
 
                 var instanceIdentifier = documentIdentification.AppendChildElement("InstanceIdentifier", "ns3", NavneromUtility.StandardBusinessDocumentHeader, Context);
-                instanceIdentifier.InnerText = Settings.GuidHandler.InstanceIdentifier;
+                instanceIdentifier.InnerText = Settings.GuidUtility.InstanceIdentifier;
 
                 var type = documentIdentification.AppendChildElement("Type", "ns3", NavneromUtility.StandardBusinessDocumentHeader, Context);
                 type.InnerText = "digitalPost";

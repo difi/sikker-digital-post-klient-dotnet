@@ -12,33 +12,33 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
         /// <summary>
         ///     Settings for KvitteringsEnvelope
         /// </summary>
-        public EnvelopeSettings(KvitteringsForespørsel kvitteringsforespørsel, Databehandler databehandler, GuidUtility guidHandler)
+        public EnvelopeSettings(KvitteringsForespørsel kvitteringsforespørsel, Databehandler databehandler, GuidUtility guidUtility)
         {
             Kvitteringsforespørsel = kvitteringsforespørsel;
             Databehandler = databehandler;
-            GuidHandler = guidHandler;
+            GuidUtility = guidUtility;
         }
 
         /// <summary>
         ///     Settings for DigitalPostForsendelse
         /// </summary>
-        public EnvelopeSettings(Forsendelse forsendelse, DocumentBundle documentBundle, Databehandler databehandler, GuidUtility guidHandler, Klientkonfigurasjon konfigurasjon)
+        public EnvelopeSettings(Forsendelse forsendelse, DocumentBundle documentBundle, Databehandler databehandler, GuidUtility guidUtility, Klientkonfigurasjon konfigurasjon)
         {
             Forsendelse = forsendelse;
             DocumentBundle = documentBundle;
             Databehandler = databehandler;
-            GuidHandler = guidHandler;
+            GuidUtility = guidUtility;
             Konfigurasjon = konfigurasjon;
         }
 
         /// <summary>
         ///     Settings for BekreftKvittering
         /// </summary>
-        public EnvelopeSettings(Forretningskvittering forrigeKvittering, Databehandler databehandler, GuidUtility guidHandler)
+        public EnvelopeSettings(Forretningskvittering forrigeKvittering, Databehandler databehandler, GuidUtility guidUtility)
         {
             ForrigeKvittering = forrigeKvittering;
             Databehandler = databehandler;
-            GuidHandler = guidHandler;
+            GuidUtility = guidUtility;
         }
 
         public Forsendelse Forsendelse { get; private set; }
@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope
 
         internal DocumentBundle DocumentBundle { get; private set; }
 
-        internal GuidUtility GuidHandler { get; private set; }
+        internal GuidUtility GuidUtility { get; private set; }
 
         internal Klientkonfigurasjon Konfigurasjon { get; private set; }
     }

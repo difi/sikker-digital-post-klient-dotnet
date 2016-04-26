@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
             mustUnderstand.InnerText = "true";
             messaging.Attributes.Append(mustUnderstand);
 
-            messaging.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidHandler.EbMessagingId);
+            messaging.SetAttribute("Id", NavneromUtility.WssecurityUtility10, Settings.GuidUtility.EbMessagingId);
 
             messaging.AppendChild(SignalMessageElement());
 
@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse
                 timestamp.InnerText = DateTime.UtcNow.ToString(DateUtility.DateFormat);
 
                 var messageId = messageInfo.AppendChildElement("MessageId", "eb", NavneromUtility.EbXmlCore, Context);
-                messageId.InnerText = Settings.GuidHandler.MessageId;
+                messageId.InnerText = Settings.GuidUtility.MessageId;
 
                 var refToMessageId = messageInfo.AppendChildElement("RefToMessageId", "eb", NavneromUtility.EbXmlCore, Context);
                 refToMessageId.InnerText = Settings.ForrigeKvittering.MeldingsId;

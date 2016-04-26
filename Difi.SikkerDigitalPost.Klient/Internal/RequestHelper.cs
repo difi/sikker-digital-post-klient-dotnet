@@ -29,10 +29,10 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
-        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope kvitteringsbekreftelseEnvelope, DocumentBundle asiceDocumentBundle)
+        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
-           var result = await Send(kvitteringsbekreftelseEnvelope, asiceDocumentBundle);
-            
+            var result = await Send(envelope, asiceDocumentBundle);
+
             return KvitteringFactory.GetKvittering(result);
         }
 
@@ -79,7 +79,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
             if (ClientConfiguration.LoggForespørselOgRespons && Log.IsDebugEnabled)
             {
-                Log.Debug($"Utgående {envelope.GetType().Name}: {envelope.Xml().OuterXml}");
+                Log.Debug($"Utgående {envelope.GetType().Name}, conversationId {envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}, messageId {envelope.EnvelopeSettings.GuidUtility.MessageId}: {envelope.Xml().OuterXml}");
             }
 
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
