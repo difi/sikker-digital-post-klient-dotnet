@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
     <Compile Include="AsicE\AsiceArchiveTests.cs" />
+    <Compile Include="AsicE\SimpleDocumentBundleProcessor.cs" />
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
     <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />

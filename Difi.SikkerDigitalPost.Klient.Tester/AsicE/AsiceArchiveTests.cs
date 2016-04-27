@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 
                 var asiceAttachablesArray = asiceAttachables.ToArray();
 
-                var asiceAttachableProcessors = new List<AsiceAttachableProcessor>() {new AsiceAttachableProcessor(forsendelse, new LagreDokumentpakkeTilDiskProsessor("dir"))};
+                var asiceAttachableProcessors = new List<AsiceAttachableProcessor>();
                 
                 //Act
                 var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachableProcessors, asiceAttachablesArray);
@@ -107,6 +108,40 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 
                 //Assert
                 Assert.AreEqual(expectedBytesCount, actualBytesCount);
+            }
+        }
+
+        [TestClass]
+        public class BytesMethod : AsiceArchiveTests
+        {
+            [TestMethod]
+            public void SendsBytesThroughDocumentBundleProcessors()
+            {
+                //Arrange
+                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
+                {
+                    Dokumentpakkeprosessorer = new List<IDokumentpakkeProsessor>
+                    {
+                        new SimpleDocumentBundleProcessor(),
+                        new SimpleDocumentBundleProcessor()
+                    }
+                };
+
+                var forsendelse = DomainUtility.GetForsendelseSimple();
+                var asiceAttachableProcessors = clientConfiguration.Dokumentpakkeprosessorer.Select(p => new AsiceAttachableProcessor(forsendelse, p));
+                var asiceAttachables = new IAsiceAttachable[] { DomainUtility.GetHoveddokumentSimple()};
+
+                //Act
+                var asiceArchive = new AsiceArchive(DomainUtility.GetMottakerCertificate(), new GuidUtility(), asiceAttachableProcessors, asiceAttachables);
+                var bytes = asiceArchive.Bytes;
+
+                //Assert
+                foreach (var simpleProcessor in clientConfiguration.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
+                {
+                    Assert.IsTrue(simpleProcessor.StreamLength > 1000);
+                    Assert.IsTrue(simpleProcessor.CouldReadBytesStream);
+                    Assert.AreEqual(0, simpleProcessor.Initialposition);
+                }
             }
         }
     }
