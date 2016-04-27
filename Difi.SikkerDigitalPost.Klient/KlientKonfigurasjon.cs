@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    public class Klientkonfigurasjon
+    public class Klientkonfigurasjon : IAsiceConfiguration
     {
         public Klientkonfigurasjon(Miljø miljø)
         {
@@ -39,5 +41,13 @@ namespace Difi.SikkerDigitalPost.Klient
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
         public bool LoggForespørselOgRespons { get; set; } = false;
+
+        public void AktiverLagringAvDokumentpakkeTilDisk(string katalog)
+        {
+            var documentBundleToDiskProcessor = new LagreDokumentpakkeTilDiskProsessor(katalog);
+            ((List<IDokumentpakkeProsessor>)Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
+        }
+
+        public IEnumerable<IDokumentpakkeProsessor> Dokumentpakkeprosessorer { get; set; } = new List<IDokumentpakkeProsessor>();
     }
 }

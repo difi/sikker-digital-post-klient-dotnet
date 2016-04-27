@@ -28,11 +28,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
             var asiceArchive = new AsiceArchive(message.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachables.ToArray());
 
-            //if (!string.IsNullOrEmpty(standardLogPath))
-            //{
-            //    asiceArchive.SaveToFile(standardLogPath, "dokumentpakke", DateUtility.DateForFile() + " - Dokumentpakke.zip");
-            //}
-
             return new DocumentBundle(asiceArchive.Bytes, asiceArchive.UnzippedContentBytesCount, asiceArchive.ContentId);
         }
 

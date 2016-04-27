@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,5 +35,23 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.AreEqual(clientConfiguration.LoggForespørselOgRespons, false);
             }
         }
+
+        [TestClass]
+        public class EnableDocumentBundleDiskDumpMethod : KlientkonfigurasjonTests
+        {
+            [TestMethod]
+            public void AddsDocumentBundleToDiskProcessor()
+            {
+                //Arrange
+                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+
+                //Act
+                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"\\vmware-host\Shared Folders\Downloads");
+
+                //Assert
+                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof(LagreDokumentpakkeTilDiskProsessor)));
+            }
+        }
+
     }
 }
