@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class ArkivTester
+    public class DokumentpakkeTests
     {
         public TestContext TestContext { get; set; }
 

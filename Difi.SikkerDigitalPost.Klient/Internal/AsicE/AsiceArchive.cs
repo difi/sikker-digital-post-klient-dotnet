@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,10 +14,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceArchive : ISoapVedlegg
     {
-        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, params IAsiceAttachable[] asiceAttachables)
+        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, IEnumerable<AsiceAttachableProcessor> asiceAttachableProcessors, params IAsiceAttachable[] asiceAttachables)
         {
             CryptographicCertificate = cryptographicCertificate;
             GuidUtility = guidUtility;
+            AsiceAttachableProcessors = asiceAttachableProcessors;
             AsiceAttachables = asiceAttachables;
             UnencryptedBytes = CreateZipFile();
         }
@@ -25,6 +28,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         public IAsiceAttachable[] AsiceAttachables { get; }
 
         private GuidUtility GuidUtility { get; }
+
+        public IEnumerable<AsiceAttachableProcessor> AsiceAttachableProcessors { get; }
 
         private X509Certificate2 CryptographicCertificate { get; }
 

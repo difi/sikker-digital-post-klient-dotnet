@@ -80,7 +80,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var guidUtility = new GuidUtility();
             Log.Debug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
-            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat);
+            var asiceConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, asiceConfiguration);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"conversationId {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());

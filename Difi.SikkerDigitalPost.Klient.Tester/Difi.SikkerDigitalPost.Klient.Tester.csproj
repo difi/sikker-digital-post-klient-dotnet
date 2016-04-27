@@ -134,7 +134,7 @@
     <Compile Include="EnvelopeTester.cs" />
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ArkivTester.cs" />
+    <Compile Include="DokumentpakkeTests.cs" />
     <Compile Include="SmokeTester.cs" />
     <Compile Include="SertifikatTester.cs" />
     <Compile Include="XmlValidering\ResponseValidatorTests.cs" />

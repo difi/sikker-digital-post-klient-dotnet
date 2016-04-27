@@ -165,14 +165,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetDigitalDigitalPOstWithNotificationMultipleDocumentsAndHigherSecurity()
+        internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity()
         {
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithMultipleVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static DocumentBundle GetAsiceArchiveSimple()
         {
-            return AsiceGenerator.Create(GetForsendelseSimple(), new GuidUtility(), GetAvsenderCertificate());
+            return AsiceGenerator.Create(GetForsendelseSimple(), new GuidUtility(), GetAvsenderCertificate(), GetKlientkonfigurasjon());
         }
 
         internal static AsiceArchive GetAsiceArchive(Forsendelse message)
@@ -187,14 +187,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             asiceAttachables.Add(manifest);
             asiceAttachables.Add(signature);
 
-            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachables.ToArray());
+            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), new List<AsiceAttachableProcessor>(), asiceAttachables.ToArray());
         }
 
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeWithTestTestCertificate()
         {
             var envelopeSettings = new EnvelopeSettings(
                 GetForsendelseWithTestCertificate(),
-                AsiceGenerator.Create(GetForsendelseSimple(), new GuidUtility(), GetAvsenderCertificate()),
+                GetAsiceArchiveSimple(),
                 GetDatabehandlerWithTestCertificate(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
@@ -305,6 +305,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var digestValue = "digestValue";
 
             return new Feilmelding(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Klientkonfigurasjon GetKlientkonfigurasjon()
+        {
+            return new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
         }
     }
 }

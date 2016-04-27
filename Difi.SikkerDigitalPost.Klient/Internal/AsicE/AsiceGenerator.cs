@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.Felles.Utility;
@@ -12,21 +13,23 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     public static class AsiceGenerator
     {
-        internal static DocumentBundle Create(Forsendelse message, GuidUtility guidUtility, X509Certificate2 senderCertificate)
+        internal static DocumentBundle Create(Forsendelse forsendelse, GuidUtility guidUtility, X509Certificate2 senderCertificate, IAsiceConfiguration asiceConfiguration)
         {
-            var manifest = new Manifest(message);
+            var manifest = new Manifest(forsendelse);
             ValidateXmlAndThrowIfInvalid(new ManifestValidator(), manifest.Xml(), "Manifest");
 
-            var signature = new Signature(message, manifest, senderCertificate);
+            var signature = new Signature(forsendelse, manifest, senderCertificate);
             ValidateXmlAndThrowIfInvalid(new SignatureValidator(), signature.Xml(), "Signatur");
 
             var asiceAttachables = new List<IAsiceAttachable>();
-            asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
-            asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+            asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+            asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
             asiceAttachables.Add(manifest);
             asiceAttachables.Add(signature);
 
-            var asiceArchive = new AsiceArchive(message.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachables.ToArray());
+            var asiceAttachableProcessors = ConvertDocumentBundleProcessorsToAsiceAttachableProcessors(forsendelse, asiceConfiguration);
+
+            var asiceArchive = new AsiceArchive(forsendelse.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachableProcessors, asiceAttachables.ToArray());
 
             return new DocumentBundle(asiceArchive.Bytes, asiceArchive.UnzippedContentBytesCount, asiceArchive.ContentId);
         }
@@ -39,5 +42,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 throw new XmlValidationException($"{messagePrefix} er ikke gyldig: {xmlValidator.ValidationWarnings}");
             }
         }
+
+        private static IEnumerable<AsiceAttachableProcessor> ConvertDocumentBundleProcessorsToAsiceAttachableProcessors(Forsendelse forsendelseForMetadata, IAsiceConfiguration asiceConfiguration)
+        {
+            return asiceConfiguration.Dokumentpakkeprosessorer.Select(p => new AsiceAttachableProcessor(forsendelseForMetadata, p));
+        }
+
     }
 }

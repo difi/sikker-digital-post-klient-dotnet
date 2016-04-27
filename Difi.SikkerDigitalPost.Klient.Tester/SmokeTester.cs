@@ -36,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
-            var dekkendeDigitalForsendelse = DomainUtility.GetDigitalDigitalPOstWithNotificationMultipleDocumentsAndHigherSecurity();
+            var dekkendeDigitalForsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
             var sdpklient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act

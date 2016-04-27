@@ -7,6 +7,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
@@ -17,6 +18,34 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
         [TestClass]
         public class ConstructorMethod : AsiceArchiveTests
         {
+            [TestMethod]
+            public void InitializesFieldsProperly()
+            {
+                //Arrange
+                var forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
+
+                var manifest = new Manifest(forsendelse);
+                var cryptographicCertificate = forsendelse.PostInfo.Mottaker.Sertifikat;
+                var signature = new Signature(forsendelse, manifest, DomainUtility.GetAvsenderCertificate());
+
+                var asiceAttachables = new List<IAsiceAttachable>();
+                asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+                asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
+                asiceAttachables.Add(manifest);
+                asiceAttachables.Add(signature);
+
+                var asiceAttachablesArray = asiceAttachables.ToArray();
+
+                var asiceAttachableProcessors = new List<AsiceAttachableProcessor>() {new AsiceAttachableProcessor(forsendelse, new LagreDokumentpakkeTilDiskProsessor("dir"))};
+                
+                //Act
+                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachableProcessors, asiceAttachablesArray);
+
+                //Assert
+                Assert.AreEqual(asiceAttachableProcessors, asiceArchive.AsiceAttachableProcessors);
+                Assert.AreEqual(asiceAttachablesArray, asiceArchive.AsiceAttachables);
+            }
+
             [TestMethod]
             public void ConstructorGeneratesBytes()
             {
@@ -53,19 +82,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             public void ReturnsProperBytesCount()
             {
                 //Arrange
-                var message = DomainUtility.GetDigitalDigitalPOstWithNotificationMultipleDocumentsAndHigherSecurity();
+                var forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
 
-                var manifest = new Manifest(message);
-                var cryptographicCertificate = message.PostInfo.Mottaker.Sertifikat;
-                var signature = new Signature(message, manifest, DomainUtility.GetAvsenderCertificate());
+                var manifest = new Manifest(forsendelse);
+                var cryptographicCertificate = forsendelse.PostInfo.Mottaker.Sertifikat;
+                var signature = new Signature(forsendelse, manifest, DomainUtility.GetAvsenderCertificate());
 
                 var asiceAttachables = new List<IAsiceAttachable>();
-                asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
-                asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+                asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+                asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
                 asiceAttachables.Add(manifest);
                 asiceAttachables.Add(signature);
 
-                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachables.ToArray());
+                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), new List<AsiceAttachableProcessor>(), asiceAttachables.ToArray());
 
                 var expectedBytesCount = 0L;
                 foreach (var dokument in asiceAttachables)

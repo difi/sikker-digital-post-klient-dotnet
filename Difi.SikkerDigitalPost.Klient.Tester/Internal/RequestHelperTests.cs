@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 //Arrange
                 var forretningsmeldingEnvelope = DomainUtility.GetForretningsmeldingEnvelope();
 
-                var documentBundle = AsiceGenerator.Create(DomainUtility.GetForsendelseSimple(), new GuidUtility(), DomainUtility.GetAvsenderCertificate());
+                var documentBundle = AsiceGenerator.Create(DomainUtility.GetForsendelseSimple(), new GuidUtility(), DomainUtility.GetAvsenderCertificate(), DomainUtility.GetKlientkonfigurasjon());
 
                 var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
