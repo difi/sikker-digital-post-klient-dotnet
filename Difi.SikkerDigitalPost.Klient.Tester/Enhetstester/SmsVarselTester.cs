@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void EnkelKonstruktørUtenVarslingstidspunkt()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var mobilnummer = "12345678";
                 var varsel = "Et lite varsel pr SMS.";
                 postInfo.SmsVarsel = new SmsVarsel(mobilnummer, varsel);
@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void KonstruktørMedVarslingstidspunktSomListe()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var mobilnummer = "12345678";
                 var varsel = "Et lite varsel pr SMS.";
                 var varslingerEtterDager = new List<int> {0, 10, 15};
@@ -54,7 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void KonstruktørMedVarslingstidspunktSomArgumenter()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var mobilnummer = "12345678";
                 var varsel = "Et lite varsel pr SMS.";
                 postInfo.SmsVarsel = new SmsVarsel(mobilnummer, varsel, 0, 10, 15);

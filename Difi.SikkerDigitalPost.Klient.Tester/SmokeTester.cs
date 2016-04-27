@@ -20,8 +20,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public async Task SendDigitalPostIntegrasjonEnkel()
         {
             //Arrange
-            var enkelForsendelse = DomeneUtility.GetDigitalForsendelseEnkel();
-            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            var enkelForsendelse = DomainUtility.GetForsendelseSimple();
+            var sdpklient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
             sdpklient.Klientkonfigurasjon.LoggForespørselOgRespons = true;
 
             //Act
@@ -36,8 +36,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
-            var dekkendeDigitalForsendelse = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
-            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            var dekkendeDigitalForsendelse = DomainUtility.GetDigitalDigitalPOstWithNotificationMultipleDocumentsAndHigherSecurity();
+            var sdpklient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
             await SendDokumentpakkeAsync(sdpklient, dekkendeDigitalForsendelse);
@@ -49,8 +49,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public async Task SendFysiskPostIntegrasjon()
         {
             //Arrange
-            var enkelFysiskForsendelse = DomeneUtility.GetFysiskForsendelseEnkel();
-            var sdpklient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+            var enkelFysiskForsendelse = DomainUtility.GetFysiskPostSimple();
+            var sdpklient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
 
             //Act
             var transportKvittering = await SendDokumentpakkeAsync(sdpklient, enkelFysiskForsendelse);
@@ -69,8 +69,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             const string postenDatabehandlerOrgnummer = "984661185";
             var avsender = new Avsender(testDepartementetAvsenderOrgnummer);
 
-            var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomeneUtility.GetAvsenderSertifikat());
-            var forsendelse = new Forsendelse(avsender, DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomainUtility.GetAvsenderCertificate());
+            var forsendelse = new Forsendelse(avsender, DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
             var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
             //Act

@@ -21,9 +21,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             public void ConstructorGeneratesBytes()
             {
                 //Arrange
-                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeMedFlereVedlegg());
+                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithMultipleVedlegg());
 
-                var asiceArchive = DomeneUtility.GetAsiceArchive(message);
+                var asiceArchive = DomainUtility.GetAsiceArchive(message);
 
                 //Act
                 var archiveBytes = asiceArchive.UnencryptedBytes;
@@ -53,11 +53,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             public void ReturnsProperBytesCount()
             {
                 //Arrange
-                var message = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
+                var message = DomainUtility.GetDigitalDigitalPOstWithNotificationMultipleDocumentsAndHigherSecurity();
 
                 var manifest = new Manifest(message);
                 var cryptographicCertificate = message.PostInfo.Mottaker.Sertifikat;
-                var signature = new Signature(message, manifest, DomeneUtility.GetAvsenderSertifikat());
+                var signature = new Signature(message, manifest, DomainUtility.GetAvsenderCertificate());
 
                 var asiceAttachables = new List<IAsiceAttachable>();
                 asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);

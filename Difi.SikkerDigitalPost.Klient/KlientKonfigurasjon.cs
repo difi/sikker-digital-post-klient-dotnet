@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -40,11 +41,20 @@ namespace Difi.SikkerDigitalPost.Klient
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
+        /// <summary>
+        /// Hvis satt til true, så vil 
+        /// </summary>
         public bool LoggForespørselOgRespons { get; set; } = false;
 
+        /// <summary>
+        /// Aktiverer lagring til av selve dokumentpakken som inneholder <see cref="Dokument">Hoveddokument</see>, alle <see cref="Dokument">Vedlegg</see>,
+        /// i tillegg til metainformasjon for forsendelsen.
+        /// </summary>
+        /// <param name="katalog">Katalog som dokumentpakkene lagres til. Lagres på følgende format: <code>[tidsstempel] - [conversationId].asice.zip</code> </param>
         public void AktiverLagringAvDokumentpakkeTilDisk(string katalog)
         {
             var documentBundleToDiskProcessor = new LagreDokumentpakkeTilDiskProsessor(katalog);
+            ((List<IDokumentpakkeProsessor>)Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
             ((List<IDokumentpakkeProsessor>)Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
         }
 

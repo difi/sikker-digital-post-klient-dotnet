@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public void InitializesFields()
             {
                 //Arrange
-                var databehandler = new Databehandler(new Organisasjonsnummer("999999999"), DomeneUtility.GetAvsenderSertifikat());
+                var databehandler = new Databehandler(new Organisasjonsnummer("999999999"), DomainUtility.GetAvsenderCertificate());
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
@@ -45,12 +45,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task SuccessfullyReturnsTransportErrorReceipt()
             {
                 //Arrange
-                var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportError().OuterXml, HttpStatusCode.BadRequest);
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
-                var message = DomeneUtility.GetDigitalForsendelseEnkel();
+                var message = DomainUtility.GetForsendelseSimple();
                 var receipt = await sikkerDigitalPostKlient.SendAsync(message);
 
                 //Assert
@@ -62,12 +62,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task ThrowsExceptionOnResponseNotMatchingRequest()
             {
                 //Arrange
-                var sikkerDigitalPostKlient = DomeneUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
-                var message = DomeneUtility.GetDigitalForsendelseEnkel();
+                var message = DomainUtility.GetForsendelseSimple();
                 var receipt = await sikkerDigitalPostKlient.SendAsync(message);
 
                 //Assert

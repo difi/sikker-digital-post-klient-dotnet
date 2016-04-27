@@ -107,12 +107,14 @@
     <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
     <Compile Include="Fakes\FakeHttpClientHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientHandlerResponse.cs" />
+    <Compile Include="Internal\AsicE\AsiceAttachableProcessorTests.cs" />
     <Compile Include="Internal\AsicE\AsiceGeneratorTests.cs" />
     <Compile Include="Internal\AsicE\DocumentBundleTests.cs" />
     <Compile Include="Internal\RequestHelperTests.cs" />
     <Compile Include="KlientkonfigurasjonTests.cs" />
     <Compile Include="KvitteringFactoryTester.cs" />
     <Compile Include="KvitteringsparserTester.cs" />
+    <Compile Include="LagreDokumentpakkeTilDiskProsessorTests.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -128,7 +130,7 @@
     <Compile Include="Utilities\IDifference.cs" />
     <Compile Include="Utilities\KvitteringsUtility.cs" />
     <Compile Include="X509ChainTests.cs" />
-    <Compile Include="Utilities\DomeneUtility.cs" />
+    <Compile Include="Utilities\DomainUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

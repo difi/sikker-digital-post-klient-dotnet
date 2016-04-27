@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
             public void ProcessesCorrectly()
             {
                 //Arrange
-                var message = DomeneUtility.GetDigitalMessageSimple();
+                var message = DomainUtility.GetForsendelseSimple();
                 var documentBundleProcessor = new MockAttachableProcessor();
                 var stream = new MemoryStream(new byte[]{0x42, 0x32});
                 var asiceAttachableProcessor = new AsiceAttachableProcessor(message, documentBundleProcessor);

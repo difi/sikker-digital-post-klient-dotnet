@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereEnvelopeMotXsdValiderer()
             {
-                var envelope = DomeneUtility.GetForretningsmeldingEnvelopeMedTestSertifikat();
+                var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
                 var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
                 var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml);
@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void LagUgyldigSecurityNodeXsdValidererIkke()
             {
-                var envelope = DomeneUtility.GetForretningsmeldingEnvelopeMedTestSertifikat();
+                var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
                 var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
 

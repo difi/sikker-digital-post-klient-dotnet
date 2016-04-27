@@ -24,7 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 const string mimeType = "application/xml";
                 const string filnavn = "manifest.xml";
 
-                var forsendelse = DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat();
+                var forsendelse = DomainUtility.GetForsendelseWithTestCertificate();
                 var manifest = new Manifest(forsendelse);
 
                 //Act
@@ -44,7 +44,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
             {
-                var manifest = new Manifest(DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat());
+                var manifest = new Manifest(DomainUtility.GetForsendelseWithTestCertificate());
 
                 var manifestXml = manifest.Xml();
                 var manifestValidator = new ManifestValidator();
@@ -82,8 +82,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsiceArchive(message);
+                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var asiceArkiv = DomainUtility.GetAsiceArchive(message);
 
                 var manifestXml = new Manifest(message).Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -112,8 +112,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var dokumentPakke = new Dokumentpakke(dokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
-                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var asiceArkiv = DomeneUtility.GetAsiceArchive(message);
+                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoWithTestCertificate(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var asiceArkiv = DomainUtility.GetAsiceArchive(message);
 
                 var manifestXml = new Manifest(message).Xml();
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -135,8 +135,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void ValidereManifestMotXsdValiderer()
             {
-                var message = DomeneUtility.GetDigitalForsendelseEnkelMedTestSertifikat();
-                var arkiv = DomeneUtility.GetAsiceArchive(message);
+                var message = DomainUtility.GetForsendelseWithTestCertificate();
+                var arkiv = DomainUtility.GetAsiceArchive(message);
 
                 var manifestXml = new Manifest(message).Xml();
 

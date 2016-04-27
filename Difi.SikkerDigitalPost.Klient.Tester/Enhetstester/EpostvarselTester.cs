@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void EnkelKonstruktørUtenVarslingstidspunkt()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
                 postInfo.EpostVarsel = new EpostVarsel(epostadresse, varsel);
@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void EnkelKonstruktørMedVarslingstidspunktSomListe()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
                 var varslingerEtterDager = new List<int> {0, 10, 15};
@@ -54,7 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
             public void EnkelKonstruktørMedVarslingstidspunktSomArgumenter()
             {
                 //Arrange
-                var postInfo = DomeneUtility.GetDigitalPostInfoEnkelMedTestSertifikat();
+                var postInfo = DomainUtility.GetDigitalPostInfoWithTestCertificate();
                 var epostadresse = "tull@ball.no";
                 var varsel = "Et lite varsel pr Epost.";
                 var varslingerEtterDager = new List<int> {0, 10, 15};

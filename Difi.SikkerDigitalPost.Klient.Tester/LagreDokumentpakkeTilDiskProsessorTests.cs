@@ -34,8 +34,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var tmpDirectory = Path.GetTempPath();
                 var processor = new LagreDokumentpakkeTilDiskProsessor(tmpDirectory);
-                var message = DomeneUtility.GetDigitalMessageSimple();
-                var asiceBytes = DomeneUtility.GetAsiceArchive(message).Bytes;
+                var message = DomainUtility.GetForsendelseSimple();
+                var asiceBytes = DomainUtility.GetAsiceArchive(message).Bytes;
                 var asiceStream = new MemoryStream(asiceBytes);
 
                 //Act
@@ -55,8 +55,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var fileEnding = "asice.zip";
 
                 var processor = new LagreDokumentpakkeTilDiskProsessor(tmpDirectory);
-                var message = DomeneUtility.GetDigitalMessageSimple();
-                var asiceBytes = DomeneUtility.GetAsiceArchive(message).Bytes;
+                var message = DomainUtility.GetForsendelseSimple();
+                var asiceBytes = DomainUtility.GetAsiceArchive(message).Bytes;
                 var asiceStream = new MemoryStream(asiceBytes);
 
                 //Act

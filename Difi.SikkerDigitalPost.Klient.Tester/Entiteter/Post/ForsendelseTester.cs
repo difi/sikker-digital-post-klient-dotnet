@@ -17,9 +17,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
             {
                 //Arrange
                 var forsendelse = new Forsendelse(
-                    DomeneUtility.GetAvsender(),
-                    DomeneUtility.GetDigitalPostInfoEnkel(),
-                    DomeneUtility.GetDokumentpakkeUtenVedlegg()
+                    DomainUtility.GetAvsender(),
+                    DomainUtility.GetDigitalPostInfoSimple(),
+                    DomainUtility.GetDokumentpakkeWithoutAttachments()
                     );
 
                 //Act
@@ -39,9 +39,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 var språkkode = "NO";
 
                 var forsendelse = new Forsendelse(
-                    DomeneUtility.GetAvsender(),
-                    DomeneUtility.GetDigitalPostInfoEnkel(),
-                    DomeneUtility.GetDokumentpakkeUtenVedlegg(),
+                    DomainUtility.GetAvsender(),
+                    DomainUtility.GetDigitalPostInfoSimple(),
+                    DomainUtility.GetDokumentpakkeWithoutAttachments(),
                     prioritet,
                     mpcId,
                     språkkode
@@ -68,9 +68,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 
                 var konversasjonsid = Guid.NewGuid();
                 var forsendelse = new Forsendelse(
-                    DomeneUtility.GetAvsender(),
-                    DomeneUtility.GetDigitalPostInfoEnkel(),
-                    DomeneUtility.GetDokumentpakkeUtenVedlegg(),
+                    DomainUtility.GetAvsender(),
+                    DomainUtility.GetDigitalPostInfoSimple(),
+                    DomainUtility.GetDokumentpakkeWithoutAttachments(),
                     konversasjonsid,
                     prioritet,
                     mpcId,
