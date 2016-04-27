@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -52,6 +53,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
             var forsendelse = GenererForsendelse(avsender, postInfo);
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
+            klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk(@"C:\Users\aas\Downloads\");
+
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
             /**

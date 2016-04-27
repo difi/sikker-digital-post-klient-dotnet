@@ -76,7 +76,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Act
             var sdpKlient = new SikkerDigitalPostKlient(databehandler, klientKonfig);
 
-            var transportkvittering = await sdpKlient.SendAsync(forsendelse, true);
+            var transportkvittering = await sdpKlient.SendAsync(forsendelse);
 
             //Assert
             Assert.IsNotNull(transportkvittering);

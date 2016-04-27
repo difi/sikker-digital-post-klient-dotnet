@@ -60,10 +60,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
         ///     vedlegg mm), enten digitalt eller fysisk.
         /// </param>
-        /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
-        public Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false)
+        public Transportkvittering Send(Forsendelse forsendelse)
         {
-            return SendAsync(forsendelse, lagreDokumentpakke).Result;
+            return SendAsync(forsendelse).Result;
         }
 
         /// <summary>
@@ -74,14 +73,12 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
         ///     vedlegg mm), enten digitalt eller fysisk.
         /// </param>
-        /// <param name="lagreDokumentpakke">Hvis satt til true, så lagres dokumentpakken på Klientkonfigurasjon.StandardLoggSti.</param>
-        public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false)
+        public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
             var guidUtility = new GuidUtility();
             Log.Debug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
-            var asiceConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, asiceConfiguration);
+            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"conversationId {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());

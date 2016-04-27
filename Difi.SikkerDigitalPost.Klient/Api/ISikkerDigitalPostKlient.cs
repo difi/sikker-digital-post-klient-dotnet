@@ -8,9 +8,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 {
     public interface ISikkerDigitalPostKlient
     {
-        Transportkvittering Send(Forsendelse forsendelse, bool lagreDokumentpakke = false);
+        Transportkvittering Send(Forsendelse forsendelse);
 
-        Task<Transportkvittering> SendAsync(Forsendelse forsendelse, bool lagreDokumentpakke = false);
+        Task<Transportkvittering> SendAsync(Forsendelse forsendelse);
 
         Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel);
 

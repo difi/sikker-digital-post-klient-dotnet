@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
@@ -7,7 +9,9 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Resources.Xml;
+using Difi.SikkerDigitalPost.Klient.Tester.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
@@ -50,11 +54,52 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
-                var message = DomainUtility.GetForsendelseSimple();
-                var receipt = await sikkerDigitalPostKlient.SendAsync(message);
+                var forsendelse = DomainUtility.GetForsendelseSimple();
+                var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
 
                 //Assert
-                Assert.IsInstanceOfType(receipt, typeof (TransportFeiletKvittering));
+                Assert.IsInstanceOfType(transportkvittering, typeof (TransportFeiletKvittering));
+            }
+
+            [TestMethod]
+            public async Task SuccessfullyCallsAllDokumentpakkeProsessors()
+            {
+                //Arrange
+                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
+                {
+                    Dokumentpakkeprosessorer = new List<IDokumentpakkeProsessor>
+                    {
+                        new SimpleDocumentBundleProcessor(),
+                        new SimpleDocumentBundleProcessor()
+                    }
+                };
+
+                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(DomainUtility.GetDatabehandler(), klientkonfigurasjon);
+
+                DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
+
+                //Act
+                var forsendelse = DomainUtility.GetForsendelseSimple();
+
+                try
+                {
+                    await sikkerDigitalPostKlient.SendAsync(forsendelse);
+                }
+                catch (SdpSecurityException)
+                {
+                    /*
+                        We do not care about the results. Just do sending. Nasty hack as we are unable to mock validation 
+                        in SikkerDigitalPostKlient, which results in invalid timestamp since response is out of date.
+                    */
+                }
+
+                //Assert
+                foreach (var dokumentpakkeProsessor in klientkonfigurasjon.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
+                {
+                    Assert.IsTrue(dokumentpakkeProsessor.CouldReadBytesStream);
+                }
             }
 
             [ExpectedException(typeof (SdpSecurityException))]
@@ -67,11 +112,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
-                var message = DomainUtility.GetForsendelseSimple();
-                var receipt = await sikkerDigitalPostKlient.SendAsync(message);
+                var forsendelse = DomainUtility.GetForsendelseSimple();
+                var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
 
                 //Assert
-                Assert.IsInstanceOfType(receipt, typeof (TransportFeiletKvittering));
+                Assert.IsInstanceOfType(transportkvittering, typeof (TransportFeiletKvittering));
             }
         }
     }
