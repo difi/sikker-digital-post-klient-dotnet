@@ -7,11 +7,9 @@ isHome: false
 ---
 
 <h3 id="genereltOmlogging">Generelt</h3>
-Klienten bruker _Common.Logging API_ som API for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk.
+Klienten bruker _Common.Logging API_ for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk, men vi viser hvordan dette kan gjøres med Log4Net.
 
-<blockquote>Common Logging API er en lettvekts loggplattform som gjør at man lettere kan fokusere på krav til logger i stedet for hvilke loggverktøy og konfigurasjon man bruker. Dette gjør det lett å bytte loggrammeverk.</blockquote>
-
-Settes loggnivå til `DEBUG` vil logge resultat for forespørsler som går bra og de  som feiler, `WARN` bare for feilede forespørsler eller verre, mens `ERROR`  bare skjer om sending av brev feilet. Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient`
+Loggnivå `DEBUG` vil logge resultat for forespørsler som går bra og de  som feiler, `WARN` bare for feilede forespørsler eller verre, mens `ERROR`  bare skjer om sending av brev feilet. Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient`
 
 <h3 id="log4net">Implementere Log4Net som logger</h3>
 
@@ -66,7 +64,7 @@ En fullstendig App.config med Log4Net-adapter og en `RollingFileAppender`:
 
 Når det sendes brev gjennom Sikker Digital Post, så legges det også ved en del ekstra informasjon. Denne informasjonen er strukturert som XML og er nødvending for at brevet skal leveres til mottaker. Ofte kan dette være svært nyttig informasjon å logge. 
 
-For å aktivere logging av forespørsel og respons XML så setter du følgende på <code>Klientkonfigurasjon</code>:
+For å aktivere logging av forespørsel og respons så setter du følgende på <code>Klientkonfigurasjon</code>:
 
 {% highlight csharp %}
 Klientkonfigurasjon.LoggForespørselOgRespons = true;
@@ -74,14 +72,10 @@ Klientkonfigurasjon.LoggForespørselOgRespons = true;
 
 Da  vil det logges til en logger med navn `Difi.SikkerDigitalPost.Klient.RequestResponse`.
 
-<blockquote> Merk at logging av forespørsel og respons så kan ytelsen på klienten bli mye dårligere. Det er ingen grunn til å logge dette i et produksjonsmiljø.</blockquote>
+<blockquote> Merk at logging av forespørsel og respons kan gi mye dårligere ytelse. Det er ingen grunn til å logge dette i et produksjonsmiljø.</blockquote>
 
 <h3 id="dokumentpakkelogger">Lagre dokumentpakke som sendes</h3>
 
-Som avsender kan det være ønskelig å lagre selve pakken med dokumenter som sendes. Denne inneholder også XML som sendes og er den faktiske pakken som krypteres og sendes. For å gjøre dette, setter du følgende på <code>Klientkonfigurasjon</code>:
-
-{% highlight csharp %}
-var transportkvittering = sikkerDigitalPostKlient.Send(forsendelse, lagreDokumentpakke: true);
-{% endhighlight %}
-
-Hvis <code> Klientkonfigurasjon.StandardLoggSti </code> ikke settes, så finner du dokumentpakkene i _%AppData%/Digipost/Dokumentpakke_.
+Når man logger forespørsel og respons, så logges  bare XML som sendes, ikke selve dokumentpakken. Det er to måter å logge denne på:
+1. Aktiver logging til disk vha <code>Klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk</code>.
+2. Implementer <code>IDokumentPakkeProsessor</code> og legg til i <code>Klientkonfigurasjon.Dokumentpakkeprosessorer</code>
