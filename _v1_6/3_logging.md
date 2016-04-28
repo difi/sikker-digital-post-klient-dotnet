@@ -74,7 +74,7 @@ Da  vil det logges til en logger med navn `Difi.SikkerDigitalPost.Klient.Request
 
 <blockquote> Merk at logging av forespørsel og respons kan gi mye dårligere ytelse. Det er ingen grunn til å logge dette i et produksjonsmiljø.</blockquote>
 
-<h3 id="dokumentpakkelogger">Lagre dokumentpakke som sendes</h3>
+<h3 id="dokumentpakkelogger">Prosessere dokumentpakke som sendes</h3>
 
 Når man logger forespørsel og respons, så logges  bare XML som sendes, ikke selve dokumentpakken. Det er to måter å logge denne på:
 1. Aktiver logging til disk vha <code>Klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk</code>.

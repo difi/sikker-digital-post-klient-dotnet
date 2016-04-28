@@ -6,8 +6,6 @@ description: Hvordan sende fysisk og digital post
 isHome: false
 ---
 
-For å gjøre det lettere å komme i gang med sending av Sikker digital post så følger det under noen konkrete eksempler.
-
 <blockquote>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.</blockquote>
 
 <h3 id="postinfodigital">PostInfo for digital post</h3>
@@ -15,7 +13,7 @@ For å gjøre det lettere å komme i gang med sending av Sikker digital post så
 Først, lag en motaker av type `DigitalPostMottaker`:
 
 <blockquote>
-Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se http://begrep.difi.no/Felles/ikkeSensitivTittel for detaljer om denne forskjellen.
+Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <a href="http://begrep.difi.no/Felles/ikkeSensitivTittel">begrep.difi.no</a> for detaljer om denne forskjellen.
 </blockquote>
 
 {% highlight csharp %}
