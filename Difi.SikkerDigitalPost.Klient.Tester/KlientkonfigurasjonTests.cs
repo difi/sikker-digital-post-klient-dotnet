@@ -49,9 +49,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"\\vmware-host\Shared Folders\Downloads");
 
                 //Assert
-                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof(LagreDokumentpakkeTilDiskProsessor)));
+                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
             }
         }
-
     }
 }

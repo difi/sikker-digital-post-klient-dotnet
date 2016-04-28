@@ -47,6 +47,5 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         {
             return asiceConfiguration.Dokumentpakkeprosessorer.Select(p => new AsiceAttachableProcessor(forsendelseForMetadata, p));
         }
-
     }
 }

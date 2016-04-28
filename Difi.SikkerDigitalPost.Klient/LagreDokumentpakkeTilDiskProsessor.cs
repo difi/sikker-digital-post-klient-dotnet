@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -35,5 +31,4 @@ namespace Difi.SikkerDigitalPost.Klient
             return $"{DateTime.Now.ToString(DateUtility.DateForFile())} - {reference}.asice.zip";
         }
     }
-
 }

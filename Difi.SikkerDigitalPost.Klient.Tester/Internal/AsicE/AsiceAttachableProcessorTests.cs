@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq.Expressions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
@@ -11,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
     public class AsiceAttachableProcessorTests
     {
         [TestClass]
-        public class ProcessMethod: AsiceAttachableProcessorTests
+        public class ProcessMethod : AsiceAttachableProcessorTests
         {
             [TestMethod]
             public void ProcessesCorrectly()
@@ -19,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
                 //Arrange
                 var message = DomainUtility.GetForsendelseSimple();
                 var documentBundleProcessor = new MockAttachableProcessor();
-                var stream = new MemoryStream(new byte[]{0x42, 0x32});
+                var stream = new MemoryStream(new byte[] {0x42, 0x32});
                 var asiceAttachableProcessor = new AsiceAttachableProcessor(message, documentBundleProcessor);
 
                 //Act

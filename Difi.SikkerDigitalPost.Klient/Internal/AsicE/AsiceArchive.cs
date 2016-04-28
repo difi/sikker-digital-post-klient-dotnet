@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -24,6 +23,21 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             UnencryptedBytes = CreateZipFile();
         }
 
+        internal byte[] UnencryptedBytes { get; }
+
+        public long UnzippedContentBytesCount
+        {
+            get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
+        }
+
+        public IAsiceAttachable[] AsiceAttachables { get; }
+
+        private GuidUtility GuidUtility { get; }
+
+        public IEnumerable<AsiceAttachableProcessor> AsiceAttachableProcessors { get; }
+
+        private X509Certificate2 CryptographicCertificate { get; }
+
         public string Filnavn => "post.asice.zip";
 
         public string Innholdstype => "application/cms";
@@ -43,21 +57,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             envelopedCms.Encrypt(recipient);
             return envelopedCms.Encode();
         }
-
-        internal byte[] UnencryptedBytes { get; }
-
-        public long UnzippedContentBytesCount
-        {
-            get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
-        }
-
-        public IAsiceAttachable[] AsiceAttachables { get; }
-
-        private GuidUtility GuidUtility { get; }
-
-        public IEnumerable<AsiceAttachableProcessor> AsiceAttachableProcessors { get; }
-
-        private X509Certificate2 CryptographicCertificate { get; }
 
         private byte[] CreateZipFile()
         {
@@ -97,7 +96,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             }
         }
 
-
         private static void AddFilesToArchive(ZipArchive archive, string filename, byte[] data)
         {
             var entry = archive.CreateEntry(filename, CompressionLevel.Optimal);
@@ -111,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         {
             FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
         }
-        
+
         public static byte[] Decrypt(byte[] kryptertData)
         {
             var envelopedCms = new EnvelopedCms();

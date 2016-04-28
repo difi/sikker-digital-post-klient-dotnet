@@ -5,14 +5,15 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceAttachableProcessor
     {
-        private IDokumentpakkeProsessor DokumentpakkeProsessor { get; }
-        private Forsendelse Message { get; }
-
         public AsiceAttachableProcessor(Forsendelse message, IDokumentpakkeProsessor dokumentpakkeProsessor)
         {
             Message = message;
             DokumentpakkeProsessor = dokumentpakkeProsessor;
         }
+
+        private IDokumentpakkeProsessor DokumentpakkeProsessor { get; }
+
+        private Forsendelse Message { get; }
 
         public void Process(Stream stream)
         {
