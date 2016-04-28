@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
-                var varslingFeiletKvittering = DomeneUtility.GetVarslingFeiletKvittering();
+                var varslingFeiletKvittering = DomainUtility.GetVarslingFeiletKvittering();
 
                 //Act
 

@@ -76,8 +76,11 @@
     </Compile>
     <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
     <Compile Include="Internal\AsicE\AsiceArchive.cs" />
+    <Compile Include="Internal\AsicE\AsiceAttachableProcessor.cs" />
     <Compile Include="Internal\AsicE\AsiceGenerator.cs" />
     <Compile Include="Internal\AsicE\DocumentBundle.cs" />
+    <Compile Include="Internal\AsicE\IAsiceConfiguration.cs" />
+    <Compile Include="Internal\AsicE\IDokumentpakkeProsessor.cs" />
     <Compile Include="Internal\AsicE\Manifest.cs" />
     <Compile Include="Internal\AsicE\Signature.cs" />
     <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Internal\RequestHelper.cs" />
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Kvitteringsparser.cs" />
+    <Compile Include="LagreDokumentpakkeTilDiskProsessor.cs" />
     <Compile Include="Utilities\NavneromUtility.cs" />
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="Utilities\DateUtility.cs" />

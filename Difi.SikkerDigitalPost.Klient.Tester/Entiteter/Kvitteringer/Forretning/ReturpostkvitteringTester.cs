@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
-                var returpostkvittering = DomeneUtility.GetReturpostkvittering();
+                var returpostkvittering = DomainUtility.GetReturpostkvittering();
 
                 //Act
 

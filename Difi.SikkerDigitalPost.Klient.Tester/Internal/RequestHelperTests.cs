@@ -40,9 +40,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
             public async Task ReturnsReceiptSuccessfully()
             {
                 //Arrange
-                var forretningsmeldingEnvelope = DomeneUtility.GetForretningsmeldingEnvelope();
+                var forretningsmeldingEnvelope = DomainUtility.GetForretningsmeldingEnvelope();
 
-                var documentBundle = AsiceGenerator.Create(DomeneUtility.GetDigitalForsendelseEnkel(), new GuidUtility(), DomeneUtility.GetAvsenderSertifikat());
+                var documentBundle = AsiceGenerator.Create(DomainUtility.GetForsendelseSimple(), new GuidUtility(), DomainUtility.GetAvsenderCertificate(), DomainUtility.GetKlientkonfigurasjon());
 
                 var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
                 var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);

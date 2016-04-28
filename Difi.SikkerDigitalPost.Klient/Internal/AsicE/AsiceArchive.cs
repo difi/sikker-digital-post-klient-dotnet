@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,36 +14,49 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceArchive : ISoapVedlegg
     {
-        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, params IAsiceAttachable[] asiceAttachables)
+        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, IEnumerable<AsiceAttachableProcessor> asiceAttachableProcessors, params IAsiceAttachable[] asiceAttachables)
         {
             CryptographicCertificate = cryptographicCertificate;
             GuidUtility = guidUtility;
+            AsiceAttachableProcessors = asiceAttachableProcessors;
             AsiceAttachables = asiceAttachables;
             UnencryptedBytes = CreateZipFile();
         }
 
         internal byte[] UnencryptedBytes { get; }
 
-        public IAsiceAttachable[] AsiceAttachables { get; }
-
-        private GuidUtility GuidUtility { get; }
-
-        private X509Certificate2 CryptographicCertificate { get; }
-
         public long UnzippedContentBytesCount
         {
             get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
         }
 
-        public string Filnavn => "post.asice.zip";
+        public IAsiceAttachable[] AsiceAttachables { get; }
 
-        public byte[] Bytes => EncryptedBytes(UnencryptedBytes);
+        private GuidUtility GuidUtility { get; }
+
+        public IEnumerable<AsiceAttachableProcessor> AsiceAttachableProcessors { get; }
+
+        private X509Certificate2 CryptographicCertificate { get; }
+
+        public string Filnavn => "post.asice.zip";
 
         public string Innholdstype => "application/cms";
 
         public string ContentId => GuidUtility.DokumentpakkeId;
 
         public string TransferEncoding => "binary";
+
+        public byte[] Bytes => EncryptedBytes(UnencryptedBytes);
+
+        private byte[] EncryptedBytes(byte[] bytes)
+        {
+            var contentInfo = new ContentInfo(bytes);
+            var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
+            var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
+            var recipient = new CmsRecipient(CryptographicCertificate);
+            envelopedCms.Encrypt(recipient);
+            return envelopedCms.Encode();
+        }
 
         private byte[] CreateZipFile()
         {
@@ -61,7 +76,24 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 }
             }
 
-            return stream.ToArray();
+            var zipFile = stream.ToArray();
+            SendArchiveThroughBundleProcessors(zipFile);
+            return zipFile;
+        }
+
+        private void SendArchiveThroughBundleProcessors(byte[] archiveBytes)
+        {
+            foreach (var documentBundleProcessor in AsiceAttachableProcessors)
+            {
+                try
+                {
+                    documentBundleProcessor.Process(new MemoryStream(archiveBytes));
+                }
+                catch (Exception exception)
+                {
+                    throw new IOException("Could not run stream through document bundle processor.", exception);
+                }
+            }
         }
 
         private static void AddFilesToArchive(ZipArchive archive, string filename, byte[] data)
@@ -76,16 +108,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         public void SaveToFile(params string[] filsti)
         {
             FileUtility.WriteToBasePath(UnencryptedBytes, filsti);
-        }
-
-        private byte[] EncryptedBytes(byte[] bytes)
-        {
-            var contentInfo = new ContentInfo(bytes);
-            var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC            
-            var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
-            var recipient = new CmsRecipient(CryptographicCertificate);
-            envelopedCms.Encrypt(recipient);
-            return envelopedCms.Encode();
         }
 
         public static byte[] Decrypt(byte[] kryptertData)

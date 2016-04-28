@@ -16,8 +16,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
             public void SuccessfullySetsLanguageOnDocumentsWithNoLanguageCodeFromMessage()
             {
                 //Arrange
-                var sender = DomeneUtility.GetAvsender();
-                var simpleDigitalPostInfo = DomeneUtility.GetDigitalPostInfoEnkel();
+                var sender = DomainUtility.GetAvsender();
+                var simpleDigitalPostInfo = DomainUtility.GetDigitalPostInfoSimple();
 
                 string undefinedLanguageCode = null;
                 var primaryDocument = new Dokument("Tiitle", new byte[3], "application/pdf", undefinedLanguageCode);

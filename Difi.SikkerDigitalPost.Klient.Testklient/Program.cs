@@ -52,6 +52,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
             var forsendelse = GenererForsendelse(avsender, postInfo);
             var klientkonfigurasjon = SettOppKlientkonfigurasjon();
+            klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk(@"C:\Users\aas\Downloads\");
+
             var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
             /**

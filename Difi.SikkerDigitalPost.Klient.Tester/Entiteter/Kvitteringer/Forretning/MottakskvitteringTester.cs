@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
-                var mottakskvittering = DomeneUtility.GetMottakskvittering();
+                var mottakskvittering = DomainUtility.GetMottakskvittering();
 
                 //Act
 

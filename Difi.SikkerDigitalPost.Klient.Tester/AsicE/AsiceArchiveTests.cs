@@ -7,6 +7,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
@@ -18,12 +19,40 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
         public class ConstructorMethod : AsiceArchiveTests
         {
             [TestMethod]
+            public void InitializesFieldsProperly()
+            {
+                //Arrange
+                var forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
+
+                var manifest = new Manifest(forsendelse);
+                var cryptographicCertificate = forsendelse.PostInfo.Mottaker.Sertifikat;
+                var signature = new Signature(forsendelse, manifest, DomainUtility.GetAvsenderCertificate());
+
+                var asiceAttachables = new List<IAsiceAttachable>();
+                asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+                asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
+                asiceAttachables.Add(manifest);
+                asiceAttachables.Add(signature);
+
+                var asiceAttachablesArray = asiceAttachables.ToArray();
+
+                var asiceAttachableProcessors = new List<AsiceAttachableProcessor>();
+
+                //Act
+                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachableProcessors, asiceAttachablesArray);
+
+                //Assert
+                Assert.AreEqual(asiceAttachableProcessors, asiceArchive.AsiceAttachableProcessors);
+                Assert.AreEqual(asiceAttachablesArray, asiceArchive.AsiceAttachables);
+            }
+
+            [TestMethod]
             public void ConstructorGeneratesBytes()
             {
                 //Arrange
-                var message = new Forsendelse(DomeneUtility.GetAvsender(), DomeneUtility.GetDigitalPostInfoEnkel(), DomeneUtility.GetDokumentpakkeMedFlereVedlegg());
+                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithMultipleVedlegg());
 
-                var asiceArchive = DomeneUtility.GetAsiceArchive(message);
+                var asiceArchive = DomainUtility.GetAsiceArchive(message);
 
                 //Act
                 var archiveBytes = asiceArchive.UnencryptedBytes;
@@ -53,19 +82,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             public void ReturnsProperBytesCount()
             {
                 //Arrange
-                var message = DomeneUtility.GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet();
+                var forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
 
-                var manifest = new Manifest(message);
-                var cryptographicCertificate = message.PostInfo.Mottaker.Sertifikat;
-                var signature = new Signature(message, manifest, DomeneUtility.GetAvsenderSertifikat());
+                var manifest = new Manifest(forsendelse);
+                var cryptographicCertificate = forsendelse.PostInfo.Mottaker.Sertifikat;
+                var signature = new Signature(forsendelse, manifest, DomainUtility.GetAvsenderCertificate());
 
                 var asiceAttachables = new List<IAsiceAttachable>();
-                asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
-                asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+                asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+                asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
                 asiceAttachables.Add(manifest);
                 asiceAttachables.Add(signature);
 
-                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachables.ToArray());
+                var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), new List<AsiceAttachableProcessor>(), asiceAttachables.ToArray());
 
                 var expectedBytesCount = 0L;
                 foreach (var dokument in asiceAttachables)
@@ -78,6 +107,40 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 
                 //Assert
                 Assert.AreEqual(expectedBytesCount, actualBytesCount);
+            }
+        }
+
+        [TestClass]
+        public class BytesMethod : AsiceArchiveTests
+        {
+            [TestMethod]
+            public void SendsBytesThroughDocumentBundleProcessors()
+            {
+                //Arrange
+                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
+                {
+                    Dokumentpakkeprosessorer = new List<IDokumentpakkeProsessor>
+                    {
+                        new SimpleDocumentBundleProcessor(),
+                        new SimpleDocumentBundleProcessor()
+                    }
+                };
+
+                var forsendelse = DomainUtility.GetForsendelseSimple();
+                var asiceAttachableProcessors = clientConfiguration.Dokumentpakkeprosessorer.Select(p => new AsiceAttachableProcessor(forsendelse, p));
+                var asiceAttachables = new IAsiceAttachable[] {DomainUtility.GetHoveddokumentSimple()};
+
+                //Act
+                var asiceArchive = new AsiceArchive(DomainUtility.GetMottakerCertificate(), new GuidUtility(), asiceAttachableProcessors, asiceAttachables);
+                var bytes = asiceArchive.Bytes;
+
+                //Assert
+                foreach (var simpleProcessor in clientConfiguration.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
+                {
+                    Assert.IsTrue(simpleProcessor.StreamLength > 1000);
+                    Assert.IsTrue(simpleProcessor.CouldReadBytesStream);
+                    Assert.AreEqual(0, simpleProcessor.Initialposition);
+                }
             }
         }
     }

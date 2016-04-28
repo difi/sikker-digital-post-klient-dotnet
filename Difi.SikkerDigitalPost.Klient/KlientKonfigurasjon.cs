@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
-    public class Klientkonfigurasjon
+    public class Klientkonfigurasjon : IAsiceConfiguration
     {
         public Klientkonfigurasjon(Miljø miljø)
         {
@@ -38,6 +41,33 @@ namespace Difi.SikkerDigitalPost.Klient
 
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
+        /// <summary>
+        ///     Hvis satt til true, så vil alle forespørsler og responser logges med nivå DEBUG.
+        /// </summary>
         public bool LoggForespørselOgRespons { get; set; } = false;
+
+        /// <summary>
+        ///     Liste over <see cref="IDokumentpakkeProsessor">Dokumentpakkeprosessorer</see>. Aktiverer prosessering av selve
+        ///     dokumentpakken som inneholder<see cref="Dokument"> Hoveddokument </see>, alle
+        ///     <see cref="Dokument"> Vedlegg</see>, og metadata knyttet til <see cref="Forsendelse">Forsendelsen.</see>
+        /// </summary>
+        public IEnumerable<IDokumentpakkeProsessor> Dokumentpakkeprosessorer { get; set; } = new List<IDokumentpakkeProsessor>();
+
+        /// <summary>
+        ///     Aktiverer lagring til av selve dokumentpakken som inneholder <see cref="Dokument">Hoveddokument</see>, alle
+        ///     <see cref="Dokument">Vedlegg</see>,
+        ///     i tillegg til metainformasjon for forsendelsen. Om det er ønskelig å lagre på en annen måte, legg til en
+        ///     <see cref="IDokumentpakkeProsessor">Dokumentpakkeprosessor</see> i <see cref="Dokumentpakkeprosessorer" />
+        /// </summary>
+        /// <param name="katalog">
+        ///     Katalog som dokumentpakkene lagres til. Lagres på følgende format:
+        ///     <code>[tidsstempel] - [conversationId].asice.zip</code>
+        /// </param>
+        public void AktiverLagringAvDokumentpakkeTilDisk(string katalog)
+        {
+            var documentBundleToDiskProcessor = new LagreDokumentpakkeTilDiskProsessor(katalog);
+            ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
+            ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
+        }
     }
 }

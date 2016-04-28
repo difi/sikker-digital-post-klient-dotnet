@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     ///     fra disk kun èn
     ///     gang for økt ytelse.
     /// </summary>
-    internal static class DomeneUtility
+    internal static class DomainUtility
     {
         internal static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
 
@@ -37,24 +37,24 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static IEnumerable<Dokument> _vedlegg;
 
-        internal static Dokumentpakke GetDokumentpakkeUtenVedlegg()
+        internal static Dokumentpakke GetDokumentpakkeWithoutAttachments()
         {
-            return new Dokumentpakke(GetHoveddokumentEnkel());
+            return new Dokumentpakke(GetHoveddokumentSimple());
         }
 
-        internal static Dokumentpakke GetDokumentpakkeMedFlereVedlegg(int antall = 3)
+        internal static Dokumentpakke GetDokumentpakkeWithMultipleVedlegg(int antall = 3)
         {
-            var dokumentpakke = new Dokumentpakke(GetHoveddokumentEnkel());
+            var dokumentpakke = new Dokumentpakke(GetHoveddokumentSimple());
             dokumentpakke.LeggTilVedlegg(GetVedlegg(antall));
             return dokumentpakke;
         }
 
-        internal static Dokument GetHoveddokumentEnkel()
+        internal static Dokument GetHoveddokumentSimple()
         {
             return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
-        internal static string[] GetVedleggsFilerStier()
+        internal static string[] GetVedleggFilesPaths()
         {
             const string vedleggsMappe = "vedlegg";
 
@@ -92,22 +92,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
-        }
-
-        internal static DigitalPostMottaker GetDigitalPostMottakerMedTestSertifikat()
-        {
-            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerEnhetstesterSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
-        internal static FysiskPostMottaker GetFysiskPostMottakerMedTestSertifikat()
+        internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetMottakerEnhetstesterSertifikat(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetReceiverUnitTestsCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
+        }
+
+        internal static FysiskPostMottaker GetFysiskPostMottakerWithTestCertificate()
+        {
+            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
@@ -117,15 +117,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Databehandler GetDatabehandler()
         {
-            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderSertifikat());
+            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderCertificate());
         }
 
-        internal static Databehandler GetDatabehandlerMedTestSertifikat()
+        internal static Databehandler GetDatabehandlerWithTestCertificate()
         {
             return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderEnhetstesterSertifikat());
         }
 
-        internal static DigitalPostInfo GetDigitalPostInfoMedVarsel()
+        internal static DigitalPostInfo GetDigitalPostInfoWithVarsel()
         {
             return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel")
             {
@@ -134,45 +134,45 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             };
         }
 
-        internal static DigitalPostInfo GetDigitalPostInfoEnkel()
+        internal static DigitalPostInfo GetDigitalPostInfoSimple()
         {
             return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel");
         }
 
-        internal static DigitalPostInfo GetDigitalPostInfoEnkelMedTestSertifikat()
+        internal static DigitalPostInfo GetDigitalPostInfoWithTestCertificate()
         {
-            return new DigitalPostInfo(GetDigitalPostMottakerMedTestSertifikat(), "Ikke-sensitiv tittel");
+            return new DigitalPostInfo(GetDigitalPostMottakerWithTestCertificate(), "Ikke-sensitiv tittel");
         }
 
-        internal static FysiskPostInfo GetFysiskPostInfoEnkel()
+        internal static FysiskPostInfo GetFysiskPostInfoSimple()
         {
             return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
                 Posthåndtering.DirekteRetur, GetFysiskPostReturMottaker());
         }
 
-        internal static Forsendelse GetDigitalForsendelseEnkel()
+        internal static Forsendelse GetForsendelseSimple()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetDigitalForsendelseEnkelMedTestSertifikat()
+        internal static Forsendelse GetForsendelseWithTestCertificate()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoEnkelMedTestSertifikat(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithTestCertificate(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetFysiskForsendelseEnkel()
+        internal static Forsendelse GetFysiskPostSimple()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoEnkel(), GetDokumentpakkeUtenVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetDigitalForsendelseVarselFlereDokumenterHøyereSikkerhet()
+        internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoMedVarsel(), GetDokumentpakkeMedFlereVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithMultipleVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static DocumentBundle GetAsicEArkivEnkel()
+        internal static DocumentBundle GetAsiceArchiveSimple()
         {
-            return AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat());
+            return AsiceGenerator.Create(GetForsendelseSimple(), new GuidUtility(), GetAvsenderCertificate(), GetKlientkonfigurasjon());
         }
 
         internal static AsiceArchive GetAsiceArchive(Forsendelse message)
@@ -187,15 +187,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             asiceAttachables.Add(manifest);
             asiceAttachables.Add(signature);
 
-            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachables.ToArray());
+            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), new List<AsiceAttachableProcessor>(), asiceAttachables.ToArray());
         }
 
-        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeMedTestSertifikat()
+        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeWithTestTestCertificate()
         {
             var envelopeSettings = new EnvelopeSettings(
-                GetDigitalForsendelseEnkelMedTestSertifikat(),
-                AsiceGenerator.Create(GetDigitalForsendelseEnkel(), new GuidUtility(), GetAvsenderSertifikat()),
-                GetDatabehandlerMedTestSertifikat(),
+                GetForsendelseWithTestCertificate(),
+                GetAsiceArchiveSimple(),
+                GetDatabehandlerWithTestCertificate(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
             return new ForretningsmeldingEnvelope(envelopeSettings);
@@ -204,8 +204,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
         {
             var envelopeSettings = new EnvelopeSettings(
-                GetDigitalForsendelseEnkel(),
-                GetAsicEArkivEnkel(),
+                GetForsendelseSimple(),
+                GetAsiceArchiveSimple(),
                 GetDatabehandler(),
                 GuidUtility,
                 new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
@@ -219,30 +219,30 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetAvsenderEnhetstesterSertifikat()
         {
-            return EvigTestSertifikatMedPrivatnøkkel();
+            return GetEternalTestCertificateMedPrivateKey();
         }
 
-        internal static X509Certificate2 GetMottakerEnhetstesterSertifikat()
+        internal static X509Certificate2 GetReceiverUnitTestsCertificate()
         {
-            return EvigTestSertifikatUtenPrivatnøkkel();
+            return GetEternalTestCertificateWithoutPrivateKey();
         }
 
-        private static X509Certificate2 EvigTestSertifikatUtenPrivatnøkkel()
+        private static X509Certificate2 GetEternalTestCertificateWithoutPrivateKey()
         {
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "enhetstester", "difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
         }
 
-        private static X509Certificate2 EvigTestSertifikatMedPrivatnøkkel()
+        private static X509Certificate2 GetEternalTestCertificateMedPrivateKey()
         {
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
         }
 
-        internal static X509Certificate2 GetAvsenderSertifikat()
+        internal static X509Certificate2 GetAvsenderCertificate()
         {
             return CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
         }
 
-        internal static X509Certificate2 GetMottakerSertifikat()
+        internal static X509Certificate2 GetMottakerCertificate()
         {
             return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
         }
@@ -305,6 +305,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var digestValue = "digestValue";
 
             return new Feilmelding(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
+        }
+
+        public static Klientkonfigurasjon GetKlientkonfigurasjon()
+        {
+            return new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
         }
     }
 }

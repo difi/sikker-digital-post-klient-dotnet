@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     [TestClass]
-    public class ArkivTester
+    public class DokumentpakkeTests
     {
         public TestContext TestContext { get; set; }
 
@@ -16,16 +16,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [TestMethod]
             public void LeggFilerTilDokumentpakkeAntallStemmer()
             {
-                var dokumentpakke = DomeneUtility.GetDokumentpakkeMedFlereVedlegg(5);
+                var dokumentpakke = DomainUtility.GetDokumentpakkeWithMultipleVedlegg(5);
 
-                Assert.AreEqual(DomeneUtility.GetVedleggsFilerStier().Length, dokumentpakke.Vedlegg.Count);
+                Assert.AreEqual(DomainUtility.GetVedleggFilesPaths().Length, dokumentpakke.Vedlegg.Count);
                 Assert.IsNotNull(dokumentpakke);
             }
 
             [TestMethod]
             public void LeggTilVedleggOgSjekkIdNummer()
             {
-                var dokumentpakke = DomeneUtility.GetDokumentpakkeUtenVedlegg();
+                var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
 
                 dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 1", new byte[] {0x00}, "text/plain"));
                 dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 2", new byte[] {0x00}, "text/plain"));
@@ -48,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [ExpectedException(typeof (KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
             public void LeggTilVedleggSammeFilnavnKasterException()
             {
-                var dokumentpakke = DomeneUtility.GetDokumentpakkeUtenVedlegg();
+                var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
 
                 dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] {0x00}, "text/plain", "NO",
                     "Filnavn.txt"));
@@ -60,7 +60,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             [ExpectedException(typeof (KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
             public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
             {
-                var dokumentpakke = DomeneUtility.GetDokumentpakkeUtenVedlegg();
+                var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
                 dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] {0x00}, "text/plain",
                     "NO", dokumentpakke.Hoveddokument.Filnavn));
             }
