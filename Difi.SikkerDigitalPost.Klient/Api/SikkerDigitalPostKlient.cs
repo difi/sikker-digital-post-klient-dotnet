@@ -28,13 +28,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
-        ///     Behandlingsansvarlig til Meldingsformidler. Det kan være flere databehandlere som har
-        ///     ansvar for forskjellige steg i prosessen med å formidle en digital postmelding.
+        ///     <see cref="Avsender"/> til Meldingsformidler.
         /// </param>
         /// <param name="klientkonfigurasjon">
-        ///     Klientkonfigurasjon for klienten. Brukes for å sette parametere
-        ///     som proxy, timeout og URI til meldingsformidler. For å bruke standardkonfigurasjon, lag
-        ///     SikkerDigitalPostKlient uten Klientkonfigurasjon som parameter.
+        ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken. 
         /// </param>
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
@@ -53,11 +50,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         internal RequestHelper RequestHelper { get; set; }
 
         /// <summary>
-        ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
-        ///     exception.
+        ///     Sender en <see cref="Forsendelse"/> til Meldingsformidler.
         /// </summary>
         /// <param name="forsendelse">
-        ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
+        ///     All informasjon, klar til å kunne sendes (mottakerinformasjon, sertifikater,
         ///     vedlegg mm), enten digitalt eller fysisk.
         /// </param>
         public Transportkvittering Send(Forsendelse forsendelse)
@@ -66,11 +62,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Sender en forsendelse til meldingsformidler. Dersom noe feilet i sendingen til meldingsformidler, vil det kastes en
-        ///     exception.
+        ///     Sender en <see cref="Forsendelse"/> til Meldingsformidler.
         /// </summary>
         /// <param name="forsendelse">
-        ///     Et objekt som har all informasjon klar til å kunne sendes (mottakerinformasjon, sertifikater,
+        ///     All informasjon, klar til å kunne sendes (mottakerinformasjon, sertifikater,
         ///     vedlegg mm), enten digitalt eller fysisk.
         /// </param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
@@ -103,9 +98,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i
-        ///     meldingsformidler.
-        ///     Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
+        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering"/> for en spesifikk <see cref="Forsendelse"/>.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
@@ -113,8 +107,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
-        ///                 ny forespørsel gjøres
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -131,9 +125,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør kvittering for forsendelser. Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i
-        ///     meldingsformidler.
-        ///     Det er ikke mulig å etterspørre kvittering for en spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
+        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering"/> for en spesifikk <see cref="Forsendelse"/>.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
@@ -141,8 +134,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
-        ///                 ny forespørsel gjøres
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -159,11 +152,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å
-        ///     kjøre eget kall for bekreft.
-        ///     Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre
-        ///     kvittering for en
-        ///     spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig <see cref="Bekreft">bekrefte</see> på forrige <see cref="Kvittering"/> for å slippe å
+        ///     kjøre eget kall for <see cref="Bekreft"/>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
+        ///      <see cref="Kvittering"/> for en spesifikk forsendelse.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
@@ -172,8 +163,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
-        ///                 ny forespørsel gjøres
+        ///                Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -191,11 +182,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør kvittering for forsendelser med mulighet til å samtidig bekrefte på forrige kvittering for å slippe å
-        ///     kjøre eget kall for bekreft.
-        ///     Kvitteringer blir tilgjengeliggjort etterhvert som de er klare i meldingsformidler. Det er ikke mulig å etterspørre
-        ///     kvittering for en
-        ///     spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig <see cref="BekreftAsync">bekrefte</see> på forrige <see cref="Kvittering"/> for å slippe å
+        ///     kjøre eget kall for <see cref="BekreftAsync"/>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
+        ///      <see cref="Kvittering"/> for en spesifikk forsendelse.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
@@ -204,8 +193,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige kvitteringer skal det ventes følgende tidsintervaller før en
-        ///                 ny forespørsel gjøres
+        ///                Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -250,28 +239,28 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     Bekreft mottak av <see cref="Forretningskvittering"/> mottatt gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///     <list type="bullet">
         ///         <listheader>
         ///             <description>
-        ///                 <para>Dette legger opp til følgende arbeidsflyt</para>
+        ///                 <para>Dette legger opp til følgende arbeidsflyt:</para>
         ///             </description>
         ///         </listheader>
         ///         <item>
         ///             <description>
         ///                 <para>
-        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />
+        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///                 </para>
         ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para>
+        ///                 <para>Gjør intern prosessering av <see cref="Kvittering">Kvitteringen</see>.</para>
         ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para>Bekreft mottak av kvittering</para>
+        ///                 <para><see cref="Bekreft">Bekreft</see> mottak av <see cref="Forretningskvittering"/>.</para>
         ///             </description>
         ///         </item>
         ///     </list>
@@ -287,28 +276,28 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Bekreft mottak av forretningskvittering gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     Bekreft mottak av <see cref="Forretningskvittering"/> mottatt gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///     <list type="bullet">
         ///         <listheader>
         ///             <description>
-        ///                 <para>Dette legger opp til følgende arbeidsflyt</para>
+        ///                 <para>Dette legger opp til følgende arbeidsflyt:</para>
         ///             </description>
         ///         </listheader>
         ///         <item>
         ///             <description>
         ///                 <para>
-        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />
+        ///                     <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///                 </para>
         ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para>Gjør intern prosessering av kvitteringen (lagre til database, og så videre)</para>
+        ///                 <para>Gjør intern prosessering av <see cref="Kvittering">Kvitteringen</see>.</para>
         ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para>Bekreft mottak av kvittering</para>
+        ///                 <para><see cref="BekreftAsync">Bekreft</see> mottak av <see cref="Forretningskvittering"/>.</para>
         ///             </description>
         ///         </item>
         ///     </list>
@@ -318,6 +307,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <see cref="HentKvittering(Kvitteringsforespørsel)" /> kommer ikke til å returnere en ny kvittering før mottak av
         ///     den forrige er bekreftet.
         /// </remarks>
+
         public async Task BekreftAsync(Forretningskvittering kvittering)
         {
             var envelopeSettings = new EnvelopeSettings(kvittering, Databehandler, new GuidUtility());
