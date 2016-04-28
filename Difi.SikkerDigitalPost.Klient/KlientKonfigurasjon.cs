@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient
         public bool BrukProxy => !string.IsNullOrWhiteSpace(ProxyHost) && ProxyPort > 0;
 
         /// <summary>
-        ///     Hvis satt til true, så vil
+        ///     Hvis satt til true, så vil alle forespørsler og responser logges med nivå DEBUG.
         /// </summary>
         public bool LoggForespørselOgRespons { get; set; } = false;
 
