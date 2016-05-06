@@ -1,18 +1,29 @@
-﻿<?xml version="1.0"?>
-<package >
-  <metadata>
-    <id>difi-sikker-digital-post-klient</id>
-    <version>1.0.6.26227-alpha</version>
-    <authors>Aleksander Sjafjell, Marius Løkketangen, Jan Gylta</authors>
-    <owners>Posten Norge AS</owners>    
-    <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Klientbibliotek for sending av sikker digital post for offentlig sektor. </description>    
-    <copyright>Copyright 2014</copyright>
-    <tags>Posten SikkerDigitalPost Sikker Post eBoks Digipost Difi</tags>
-  </metadata>
-  <files>
-    <file src ="Difi.SikkerDigitalPost.Klient\bin\Release\*.dll" target="lib\net45" />   
-    <file src ="Difi.SikkerDigitalPost.Klient\bin\Release\*.xml" target="lib\net45" /> 
-  </files>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>difi-sikker-digital-post-klient</id>
+        <version>0.0.0.0</version>
+        <authors>Aleksander Sjafjell,Marius Løkketangen,Jan Gylta</authors>
+        <owners>Posten Norge AS</owners>
+        <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Klientbibliotek for sending av sikker digital post for offentlig sektor.</description>
+        <copyright>Copyright 2016</copyright>
+        <language>nb-NO</language>
+        <tags>Posten SikkerDigitalPost Sikker Post eBoks Digipost Difi</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Common.Logging" version="3.3.1" />
+                <dependency id="Common.Logging.Core" version="3.3.1" />
+                <dependency id="difi-felles-utility-dotnet" version="0.5.5970.24171" />
+                <dependency id="api-client-shared" version="1.0.5941.27271" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Difi.SikkerDigitalPost.Klient\bin\Release\Difi.SikkerDigitalPost.Klient.dll" target="lib\net45\Difi.SikkerDigitalPost.Klient.dll" />
+        <file src="Difi.SikkerDigitalPost.Klient\bin\Release\Difi.SikkerDigitalPost.Klient.Domene.dll" target="lib\net45\Difi.SikkerDigitalPost.Klient.Domene.dll" />
+        <file src="Difi.SikkerDigitalPost.Klient\bin\Release\Difi.SikkerDigitalPost.Klient.Domene.xml" target="lib\net45\Difi.SikkerDigitalPost.Klient.Domene.xml" />
+        <file src="Difi.SikkerDigitalPost.Klient\bin\Release\Difi.SikkerDigitalPost.Klient.xml" target="lib\net45\Difi.SikkerDigitalPost.Klient.xml" />
+    </files>
 </package>
