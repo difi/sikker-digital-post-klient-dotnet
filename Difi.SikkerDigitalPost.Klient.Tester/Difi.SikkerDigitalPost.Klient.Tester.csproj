@@ -167,6 +167,7 @@
   <ItemGroup>
     <None Include="..\SolutionItems\App.config">
       <Link>App.config</Link>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
