@@ -19,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
                 var envelopeValidator = new SdpXmlValidator();
                 string validationMessages;
-                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml,out validationMessages);
+                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
 
                 Assert.IsTrue(validert, validationMessages);
             }

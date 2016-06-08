@@ -62,10 +62,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 //Act
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow");
-                
             }
 
-            
             [TestMethod]
             public void ExistingFolderShouldNotThrowException()
             {
@@ -76,7 +74,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(path);
 
                 //Assert
-                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof(LagreDokumentpakkeTilDiskProsessor)));
+                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
             }
         }
     }
