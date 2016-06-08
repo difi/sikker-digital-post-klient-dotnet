@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
-using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -28,10 +27,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
-        ///     <see cref="Avsender"/> til Meldingsformidler.
+        ///     <see cref="Avsender" /> til Meldingsformidler.
         /// </param>
         /// <param name="klientkonfigurasjon">
-        ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken. 
+        ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken.
         /// </param>
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
@@ -43,6 +42,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             RequestHelper = new RequestHelper(klientkonfigurasjon);
         }
 
+        internal SdpXmlValidator SdpXmlValidator { get; set; } = new SdpXmlValidator();
+
         public Databehandler Databehandler { get; }
 
         public Klientkonfigurasjon Klientkonfigurasjon { get; }
@@ -50,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         internal RequestHelper RequestHelper { get; set; }
 
         /// <summary>
-        ///     Sender en <see cref="Forsendelse"/> til Meldingsformidler.
+        ///     Sender en <see cref="Forsendelse" /> til Meldingsformidler.
         /// </summary>
         /// <param name="forsendelse">
         ///     All informasjon, klar til å kunne sendes (mottakerinformasjon, sertifikater,
@@ -62,7 +63,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Sender en <see cref="Forsendelse"/> til Meldingsformidler.
+        ///     Sender en <see cref="Forsendelse" /> til Meldingsformidler.
         /// </summary>
         /// <param name="forsendelse">
         ///     All informasjon, klar til å kunne sendes (mottakerinformasjon, sertifikater,
@@ -76,7 +77,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
-            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"conversationId {forsendelse.KonversasjonsId}", new ForretningsmeldingEnvelopeValidator());
+            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"conversationId {forsendelse.KonversasjonsId}");
 
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
@@ -98,8 +99,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
-        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering"/> for en spesifikk <see cref="Forsendelse"/>.
+        ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>.
+        ///     <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
+        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering" /> for en spesifikk
+        ///     <see cref="Forsendelse" />.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
@@ -107,7 +110,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
+        ///                 tidsintervaller før en
         ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
@@ -125,8 +129,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
-        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering"/> for en spesifikk <see cref="Forsendelse"/>.
+        ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>.
+        ///     <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
+        ///     Meldingsformidler. Det er ikke mulig å etterspørre <see cref="Kvittering" /> for en spesifikk
+        ///     <see cref="Forsendelse" />.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
@@ -134,7 +140,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
+        ///                 tidsintervaller før en
         ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
@@ -152,9 +159,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig <see cref="Bekreft">bekrefte</see> på forrige <see cref="Kvittering"/> for å slippe å
-        ///     kjøre eget kall for <see cref="Bekreft"/>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
-        ///      <see cref="Kvittering"/> for en spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig
+        ///     <see cref="Bekreft">bekrefte</see> på forrige <see cref="Kvittering" /> for å slippe å
+        ///     kjøre eget kall for <see cref="Bekreft" />. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort
+        ///     etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
+        ///     <see cref="Kvittering" /> for en spesifikk forsendelse.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
@@ -163,7 +172,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
+        ///                 tidsintervaller før en
         ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
@@ -182,9 +192,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Forespør <see cref="Kvittering"/> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig <see cref="BekreftAsync">bekrefte</see> på forrige <see cref="Kvittering"/> for å slippe å
-        ///     kjøre eget kall for <see cref="BekreftAsync"/>. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
-        ///      <see cref="Kvittering"/> for en spesifikk forsendelse.
+        ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>, med mulighet til å samtidig
+        ///     <see cref="BekreftAsync">bekrefte</see> på forrige <see cref="Kvittering" /> for å slippe å
+        ///     kjøre eget kall for <see cref="BekreftAsync" />. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort
+        ///     etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
+        ///     <see cref="Kvittering" /> for en spesifikk forsendelse.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
@@ -193,7 +205,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <list type="table">
         ///         <listheader>
         ///             <description>
-        ///                Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende tidsintervaller før en
+        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
+        ///                 tidsintervaller før en
         ///                 ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
@@ -219,7 +232,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
             var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
-            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, "", new KvitteringsforespørselEnvelopeValidator());
+            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, "");
 
             var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
             var transportReceiptXml = XmlUtility.TilXmlDokument(receipt.Rådata);
@@ -239,7 +252,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Bekreft mottak av <see cref="Forretningskvittering"/> mottatt gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     Bekreft mottak av <see cref="Forretningskvittering" /> mottatt gjennom
+        ///     <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///     <list type="bullet">
         ///         <listheader>
         ///             <description>
@@ -260,7 +274,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para><see cref="Bekreft">Bekreft</see> mottak av <see cref="Forretningskvittering"/>.</para>
+        ///                 <para><see cref="Bekreft">Bekreft</see> mottak av <see cref="Forretningskvittering" />.</para>
         ///             </description>
         ///         </item>
         ///     </list>
@@ -276,7 +290,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Bekreft mottak av <see cref="Forretningskvittering"/> mottatt gjennom <see cref="HentKvittering(Kvitteringsforespørsel)" />.
+        ///     Bekreft mottak av <see cref="Forretningskvittering" /> mottatt gjennom
+        ///     <see cref="HentKvittering(Kvitteringsforespørsel)" />.
         ///     <list type="bullet">
         ///         <listheader>
         ///             <description>
@@ -297,7 +312,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 <para><see cref="BekreftAsync">Bekreft</see> mottak av <see cref="Forretningskvittering"/>.</para>
+        ///                 <para><see cref="BekreftAsync">Bekreft</see> mottak av <see cref="Forretningskvittering" />.</para>
         ///             </description>
         ///         </item>
         ///     </list>
@@ -307,14 +322,12 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <see cref="HentKvittering(Kvitteringsforespørsel)" /> kommer ikke til å returnere en ny kvittering før mottak av
         ///     den forrige er bekreftet.
         /// </remarks>
-
         public async Task BekreftAsync(Forretningskvittering kvittering)
         {
             var envelopeSettings = new EnvelopeSettings(kvittering, Databehandler, new GuidUtility());
             var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
-            var receivedReceiptValidator = new KvitteringMottattEnvelopeValidator();
-            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"conversationId '{kvittering.KonversasjonsId}'", receivedReceiptValidator);
+            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"conversationId '{kvittering.KonversasjonsId}'");
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
             Log.Debug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
@@ -332,13 +345,14 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
-        private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description, XmlValidator envelopeValidator)
+        private void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description)
         {
-            var isValid = envelopeValidator.Validate(envelope.Xml().OuterXml);
+            string validationMessages;
+            var isValid = SdpXmlValidator.Validate(envelope.Xml().OuterXml, out validationMessages);
             if (!isValid)
             {
-                var validatorName = envelopeValidator.GetType().Name;
-                var errorDescription = $"{validatorName}: Ikke gyldig respons for {description}. {envelopeValidator.ValidationWarnings}";
+                var validatorName = SdpXmlValidator.GetType().Name;
+                var errorDescription = $"{validatorName}: Ikke gyldig respons for {description}. {validationMessages}";
 
                 Log.Warn(errorDescription);
                 throw new XmlValidationException(errorDescription);

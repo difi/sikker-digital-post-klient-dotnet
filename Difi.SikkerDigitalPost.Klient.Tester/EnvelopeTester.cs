@@ -17,10 +17,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
-                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml);
+                var envelopeValidator = new SdpXmlValidator();
+                string validationMessages;
+                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml,out validationMessages);
 
-                Assert.IsTrue(validert, envelopeValidator.ValidationWarnings);
+                Assert.IsTrue(validert, validationMessages);
             }
 
             [TestMethod]
@@ -28,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                var envelopeValidator = new ForretningsmeldingEnvelopeValidator();
+                var envelopeValidator = new SdpXmlValidator();
 
                 //Endre til ugyldig forretningsmeldingenvelope
                 var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
@@ -47,8 +48,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = securityNode.Attributes["mustUnderstand"].Value;
                 securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
-                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml);
-                Assert.IsFalse(validert, envelopeValidator.ValidationWarnings);
+                string validationMessages;
+                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
+                Assert.IsFalse(validert, validationMessages);
 
                 securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
             }
