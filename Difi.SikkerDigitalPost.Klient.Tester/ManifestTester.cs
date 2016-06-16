@@ -6,6 +6,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -47,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var manifest = new Manifest(DomainUtility.GetForsendelseWithTestCertificate());
 
                 var manifestXml = manifest.Xml();
-                var manifestValidator = new ManifestValidator();
+                var manifestValidator = SdpXmlValidator.Instance;
 
                 //Endre navn på hoveddokument til å være for kort
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
@@ -141,9 +142,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 var manifestXml = new Manifest(message).Xml();
 
-                var manifestValidering = new ManifestValidator();
                 string validationMessages;
-                var validert = manifestValidering.Validate(manifestXml.OuterXml, out validationMessages);
+                var validert = SdpXmlValidator.Instance.Validate(manifestXml.OuterXml, out validationMessages);
                 Assert.IsTrue(validert, validationMessages);
             }
         }

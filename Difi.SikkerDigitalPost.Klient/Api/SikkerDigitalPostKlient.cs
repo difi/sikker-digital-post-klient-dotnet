@@ -42,8 +42,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             RequestHelper = new RequestHelper(klientkonfigurasjon);
         }
 
-        internal SdpXmlValidator SdpXmlValidator { get; set; } = new SdpXmlValidator();
-
         public Databehandler Databehandler { get; }
 
         public Klientkonfigurasjon Klientkonfigurasjon { get; }
@@ -345,14 +343,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
-        private void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description)
+        private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string description)
         {
             string validationMessages;
-            var isValid = SdpXmlValidator.Validate(envelope.Xml().OuterXml, out validationMessages);
+            var isValid = SdpXmlValidator.Instance.Validate(envelope.Xml().OuterXml, out validationMessages);
             if (!isValid)
             {
-                var validatorName = SdpXmlValidator.GetType().Name;
-                var errorDescription = $"{validatorName}: Ikke gyldig respons for {description}. {validationMessages}";
+                var errorDescription = $"Ikke gyldig respons for {description}. {validationMessages}";
 
                 Log.Warn(errorDescription);
                 throw new XmlValidationException(errorDescription);

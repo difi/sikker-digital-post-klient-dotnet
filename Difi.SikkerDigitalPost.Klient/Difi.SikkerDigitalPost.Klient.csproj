@@ -56,8 +56,8 @@
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=0.6.6003.17696, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.6.6003.17696\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    <Reference Include="Difi.Felles.Utility, Version=0.6.6008.19059, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.6.6008.19059\lib\net45\Difi.Felles.Utility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -123,10 +123,8 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Utilities\XmlUtility.cs" />
-    <Compile Include="Internal\AsicE\ManifestValidator.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\SDPXmlValidator.cs" />
-    <Compile Include="XmlValidering\SignatureValidator.cs" />
+    <Compile Include="XmlValidering\SdpXmlValidator.cs" />
     <Compile Include="XmlValidering\ResponseValidator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -17,9 +17,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                var envelopeValidator = new SdpXmlValidator();
+                
                 string validationMessages;
-                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
+                var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
 
                 Assert.IsTrue(validert, validationMessages);
             }
@@ -29,8 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                var envelopeValidator = new SdpXmlValidator();
-
+                
                 //Endre til ugyldig forretningsmeldingenvelope
                 var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
                 namespaceManager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
@@ -49,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
                 string validationMessages;
-                var validert = envelopeValidator.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
+                var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
                 Assert.IsFalse(validert, validationMessages);
 
                 securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
