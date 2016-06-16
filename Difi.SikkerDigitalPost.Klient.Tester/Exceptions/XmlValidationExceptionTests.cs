@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Exceptions
             {
                 //Arrange
                 var validationList = new List<string> {"validationmessage1", "validationmessage2"};
-                
+
                 //Act
                 try
                 {
@@ -29,7 +29,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Exceptions
                     Assert.AreEqual(2, exception.ValidationMessages.Count);
                     throw;
                 }
-                
             }
         }
     }
