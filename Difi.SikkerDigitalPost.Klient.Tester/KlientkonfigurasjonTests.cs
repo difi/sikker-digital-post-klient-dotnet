@@ -70,6 +70,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
                 var path = Path.GetTempPath();
+
                 //Act
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(path);
 

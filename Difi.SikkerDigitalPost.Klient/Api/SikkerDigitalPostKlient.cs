@@ -109,8 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         <listheader>
         ///             <description>
         ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en
-        ///                 ny forespørsel gjøres:
+        ///                 tidsintervaller før en ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -139,8 +138,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         <listheader>
         ///             <description>
         ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en
-        ///                 ny forespørsel gjøres:
+        ///                 tidsintervaller før en ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -171,8 +169,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         <listheader>
         ///             <description>
         ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en
-        ///                 ny forespørsel gjøres:
+        ///                 tidsintervaller før en ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
@@ -204,8 +201,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///         <listheader>
         ///             <description>
         ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en
-        ///                 ny forespørsel gjøres:
+        ///                 tidsintervaller før en ny forespørsel gjøres:
         ///             </description>
         ///         </listheader>
         ///         <item>
