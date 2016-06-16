@@ -35,11 +35,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         private static void ValidateXmlAndThrowIfInvalid(XmlDocument xmlDocument, string messagePrefix)
         {
-            string validationMessages;
+            List<string> validationMessages;
             var isValid = SdpXmlValidator.Instance.Validate(xmlDocument.OuterXml, out validationMessages);
             if (!isValid)
             {
-                throw new XmlValidationException($"{messagePrefix} er ikke gyldig: {validationMessages}");
+                throw new XmlValidationException($"{messagePrefix} er ikke gyldig.", validationMessages);
             }
         }
 
