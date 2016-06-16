@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
-using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
