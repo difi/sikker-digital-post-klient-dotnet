@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
@@ -65,6 +66,10 @@ namespace Difi.SikkerDigitalPost.Klient
         /// </param>
         public void AktiverLagringAvDokumentpakkeTilDisk(string katalog)
         {
+            if (!Directory.Exists(katalog))
+            {
+                throw new DirectoryNotFoundException();
+            }
             var documentBundleToDiskProcessor = new LagreDokumentpakkeTilDiskProsessor(katalog);
             ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
             ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,7 +47,32 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"\\vmware-host\Shared Folders\Downloads");
+                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(Path.GetTempPath());
+
+                //Assert
+                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
+            }
+
+            [ExpectedException(typeof (DirectoryNotFoundException))]
+            [TestMethod]
+            public void NonExistingFolderShouldThrowException()
+            {
+                //Arrange
+                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+
+                //Act
+                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow");
+            }
+
+            [TestMethod]
+            public void ExistingFolderShouldNotThrowException()
+            {
+                //Arrange
+                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+                var path = Path.GetTempPath();
+
+                //Act
+                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(path);
 
                 //Assert
                 Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));

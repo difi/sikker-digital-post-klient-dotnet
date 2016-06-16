@@ -22,6 +22,7 @@
         ///     </list>
         /// </summary>
         Nivå3 = 3,
+
         /// <summary>
         ///     <list type="bullet">
         ///         <listheader>
