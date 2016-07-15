@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 {
-    
     public class FysiskPostInfoTester
     {
-        
         public class KontstruktørMetode
         {
             [Fact]

@@ -3,10 +3,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
 {
-    
     public class TomKøKvitteringTests
     {
-        
         public class KonstruktørMethod : TomKøKvitteringTests
         {
             [Fact]

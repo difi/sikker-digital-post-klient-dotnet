@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
 {
-    
     public class AsiceAttachableProcessorTests
     {
-        
         public class ProcessMethod : AsiceAttachableProcessorTests
         {
             [Fact]

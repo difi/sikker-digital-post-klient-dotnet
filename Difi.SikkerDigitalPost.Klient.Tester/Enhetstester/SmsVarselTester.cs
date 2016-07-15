@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 {
-    
     public class SmsVarselTester
     {
-        
         public class Konstruktør : SmsVarselTester
         {
             [Fact]

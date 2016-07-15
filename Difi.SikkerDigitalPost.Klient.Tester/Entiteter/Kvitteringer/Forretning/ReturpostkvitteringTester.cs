@@ -5,10 +5,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    
     public class ReturpostkvitteringTests
     {
-        
         public class KonstruktørMethod : ReturpostkvitteringTests
         {
             [Fact]
@@ -30,7 +28,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             }
         }
 
-        
         public class ReturnertMethod : MottakskvitteringTests
         {
             [Fact]

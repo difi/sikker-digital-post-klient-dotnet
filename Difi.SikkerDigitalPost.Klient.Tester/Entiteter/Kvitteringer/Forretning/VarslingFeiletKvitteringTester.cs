@@ -5,10 +5,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    
     public class VarslingFeiletKvitteringTests
     {
-        
         public class KonstruktørMethod : VarslingFeiletKvitteringTests
         {
             [Fact]
@@ -30,7 +28,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
             }
         }
 
-        
         public class FeiletMethod : VarslingFeiletKvitteringTests
         {
             [Fact]

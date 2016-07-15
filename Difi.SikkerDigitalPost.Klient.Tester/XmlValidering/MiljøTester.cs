@@ -1,15 +1,11 @@
 ﻿using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
-    
     public class MiljøTester
     {
-        
         public class GetMiljøMethod : MiljøTester
         {
             [Fact]

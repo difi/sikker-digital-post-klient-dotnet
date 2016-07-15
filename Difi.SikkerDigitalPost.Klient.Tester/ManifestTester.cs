@@ -11,10 +11,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class ManifestTester
     {
-        
         public class KonstruktørMethod : ManifestTester
         {
             [Fact]
@@ -39,7 +37,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class Hoveddokument : ManifestTester
         {
             [Fact]
@@ -67,7 +64,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class Vedlegg : ManifestTester
         {
             [Fact]
@@ -127,7 +123,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class XsdValidering
         {
             [Fact]

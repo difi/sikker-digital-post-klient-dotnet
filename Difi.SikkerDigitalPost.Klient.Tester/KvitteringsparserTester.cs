@@ -5,10 +5,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class KvitteringsparserTester
     {
-        
         public class TilKvitteringMethod : KvitteringsparserTester
         {
             [Fact]

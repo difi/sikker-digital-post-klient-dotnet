@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
-    
     public class ForsendelseTester
     {
-        
         public class KonstruktørMethod : ForsendelseTester
         {
             [Fact]

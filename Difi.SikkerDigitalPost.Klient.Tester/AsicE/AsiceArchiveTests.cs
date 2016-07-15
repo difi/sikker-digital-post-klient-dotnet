@@ -12,10 +12,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 {
-    
     public class AsiceArchiveTests
     {
-        
         public class ConstructorMethod : AsiceArchiveTests
         {
             [Fact]
@@ -75,7 +73,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             }
         }
 
-        
         public class ContentBytesCountMethod : AsiceArchiveTests
         {
             [Fact]
@@ -110,7 +107,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             }
         }
 
-        
         public class BytesMethod : AsiceArchiveTests
         {
             [Fact]

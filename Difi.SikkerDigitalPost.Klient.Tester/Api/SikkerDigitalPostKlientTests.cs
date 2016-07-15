@@ -15,16 +15,12 @@ using Difi.SikkerDigitalPost.Klient.Tester.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 {
-    
     public class SikkerDigitalPostKlientTests
     {
-        
         public class ConstructorMethod : SikkerDigitalPostKlientTests
         {
             [Fact]
@@ -44,7 +40,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             }
         }
 
-        
         public class SendMethod : SikkerDigitalPostKlientTests
         {
             [Fact]
@@ -115,7 +110,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 //Act
                 var forsendelse = DomainUtility.GetForsendelseSimple();
                 await Assert.ThrowsAsync<SdpSecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse));
-                
             }
         }
     }

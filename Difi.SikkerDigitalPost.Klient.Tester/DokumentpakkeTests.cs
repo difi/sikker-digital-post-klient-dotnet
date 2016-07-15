@@ -5,10 +5,9 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class DokumentpakkeTests
     {
-       public class Validering
+        public class Validering
         {
             [Fact]
             public void LeggFilerTilDokumentpakkeAntallStemmer()
@@ -38,7 +37,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class Exceptions
         {
             [Fact]
@@ -50,8 +48,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     "Filnavn.txt"));
 
                 Assert.Throws<KonfigurasjonsException>(() =>
-                dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] {0x00}, "text/plain", "NO",
-                    "Filnavn.txt"))
+                    dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] {0x00}, "text/plain", "NO",
+                        "Filnavn.txt"))
                     );
             }
 

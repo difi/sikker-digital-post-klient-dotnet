@@ -5,10 +5,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class LagreDokumentpakkeTilDiskProsessorTests
     {
-        
         public class ConstructorMethod : LagreDokumentpakkeTilDiskProsessorTests
         {
             [Fact]
@@ -25,7 +23,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class ProcessMethod : LagreDokumentpakkeTilDiskProsessorTests
         {
             [Fact]

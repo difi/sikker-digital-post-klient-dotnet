@@ -4,10 +4,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class SertifikatTester
     {
-        
         public class ThumbprintTester : IDisposable
         {
             private static X509Store _store;
@@ -27,7 +25,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     throw new ArgumentNullException("Klarte ikke å finne noen sertifikater til å gjøre tester på. Dette er nok fordi du ikke har noen sertifikater i CurrentUser.My.");
                 }
             }
-            
+
+            public void Dispose()
+            {
+                _store.Close();
+            }
+
             [Fact]
             public void TestLowercaseThumbprint()
             {
@@ -58,11 +61,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 Assert.True(_certificate.Equals(certificateFound),
                     "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
-            }
-
-            public void Dispose()
-            {
-                _store.Close();
             }
         }
     }

@@ -3,10 +3,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
 {
-    
     public class DocumentBundleTests
     {
-        
         public class ConstructorMethod : DocumentBundleTests
         {
             [Fact]
@@ -26,7 +24,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
             }
         }
 
-        
         public class TransferEncodingMethod : DocumentBundleTests
         {
             [Fact]
@@ -42,7 +39,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
             }
         }
 
-        
         public class ContentTypeMethod : DocumentBundleTests
         {
             [Fact]

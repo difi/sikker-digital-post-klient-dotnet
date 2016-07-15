@@ -7,12 +7,10 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class X509ChainTests
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
-        
         public class Buildmethod : X509ChainTests
         {
             public X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority

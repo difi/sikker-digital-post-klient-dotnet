@@ -13,7 +13,6 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class SmokeTester
     {
         [Fact]

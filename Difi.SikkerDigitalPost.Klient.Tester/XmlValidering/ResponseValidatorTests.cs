@@ -5,13 +5,10 @@ using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
-    
     public class ResponseValidatorTests
     {
         private static void AddRsaSha256AlgorithmToCryptoConfig()
@@ -22,7 +19,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 CryptoConfig.AddAlgorithm(typeof (RsaPkCs1Sha256SignatureDescription), signatureMethod);
         }
 
-        
         public class ConstructorMethod : ResponseValidatorTests
         {
             [Fact]
@@ -43,7 +39,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
         }
 
-        
         public class ValiderTransportkvitteringMethod : ResponseValidatorTests
         {
             [Fact]
@@ -127,9 +122,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 //Act
                 Assert.Throws<SdpSecurityException>(() =>
-             responseValidator.ValidateTransportReceipt(guidUtility)
-             );
-
+                    responseValidator.ValidateTransportReceipt(guidUtility)
+                    );
             }
 
             [Fact]
@@ -157,12 +151,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 //Act
                 Assert.Throws<SdpSecurityException>(() =>
-             responseValidator.ValidateTransportReceipt(guidUtility)
-             );
+                    responseValidator.ValidateTransportReceipt(guidUtility)
+                    );
             }
         }
 
-        
         public class ValidateMessageReceiptMethod : ResponseValidatorTests
         {
             [Fact]
@@ -183,7 +176,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
         }
 
-        
         public class ValidateEmptyQueueReceiptMethod : ResponseValidatorTests
         {
             [Fact]

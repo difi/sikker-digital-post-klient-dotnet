@@ -13,10 +13,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 {
-    
     public class RequestHelperTests
     {
-        
         public class ConstructorMethod : RequestHelperTests
         {
             [Fact]
@@ -33,7 +31,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
             }
         }
 
-        
         public class SendMethod : RequestHelperTests
         {
             [Fact]

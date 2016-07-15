@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class EnvelopeTester
     {
-        
         public class XsdValidering : EnvelopeTester
         {
             [Fact]
@@ -17,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                
+
                 string validationMessages;
                 var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
 
@@ -29,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
-                
+
                 //Endre til ugyldig forretningsmeldingenvelope
                 var namespaceManager = new XmlNamespaceManager(forretningsmeldingEnvelopeXml.NameTable);
                 namespaceManager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);

@@ -5,10 +5,8 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class KvitteringFactoryTester
     {
-        
         public class GetKvitteringMethod : KvitteringFactoryTester
         {
             [Fact]

@@ -2,16 +2,12 @@
 using System.IO;
 using System.Linq;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    
     public class KlientkonfigurasjonTests
     {
-        
         public class KonstruktørMethod : KlientkonfigurasjonTests
         {
             [Fact]
@@ -39,7 +35,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        
         public class EnableDocumentBundleDiskDumpMethod : KlientkonfigurasjonTests
         {
             [Fact]
@@ -62,9 +57,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                Assert.Throws<DirectoryNotFoundException>(() => 
+                Assert.Throws<DirectoryNotFoundException>(() =>
                     clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow")
-                );
+                    );
             }
 
             [Fact]
