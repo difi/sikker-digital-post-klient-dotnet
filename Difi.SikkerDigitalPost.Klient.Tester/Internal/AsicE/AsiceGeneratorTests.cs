@@ -7,17 +7,18 @@ using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
 {
-    [TestClass]
+    
     public class AsiceGeneratorTests
     {
-        [TestClass]
+        
         public class CreateMethod : AsiceGeneratorTests
         {
-            [TestMethod]
-            [ExpectedException(typeof (XmlValidationException))]
+            [Fact]
             public void ThrowsExceptionOnInvalidManifest()
             {
                 //Arrange
@@ -27,9 +28,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
                 var forsendelse = new Forsendelse(new Avsender("123"), DomainUtility.GetDigitalPostInfoSimple(), dokumentpakkeUtenVedlegg, Guid.NewGuid());
 
                 //Act
-                AsiceGenerator.Create(forsendelse, new GuidUtility(), DomainUtility.GetAvsenderCertificate(), asiceConfiguration);
-
-                //Assert
+                Assert.Throws<XmlValidationException>(() =>
+                    AsiceGenerator.Create(forsendelse, new GuidUtility(), DomainUtility.GetAvsenderCertificate(), asiceConfiguration)
+                    );
+                
             }
         }
     }

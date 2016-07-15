@@ -6,10 +6,12 @@ using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
-    [TestClass]
+    
     public class ResponseValidatorTests
     {
         private static void AddRsaSha256AlgorithmToCryptoConfig()
@@ -20,10 +22,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 CryptoConfig.AddAlgorithm(typeof (RsaPkCs1Sha256SignatureDescription), signatureMethod);
         }
 
-        [TestClass]
+        
         public class ConstructorMethod : ResponseValidatorTests
         {
-            [TestMethod]
+            [Fact]
             public void InitializesWithProperties()
             {
                 //Arrange
@@ -35,16 +37,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Act
 
                 //Assert
-                Assert.AreEqual(environment.CertificateChainValidator, responseValidator.CertificateChainValidator);
-                Assert.AreEqual(sentMessage, responseValidator.SentMessage);
-                Assert.AreEqual(response, responseValidator.ResponseMessage);
+                Assert.Equal(environment.CertificateChainValidator, responseValidator.CertificateChainValidator);
+                Assert.Equal(sentMessage, responseValidator.SentMessage);
+                Assert.Equal(response, responseValidator.ResponseMessage);
             }
         }
 
-        [TestClass]
+        
         public class ValiderTransportkvitteringMethod : ResponseValidatorTests
         {
-            [TestMethod]
+            [Fact]
             public void TestsertifikatValiderer()
             {
                 //Arrange
@@ -69,8 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
             }
 
-            [TestMethod]
-            [ExpectedException(typeof (SdpSecurityException))]
+            [Fact]
             public void FeilDokumentpakkeIdITransportkvitteringSkalKasteSecurityException()
             {
                 //Arrange
@@ -95,13 +96,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                responseValidator.ValidateTransportReceipt(guidUtility);
-
-                //Assert
+                Assert.Throws<SdpSecurityException>(() =>
+                    responseValidator.ValidateTransportReceipt(guidUtility)
+                    );
             }
 
-            [TestMethod]
-            [ExpectedException(typeof (SdpSecurityException))]
+            [Fact]
             public void FeilSecurityBinaryITransportKvitteringSkalKasteException()
             {
                 //Arrange
@@ -126,13 +126,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                responseValidator.ValidateTransportReceipt(guidUtility);
+                Assert.Throws<SdpSecurityException>(() =>
+             responseValidator.ValidateTransportReceipt(guidUtility)
+             );
 
-                //Assert
             }
 
-            [TestMethod]
-            [ExpectedException(typeof (SdpSecurityException))]
+            [Fact]
             public void IncorrectTransportReceiptThrowsSecurityException()
             {
                 //Arrange
@@ -156,14 +156,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                responseValidator.ValidateTransportReceipt(guidUtility);
+                Assert.Throws<SdpSecurityException>(() =>
+             responseValidator.ValidateTransportReceipt(guidUtility)
+             );
             }
         }
 
-        [TestClass]
+        
         public class ValidateMessageReceiptMethod : ResponseValidatorTests
         {
-            [TestMethod]
+            [Fact]
             public void TestCertificateValidates()
             {
                 //Arrange
@@ -181,10 +183,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
         }
 
-        [TestClass]
+        
         public class ValidateEmptyQueueReceiptMethod : ResponseValidatorTests
         {
-            [TestMethod]
+            [Fact]
             public void TestCertificateValidates()
             {
                 //Arrange

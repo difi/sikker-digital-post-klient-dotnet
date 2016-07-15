@@ -3,16 +3,18 @@ using System.IO;
 using System.Linq;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class KlientkonfigurasjonTests
     {
-        [TestClass]
+        
         public class KonstruktørMethod : KlientkonfigurasjonTests
         {
-            [TestMethod]
+            [Fact]
             public void InitializesProperties()
             {
                 //Arrange
@@ -27,20 +29,20 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var clientConfiguration = new Klientkonfigurasjon(environment);
 
                 //Assert
-                Assert.AreEqual(environment, clientConfiguration.Miljø);
-                Assert.AreEqual(organizationNumberPosten, clientConfiguration.MeldingsformidlerOrganisasjon.Verdi);
-                Assert.AreEqual(proxyhost, clientConfiguration.ProxyHost);
-                Assert.AreEqual(proxyScheme, clientConfiguration.ProxyScheme);
-                Assert.AreEqual(timeoutInMilliseconds, clientConfiguration.TimeoutIMillisekunder);
-                Assert.AreEqual(proxyPort, clientConfiguration.ProxyPort);
-                Assert.AreEqual(clientConfiguration.LoggForespørselOgRespons, false);
+                Assert.Equal(environment, clientConfiguration.Miljø);
+                Assert.Equal(organizationNumberPosten, clientConfiguration.MeldingsformidlerOrganisasjon.Verdi);
+                Assert.Equal(proxyhost, clientConfiguration.ProxyHost);
+                Assert.Equal(proxyScheme, clientConfiguration.ProxyScheme);
+                Assert.Equal(timeoutInMilliseconds, clientConfiguration.TimeoutIMillisekunder);
+                Assert.Equal(proxyPort, clientConfiguration.ProxyPort);
+                Assert.Equal(clientConfiguration.LoggForespørselOgRespons, false);
             }
         }
 
-        [TestClass]
+        
         public class EnableDocumentBundleDiskDumpMethod : KlientkonfigurasjonTests
         {
-            [TestMethod]
+            [Fact]
             public void AddsDocumentBundleToDiskProcessor()
             {
                 //Arrange
@@ -50,21 +52,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(Path.GetTempPath());
 
                 //Assert
-                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
+                Assert.True(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
             }
 
-            [ExpectedException(typeof (DirectoryNotFoundException))]
-            [TestMethod]
+            [Fact]
             public void NonExistingFolderShouldThrowException()
             {
                 //Arrange
                 var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow");
+                Assert.Throws<DirectoryNotFoundException>(() => 
+                    clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow")
+                );
             }
 
-            [TestMethod]
+            [Fact]
             public void ExistingFolderShouldNotThrowException()
             {
                 //Arrange
@@ -75,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(path);
 
                 //Assert
-                Assert.IsTrue(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
+                Assert.True(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
             }
         }
     }

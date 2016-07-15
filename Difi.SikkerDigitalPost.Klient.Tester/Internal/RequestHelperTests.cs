@@ -9,17 +9,17 @@ using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 {
-    [TestClass]
+    
     public class RequestHelperTests
     {
-        [TestClass]
+        
         public class ConstructorMethod : RequestHelperTests
         {
-            [TestMethod]
+            [Fact]
             public void InitializesFields()
             {
                 //Arrange
@@ -29,14 +29,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 var requestHelper = new RequestHelper(clientConfiguration);
 
                 //Assert
-                Assert.AreEqual(clientConfiguration, requestHelper.ClientConfiguration);
+                Assert.Equal(clientConfiguration, requestHelper.ClientConfiguration);
             }
         }
 
-        [TestClass]
+        
         public class SendMethod : RequestHelperTests
         {
-            [TestMethod]
+            [Fact]
             public async Task ReturnsReceiptSuccessfully()
             {
                 //Arrange
@@ -51,8 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 //Act 
                 var kvittering = await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
 
-                //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (TransportOkKvittering));
+                Assert.IsType<TransportOkKvittering>(kvittering);
             }
         }
     }

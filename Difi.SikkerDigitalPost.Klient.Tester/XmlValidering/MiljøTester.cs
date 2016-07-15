@@ -1,16 +1,18 @@
 ﻿using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
-    [TestClass]
+    
     public class MiljøTester
     {
-        [TestClass]
+        
         public class GetMiljøMethod : MiljøTester
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererInitialisertFunksjoneltTestmiljø()
             {
                 //Arrange
@@ -21,12 +23,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.CertificateChainValidator);
-                Assert.AreEqual(url, miljø.Url.AbsoluteUri);
-                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.NotNull(miljø.CertificateChainValidator);
+                Assert.Equal(url, miljø.Url.AbsoluteUri);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererInitialisertProduksjonsmiljø()
             {
                 //Arrange
@@ -37,12 +39,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.CertificateChainValidator);
-                Assert.AreEqual(url, miljø.Url.ToString());
-                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.NotNull(miljø.CertificateChainValidator);
+                Assert.Equal(url, miljø.Url.ToString());
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererInitialisertFunksjoneltTestmiljøNorskHelsenett()
             {
                 //Arrange
@@ -53,12 +55,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.CertificateChainValidator);
-                Assert.AreEqual(url, miljø.Url.AbsoluteUri);
-                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.NotNull(miljø.CertificateChainValidator);
+                Assert.Equal(url, miljø.Url.AbsoluteUri);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererInitialisertProduksjonsmiljøNorskHelsenett()
             {
                 //Arrange
@@ -69,9 +71,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Act
 
                 //Assert
-                Assert.IsNotNull(miljø.CertificateChainValidator);
-                Assert.AreEqual(url, miljø.Url.ToString());
-                CollectionAssert.AreEqual(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.NotNull(miljø.CertificateChainValidator);
+                Assert.Equal(url, miljø.Url.ToString());
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
             }
         }
     }

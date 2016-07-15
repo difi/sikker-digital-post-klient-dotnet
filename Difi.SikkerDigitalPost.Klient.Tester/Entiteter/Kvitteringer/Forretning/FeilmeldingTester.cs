@@ -1,17 +1,17 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass]
+    
     public class FeilmeldingTester
     {
-        [TestClass]
+        
         public class KonstruktørMethod : FeilmeldingTester
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -24,16 +24,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 var feilmelding = new Feilmelding(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
-                Assert.AreEqual(konversasjonsId, feilmelding.KonversasjonsId);
-                Assert.AreEqual(bodyReferenceUri, feilmelding.BodyReferenceUri);
-                Assert.AreEqual(digestValue, feilmelding.DigestValue);
+                Assert.Equal(konversasjonsId, feilmelding.KonversasjonsId);
+                Assert.Equal(bodyReferenceUri, feilmelding.BodyReferenceUri);
+                Assert.Equal(digestValue, feilmelding.DigestValue);
             }
         }
 
-        [TestClass]
+        
         public class FeiletMethod : MottakskvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 //Act
 
                 //Assert
-                Assert.AreEqual(feilmelding.Generert, feilmelding.Feilet);
+                Assert.Equal(feilmelding.Generert, feilmelding.Feilet);
             }
         }
     }

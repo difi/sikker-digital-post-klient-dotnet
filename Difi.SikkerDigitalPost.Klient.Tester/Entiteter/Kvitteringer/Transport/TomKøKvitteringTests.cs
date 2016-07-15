@@ -1,15 +1,15 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
 {
-    [TestClass]
+    
     public class TomKøKvitteringTests
     {
-        [TestClass]
+        
         public class KonstruktørMethod : TomKøKvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Transport
                 //Act
 
                 //Assert
-                Assert.AreEqual(string.Empty, tomKøKvittering.MeldingsId);
+                Assert.Equal(string.Empty, tomKøKvittering.MeldingsId);
             }
         }
     }

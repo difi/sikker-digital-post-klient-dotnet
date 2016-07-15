@@ -1,17 +1,17 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class KvitteringFactoryTester
     {
-        [TestClass]
+        
         public class GetKvitteringMethod : KvitteringFactoryTester
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererFeilmelding()
             {
                 //Arrange
@@ -21,10 +21,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (Feilmelding));
+                Assert.IsType<Feilmelding>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererLeveringskvittering()
             {
                 //Arrange
@@ -34,10 +34,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (Leveringskvittering));
+                Assert.IsType<Leveringskvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererMottakskvittering()
             {
                 //Arrange
@@ -47,10 +47,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (Mottakskvittering));
+                Assert.IsType<Mottakskvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererReturpostkvittering()
             {
                 //Arrange
@@ -60,10 +60,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (Returpostkvittering));
+                Assert.IsType<Returpostkvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererVarslingFeiletKvittering()
             {
                 //Arrange
@@ -73,10 +73,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (VarslingFeiletKvittering));
+                Assert.IsType<VarslingFeiletKvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererÅpningskvittering()
             {
                 //Arrange
@@ -86,10 +86,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (Åpningskvittering));
+                Assert.IsType<Åpningskvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererTomKøKvittering()
             {
                 //Arrange
@@ -99,10 +99,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (TomKøKvittering));
+                Assert.IsType<TomKøKvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererTransportFeiletKvittering()
             {
                 //Arrange
@@ -112,10 +112,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (TransportFeiletKvittering));
+                Assert.IsType<TransportFeiletKvittering>(kvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnererTransportOkKvittering()
             {
                 //Arrange
@@ -125,7 +125,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var kvittering = KvitteringFactory.GetKvittering(xml);
 
                 //Assert
-                Assert.IsInstanceOfType(kvittering, typeof (TransportOkKvittering));
+                Assert.IsType<TransportOkKvittering>(kvittering);
             }
         }
     }

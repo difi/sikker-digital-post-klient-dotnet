@@ -2,17 +2,17 @@
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
-    [TestClass]
+    
     public class ForsendelseTests
     {
-        [TestClass]
+        
         public class ConstructorMethod : ForsendelseTests
         {
-            [TestMethod]
+            [Fact]
             public void SuccessfullySetsLanguageOnDocumentsWithNoLanguageCodeFromMessage()
             {
                 //Arrange
@@ -30,8 +30,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 var forsendelse = new Forsendelse(sender, simpleDigitalPostInfo, documentBundle, Prioritet.Normal, "mpcId", messageLanguageCode);
 
                 //Assert
-                Assert.AreEqual(messageLanguageCode, documentBundle.Hoveddokument.Språkkode);
-                Assert.AreEqual(definedLanguageCode, documentBundle.Vedlegg.First().Språkkode);
+                Assert.Equal(messageLanguageCode, documentBundle.Hoveddokument.Språkkode);
+                Assert.Equal(definedLanguageCode, documentBundle.Vedlegg.First().Språkkode);
             }
         }
     }

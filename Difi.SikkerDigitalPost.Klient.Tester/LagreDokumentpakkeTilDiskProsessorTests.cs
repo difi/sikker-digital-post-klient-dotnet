@@ -1,17 +1,17 @@
 ﻿using System;
 using System.IO;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class LagreDokumentpakkeTilDiskProsessorTests
     {
-        [TestClass]
+        
         public class ConstructorMethod : LagreDokumentpakkeTilDiskProsessorTests
         {
-            [TestMethod]
+            [Fact]
             public void SimpleConstructor()
             {
                 //Arrange
@@ -21,14 +21,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var documentBundleToDiskProcessor = new LagreDokumentpakkeTilDiskProsessor(directory);
 
                 //Assert
-                Assert.AreEqual(directory, documentBundleToDiskProcessor.Directory);
+                Assert.Equal(directory, documentBundleToDiskProcessor.Directory);
             }
         }
 
-        [TestClass]
+        
         public class ProcessMethod : LagreDokumentpakkeTilDiskProsessorTests
         {
-            [TestMethod]
+            [Fact]
             public void PersistsFileToDisk()
             {
                 //Arrange
@@ -44,10 +44,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var tempFile = Path.Combine(tmpDirectory, processedFileName);
 
                 //Assert
-                Assert.AreEqual(asiceBytes.Length, new FileInfo(tempFile).Length);
+                Assert.Equal(asiceBytes.Length, new FileInfo(tempFile).Length);
             }
 
-            [TestMethod]
+            [Fact]
             public void FileNameContainsEssentialData()
             {
                 //Arrange
@@ -65,10 +65,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var tempFileName = Path.Combine(tmpDirectory, processedFileName);
 
                 //Assert
-                Assert.IsTrue(tempFileName.Contains(tmpDirectory));
-                Assert.IsTrue(tempFileName.Contains(fileEnding));
-                Assert.IsTrue(tempFileName.Contains(message.KonversasjonsId.ToString()));
-                Assert.IsTrue(tempFileName.Contains(DateTime.Now.Year.ToString()));
+                Assert.True(tempFileName.Contains(tmpDirectory));
+                Assert.True(tempFileName.Contains(fileEnding));
+                Assert.True(tempFileName.Contains(message.KonversasjonsId.ToString()));
+                Assert.True(tempFileName.Contains(DateTime.Now.Year.ToString()));
             }
         }
     }

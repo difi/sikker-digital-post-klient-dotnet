@@ -16,16 +16,18 @@ using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 {
-    [TestClass]
+    
     public class SikkerDigitalPostKlientTests
     {
-        [TestClass]
+        
         public class ConstructorMethod : SikkerDigitalPostKlientTests
         {
-            [TestMethod]
+            [Fact]
             public void InitializesFields()
             {
                 //Arrange
@@ -36,16 +38,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
 
                 //Assert
-                Assert.AreEqual(klientkonfigurasjon, sikkerDigitalPostKlient.Klientkonfigurasjon);
-                Assert.AreEqual(databehandler, sikkerDigitalPostKlient.Databehandler);
-                Assert.IsInstanceOfType(sikkerDigitalPostKlient.RequestHelper, typeof (RequestHelper));
+                Assert.Equal(klientkonfigurasjon, sikkerDigitalPostKlient.Klientkonfigurasjon);
+                Assert.Equal(databehandler, sikkerDigitalPostKlient.Databehandler);
+                Assert.IsType<RequestHelper>(sikkerDigitalPostKlient.RequestHelper);
             }
         }
 
-        [TestClass]
+        
         public class SendMethod : SikkerDigitalPostKlientTests
         {
-            [TestMethod]
+            [Fact]
             public async Task SuccessfullyReturnsTransportErrorReceipt()
             {
                 //Arrange
@@ -58,10 +60,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
 
                 //Assert
-                Assert.IsInstanceOfType(transportkvittering, typeof (TransportFeiletKvittering));
+                Assert.IsType<TransportFeiletKvittering>(transportkvittering);
             }
 
-            [TestMethod]
+            [Fact]
             public async Task SuccessfullyCallsAllDokumentpakkeProsessors()
             {
                 //Arrange
@@ -98,12 +100,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 //Assert
                 foreach (var dokumentpakkeProsessor in klientkonfigurasjon.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
                 {
-                    Assert.IsTrue(dokumentpakkeProsessor.CouldReadBytesStream);
+                    Assert.True(dokumentpakkeProsessor.CouldReadBytesStream);
                 }
             }
 
-            [ExpectedException(typeof (SdpSecurityException))]
-            [TestMethod]
+            [Fact]
             public async Task ThrowsExceptionOnResponseNotMatchingRequest()
             {
                 //Arrange
@@ -113,10 +114,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 //Act
                 var forsendelse = DomainUtility.GetForsendelseSimple();
-                var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
-
-                //Assert
-                Assert.IsInstanceOfType(transportkvittering, typeof (TransportFeiletKvittering));
+                await Assert.ThrowsAsync<SdpSecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse));
+                
             }
         }
     }

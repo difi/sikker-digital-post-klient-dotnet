@@ -3,16 +3,16 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using ApiClientShared;
 using Difi.Felles.Utility.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class X509ChainTests
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata.sertifikater");
 
-        [TestClass]
+        
         public class Buildmethod : X509ChainTests
         {
             public X509ChainPolicy ChainPolicyUtenRevokeringssjekkOgUkjentCertificateAuthority
@@ -48,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void DetektererUtgåttSertifkat()
             {
                 var utgåttSertifikat =
@@ -62,10 +62,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 chain.Build(utgåttSertifikat);
 
                 //Assert
-                Assert.IsTrue(chain.ChainStatus.Select(e => e.Status == X509ChainStatusFlags.NotTimeValid).Any());
+                Assert.True(chain.ChainStatus.Select(e => e.Status == X509ChainStatusFlags.NotTimeValid).Any());
             }
 
-            [TestMethod]
+            [Fact]
             public void GyldigKjedeUtenRevokeringssjekkOgUkjentCertificateAuthority()
             {
                 var gyldigSertifikat = new X509Certificate2(ResourceUtility.ReadAllBytes(true, "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
@@ -81,10 +81,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var isValidCertificate = chain.Build(gyldigSertifikat);
 
                 //Assert
-                Assert.IsTrue(isValidCertificate);
+                Assert.True(isValidCertificate);
             }
 
-            [TestMethod]
+            [Fact]
             public void GyldigKjedeMedUkjentRotnodeOgUgyldigOnlineOppslag()
             {
                 //Arrange
@@ -106,10 +106,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     Status = chainElement.ChainElementStatus
                         .Where(elementStatus => elementStatus.Status == X509ChainStatusFlags.RevocationStatusUnknown)
                 }).Where(node => node.Status.Any());
-                Assert.AreEqual(2, elementerMedRevokeringsstatusUkjent.Count());
+                Assert.Equal(2, elementerMedRevokeringsstatusUkjent.Count());
 
                 var rotNode = chainElements[0];
-                Assert.AreEqual(0, rotNode.ChainElementStatus.Count(elementStatus => elementStatus.Status == X509ChainStatusFlags.UntrustedRoot));
+                Assert.Equal(0, rotNode.ChainElementStatus.Count(elementStatus => elementStatus.Status == X509ChainStatusFlags.UntrustedRoot));
             }
         }
     }

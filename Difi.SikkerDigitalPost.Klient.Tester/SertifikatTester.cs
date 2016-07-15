@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class SertifikatTester
     {
-        [TestClass]
-        public class ThumbprintTester
+        
+        public class ThumbprintTester : IDisposable
         {
             private static X509Store _store;
             private static X509Certificate2 _certificate;
 
-            [ClassInitialize]
-            public static void ClassInitialize(TestContext context)
+            public ThumbprintTester()
             {
                 _store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                 _store.Open(OpenFlags.ReadOnly);
@@ -25,29 +24,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 }
                 catch
                 {
-                    Assert.Fail("Klarte ikke å finne noen sertifikater til å gjøre tester på. " +
-                                "Dette er nok fordi du ikke har noen sertifikater i CurrentUser.My.");
+                    throw new ArgumentNullException("Klarte ikke å finne noen sertifikater til å gjøre tester på. Dette er nok fordi du ikke har noen sertifikater i CurrentUser.My.");
                 }
             }
-
-            [ClassCleanup]
-            public static void ClassCleanup()
-            {
-                _store.Close();
-            }
-
-            [TestMethod]
+            
+            [Fact]
             public void TestLowercaseThumbprint()
             {
                 var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
                 var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint,
                     lowercaseThumbprint, false)[0];
 
-                Assert.IsTrue(_certificate.Equals(certificateFound),
+                Assert.True(_certificate.Equals(certificateFound),
                     "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
             }
 
-            [TestMethod]
+            [Fact]
             public void TestRandomSpacingThumbprint()
             {
                 var randomSpacingThumb = string.Empty;
@@ -64,8 +56,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var certificateFound = _store.Certificates.Find(X509FindType.FindByThumbprint,
                     randomSpacingThumb, false)[0];
 
-                Assert.IsTrue(_certificate.Equals(certificateFound),
+                Assert.True(_certificate.Equals(certificateFound),
                     "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
+            }
+
+            public void Dispose()
+            {
+                _store.Close();
             }
         }
     }

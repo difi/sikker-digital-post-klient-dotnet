@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 {
-    [TestClass]
+    
     public class EpostvarselTester
     {
-        [TestClass]
+        
         public class KonstruktørMethod : EpostvarselTester
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktørUtenVarslingstidspunkt()
             {
                 //Arrange
@@ -26,12 +28,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 
                 //Assert
                 var epostVarsel = postInfo.EpostVarsel;
-                Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
-                Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(forventedeVarslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
+                Assert.Equal(epostadresse, epostVarsel.Epostadresse);
+                Assert.Equal(varsel, epostVarsel.Varslingstekst);
+                Assert.Equal(forventedeVarslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktørMedVarslingstidspunktSomListe()
             {
                 //Arrange
@@ -45,12 +47,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 
                 //Assert
                 var epostVarsel = postInfo.EpostVarsel;
-                Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
-                Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
+                Assert.Equal(epostadresse, epostVarsel.Epostadresse);
+                Assert.Equal(varsel, epostVarsel.Varslingstekst);
+                Assert.Equal(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktørMedVarslingstidspunktSomArgumenter()
             {
                 //Arrange
@@ -64,9 +66,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
 
                 //Assert
                 var epostVarsel = postInfo.EpostVarsel;
-                Assert.AreEqual(epostadresse, epostVarsel.Epostadresse);
-                Assert.AreEqual(varsel, epostVarsel.Varslingstekst);
-                CollectionAssert.AreEqual(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
+                Assert.Equal(epostadresse, epostVarsel.Epostadresse);
+                Assert.Equal(varsel, epostVarsel.Varslingstekst);
+                Assert.Equal(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
         }
     }

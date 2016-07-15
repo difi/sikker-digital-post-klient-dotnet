@@ -2,17 +2,17 @@
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class EnvelopeTester
     {
-        [TestClass]
+        
         public class XsdValidering : EnvelopeTester
         {
-            [TestMethod]
+            [Fact]
             public void ValidereEnvelopeMotXsdValiderer()
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
@@ -21,10 +21,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 string validationMessages;
                 var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
 
-                Assert.IsTrue(validert, validationMessages);
+                Assert.True(validert, validationMessages);
             }
 
-            [TestMethod]
+            [Fact]
             public void LagUgyldigSecurityNodeXsdValidererIkke()
             {
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 string validationMessages;
                 var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
-                Assert.IsFalse(validert, validationMessages);
+                Assert.False(validert, validationMessages);
 
                 securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
             }

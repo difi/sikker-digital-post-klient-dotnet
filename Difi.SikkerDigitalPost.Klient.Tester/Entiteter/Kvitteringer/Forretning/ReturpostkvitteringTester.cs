@@ -1,17 +1,17 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass]
+    
     public class ReturpostkvitteringTests
     {
-        [TestClass]
+        
         public class KonstruktørMethod : ReturpostkvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -24,16 +24,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 var returpostkvittering = new Returpostkvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
-                Assert.AreEqual(konversasjonsId, returpostkvittering.KonversasjonsId);
-                Assert.AreEqual(bodyReferenceUri, returpostkvittering.BodyReferenceUri);
-                Assert.AreEqual(digestValue, returpostkvittering.DigestValue);
+                Assert.Equal(konversasjonsId, returpostkvittering.KonversasjonsId);
+                Assert.Equal(bodyReferenceUri, returpostkvittering.BodyReferenceUri);
+                Assert.Equal(digestValue, returpostkvittering.DigestValue);
             }
         }
 
-        [TestClass]
+        
         public class ReturnertMethod : MottakskvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 //Act
 
                 //Assert
-                Assert.AreEqual(returpostkvittering.Generert, returpostkvittering.Returnert);
+                Assert.Equal(returpostkvittering.Generert, returpostkvittering.Returnert);
             }
         }
     }

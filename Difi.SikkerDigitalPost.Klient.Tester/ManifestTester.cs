@@ -7,17 +7,17 @@ using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class ManifestTester
     {
-        [TestClass]
+        
         public class KonstruktørMethod : ManifestTester
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -31,18 +31,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Act
 
                 //Assert
-                Assert.AreEqual(forsendelse, manifest.Forsendelse);
-                Assert.AreEqual(forsendelse.Avsender, manifest.Avsender);
-                Assert.AreEqual(id, manifest.Id);
-                Assert.AreEqual(mimeType, manifest.MimeType);
-                Assert.AreEqual(filnavn, manifest.Filnavn);
+                Assert.Equal(forsendelse, manifest.Forsendelse);
+                Assert.Equal(forsendelse.Avsender, manifest.Avsender);
+                Assert.Equal(id, manifest.Id);
+                Assert.Equal(mimeType, manifest.MimeType);
+                Assert.Equal(filnavn, manifest.Filnavn);
             }
         }
 
-        [TestClass]
+        
         public class Hoveddokument : ManifestTester
         {
-            [TestMethod]
+            [Fact]
             public void UgyldigNavnPåHoveddokumentValidererIkke()
             {
                 var manifest = new Manifest(DomainUtility.GetForsendelseWithTestCertificate());
@@ -61,16 +61,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 string validationMessages;
                 var validert = manifestValidator.Validate(manifestXml.OuterXml, out validationMessages);
-                Assert.IsFalse(validert, validationMessages);
+                Assert.False(validert, validationMessages);
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
             }
         }
 
-        [TestClass]
+        
         public class Vedlegg : ManifestTester
         {
-            [TestMethod]
+            [Fact]
             public void VedleggTittelSkalSettesIManifestet()
             {
                 //Arrange
@@ -95,10 +95,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Assert
 
                 var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:vedlegg", namespaceManager).InnerText;
-                Assert.AreEqual(vedleggTittel, vedleggNodeInnerText);
+                Assert.Equal(vedleggTittel, vedleggNodeInnerText);
             }
 
-            [TestMethod]
+            [Fact]
             public void HoveddokumentTittelSkalSettesIManifestet()
             {
                 //Arrange
@@ -123,14 +123,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Assert
                 var vedleggNodeInnerText = manifestXml.DocumentElement.SelectSingleNode("//ns9:hoveddokument",
                     namespaceManager).InnerText;
-                Assert.AreEqual(hoveddokumentTittel, vedleggNodeInnerText);
+                Assert.Equal(hoveddokumentTittel, vedleggNodeInnerText);
             }
         }
 
-        [TestClass]
+        
         public class XsdValidering
         {
-            [TestMethod]
+            [Fact]
             public void ValidereManifestMotXsdValiderer()
             {
                 var message = DomainUtility.GetForsendelseWithTestCertificate();
@@ -140,7 +140,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 string validationMessages;
                 var validert = SdpXmlValidator.Instance.Validate(manifestXml.OuterXml, out validationMessages);
-                Assert.IsTrue(validert, validationMessages);
+                Assert.True(validert, validationMessages);
             }
         }
     }

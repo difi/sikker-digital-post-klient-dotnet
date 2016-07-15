@@ -1,17 +1,17 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass]
+    
     public class VarslingFeiletKvitteringTests
     {
-        [TestClass]
+        
         public class KonstruktørMethod : VarslingFeiletKvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -24,16 +24,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 var varslingFeiletKvittering = new VarslingFeiletKvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
-                Assert.AreEqual(konversasjonsId, varslingFeiletKvittering.KonversasjonsId);
-                Assert.AreEqual(bodyReferenceUri, varslingFeiletKvittering.BodyReferenceUri);
-                Assert.AreEqual(digestValue, varslingFeiletKvittering.DigestValue);
+                Assert.Equal(konversasjonsId, varslingFeiletKvittering.KonversasjonsId);
+                Assert.Equal(bodyReferenceUri, varslingFeiletKvittering.BodyReferenceUri);
+                Assert.Equal(digestValue, varslingFeiletKvittering.DigestValue);
             }
         }
 
-        [TestClass]
+        
         public class FeiletMethod : VarslingFeiletKvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 //Act
 
                 //Assert
-                Assert.AreEqual(varslingFeiletKvittering.Generert, varslingFeiletKvittering.Feilet);
+                Assert.Equal(varslingFeiletKvittering.Generert, varslingFeiletKvittering.Feilet);
             }
         }
     }

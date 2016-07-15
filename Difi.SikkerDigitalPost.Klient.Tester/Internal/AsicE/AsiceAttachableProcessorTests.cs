@@ -2,17 +2,17 @@
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
 {
-    [TestClass]
+    
     public class AsiceAttachableProcessorTests
     {
-        [TestClass]
+        
         public class ProcessMethod : AsiceAttachableProcessorTests
         {
-            [TestMethod]
+            [Fact]
             public void ProcessesCorrectly()
             {
                 //Arrange

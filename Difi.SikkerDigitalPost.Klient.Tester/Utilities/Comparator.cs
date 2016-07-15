@@ -6,13 +6,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     internal class Comparator : IComparator
     {
-        public bool AreEqual(object expected, object actual)
+        public bool Equal(object expected, object actual)
         {
             var compareLogic = new CompareLogic();
             return compareLogic.Compare(expected, actual).AreEqual;
         }
 
-        public bool AreEqual(object expected, object actual, out IEnumerable<IDifference> differences)
+        public bool Equal(object expected, object actual, out IEnumerable<IDifference> differences)
         {
             var compareLogic = new CompareLogic(new ComparisonConfig {MaxDifferences = 5});
             var compareResult = compareLogic.Compare(expected, actual);

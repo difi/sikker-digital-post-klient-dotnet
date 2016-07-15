@@ -8,17 +8,17 @@ using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
 {
-    [TestClass]
+    
     public class AsiceArchiveTests
     {
-        [TestClass]
+        
         public class ConstructorMethod : AsiceArchiveTests
         {
-            [TestMethod]
+            [Fact]
             public void InitializesFieldsProperly()
             {
                 //Arrange
@@ -42,11 +42,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                 var asiceArchive = new AsiceArchive(cryptographicCertificate, new GuidUtility(), asiceAttachableProcessors, asiceAttachablesArray);
 
                 //Assert
-                Assert.AreEqual(asiceAttachableProcessors, asiceArchive.AsiceAttachableProcessors);
-                Assert.AreEqual(asiceAttachablesArray, asiceArchive.AsiceAttachables);
+                Assert.Equal(asiceAttachableProcessors, asiceArchive.AsiceAttachableProcessors);
+                Assert.Equal(asiceAttachablesArray, asiceArchive.AsiceAttachables);
             }
 
-            [TestMethod]
+            [Fact]
             public void ConstructorGeneratesBytes()
             {
                 //Arrange
@@ -62,23 +62,23 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                 {
                     using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
                     {
-                        Assert.IsTrue(archive.Entries.Any(entry => entry.FullName == "manifest.xml"));
-                        Assert.IsTrue(archive.Entries.Any(entry => entry.FullName == "META-INF/signatures.xml"));
-                        Assert.IsTrue(archive.Entries.Any(entry => entry.FullName == message.Dokumentpakke.Hoveddokument.Filnavn));
+                        Assert.True(archive.Entries.Any(entry => entry.FullName == "manifest.xml"));
+                        Assert.True(archive.Entries.Any(entry => entry.FullName == "META-INF/signatures.xml"));
+                        Assert.True(archive.Entries.Any(entry => entry.FullName == message.Dokumentpakke.Hoveddokument.Filnavn));
 
                         foreach (var document in message.Dokumentpakke.Vedlegg)
                         {
-                            Assert.IsTrue(archive.Entries.Any(entry => entry.FullName == document.Filnavn));
+                            Assert.True(archive.Entries.Any(entry => entry.FullName == document.Filnavn));
                         }
                     }
                 }
             }
         }
 
-        [TestClass]
+        
         public class ContentBytesCountMethod : AsiceArchiveTests
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsProperBytesCount()
             {
                 //Arrange
@@ -106,14 +106,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                 var actualBytesCount = asiceArchive.UnzippedContentBytesCount;
 
                 //Assert
-                Assert.AreEqual(expectedBytesCount, actualBytesCount);
+                Assert.Equal(expectedBytesCount, actualBytesCount);
             }
         }
 
-        [TestClass]
+        
         public class BytesMethod : AsiceArchiveTests
         {
-            [TestMethod]
+            [Fact]
             public void SendsBytesThroughDocumentBundleProcessors()
             {
                 //Arrange
@@ -137,9 +137,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                 //Assert
                 foreach (var simpleProcessor in clientConfiguration.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
                 {
-                    Assert.IsTrue(simpleProcessor.StreamLength > 1000);
-                    Assert.IsTrue(simpleProcessor.CouldReadBytesStream);
-                    Assert.AreEqual(0, simpleProcessor.Initialposition);
+                    Assert.True(simpleProcessor.StreamLength > 1000);
+                    Assert.True(simpleProcessor.CouldReadBytesStream);
+                    Assert.Equal(0, simpleProcessor.Initialposition);
                 }
             }
         }

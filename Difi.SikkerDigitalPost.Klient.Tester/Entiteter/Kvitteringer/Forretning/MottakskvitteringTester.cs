@@ -1,17 +1,17 @@
 ﻿using System;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
 {
-    [TestClass]
+    
     public class MottakskvitteringTests
     {
-        [TestClass]
+        
         public class KonstruktørMethod : MottakskvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -24,16 +24,16 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 var mottakskvittering = new Mottakskvittering(meldingsId, konversasjonsId, bodyReferenceUri, digestValue);
 
                 //Assert
-                Assert.AreEqual(konversasjonsId, mottakskvittering.KonversasjonsId);
-                Assert.AreEqual(bodyReferenceUri, mottakskvittering.BodyReferenceUri);
-                Assert.AreEqual(digestValue, mottakskvittering.DigestValue);
+                Assert.Equal(konversasjonsId, mottakskvittering.KonversasjonsId);
+                Assert.Equal(bodyReferenceUri, mottakskvittering.BodyReferenceUri);
+                Assert.Equal(digestValue, mottakskvittering.DigestValue);
             }
         }
 
-        [TestClass]
+        
         public class MottattMethod : MottakskvitteringTests
         {
-            [TestMethod]
+            [Fact]
             public void ReturnererGenerertTidspunkt()
             {
                 //Arrange
@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Kvitteringer.Forretning
                 //Act
 
                 //Assert
-                Assert.AreEqual(mottakskvittering.Generert, mottakskvittering.Mottatt);
+                Assert.Equal(mottakskvittering.Generert, mottakskvittering.Mottatt);
             }
         }
     }

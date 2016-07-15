@@ -1,28 +1,25 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class DokumentpakkeTests
     {
-        public TestContext TestContext { get; set; }
-
-        [TestClass]
-        public class Validering
+       public class Validering
         {
-            [TestMethod]
+            [Fact]
             public void LeggFilerTilDokumentpakkeAntallStemmer()
             {
                 var dokumentpakke = DomainUtility.GetDokumentpakkeWithMultipleVedlegg(5);
 
-                Assert.AreEqual(DomainUtility.GetVedleggFilesPaths().Length, dokumentpakke.Vedlegg.Count);
-                Assert.IsNotNull(dokumentpakke);
+                Assert.Equal(DomainUtility.GetVedleggFilesPaths().Length, dokumentpakke.Vedlegg.Count);
+                Assert.NotNull(dokumentpakke);
             }
 
-            [TestMethod]
+            [Fact]
             public void LeggTilVedleggOgSjekkIdNummer()
             {
                 var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
@@ -32,37 +29,40 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 dokumentpakke.LeggTilVedlegg(new Dokument("Dokument 3", new byte[] {0x00}, "text/plain"),
                     new Dokument("Dokument 4", new byte[] {0x00}, "text/plain"));
 
-                Assert.AreEqual(dokumentpakke.Hoveddokument.Id, "Id_2");
+                Assert.Equal(dokumentpakke.Hoveddokument.Id, "Id_2");
                 for (var i = 0; i < dokumentpakke.Vedlegg.Count; i++)
                 {
                     var vedlegg = dokumentpakke.Vedlegg[i];
-                    Assert.AreEqual(vedlegg.Id, "Id_" + (i + 3));
+                    Assert.Equal(vedlegg.Id, "Id_" + (i + 3));
                 }
             }
         }
 
-        [TestClass]
+        
         public class Exceptions
         {
-            [TestMethod]
-            [ExpectedException(typeof (KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
+            [Fact]
             public void LeggTilVedleggSammeFilnavnKasterException()
             {
                 var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
 
                 dokumentpakke.LeggTilVedlegg(new Dokument("DokumentUnikt", new byte[] {0x00}, "text/plain", "NO",
                     "Filnavn.txt"));
+
+                Assert.Throws<KonfigurasjonsException>(() =>
                 dokumentpakke.LeggTilVedlegg(new Dokument("DokumentDuplikat", new byte[] {0x00}, "text/plain", "NO",
-                    "Filnavn.txt"));
+                    "Filnavn.txt"))
+                    );
             }
 
-            [TestMethod]
-            [ExpectedException(typeof (KonfigurasjonsException), "To like filer ble uriktig godtatt i dokumentpakken.")]
+            [Fact]
             public void LeggTilVedleggSammeNavnSomHoveddokumentKasterException()
             {
                 var dokumentpakke = DomainUtility.GetDokumentpakkeWithoutAttachments();
-                dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] {0x00}, "text/plain",
-                    "NO", dokumentpakke.Hoveddokument.Filnavn));
+
+                Assert.Throws<KonfigurasjonsException>(() =>
+                    dokumentpakke.LeggTilVedlegg(new Dokument("DokumentSomHoveddokument", new byte[] {0x00}, "text/plain", "NO", dokumentpakke.Hoveddokument.Filnavn))
+                    );
             }
         }
     }

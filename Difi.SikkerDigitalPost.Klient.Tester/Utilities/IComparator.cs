@@ -4,8 +4,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     public interface IComparator
     {
-        bool AreEqual(object expected, object actual);
+        bool Equal(object expected, object actual);
 
-        bool AreEqual(object expected, object actual, out IEnumerable<IDifference> differences);
+        bool Equal(object expected, object actual, out IEnumerable<IDifference> differences);
     }
 }

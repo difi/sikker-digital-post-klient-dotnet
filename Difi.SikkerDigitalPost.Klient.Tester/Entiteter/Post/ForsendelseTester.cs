@@ -2,17 +2,17 @@
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 {
-    [TestClass]
+    
     public class ForsendelseTester
     {
-        [TestClass]
+        
         public class KonstruktørMethod : ForsendelseTester
         {
-            [TestMethod]
+            [Fact]
             public void EnkelKonstruktør()
             {
                 //Arrange
@@ -25,12 +25,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 //Act
 
                 //Assert
-                Assert.IsNotNull(forsendelse.Avsender);
-                Assert.IsNotNull(forsendelse.PostInfo);
-                Assert.IsNotNull(forsendelse.Dokumentpakke);
+                Assert.NotNull(forsendelse.Avsender);
+                Assert.NotNull(forsendelse.PostInfo);
+                Assert.NotNull(forsendelse.Dokumentpakke);
             }
 
-            [TestMethod]
+            [Fact]
             public void KonstruktørMedOptionalParametere()
             {
                 //Arrange
@@ -50,15 +50,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
                 //Act
 
                 //Assert
-                Assert.IsNotNull(forsendelse.Avsender);
-                Assert.IsNotNull(forsendelse.PostInfo);
-                Assert.IsNotNull(forsendelse.Dokumentpakke);
-                Assert.AreEqual(prioritet, forsendelse.Prioritet);
-                Assert.AreEqual(mpcId, forsendelse.MpcId);
-                Assert.AreEqual(språkkode, forsendelse.Språkkode);
+                Assert.NotNull(forsendelse.Avsender);
+                Assert.NotNull(forsendelse.PostInfo);
+                Assert.NotNull(forsendelse.Dokumentpakke);
+                Assert.Equal(prioritet, forsendelse.Prioritet);
+                Assert.Equal(mpcId, forsendelse.MpcId);
+                Assert.Equal(språkkode, forsendelse.Språkkode);
             }
 
-            [TestMethod]
+            [Fact]
             public void KonstruktørForIdentiskHash()
             {
                 //Arrange
@@ -80,13 +80,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Entiteter.Post
 
                 //Assert
 
-                Assert.AreEqual(konversasjonsid, forsendelse.KonversasjonsId);
-                Assert.IsNotNull(forsendelse.Avsender);
-                Assert.IsNotNull(forsendelse.PostInfo);
-                Assert.IsNotNull(forsendelse.Dokumentpakke);
-                Assert.AreEqual(prioritet, forsendelse.Prioritet);
-                Assert.AreEqual(mpcId, forsendelse.MpcId);
-                Assert.AreEqual(språkkode, forsendelse.Språkkode);
+                Assert.Equal(konversasjonsid, forsendelse.KonversasjonsId);
+                Assert.NotNull(forsendelse.Avsender);
+                Assert.NotNull(forsendelse.PostInfo);
+                Assert.NotNull(forsendelse.Dokumentpakke);
+                Assert.Equal(prioritet, forsendelse.Prioritet);
+                Assert.Equal(mpcId, forsendelse.MpcId);
+                Assert.Equal(språkkode, forsendelse.Språkkode);
             }
         }
     }

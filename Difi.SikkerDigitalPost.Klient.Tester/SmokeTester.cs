@@ -9,14 +9,14 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    [TestClass]
+    
     public class SmokeTester
     {
-        [TestMethod]
+        [Fact]
         public async Task SendDigitalPostIntegrasjonEnkel()
         {
             //Arrange
@@ -29,10 +29,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Digital Post", enkelForsendelse);
 
             //Await
-            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+            Assert.True(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SendDigitalPostIntegrasjonDekkende()
         {
             //Arrange
@@ -42,10 +42,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Act
             await SendDokumentpakkeAsync(sdpklient, dekkendeDigitalForsendelse);
             var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Dekkende Digital Post", dekkendeDigitalForsendelse);
-            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+            Assert.True(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SendFysiskPostIntegrasjon()
         {
             //Arrange
@@ -56,12 +56,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var transportKvittering = await SendDokumentpakkeAsync(sdpklient, enkelFysiskForsendelse);
 
             //Assert
-            Assert.IsTrue(transportKvittering is TransportOkKvittering);
+            Assert.True(transportKvittering is TransportOkKvittering);
             var kvittering = await HentKvitteringOgBekreftAsync(sdpklient, "Enkel Fysisk Post", enkelFysiskForsendelse);
-            Assert.IsTrue(kvittering is Mottakskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+            Assert.True(kvittering is Mottakskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SendDigitaltPåVegneAvIntegrasjon()
         {
             //Arrange
@@ -79,9 +79,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var transportkvittering = await sdpKlient.SendAsync(forsendelse);
 
             //Assert
-            Assert.IsNotNull(transportkvittering);
+            Assert.NotNull(transportkvittering);
             var kvittering = await HentKvitteringOgBekreftAsync(sdpKlient, "Send digital paa vegne av", forsendelse);
-            Assert.IsTrue(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
+            Assert.True(kvittering is Leveringskvittering, "Klarte ikke hente kvittering eller feilet kvittering");
         }
 
         private async Task<Transportkvittering> SendDokumentpakkeAsync(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
