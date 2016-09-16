@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 requestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act 
-                var kvittering = await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
+                var kvittering = await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
 
                 Assert.IsType<TransportOkKvittering>(kvittering);
             }

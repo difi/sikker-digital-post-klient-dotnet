@@ -23,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Handlers
         {
             request.Headers.Add("User-Agent", GetAssemblyVersion());
 
-            return await base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
         private static string GetAssemblyVersion()

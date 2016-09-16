@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 //Act
                 var forsendelse = DomainUtility.GetForsendelseSimple();
-                var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
+                var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse).ConfigureAwait(false);
 
                 //Assert
                 Assert.IsType<TransportFeiletKvittering>(transportkvittering);
@@ -82,7 +82,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 try
                 {
-                    await sikkerDigitalPostKlient.SendAsync(forsendelse);
+                    await sikkerDigitalPostKlient.SendAsync(forsendelse).ConfigureAwait(false);
                 }
                 catch (SdpSecurityException)
                 {
@@ -109,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 //Act
                 var forsendelse = DomainUtility.GetForsendelseSimple();
-                await Assert.ThrowsAsync<SdpSecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse));
+                await Assert.ThrowsAsync<SdpSecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse)).ConfigureAwait(false);
             }
         }
     }
