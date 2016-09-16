@@ -1,0 +1,82 @@
+# name of the software
+name: Sikker Digital Post .NET
+siteUrlText: difi.github.io/difi-sikker-digital-post-klient-dotnet
+
+# current version of the software
+version: 1.7
+# url of the download button
+downloadUrl: https://www.nuget.org/packages/difi-sikker-digital-post-klient/
+
+# licence of the software
+license: MIT License
+licenseUrl: http://opensource.org/licenses/MIT
+
+#baseurl: "/sikker-digital-post-net-klient" # the subpath of your site, e.g. /blog/
+baseurl: "/sikker-digital-post-klient-dotnet"
+
+##Version handling
+currentCollecion: "v1_6_7"
+currentVersion: "1.7"
+versions: ["1.6-1.7","1.5","1.4","1.3","1.2"]
+
+# Collection of versions
+collections:
+  v1_2:  
+    output: true
+    permalink: /v1.2/
+  v1_3:  
+    output: true
+    permalink: /v1.3/
+  v1_4:  
+    output: true
+    permalink: /v1.4/
+  v1_5:  
+    output: true
+    permalink: /v1.5/
+  v1_6_7:  
+    output: true
+    permalink: /v1.6-1.7/
+
+aboutSide: "about.html"
+## End of Version handling
+
+# list of additional links on the right of the top menu
+headerLinks:
+  - title: Om sikker digital post
+    url: /sikker-digital-post-klient-dotnet/about.html
+  - title: GitHub
+    url: https://github.com/difi/sikker-digital-post-net-klient
+  - title: Issues
+    url: https://github.com/difi/sikker-digital-post-net-klient/issues
+
+# github buttons
+githubButton:
+  user: difi
+  repo: sikker-digital-post-net-klient
+
+# twitter buttons
+twitter:
+  enabled: false
+  via:
+  hash:
+  account:
+
+# facebook buttons
+facebook:
+  enabled: false
+  profileUrl:
+
+# google analytics
+analytics:
+  trackingid: UA-78356843-1
+  domain: auto
+
+highlighter: rouge  
+
+gems:
+  - jekyll-redirect-from
+
+exclude: ['README.md', 'Gemfile.lock', 'Gemfile']
+
+kramdown:
+  input: GFM
