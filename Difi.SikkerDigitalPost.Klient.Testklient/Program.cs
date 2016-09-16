@@ -72,7 +72,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
 
         private static async void SendPost(SikkerDigitalPostKlient sikkerDigitalPostKlient, Forsendelse forsendelse)
         {
-            var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse);
+            var transportkvittering = await sikkerDigitalPostKlient.SendAsync(forsendelse).ConfigureAwait(false);
             Log.Debug(@" > Post sendt. Status er ...");
 
             if (transportkvittering.GetType() == typeof (TransportOkKvittering))
@@ -102,7 +102,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                 var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, MpcId);
                 Log.Debug($" > Henter kvittering på kø '{kvitteringsForespørsel.Mpc}'...");
 
-                var kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel);
+                var kvittering = await sikkerDigitalPostKlient.HentKvitteringAsync(kvitteringsForespørsel).ConfigureAwait(false);
 
                 if (kvittering is TomKøKvittering)
                 {

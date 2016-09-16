@@ -77,7 +77,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, $"conversationId {forsendelse.KonversasjonsId}");
 
-            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle);
+            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
             var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
 
@@ -151,7 +151,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public async Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel)
         {
-            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null);
+            return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             if (forrigeKvittering != null)
             {
-                await BekreftAsync(forrigeKvittering);
+                await BekreftAsync(forrigeKvittering).ConfigureAwait(false);
             }
 
             var guidUtility = new GuidUtility();
@@ -228,7 +228,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, "");
 
-            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope);
+            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
             var transportReceiptXml = XmlUtility.TilXmlDokument(receipt.Rådata);
 
             if (receipt is TomKøKvittering)
@@ -323,7 +323,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, $"conversationId '{kvittering.KonversasjonsId}'");
 
-            await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope);
+            await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope).ConfigureAwait(false);
             Log.Debug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
         }
 

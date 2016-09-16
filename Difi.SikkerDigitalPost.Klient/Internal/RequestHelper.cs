@@ -30,14 +30,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
-            var result = await Send(envelope, asiceDocumentBundle);
+            var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
 
             return KvitteringFactory.GetKvittering(result);
         }
 
         public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var result = await Send(kvitteringsforespørselEnvelope);
+            var result = await Send(kvitteringsforespørselEnvelope).ConfigureAwait(false);
 
             return KvitteringFactory.GetKvittering(result);
         }
@@ -80,8 +80,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             }
 
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
-            var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent);
-            var responseContent = await responseMessage.Content.ReadAsStringAsync();
+            var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent).ConfigureAwait(false);
+            var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
             {

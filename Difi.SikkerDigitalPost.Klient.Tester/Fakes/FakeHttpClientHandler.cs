@@ -19,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Fakes
                 Content = HttpContent ?? GetContent(),
                 StatusCode = ResultCode ?? HttpStatusCode.OK
             };
-            return await Task.FromResult(response);
+            return await Task.FromResult(response).ConfigureAwait(false);
         }
 
         public abstract HttpContent GetContent();
