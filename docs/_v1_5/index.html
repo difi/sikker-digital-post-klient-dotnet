@@ -1,0 +1,15 @@
+---
+identifier: index
+layout: default
+title: .NET-bibliotek for sending av sikker digital post for offentlig sektor
+redirect_from:
+---
+
+{% for dok in site.v1_5 %}
+	{% if dok.identifier != 'index' %}
+		<h2 id="{{dok.identifier}}">{{dok.title}}</h2>
+		<div class="body">
+			<p>{{dok.content}}</p>
+		</div>
+	{% endif%}
+{% endfor %}
