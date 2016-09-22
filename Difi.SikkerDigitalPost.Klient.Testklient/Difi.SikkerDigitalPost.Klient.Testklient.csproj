@@ -39,8 +39,8 @@
     <AssemblyOriginatorKeyFile>..\sikker-digital-post.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApiClientShared, Version=1.0.5941.27271, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.1.0.5941.27271\lib\net45\ApiClientShared.dll</HintPath>
+    <Reference Include="ApiClientShared, Version=1.0.5968.19413, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\api-client-shared.1.0.5968.19413\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -55,8 +55,8 @@
       <HintPath>..\packages\Common.Logging.Log4Net1213.3.3.1\lib\net40\Common.Logging.Log4Net1213.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
