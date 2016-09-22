@@ -21,7 +21,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             //Arrange
             var enkelForsendelse = DomainUtility.GetForsendelseSimple();
             var sdpklient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
-            sdpklient.Klientkonfigurasjon.LoggForespørselOgRespons = true;
 
             //Act
             await SendDokumentpakkeAsync(sdpklient, enkelForsendelse).ConfigureAwait(false);
@@ -64,11 +63,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public async Task SendDigitaltPåVegneAvIntegrasjon()
         {
             //Arrange
-            const string testDepartementetAvsenderOrgnummer = "987656789";
-            const string postenDatabehandlerOrgnummer = "984661185";
-            var avsender = new Avsender(testDepartementetAvsenderOrgnummer);
+            const string postenAvsender = "984661185";
+            const string bringDatabehandler = "988015814";
+            var avsender = new Avsender(postenAvsender) { Avsenderidentifikator = "digipost"};
 
-            var databehandler = new Databehandler(postenDatabehandlerOrgnummer, DomainUtility.GetAvsenderCertificate());
+            var databehandler = new Databehandler(bringDatabehandler, DomainUtility.GetAvsenderCertificate());
             var forsendelse = new Forsendelse(avsender, DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
             var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 

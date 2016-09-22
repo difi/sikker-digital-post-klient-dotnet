@@ -16,7 +16,6 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
-using Difi.SikkerDigitalPost.Klient.Tester.Properties;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -86,28 +85,43 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Avsender GetAvsender()
         {
-            var orgNrAvsender = new Organisasjonsnummer(Settings.Default.OrganisasjonsnummerAvsender);
-            return new Avsender(orgNrAvsender) {Avsenderidentifikator = Settings.Default.Avsenderidentifikator};
+            var orgnrBring = new Organisasjonsnummer("988015814");
+            return new Avsender(orgnrBring);
+        }
+
+        internal static string GetPersonnummerMottaker()
+        {
+            return "04036125433";
+        }
+
+        internal static string GetDigipostadresseMottaker()
+        {
+            return "ove.jonsen#6K5A";
+        }
+
+        internal static string GetOrganisasjonsnummerPostkasse()
+        {
+            return "984661185";
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetMottakerCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
         {
-            return new DigitalPostMottaker(Settings.Default.PersonnummerMottaker, Settings.Default.DigitalPostkasseAdresseMottaker, GetReceiverUnitTestsCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottakerWithTestCertificate()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), Settings.Default.OrganisasjonsnummerPostkasse);
+            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
@@ -239,7 +253,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetAvsenderCertificate()
         {
-            return CertificateUtility.SenderCertificate(Settings.Default.DatabehandlerSertifikatThumbprint, Language.Norwegian);
+            string bringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
+            return CertificateUtility.SenderCertificate(bringThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerCertificate()

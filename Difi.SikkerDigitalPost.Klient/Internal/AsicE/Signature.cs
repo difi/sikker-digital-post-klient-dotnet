@@ -54,7 +54,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                     _forsendelse.Dokumentpakke.Vedlegg, _manifest);
                 OpprettReferanser(signaturnode, referanser);
 
-                var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.WholeChain);
+                var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.EndCertOnly);
+                
                 signaturnode.KeyInfo.AddClause(keyInfoX509Data);
                 signaturnode.ComputeSignature();
 
