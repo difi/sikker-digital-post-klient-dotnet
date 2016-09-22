@@ -131,11 +131,6 @@
     <Compile Include="KvitteringFactoryTester.cs" />
     <Compile Include="KvitteringsparserTester.cs" />
     <Compile Include="LagreDokumentpakkeTilDiskProsessorTests.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="testdata\meldinger\KvitteringsRespons.cs" />
     <Compile Include="testdata\meldinger\Kvitteringsforespørsel.cs" />
     <Compile Include="testdata\meldinger\TransportKvittering.cs" />
@@ -185,10 +180,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.cer" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.p12" />
     <EmbeddedResource Include="testdata\sertifikater\prod\BPClass3CA3.cer" />
