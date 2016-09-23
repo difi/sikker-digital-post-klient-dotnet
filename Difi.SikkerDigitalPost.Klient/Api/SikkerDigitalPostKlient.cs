@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
+using Difi.Felles.Utility;
+using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -37,9 +39,34 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
+            ValidateDatabehandlerCertificate(databehandler, klientkonfigurasjon.Miljø);
+
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
+        }
+
+        private void ValidateDatabehandlerCertificate(Databehandler databehandler, Miljø miljø)
+        {
+            var isValidCertificate = CertificateValidator.IsValidCertificate(databehandler.Sertifikat, databehandler.Organisasjonsnummer.Verdi);
+            if (!isValidCertificate)
+            {
+                throw new SecurityException($"Sertifikatet som brukes for {Databehandler} er ikke gyldig. Har du sjekket at det er et virksomhetssertifikat, er utstedt til organisasjonsnummer {databehandler.Organisasjonsnummer.Verdi}," +
+                                            "at det er aktivert og ikke utløpt?");
+            }
+
+            try
+            {
+                var isValidChain = miljø.CertificateChainValidator.ErGyldigSertifikatkjede(databehandler.Sertifikat);
+                if (!isValidChain)
+                {
+                    throw new CertificateChainValidationException($"Sertifikatet som brukes for {Databehandler} er ikke gyldig! Gi mer info heeeer!))");
+                }
+            }
+            catch (CertificateChainValidationException ex)
+            {
+                throw new CertificateChainValidationException($"Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? { ex.Message }"); 
+            }
         }
 
         public Databehandler Databehandler { get; }
