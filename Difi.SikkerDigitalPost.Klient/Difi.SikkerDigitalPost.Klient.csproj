@@ -56,8 +56,8 @@
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=0.7.0.16253, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.7.0.16253\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    <Reference Include="Difi.Felles.Utility, Version=0.8.0.27738, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.8.0.27738\lib\net45\Difi.Felles.Utility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

@@ -10,6 +10,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
@@ -39,33 +40,24 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
-            ValidateDatabehandlerCertificate(databehandler, klientkonfigurasjon.Miljø);
+            ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
 
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
         }
 
-        private void ValidateDatabehandlerCertificate(Databehandler databehandler, Miljø miljø)
+        private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
         {
-            var isValidCertificate = CertificateValidator.IsValidCertificate(databehandler.Sertifikat, databehandler.Organisasjonsnummer.Verdi);
-            if (!isValidCertificate)
-            {
-                throw new SecurityException($"Sertifikatet som brukes for {Databehandler} er ikke gyldig. Har du sjekket at det er et virksomhetssertifikat, er utstedt til organisasjonsnummer {databehandler.Organisasjonsnummer.Verdi}," +
-                                            "at det er aktivert og ikke utløpt?");
-            }
+            var valideringsResultat = CertificateValidator.ValidateCertificateAndChain(
+                databehandler.Sertifikat, 
+                databehandler.Organisasjonsnummer.Verdi, 
+                miljø.CertificateChainValidator.CertificateStore
+            );
 
-            try
+            if (valideringsResultat.Type != CertificateValidationType.Valid)
             {
-                var isValidChain = miljø.CertificateChainValidator.ErGyldigSertifikatkjede(databehandler.Sertifikat);
-                if (!isValidChain)
-                {
-                    throw new CertificateChainValidationException($"Sertifikatet som brukes for {Databehandler} er ikke gyldig! Gi mer info heeeer!))");
-                }
-            }
-            catch (CertificateChainValidationException ex)
-            {
-                throw new CertificateChainValidationException($"Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? { ex.Message }"); 
+                throw new SecurityException($"Sertifikatet som brukes for { nameof(Databehandler) } er ikke gyldig. Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? Grunnen er '{valideringsResultat.Type.ToNorwegianString()}', beskrivelse: '{valideringsResultat.Message}'");
             }
         }
 
