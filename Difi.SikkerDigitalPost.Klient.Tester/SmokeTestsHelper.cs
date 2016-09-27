@@ -84,7 +84,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             while (!kvitteringReceived && (numberOfTries++ <= maxTries))
             {
-                var kvittering = HentKvittering();
+                var kvittering = GetSingleKvittering();
 
                 if (kvittering is TomKøKvittering)
                 {
@@ -106,14 +106,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             _klient.Bekreft(_forretningskvittering);
 
-            var konversasjonsId = HentKonversasjonsIdFraKvittering(_forretningskvittering);
+            var konversasjonsId = GetKonversasjonsIdFromKvittering(_forretningskvittering);
             
             Assert.Equal(_forsendelse.KonversasjonsId, konversasjonsId);
 
             return this;
         }
 
-        private Kvittering HentKvittering()
+        private Kvittering GetSingleKvittering()
         {
             Thread.Sleep(3000);
             
@@ -122,7 +122,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             return kvittering;
         }
 
-        private static Guid HentKonversasjonsIdFraKvittering(Kvittering kvittering)
+        private static Guid GetKonversasjonsIdFromKvittering(Kvittering kvittering)
         {
             var konversasjonsId = Guid.Empty;
 
