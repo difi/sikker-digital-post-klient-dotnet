@@ -44,6 +44,10 @@
       <HintPath>..\packages\api-client-shared.1.0.5968.19413\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Difi.Felles.Utility, Version=0.8.0.27738, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.8.0.27738\lib\net45\Difi.Felles.Utility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
@@ -107,6 +111,7 @@
     <Compile Include="Exceptions\XmlParseException.cs" />
     <Compile Include="Exceptions\XmlValidationException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
