@@ -10,6 +10,18 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
             : base(message)
         {
             ValidationMessages = validationMessages;
+
+        }
+
+        public XmlValidationException(string message, Exception inner)
+             : base(message, inner)
+        {
+        }
+
+        public XmlValidationException(string message)
+             : base(message)
+        {
+            
         }
 
         public List<string> ValidationMessages { get; private set; }
