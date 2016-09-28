@@ -38,7 +38,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             AddXsd(NavneromUtility.WssecuritySecext10, GetResource("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
         }
 
-        public static SdpXmlValidator Instance { get; } = _instance == null ? new SdpXmlValidator() : _instance;
+        public static SdpXmlValidator Instance { get; } = _instance ?? new SdpXmlValidator();
 
         private static XmlReader GetResource(string path)
         {
