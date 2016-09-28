@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
-using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
@@ -16,13 +14,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     internal class SmokeTestsHelper
     {
-        private readonly Miljø _miljø;
-        private SikkerDigitalPostKlient _klient;
+        private const string BringOrganisasjonsnummer = "988015814";
+        private const string BringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
+        private readonly SikkerDigitalPostKlient _klient;
+
         private Forsendelse _forsendelse;
         private Transportkvittering _transportkvittering;
         private Forretningskvittering _forretningskvittering;
-        private const string BringOrganisasjonsnummer = "988015814";
-        private const string BringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
 
         public SmokeTestsHelper(Miljø miljø)
         {
@@ -54,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTestsHelper Send()
         {
             Assert_state(_forsendelse);
-            
+
             _transportkvittering = _klient.Send(_forsendelse);
 
             return this;
@@ -62,7 +60,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Expect_Message_Response_To_Be_TransportOkKvittering()
         {
-            Assert_state(_klient);
             Assert_state(_transportkvittering);
 
             Assert.IsType<TransportOkKvittering>(_transportkvittering);
@@ -72,7 +69,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Fetch_Receipt()
         {
-            Assert_state(_klient);
             Assert_state(_transportkvittering);
 
             const int maxTries = 10;
@@ -93,7 +89,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
 
             Assert.True(kvitteringReceived, "Fikk ikke til å hente kvittering. Var du for rask å hente, eller har noe skjedd galt med hvilken kø du henter fra?");
-            
+
             return this;
         }
 
@@ -104,7 +100,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             _klient.Bekreft(_forretningskvittering);
 
             var konversasjonsId = GetKonversasjonsIdFromKvittering(_forretningskvittering);
-            
+
             Assert.Equal(_forsendelse.KonversasjonsId, konversasjonsId);
 
             return this;
@@ -113,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         private Kvittering GetSingleKvittering()
         {
             Thread.Sleep(3000);
-            
+
             var kvitteringsforespørsel = new Kvitteringsforespørsel(_forsendelse.Prioritet, _forsendelse.MpcId);
             var kvittering = _klient.HentKvittering(kvitteringsforespørsel);
             return kvittering;
@@ -125,17 +121,17 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             if (kvittering is Feilmelding)
             {
-                var feilmelding = (Feilmelding)kvittering;
+                var feilmelding = (Feilmelding) kvittering;
                 konversasjonsId = feilmelding.KonversasjonsId;
             }
             else if (kvittering is Leveringskvittering)
             {
-                var leveringskvittering = (Leveringskvittering)kvittering;
+                var leveringskvittering = (Leveringskvittering) kvittering;
                 konversasjonsId = leveringskvittering.KonversasjonsId;
             }
             else if (kvittering is Mottakskvittering)
             {
-                var mottakskvittering = (Mottakskvittering)kvittering;
+                var mottakskvittering = (Mottakskvittering) kvittering;
                 konversasjonsId = mottakskvittering.KonversasjonsId;
             }
 
@@ -149,6 +145,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 throw new InvalidOperationException("Requires gradually built state. Make sure you use functions in the correct order.");
             }
         }
-
     }
 }
