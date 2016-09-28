@@ -125,6 +125,7 @@
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
+    <Compile Include="Exceptions\XmlValidationExceptionTests.cs" />
     <Compile Include="Fakes\FakeHttpClientHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientHandlerResponse.cs" />
     <Compile Include="Internal\AsicE\AsiceAttachableProcessorTests.cs" />
