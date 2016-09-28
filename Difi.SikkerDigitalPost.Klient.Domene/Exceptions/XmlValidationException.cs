@@ -24,6 +24,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
             
         }
 
+        public XmlValidationException()
+        {
+            
+        }
+
         public List<string> ValidationMessages { get; private set; }
     }
 }

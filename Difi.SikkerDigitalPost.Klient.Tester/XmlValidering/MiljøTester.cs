@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.NotNull(miljø.CertificateChainValidator);
                 Assert.Equal(url, miljø.Url.AbsoluteUri);
-                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.CertificateStore);
             }
 
             [Fact]
@@ -37,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.NotNull(miljø.CertificateChainValidator);
                 Assert.Equal(url, miljø.Url.ToString());
-                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.CertificateStore);
             }
 
             [Fact]
@@ -53,7 +53,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.NotNull(miljø.CertificateChainValidator);
                 Assert.Equal(url, miljø.Url.AbsoluteUri);
-                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.CertificateStore);
             }
 
             [Fact]
@@ -69,7 +69,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Assert
                 Assert.NotNull(miljø.CertificateChainValidator);
                 Assert.Equal(url, miljø.Url.ToString());
-                Assert.Equal(sertifikater, miljø.CertificateChainValidator.SertifikatLager);
+                Assert.Equal(sertifikater, miljø.CertificateChainValidator.CertificateStore);
             }
         }
     }

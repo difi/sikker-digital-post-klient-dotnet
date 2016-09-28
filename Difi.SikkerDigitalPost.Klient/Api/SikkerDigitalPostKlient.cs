@@ -5,12 +5,15 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
+using Difi.Felles.Utility;
+using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
@@ -40,9 +43,25 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
         {
+            ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
+
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
+        }
+
+        private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
+        {
+            var valideringsResultat = CertificateValidator.ValidateCertificateAndChain(
+                databehandler.Sertifikat, 
+                databehandler.Organisasjonsnummer.Verdi, 
+                miljø.CertificateChainValidator.CertificateStore
+            );
+
+            if (valideringsResultat.Type != CertificateValidationType.Valid)
+            {
+                throw new SecurityException($"Sertifikatet som brukes for { nameof(Databehandler) } er ikke gyldig. Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? Grunnen er '{valideringsResultat.Type.ToNorwegianString()}', beskrivelse: '{valideringsResultat.Message}'");
+            }
         }
 
         public Databehandler Databehandler { get; }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -24,10 +25,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
         public class ConstructorMethod : SikkerDigitalPostKlientTests
         {
             [Fact]
-            public void InitializesFields()
+            public void Initializes_fields()
             {
                 //Arrange
-                var databehandler = new Databehandler(new Organisasjonsnummer("999999999"), DomainUtility.GetAvsenderCertificate());
+                var databehandler = new Databehandler(new Organisasjonsnummer("988015814"), DomainUtility.GetAvsenderCertificate());
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
@@ -38,12 +39,23 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 Assert.Equal(databehandler, sikkerDigitalPostKlient.Databehandler);
                 Assert.IsType<RequestHelper>(sikkerDigitalPostKlient.RequestHelper);
             }
+
+            [Fact]
+            public void Fails_if_invalid_certificate()
+            {
+                //Arrange
+                var databehandler = new Databehandler(new Organisasjonsnummer("988015814"),  DomainUtility.GetAvsenderEnhetstesterSertifikat());
+                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+
+                //Act
+                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
+            }
         }
 
         public class SendMethod : SikkerDigitalPostKlientTests
         {
             [Fact]
-            public async Task SuccessfullyReturnsTransportErrorReceipt()
+            public async Task Returns_transport_error_receipt()
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
@@ -59,7 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             }
 
             [Fact]
-            public async Task SuccessfullyCallsAllDokumentpakkeProsessors()
+            public async Task Calls_all_dokumentpakke_prosessors()
             {
                 //Arrange
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
@@ -100,7 +112,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             }
 
             [Fact]
-            public async Task ThrowsExceptionOnResponseNotMatchingRequest()
+            public async Task Throws_exception_on_response_not_matching_request()
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
