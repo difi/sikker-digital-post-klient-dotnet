@@ -11,7 +11,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Extensions
         public class ToNorwegianStringMethod
         {
             [Fact]
-            public void ConvertsAllEnumValues()
+            public void Converts_all_enum_values()
             {
                 var certificateValidationTypes = Enum.GetValues(typeof(CertificateValidationType)).Cast<CertificateValidationType>();
 

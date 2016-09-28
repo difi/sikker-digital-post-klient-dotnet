@@ -21,10 +21,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         private Forsendelse _forsendelse;
         private Transportkvittering _transportkvittering;
         private Forretningskvittering _forretningskvittering;
+        private const string BringOrganisasjonsnummer = "988015814";
+        private const string BringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
 
         public SmokeTestsHelper(Miljø miljø)
         {
-            _miljø = miljø;;
+            _klient = new SikkerDigitalPostKlient(new Databehandler(BringOrganisasjonsnummer, BringThumbprint), new Klientkonfigurasjon(miljø));
         }
 
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()
@@ -52,12 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTestsHelper Send()
         {
             Assert_state(_forsendelse);
-
-            const string bringOrganisasjonsnummer = "988015814";
-            const string bringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
-
-            _klient = new SikkerDigitalPostKlient(new Databehandler(bringOrganisasjonsnummer, bringThumbprint), new Klientkonfigurasjon(_miljø));
-
+            
             _transportkvittering = _klient.Send(_forsendelse);
 
             return this;

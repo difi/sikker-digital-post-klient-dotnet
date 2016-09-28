@@ -16,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Extensions
                 case CertificateValidationType.InvalidChain:
                     return "UgyldigKjede";
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(certificateValidationType), certificateValidationType, null);
             }
         }
 
