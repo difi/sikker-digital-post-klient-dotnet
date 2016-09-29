@@ -1,15 +1,38 @@
 ﻿using Difi.Felles.Utility.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 {
-    public class MiljøTester
+    public class MiljøTests
     {
-        public class GetMiljøMethod : MiljøTester
+        public class FullUriMethod : MiljøTests
         {
             [Fact]
-            public void ReturnererInitialisertFunksjoneltTestmiljø()
+            public void Appends_databehandler_and_avsender_organisasjonsnummer()
+            {
+                //Arrange
+                var miljø = Miljø.Produksjonsmiljø;
+
+                var databehandlerOrgnr = "123456789";
+                var avsenderOrgnr = "987654321";
+
+                var databehandlerOrganisasjonsnummer =  new Organisasjonsnummer(databehandlerOrgnr);
+                var avsenderOrganisasjonsnummer = new Organisasjonsnummer(avsenderOrgnr);
+
+                //Act
+                var fullUri = miljø.UrlWithOrganisasjonsnummer(databehandlerOrganisasjonsnummer, avsenderOrganisasjonsnummer);
+
+                //Assert
+                Assert.Contains($"9908:{databehandlerOrgnr}/9908:{avsenderOrgnr}", fullUri.ToString());
+            }
+        }
+
+        public class GetMiljøMethod : MiljøTests
+        {
+            [Fact]
+            public void Returnerer_initialisert_funksjonelt_testmiljø()
             {
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms";
@@ -25,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
 
             [Fact]
-            public void ReturnererInitialisertProduksjonsmiljø()
+            public void Returnerer_initialisert_produksjonsmiljø()
             {
                 //Arrange
                 var url = "https://meldingsformidler.digipost.no/api/ebms";
@@ -41,7 +64,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
 
             [Fact]
-            public void ReturnererInitialisertFunksjoneltTestmiljøNorskHelsenett()
+            public void Returnerer_initialisert_funksjonelt_testmiljø_norsk_helsenett()
             {
                 //Arrange
                 var url = "https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/";
@@ -57,7 +80,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             }
 
             [Fact]
-            public void ReturnererInitialisertProduksjonsmiljøNorskHelsenett()
+            public void Returnerer_initialisert_produksjonsmiljø_norsk_helsenett()
             {
                 //Arrange
                 var url = "https://meldingsformidler.nhn.digipost.no:4444/api/";

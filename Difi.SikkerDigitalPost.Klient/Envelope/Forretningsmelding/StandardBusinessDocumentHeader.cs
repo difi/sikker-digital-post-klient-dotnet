@@ -44,7 +44,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 var identifier = sender.AppendChildElement("Identifier", "ns3", NavneromUtility.StandardBusinessDocumentHeader, Context);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
-                identifier.InnerText = Settings.Databehandler.Organisasjonsnummer.Iso6523();
+                identifier.InnerText = Settings.Databehandler.Organisasjonsnummer.OrganisasjonsnummerMedLandkode();
             }
             return sender;
         }
@@ -55,7 +55,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             {
                 var identifier = receiver.AppendChildElement("Identifier", "ns3", NavneromUtility.StandardBusinessDocumentHeader, Context);
                 identifier.SetAttribute("Authority", "iso6523-actorid-upis");
-                identifier.InnerText = Settings.Forsendelse.PostInfo.Mottaker.OrganisasjonsnummerPostkasse.Iso6523();
+                identifier.InnerText = Settings.Forsendelse.PostInfo.Mottaker.OrganisasjonsnummerPostkasse.OrganisasjonsnummerMedLandkode();
             }
             return receiver;
         }
