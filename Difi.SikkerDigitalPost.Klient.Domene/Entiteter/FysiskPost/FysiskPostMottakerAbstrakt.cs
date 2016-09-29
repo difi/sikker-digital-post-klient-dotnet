@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         /// <param name="navn">Fullt navn på mottaker av fysisk post.</param>
         /// <param name="adresse">Adresse for mottaker av fysisk post.</param>
         protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse)
-            : this(navn, adresse, new X509Certificate2(), "0000000000000")
+            : this(navn, adresse, new X509Certificate2(), "000000000")
         {
         }
 

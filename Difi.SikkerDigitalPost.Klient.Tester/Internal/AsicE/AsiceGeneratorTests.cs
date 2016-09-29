@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal.AsicE
                 const string invalidFileNameNotFourCharacters = "T";
                 var asiceConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
                 var dokumentpakkeUtenVedlegg = new Dokumentpakke(new Dokument("", new byte[3], "application/pdf", "nb", invalidFileNameNotFourCharacters));
-                var forsendelse = new Forsendelse(new Avsender("123"), DomainUtility.GetDigitalPostInfoSimple(), dokumentpakkeUtenVedlegg, Guid.NewGuid());
+                var forsendelse = new Forsendelse(new Avsender("123456789"), DomainUtility.GetDigitalPostInfoSimple(), dokumentpakkeUtenVedlegg, Guid.NewGuid());
 
                 //Act
                 Assert.Throws<XmlValidationException>(() =>

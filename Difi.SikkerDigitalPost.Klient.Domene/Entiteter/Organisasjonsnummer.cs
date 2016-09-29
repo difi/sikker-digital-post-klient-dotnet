@@ -11,7 +11,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
 
         public Organisasjonsnummer(string organisasjonsnummer)
         {
-            Verdi = GetValidatedOrganisasjonsNummerOrThrowException(organisasjonsnummer);
+            Verdi = GetValidatedOrganisasjonsnummerOrThrowException(organisasjonsnummer);
         }
 
         public string Verdi { get; }
@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
             return WithCountryCode;
         }
 
-        private static string GetValidatedOrganisasjonsNummerOrThrowException(string organisasjonsnummer)
+        private static string GetValidatedOrganisasjonsnummerOrThrowException(string organisasjonsnummer)
         {
             var match = Regex.Match(organisasjonsnummer, OrganisasjonsnummerPattern);
 
@@ -44,7 +44,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
         [Obsolete("Vil bli fjernet fordi den ikke skal eksponeres ut til brukere av biblioteket.")]
         public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
         {
-            return new Organisasjonsnummer(GetValidatedOrganisasjonsNummerOrThrowException(iso6523Orgnr));
+            return new Organisasjonsnummer(GetValidatedOrganisasjonsnummerOrThrowException(iso6523Orgnr));
         }
     }
 }
