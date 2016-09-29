@@ -1,6 +1,7 @@
 ﻿using System;
 using Difi.Felles.Utility;
 using Difi.Felles.Utility.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -10,6 +11,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             CertificateChainValidator = certificateChainValidator;
             Url = url;
+        }
+
+        internal Uri UrlWithOrganisasjonsnummer(Organisasjonsnummer databehandler, Organisasjonsnummer avsender)
+        {
+            return new Uri(Url,$"{databehandler.WithCountryCode}/{avsender.WithCountryCode}");
         }
 
         public static Miljø FunksjoneltTestmiljø => new Miljø(
