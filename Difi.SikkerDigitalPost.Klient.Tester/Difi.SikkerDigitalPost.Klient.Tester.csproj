@@ -122,6 +122,7 @@
     <Compile Include="Entiteter\Kvitteringer\Transport\TomKøKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
     <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
+    <Compile Include="Entiteter\OrganisasjonsnummerTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />

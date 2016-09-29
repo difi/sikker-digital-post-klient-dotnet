@@ -9,7 +9,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
     {
         /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
         /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>
-        [Obsolete("Bruk konstruktør med klassen Organisasjonsnummer. Denne blir fjernet for å bedre typesikkerhet.")]
+        [Obsolete("Bruk konstruktør Databehandler(Organisasjonsnummer, string). Denne blir fjernet for å bedre typesikkerhet.")]
         public Databehandler(string organisasjonsnummer, X509Certificate2 sertifikat)
             : this(new Organisasjonsnummer(organisasjonsnummer), sertifikat)
         {
@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         ///     Thumbprint til databehandlersertifikatet. Se guide på
         ///     http://difi.github.io/sikker-digital-post-klient-dotnet/#databehandlersertifikat
         /// </param>
-        [Obsolete("Bruk konstruktør med klassen Organisasjonsnummer. Denne blir fjernet for å bedre typesikkerhet.")]
+        [Obsolete("Bruk konstruktør Databehandler(Organisasjonsnummer, string). Denne blir fjernet for å bedre typesikkerhet.")]
         public Databehandler(string organisasjonsnummer, string sertifikatThumbprint)
             : this(new Organisasjonsnummer(organisasjonsnummer), sertifikatThumbprint)
         {

@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         internal Uri UrlWithOrganisasjonsnummer(Organisasjonsnummer databehandler, Organisasjonsnummer avsender)
         {
-            return new Uri(Url,$"{databehandler.OrganisasjonsnummerMedLandkode()}/{avsender.OrganisasjonsnummerMedLandkode()}");
+            return new Uri(Url,$"{databehandler.WithCountryCode}/{avsender.WithCountryCode}");
         }
 
         public static Miljø FunksjoneltTestmiljø => new Miljø(
