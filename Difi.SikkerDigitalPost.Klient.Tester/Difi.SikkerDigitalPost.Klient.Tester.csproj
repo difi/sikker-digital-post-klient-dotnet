@@ -155,7 +155,7 @@
     <Compile Include="DokumentpakkeTests.cs" />
     <Compile Include="SertifikatTester.cs" />
     <Compile Include="XmlValidering\ResponseValidatorTests.cs" />
-    <Compile Include="XmlValidering\MiljøTester.cs" />
+    <Compile Include="XmlValidering\MiljøTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">

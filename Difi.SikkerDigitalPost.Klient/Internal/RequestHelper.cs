@@ -79,8 +79,10 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 RequestResponseLog.Debug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
             }
 
+            var requestUri = RequestUri(envelope);
             var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
-            var responseMessage = await HttpClient.PostAsync(ClientConfiguration.Miljø.Url, httpContent).ConfigureAwait(false);
+
+            var responseMessage = await HttpClient.PostAsync(requestUri, httpContent).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
@@ -89,6 +91,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             }
 
             return responseContent;
+        }
+
+        private Uri RequestUri(AbstractEnvelope envelope)
+        {
+            var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
+            return  isOutgoingForsendelse 
+                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer) 
+                : ClientConfiguration.Miljø.Url;
         }
 
         private HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
