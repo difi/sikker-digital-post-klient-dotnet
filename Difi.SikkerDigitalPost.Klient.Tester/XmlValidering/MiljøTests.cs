@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             public void Returnerer_initialisert_funksjonelt_testmiljø()
             {
                 //Arrange
-                var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/ebms";
+                var url = "https://qaoffentlig.meldingsformidler.digipost.no/api/";
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sertifikater = CertificateChainUtility.FunksjoneltTestmiljøSertifikater();
 
@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             public void Returnerer_initialisert_produksjonsmiljø()
             {
                 //Arrange
-                var url = "https://meldingsformidler.digipost.no/api/ebms";
+                var url = "https://meldingsformidler.digipost.no/api/";
                 var miljø = Miljø.Produksjonsmiljø;
                 var sertifikater = CertificateChainUtility.ProduksjonsSertifikater();
 
