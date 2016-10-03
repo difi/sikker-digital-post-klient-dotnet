@@ -6,23 +6,12 @@ using System.Threading.Tasks;
 
 namespace Difi.SikkerDigitalPost.Klient.Handlers
 {
-    internal class UserAgentHttpHandler : DelegatingHandler
+    internal class UserAgentHandler : DelegatingHandler
     {
-        public UserAgentHttpHandler()
-            : base(new HttpClientHandler())
-        {
-        }
-
-        public UserAgentHttpHandler(HttpMessageHandler innerHandler)
-            : base(innerHandler)
-        {
-        }
-
         protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request, CancellationToken cancellationToken)
+             HttpRequestMessage request, CancellationToken cancellationToken)
         {
             request.Headers.Add("User-Agent", GetAssemblyVersion());
-
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
@@ -34,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Handlers
 
             var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-            return $"difi-sikker-digital-post-klient/{assemblyVersion} (.NET/{netVersion})";
+            return $"difi-sikker-digital-post-klient-dotnet/{assemblyVersion} (.NET/{netVersion})";
         }
     }
 }
