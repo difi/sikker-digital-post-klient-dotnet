@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()
         {
-            _forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
+            _forsendelse = DomainUtility.GetForsendelseSimple();
 
             return this;
         }

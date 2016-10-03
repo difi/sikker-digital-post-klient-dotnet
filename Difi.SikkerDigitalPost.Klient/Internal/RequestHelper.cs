@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,6 +11,7 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
+using Difi.SikkerDigitalPost.Klient.Handlers;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
@@ -18,15 +20,22 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
     {
         private static readonly ILog RequestResponseLog = LogManager.GetLogger("Difi.SikkerDigitalPost.Klient.RequestResponse");
 
-        public RequestHelper(Klientkonfigurasjon clientConfiguration)
+        internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, params DelegatingHandler[] additionalHandlers)
         {
-            ClientConfiguration = clientConfiguration;
-            HttpClient = new HttpClient(HttpClientHandlerChain());
+            ClientConfiguration = klientkonfigurasjon;
+            Handlers.AddRange(additionalHandlers);
+            HttpClient = HttpClientWithHandlerChain();
+        }
+
+        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon)
+        {
+            ClientConfiguration = klientkonfigurasjon;
+            HttpClient = HttpClientWithHandlerChain();
         }
 
         public Klientkonfigurasjon ClientConfiguration { get; }
 
-        public HttpClient HttpClient { get; set; }
+        public HttpClient HttpClient { get; set; } //Todo: Hide this! Skal kun legge til handlere eller endre hele handlerlista.
 
         public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
@@ -47,22 +56,32 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             return Send(kvitteringsbekreftelseEnvelope);
         }
 
-        private HttpMessageHandler HttpClientHandlerChain()
+        private List<DelegatingHandler> Handlers { get; } = new List<DelegatingHandler>
         {
-            HttpClientHandler httpClientHandler;
+            new UserAgentHandler()
+        };
+        
+        private HttpClient HttpClientWithHandlerChain()
+        {
+            HttpClientHandler proxyOrNotHandler;
             if (ClientConfiguration.BrukProxy)
             {
-                httpClientHandler = new HttpClientHandler
+                proxyOrNotHandler = new HttpClientHandler()
                 {
                     Proxy = CreateProxy()
                 };
             }
             else
             {
-                httpClientHandler = new HttpClientHandler();
+                proxyOrNotHandler = new HttpClientHandler();
             }
 
-            return httpClientHandler;
+            var client = HttpClientFactory.Create(
+                proxyOrNotHandler,
+                Handlers.ToArray()
+                );
+
+            return client;
         }
 
         private WebProxy CreateProxy()
@@ -101,7 +120,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 : ClientConfiguration.Miljø.Url;
         }
 
-        private HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
+        private static HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
             var boundary = Guid.NewGuid().ToString();
             var multipartFormDataContent = new MultipartFormDataContent(boundary);
@@ -117,7 +136,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             return multipartFormDataContent;
         }
 
-        private void AddEnvelopeToMultipart(ISoapVedlegg vedlegg, MultipartFormDataContent meldingsinnhold)
+        private static void AddEnvelopeToMultipart(ISoapVedlegg vedlegg, MultipartFormDataContent meldingsinnhold)
         {
             var byteArrayContent = new ByteArrayContent(vedlegg.Bytes);
 
@@ -130,7 +149,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             meldingsinnhold.Add(byteArrayContent);
         }
 
-        private void AddDocumentBundleToMultipart(DocumentBundle documentBundle, MultipartFormDataContent meldingsinnhold)
+        private static void AddDocumentBundleToMultipart(DocumentBundle documentBundle, MultipartFormDataContent meldingsinnhold)
         {
             if (documentBundle != null)
             {
