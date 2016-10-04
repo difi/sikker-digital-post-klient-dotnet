@@ -83,7 +83,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 //Act 
                 await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false); 
-                await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false); 
             }
         }
     }
