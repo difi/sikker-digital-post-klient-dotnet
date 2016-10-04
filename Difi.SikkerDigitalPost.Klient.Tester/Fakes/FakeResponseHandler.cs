@@ -8,16 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Fakes
 {
     internal class FakeResponseHandler : DelegatingHandler
     {
-        private readonly Action<HttpRequestMessage> _testingAction;
-
-        public FakeResponseHandler(Action<HttpRequestMessage> testingAction)
-        {
-            _testingAction = testingAction;
-        }
-
-        public FakeResponseHandler()
-        {
-        }
+        public Action<HttpRequestMessage> TestingAction { get; set; }
 
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
 
@@ -25,7 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Fakes
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
         {
-            _testingAction?.Invoke(requestMessage);
+            TestingAction?.Invoke(requestMessage);
 
             var response = new HttpResponseMessage
             {

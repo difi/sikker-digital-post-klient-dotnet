@@ -74,12 +74,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 var requestHelper = new RequestHelper(
                     new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø),
-                    new FakeResponseHandler(testingAction)
+                    new FakeResponseHandler()
                     {
+                        TestingAction = testingAction,
                         HttpContent = new StringContent(XmlResource.Response.GetTransportOk().OuterXml)
-                    });
+                    }
+                );
 
                 //Act 
+                await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false); 
                 await requestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false); 
             }
         }

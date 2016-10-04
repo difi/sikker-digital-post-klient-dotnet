@@ -5,6 +5,7 @@ using System.Threading;
 using ApiClientShared;
 using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Api;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
@@ -46,7 +47,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             var postInfo = GenererPostInfo(ErDigitalPostMottaker, ErNorskBrev);
             var avsender = new Avsender(Settings.Default.OrgnummerPosten);
 
-            var databehandler = new Databehandler(Settings.Default.OrgnummerPosten,
+            var databehandler = new Databehandler(
+                new Organisasjonsnummer(Settings.Default.OrgnummerPosten),
                 Settings.Default.DatabehandlerSertifikatThumbprint);
             avsender.Avsenderidentifikator = "digipost";
 

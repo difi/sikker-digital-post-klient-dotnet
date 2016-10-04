@@ -8,8 +8,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     internal class SdpXmlValidator : XmlValidator
     {
-        private static SdpXmlValidator _instance;
-
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
 
         private SdpXmlValidator()
@@ -38,7 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             AddXsd(NavneromUtility.WssecuritySecext10, GetResource("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
         }
 
-        public static SdpXmlValidator Instance { get; } = _instance ?? new SdpXmlValidator();
+        public static SdpXmlValidator Instance { get; } = new SdpXmlValidator();
 
         private static XmlReader GetResource(string path)
         {

@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public Klientkonfigurasjon ClientConfiguration { get; }
 
-        public HttpClient HttpClient { get; set; } //Todo: Hide this! Skal kun legge til handlere eller endre hele handlerlista.
+        public HttpClient HttpClient { get; set; }
 
         public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
