@@ -84,7 +84,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             {
                 var organisasjon = avsender.AppendChildElement("organisasjon", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 organisasjon.SetAttribute("authority", "iso6523-actorid-upis");
-                organisasjon.InnerText = Avsender.Organisasjonsnummer.Iso6523();
+                organisasjon.InnerText = Avsender.Organisasjonsnummer.WithCountryCode;
 
                 var avsenderId = Avsender.Avsenderidentifikator;
                 if (!string.IsNullOrWhiteSpace(avsenderId))

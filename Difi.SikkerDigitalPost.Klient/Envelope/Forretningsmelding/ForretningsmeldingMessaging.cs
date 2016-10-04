@@ -65,7 +65,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 {
                     var partyId = from.AppendChildElement("PartyId", "eb", NavneromUtility.EbXmlCore, Context);
                     partyId.SetAttribute("type", "urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908");
-                    partyId.InnerText = Settings.Databehandler.Organisasjonsnummer.Iso6523();
+                    partyId.InnerText = Settings.Databehandler.Organisasjonsnummer.WithCountryCode;
 
                     var role = from.AppendChildElement("Role", "eb", NavneromUtility.EbXmlCore, Context);
                     role.InnerText = "urn:sdp:avsender";
@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 {
                     var partyId = to.AppendChildElement("PartyId", "eb", NavneromUtility.EbXmlCore, Context);
                     partyId.SetAttribute("type", "urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908");
-                    partyId.InnerText = Settings.Konfigurasjon.MeldingsformidlerOrganisasjon.Iso6523();
+                    partyId.InnerText = Settings.Konfigurasjon.MeldingsformidlerOrganisasjon.WithCountryCode;
 
                     var role = to.AppendChildElement("Role", "eb", NavneromUtility.EbXmlCore, Context);
                     role.InnerText = "urn:sdp:meldingsformidler";

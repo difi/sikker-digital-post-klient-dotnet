@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Difi.SikkerDigitalPost.Klient.Api;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -14,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     internal class SmokeTestsHelper
     {
-        private const string BringOrganisasjonsnummer = "988015814";
+        private static readonly Organisasjonsnummer BringOrganisasjonsnummer = new Organisasjonsnummer("988015814");
         private const string BringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
         private readonly SikkerDigitalPostKlient _klient;
 
