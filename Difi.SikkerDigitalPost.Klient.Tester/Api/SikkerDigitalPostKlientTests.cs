@@ -59,7 +59,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportError().OuterXml, HttpStatusCode.BadRequest);
+                var fakeHttpClientHandlerResponse = new FakeResponseHandler()
+                {
+                    HttpContent = new StringContent(XmlResource.Response.GetTransportError().OuterXml),
+                    StatusCode =  HttpStatusCode.BadRequest
+                };
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
@@ -86,7 +90,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(DomainUtility.GetDatabehandler(), klientkonfigurasjon);
 
                 DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                var fakeHttpClientHandlerResponse = new FakeResponseHandler()
+                {
+                    HttpContent = new StringContent(XmlResource.Response.GetTransportOk().OuterXml),
+                };
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
@@ -116,7 +123,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             {
                 //Arrange
                 var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeHttpClientHandlerResponse(XmlResource.Response.GetTransportOk().OuterXml, HttpStatusCode.OK);
+                var fakeHttpClientHandlerResponse = new FakeResponseHandler()
+                {
+                    HttpContent = new StringContent(XmlResource.Response.GetTransportOk().OuterXml),
+                };
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
 
                 //Act
