@@ -20,17 +20,15 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
     {
         private static readonly ILog RequestResponseLog = LogManager.GetLogger("Difi.SikkerDigitalPost.Klient.RequestResponse");
 
+        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon):
+            this(klientkonfigurasjon, new DelegatingHandler[0])
+        {
+        }
+
         internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, params DelegatingHandler[] additionalHandlers)
         {
             ClientConfiguration = klientkonfigurasjon;
-            Handlers.AddRange(additionalHandlers);
-            HttpClient = HttpClientWithHandlerChain();
-        }
-
-        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon)
-        {
-            ClientConfiguration = klientkonfigurasjon;
-            HttpClient = HttpClientWithHandlerChain();
+            HttpClient = HttpClientWithHandlerChain(additionalHandlers);
         }
 
         public Klientkonfigurasjon ClientConfiguration { get; }
@@ -56,17 +54,27 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             return Send(kvitteringsbekreftelseEnvelope);
         }
 
-        private List<DelegatingHandler> Handlers { get; } = new List<DelegatingHandler>
+        private HttpClient HttpClientWithHandlerChain(IEnumerable<DelegatingHandler> additionalHandlers)
         {
-            new UserAgentHandler()
-        };
-        
-        private HttpClient HttpClientWithHandlerChain()
+            var proxyClientHandler = GetProxyOrDefaultHttpClientHandler();
+
+            var allDelegatingHandlers = new List<DelegatingHandler> {new UserAgentHandler()};
+            allDelegatingHandlers.AddRange(additionalHandlers);
+
+            var client = HttpClientFactory.Create(
+                proxyClientHandler,
+                allDelegatingHandlers.ToArray()
+            );
+
+            return client;
+        }
+
+        private HttpClientHandler GetProxyOrDefaultHttpClientHandler()
         {
             HttpClientHandler proxyOrNotHandler;
             if (ClientConfiguration.BrukProxy)
             {
-                proxyOrNotHandler = new HttpClientHandler()
+                proxyOrNotHandler = new HttpClientHandler
                 {
                     Proxy = CreateProxy()
                 };
@@ -76,12 +84,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 proxyOrNotHandler = new HttpClientHandler();
             }
 
-            var client = HttpClientFactory.Create(
-                proxyOrNotHandler,
-                Handlers.ToArray()
-                );
-
-            return client;
+            return proxyOrNotHandler;
         }
 
         private WebProxy CreateProxy()
@@ -115,8 +118,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         private Uri RequestUri(AbstractEnvelope envelope)
         {
             var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
-            return  isOutgoingForsendelse 
-                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer) 
+            return isOutgoingForsendelse
+                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer)
                 : ClientConfiguration.Miljø.Url;
         }
 
