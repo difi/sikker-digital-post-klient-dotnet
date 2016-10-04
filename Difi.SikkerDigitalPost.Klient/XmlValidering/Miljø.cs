@@ -19,12 +19,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         }
 
         public static Miljø FunksjoneltTestmiljø => new Miljø(
-            new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/ebms"),
+            new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/"),
             new CertificateChainValidator(CertificateChainUtility.FunksjoneltTestmiljøSertifikater())
             );
 
         public static Miljø Produksjonsmiljø => new Miljø(
-            new Uri("https://meldingsformidler.digipost.no/api/ebms"),
+            new Uri("https://meldingsformidler.digipost.no/api/"),
             new CertificateChainValidator(CertificateChainUtility.ProduksjonsSertifikater())
             );
 
@@ -36,6 +36,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         public static Miljø ProduksjonsmiljøNorskHelsenett => new Miljø(
             new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
             new CertificateChainValidator(CertificateChainUtility.ProduksjonsSertifikater())
+            );
+
+        internal static Miljø Localhost => new Miljø(
+            new Uri("http://192.168.36.1:8049"),
+            new CertificateChainValidator(CertificateChainUtility.FunksjoneltTestmiljøSertifikater())
             );
     }
 }
