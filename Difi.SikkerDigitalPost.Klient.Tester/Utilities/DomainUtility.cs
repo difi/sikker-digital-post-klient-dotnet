@@ -34,8 +34,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
-        private static IEnumerable<Dokument> _vedlegg;
-
         internal static Dokumentpakke GetDokumentpakkeWithoutAttachments()
         {
             return new Dokumentpakke(GetHoveddokumentSimple());
@@ -60,12 +58,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return ResourceUtility.GetFiles(vedleggsMappe).ToArray();
         }
 
-        internal static IEnumerable<Dokument> GetVedlegg(int maksAntall = 5)
+        internal static IEnumerable<Dokument> GetVedlegg(int antall = 5)
         {
-            if (_vedlegg != null)
-            {
-                return _vedlegg;
-            }
 
             var vedleggTxt0 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -73,9 +67,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
             var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
 
-            _vedlegg = new[] {vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2};
+            var vedlegg = new[] {vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2};
 
-            return _vedlegg.Take(maksAntall);
+            if (antall <= 5)
+            {
+                return vedlegg.Take(antall);
+            }
+            else
+            {
+                var vedleggbatch = new List<Dokument>();
+                for (var i = 0; i < antall; i++)
+                {
+                    var element = vedlegg.ElementAt(i % vedlegg.Length);
+                    vedleggbatch.Add(new Dokument(element.Tittel, element.Bytes, element.MimeType, "NO", $"{i}-{element.Filnavn}"));
+                }
+                return vedleggbatch;
+            }
         }
 
         internal static string GetMimeType(string fileName)
@@ -91,12 +98,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static string GetPersonnummerMottaker()
         {
-            return "04036125433";
+            return "01043100358";
         }
 
         internal static string GetDigipostadresseMottaker()
         {
-            return "ove.jonsen#6K5A";
+            return "dangfart.utnes#1BK5";
         }
 
         internal static string GetOrganisasjonsnummerPostkasse()
@@ -179,9 +186,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity()
+        internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(int antallVedlegg = 5)
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithMultipleVedlegg(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithMultipleVedlegg(antallVedlegg), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static DocumentBundle GetAsiceArchiveSimple()

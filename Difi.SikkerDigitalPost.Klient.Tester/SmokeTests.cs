@@ -1,13 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Difi.SikkerDigitalPost.Klient.Api;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
-using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
 
@@ -32,6 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 .Send()
                 .Expect_Message_Response_To_Be_TransportOkKvittering()
                 .Fetch_Receipt()
+                .Expect_Receipt_To_Be(typeof(Forretningskvittering))
                 .ConfirmReceipt();
         }
 
@@ -43,6 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 .Send()
                 .Expect_Message_Response_To_Be_TransportOkKvittering()
                 .Fetch_Receipt()
+                .Expect_Receipt_To_Be(typeof(Mottakskvittering))
                 .ConfirmReceipt();
         }
 
