@@ -1,7 +1,7 @@
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.10.1.*")]
+[assembly: AssemblyVersion("1.10.2.*")]
 
 #pragma warning disable CS7035 // The specified version string does not conform to the recommended format - major.minor.build.revision
-[assembly: AssemblyFileVersion("1.10.1.*")]
+[assembly: AssemblyFileVersion("1.10.2.*")]
 #pragma warning restore CS7035 // The specified version string does not conform to the recommended format - major.minor.build.revision
