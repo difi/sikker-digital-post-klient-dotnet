@@ -30,8 +30,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()
         {
-            _forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity();
-
+            _forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(3);
+        
             return this;
         }
 
@@ -90,6 +90,15 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
 
             Assert.True(kvitteringReceived, "Fikk ikke til å hente kvittering. Var du for rask å hente, eller har noe skjedd galt med hvilken kø du henter fra?");
+
+            return this;
+        }
+
+        public SmokeTestsHelper Expect_Receipt_To_Be(Type forretningskvitteringType)
+        {
+            Assert_state(_transportkvittering);
+
+            Assert.IsType(forretningskvitteringType, _forretningskvittering);
 
             return this;
         }
