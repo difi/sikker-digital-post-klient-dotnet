@@ -23,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 .Send()
                 .Expect_Message_Response_To_Be_TransportOkKvittering()
                 .Fetch_Receipt()
-                .Expect_Receipt_To_Be(typeof(Forretningskvittering))
+                .Expect_Receipt_To_Be(typeof(Leveringskvittering))
                 .ConfirmReceipt();
         }
 
