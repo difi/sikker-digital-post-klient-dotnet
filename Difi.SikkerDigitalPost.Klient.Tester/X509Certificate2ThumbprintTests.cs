@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
 {
-    public class SertifikatTester
+    public class X509Certificate2ThumbprintTests
     {
         public class ThumbprintTester : IDisposable
         {
@@ -13,7 +13,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
             public ThumbprintTester()
             {
-                _store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                _store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
                 _store.Open(OpenFlags.ReadOnly);
 
                 try
