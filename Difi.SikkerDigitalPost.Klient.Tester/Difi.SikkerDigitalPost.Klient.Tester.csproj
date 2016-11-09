@@ -42,7 +42,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\Keys\digipost.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ApiClientShared, Version=1.0.5968.19413, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
@@ -155,7 +155,6 @@
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
     <Compile Include="Utilities\KvitteringsUtility.cs" />
-    <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomainUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
     <Compile Include="ManifestTester.cs" />
@@ -192,6 +191,9 @@
     <None Include="..\SolutionItems\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="C:\Keys\signingkey.snk">
+      <Link>signingkey.snk</Link>
     </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.cer" />
