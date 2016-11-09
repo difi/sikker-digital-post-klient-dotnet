@@ -42,11 +42,11 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\Keys\digipost.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApiClientShared, Version=1.0.5968.19413, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.1.0.5968.19413\lib\net45\ApiClientShared.dll</HintPath>
+    <Reference Include="ApiClientShared, Version=1.2.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
+      <HintPath>..\packages\api-client-shared.1.2.0\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -57,8 +57,8 @@
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=0.8.0.27738, Culture=neutral, PublicKeyToken=683b8efceae684a6, processorArchitecture=MSIL">
-      <HintPath>..\packages\difi-felles-utility-dotnet.0.8.0.27738\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    <Reference Include="Difi.Felles.Utility, Version=0.9.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.0.9.0\lib\net45\Difi.Felles.Utility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.5.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
@@ -155,13 +155,12 @@
     <Compile Include="Utilities\IComparator.cs" />
     <Compile Include="Utilities\IDifference.cs" />
     <Compile Include="Utilities\KvitteringsUtility.cs" />
-    <Compile Include="X509ChainTests.cs" />
     <Compile Include="Utilities\DomainUtility.cs" />
     <Compile Include="EnvelopeTester.cs" />
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DokumentpakkeTests.cs" />
-    <Compile Include="SertifikatTester.cs" />
+    <Compile Include="X509Certificate2ThumbprintTests.cs" />
     <Compile Include="XmlValidering\ResponseValidatorTests.cs" />
     <Compile Include="XmlValidering\MiljøTests.cs" />
   </ItemGroup>
@@ -192,6 +191,9 @@
     <None Include="..\SolutionItems\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="C:\Keys\signingkey.snk">
+      <Link>signingkey.snk</Link>
     </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.cer" />
