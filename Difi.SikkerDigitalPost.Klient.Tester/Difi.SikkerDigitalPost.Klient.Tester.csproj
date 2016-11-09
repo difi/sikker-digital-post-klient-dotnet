@@ -160,7 +160,7 @@
     <Compile Include="ManifestTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DokumentpakkeTests.cs" />
-    <Compile Include="SertifikatTester.cs" />
+    <Compile Include="X509Certificate2ThumbprintTests.cs" />
     <Compile Include="XmlValidering\ResponseValidatorTests.cs" />
     <Compile Include="XmlValidering\MiljøTests.cs" />
   </ItemGroup>
