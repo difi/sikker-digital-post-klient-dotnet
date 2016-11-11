@@ -61,6 +61,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             if (valideringsResultat.Type != CertificateValidationType.Valid)
             {
                 throw new SecurityException($"Sertifikatet som brukes for { nameof(Databehandler) } er ikke gyldig. Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? Grunnen er '{valideringsResultat.Type.ToNorwegianString()}', beskrivelse: '{valideringsResultat.Message}'");
+
             }
         }
 
