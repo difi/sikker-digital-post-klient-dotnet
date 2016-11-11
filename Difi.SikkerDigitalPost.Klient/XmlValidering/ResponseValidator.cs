@@ -129,7 +129,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
-                throw new SdpSecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er SHIEET> IKKE COMMIT MEG med melding '{certificateValidationResult.Message}'");
+                throw new SdpSecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");
             }
         }
 
