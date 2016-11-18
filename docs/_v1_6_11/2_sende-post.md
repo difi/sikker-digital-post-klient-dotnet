@@ -6,15 +6,13 @@ description: Hvordan sende fysisk og digital post
 isHome: false
 ---
 
-<blockquote>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.</blockquote>
+> Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.
 
-<h3 id="postinfodigital">PostInfo for digital post</h3>
+### PostInfo for digital post
 
 Først, lag en motaker av type `DigitalPostMottaker`:
 
-<blockquote>
-Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <a href="http://begrep.difi.no/Felles/ikkeSensitivTittel">begrep.difi.no</a> for detaljer om denne forskjellen.
-</blockquote>
+> Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <a href="http://begrep.difi.no/Felles/ikkeSensitivTittel">begrep.difi.no</a> for detaljer om denne forskjellen. 
 
 {% highlight csharp %}
 
@@ -35,9 +33,9 @@ var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå
 
 {% endhighlight%}
 
-<blockquote>Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.</blockquote>
+> Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.
 
-<h3 id="postinfofysisk">PostInfo for fysisk post</h3>
+### PostInfo for fysisk post
 
 Skal du sende fysisk post må du først lage en `FysiskPostMottaker`, en `FysiskPostReturMottaker` og sette informasjon om farge og makulering:
 
@@ -71,7 +69,7 @@ Her er adressen av type `NorskAdresse` eller `UtenlandskAdresse`.
 
 Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til `Posthåndtering.MakuleringMedMelding`. Oppretting av en FysiskPostInfo vil da se slik ut:
 
-<h3 id="oppsettfoersending">Oppsett før sending</h3>
+### Oppsett før sending
 
 Opprett en avsender og en databehandler:
 {% highlight csharp %}
@@ -91,7 +89,8 @@ Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fåt
 avsender.Avsenderidentifikator = "Avsenderidentifikator I Organisasjon";
 {% endhighlight %}
 
-<h3 id="oppretteforsendelse">Opprette forsendelse</h3>
+### Opprette forsendelse
+
 Deretterer kan du opprette forsendelse. Forsendelsen inneholder de dokumentene
  som skal til mottakeren:
 
@@ -123,7 +122,8 @@ var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke);
 
 {% endhighlight %}
 
-<h3 id="opprettKlient">Opprette klient og sende post </h3>
+### Opprette klient og sende post
+
 Siste steg er å opprette en `SikkerDigitalPostKlient`:
 
 {% highlight csharp %}
@@ -149,7 +149,8 @@ else if(transportkvittering is TransportFeiletKvittering)
 
 Transportkvitteringen får du tilbake umiddelbart; den trenger du ikke å polle for å få. 
 
-<h3 id="henteKvitteringer"> Hente kvitteringer</h3>
+### Hente kvitteringer
+
 For å hente kvitteringer må du sende en kvitteringsforespørsel:
 
 {% highlight csharp %}
@@ -199,9 +200,8 @@ if (kvittering is Feilmelding)
 
 {% endhighlight %}
 
-<blockquote>
-Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende. 
-</blockquote>
+> Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende. 
+
 
 {%highlight csharp%}
 sdpKlient.Bekreft((Forretningskvittering)kvittering);
@@ -209,6 +209,5 @@ sdpKlient.Bekreft((Forretningskvittering)kvittering);
 
 Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: `Leveringskvittering`,`Åpningskvittering`, `Returpostkvittering`, `Mottakskvittering` eller `Feilmelding`. Kvittering kan også være av typen`TransportFeiletKvittering`. Dette kan skje når selve kvitteringsforespørselen er feilformatert.
 
-<blockquote>
-Husk at hvis du får <code>TomKøKvittering</code>, så er køen tom. Du henter bare kvitteringer fra kø gitt av <code>MpcId</code> og <code>Prioritet</code> på Dokumentpakken som ble sendt. Hvis ikke dette ble satt spesifikt vil <code>MpcId = ""</code> og <code>Prioritet = Prioritet.Normal</code>.
-</blockquote>
+> Husk at hvis du får `TomKøKvittering` så er køen tom. Du henter bare kvitteringer fra kø gitt av `MpcId` og `Prioritet`. Hvis ikke dette blir satt spesifikt vil det hentes fra kø hvor `MpcId = ""` og `Prioritet = Prioritet.Normal`.
+
