@@ -6,12 +6,13 @@ description: Integrer SDP.NET mot din loggplattform
 isHome: false
 ---
 
-<h3 id="genereltOmlogging">Generelt</h3>
+### Generelt
+
 Klienten bruker _Common.Logging API_ for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk, men vi viser hvordan dette kan gjøres med Log4Net.
 
 Loggnivå `DEBUG` vil logge resultat for forespørsler som går bra og de  som feiler, `WARN` bare for feilede forespørsler eller verre, mens `ERROR`  bare skjer om sending av brev feilet. Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient`
 
-<h3 id="log4net">Implementere Log4Net som logger</h3>
+### Implementere Log4Net som logger
 
 1. Installer Nuget-pakke `Common.Logging.Log4Net`. Denne vil da også installere avhengighetene `Common.Logging.Core` og `Common.Logging`. Merk at versjoneringen her er litt underlig, men et søk i Nuget Gallery vil f.eks. vise at Log4Net 2.0.3 har pakkenavn _Log4net [1.2.13] 2.0.3_. Da er det `Common.Logging.Log4Net1213` som skal installeres. 
 2. Legg merke til hvilken versjon av Log4net som faktisk installeres. Av en eller annen grunn kan det bli 2.0.0 som installeres. Da må versjonen oppdateres til 2.0.3.
