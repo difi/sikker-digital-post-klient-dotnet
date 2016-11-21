@@ -4,8 +4,8 @@
         <id>difi-sikker-digital-post-klient</id>
         <version>$version$</version>
         <authors>Direktoratet for forvaltning og IKT (Difi)</authors>
-        <owners>PDirektoratet for forvaltning og IKT (Difi)</owners>
-        <projectUrl>https://github.com/difi/sikker-digital-post-net-klient/</projectUrl>
+        <owners>Direktoratet for forvaltning og IKT (Difi)</owners>
+        <projectUrl>https://github.com/difi/sikker-digital-post-klient-dotnet</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Klientbibliotek for sending av sikker digital post for offentlig sektor.</description>
         <copyright>Copyright 2016</copyright>
