@@ -12,7 +12,7 @@ isHome: false
 
 Først, lag en motaker av type `DigitalPostMottaker`:
 
-> Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <a href="http://begrep.difi.no/Felles/ikkeSensitivTittel">begrep.difi.no</a> for detaljer om denne forskjellen. 
+> Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se [begrep.difi.no](http://begrep.difi.no/Felles/ikkeSensitivTittel) for detaljer om denne forskjellen. 
 
 {% highlight csharp %}
 
@@ -33,7 +33,7 @@ var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå
 
 {% endhighlight%}
 
-> Husk at<code>OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.
+> Husk at `OrgnummerPostkasse` er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.
 
 ### PostInfo for fysisk post
 
