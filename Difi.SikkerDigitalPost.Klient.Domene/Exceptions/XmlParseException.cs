@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
@@ -22,6 +23,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
         {
         }
 
-        public string Rådata { get; set; }
+        public string Rådata => Xml.OuterXml;
+
+        public XmlDocument Xml { get; set; }
     }
 }

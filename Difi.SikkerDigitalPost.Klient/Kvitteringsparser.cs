@@ -19,7 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
         }
@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
         }
@@ -47,7 +47,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
         }
@@ -62,7 +62,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
                 Beskrivelse = varslingfeiletKvitteringsfelter.Beskrivelse,
                 Varslingskanal = varslingfeiletKvitteringsfelter.Varslingskanal
@@ -78,7 +78,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt
             };
         }
@@ -93,7 +93,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 Generert = forretningskvitteringfelter.Generert,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
                 Skyldig = feilmeldingfelter.SkyldigFeiltype,
                 Detaljer = feilmeldingfelter.Detaljer
@@ -109,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
-                Rådata = kvitteringFelter.Rådata
+                Xml = kvitteringFelter.Xml
             };
         }
 
@@ -123,7 +123,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 MeldingsId = kvitteringFelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
                 SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
-                Rådata = kvitteringFelter.Rådata,
+                Xml = kvitteringFelter.Xml,
                 Alvorlighetsgrad = transportFeiletFelter.Alvorlighetsgrad,
                 Beskrivelse = transportFeiletFelter.Beskrivelse,
                 Feilkode = transportFeiletFelter.Feilkode,
@@ -150,7 +150,7 @@ namespace Difi.SikkerDigitalPost.Klient
             {
                 SendtTidspunkt = Convert.ToDateTime(GetXmlNodeFromDocument(kvittering, "//ns6:Timestamp").InnerText),
                 MeldingsId = GetXmlNodeFromDocument(kvittering, "//ns6:MessageId").InnerText,
-                Rådata = kvittering.OuterXml,
+                Xml = kvittering,
                 ReferanseTilMeldingId = sjekkEtterReferanseTilMeldingsId ? GetXmlNodeFromDocument(kvittering, "//ns6:RefToMessageId").InnerText : null
             };
         }
@@ -164,7 +164,7 @@ namespace Difi.SikkerDigitalPost.Klient
                 MeldingsId = kvitteringsfelter.MeldingsId,
                 ReferanseTilMeldingId = kvitteringsfelter.ReferanseTilMeldingId,
                 SendtTidspunkt = kvitteringsfelter.SendtTidspunkt,
-                Rådata = kvitteringsfelter.Rådata
+                Xml = kvitteringsfelter.Xml
             };
         }
 
@@ -319,7 +319,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             public string ReferanseTilMeldingId { get; set; }
 
-            public string Rådata { get; set; }
+            public XmlDocument Xml { get; set; }
         }
 
         internal class Forretningskvitteringfelter

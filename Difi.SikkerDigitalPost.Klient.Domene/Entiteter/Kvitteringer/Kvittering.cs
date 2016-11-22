@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml;
+using Difi.Felles.Utility.Resources.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
@@ -27,7 +29,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         /// <summary>
         ///     Kvitteringen presentert som tekststreng.
         /// </summary>
-        public string Rådata { get; set; }
+        public string Rådata => Xml.OuterXml;
+
+        public XmlDocument Xml { get; set; }
 
         public override string ToString()
         {
