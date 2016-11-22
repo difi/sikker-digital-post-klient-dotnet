@@ -102,7 +102,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
-            var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
+            var transportReceiptXml = transportReceipt.Xml;
 
             if (transportReceipt is TransportOkKvittering)
             {
@@ -252,7 +252,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
 
             var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-            var transportReceiptXml = XmlUtility.TilXmlDokument(receipt.Rådata);
+            var transportReceiptXml = receipt.Xml;
 
             if (receipt is TomKøKvittering)
             {
