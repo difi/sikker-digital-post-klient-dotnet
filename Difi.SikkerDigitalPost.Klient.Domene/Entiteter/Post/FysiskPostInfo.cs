@@ -28,14 +28,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 
         public Posthåndtering Posthåndtering { get; set; }
 
-        [Obsolete("Typen på ReturMottaker er nå endret til Returpostmottaker. OBS! Vil bli fjernet fom. neste versjon.")]
-        public FysiskPostMottaker ReturMottaker
-        {
-            get { return _returmottakerAbstrakt as FysiskPostMottaker; }
-            set { _returmottakerAbstrakt = value; }
-        }
-
-        public FysiskPostReturmottaker Returpostmottaker
-            => new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn, _returmottakerAbstrakt.Adresse);
+        public FysiskPostReturmottaker Returpostmottaker => new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn, _returmottakerAbstrakt.Adresse);
     }
 }

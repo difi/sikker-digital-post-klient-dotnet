@@ -14,7 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i
         ///     meldingsprosessen.
         /// </param>
-        public FysiskPostMottaker(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, string organisasjonsnummer)
+        public FysiskPostMottaker(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, Organisasjonsnummer organisasjonsnummer)
             : base(navn, adresse, utskriftstjenesteSertifikat, organisasjonsnummer)
         {
         }

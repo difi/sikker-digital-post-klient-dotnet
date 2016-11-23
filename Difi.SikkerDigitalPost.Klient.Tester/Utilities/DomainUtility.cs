@@ -21,13 +21,6 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
-    /// <summary>
-    ///     Hjelpeklasse for instansiering av domeneobjekter. Klassen kan virke tilstandsløs, og vil for alle praktiske formål
-    ///     være det,
-    ///     da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses
-    ///     fra disk kun èn
-    ///     gang for økt ytelse.
-    /// </summary>
     internal static class DomainUtility
     {
         internal static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
@@ -118,22 +111,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
         {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottakerWithTestCertificate()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
+            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
