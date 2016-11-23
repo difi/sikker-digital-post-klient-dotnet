@@ -22,15 +22,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private XmlElement _signatureNode;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
 
-        /// <summary>
-        ///     Oppretter en ny instanse av responsvalidatoren.
-        /// </summary>
-        /// <param name="sentMessage">Soap meldingen som har blitt sendt til meldingsformidleren.</param>
-        /// <param name="responseMessage">
-        ///     Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en
-        ///     forsendelse av brev eller kvittering.
-        /// </param>
-        /// <param name="chainCertificates"></param>
         public ResponseValidator(XmlDocument sentMessage, XmlDocument responseMessage, CertificateValidationProperties certificateValidationProperties)
         {
             _certificateValidationProperties = certificateValidationProperties;
@@ -228,9 +219,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             nodes = ResponseMessage.SelectNodes(elementXPath, _nsMgr);
             if ((nodes == null) || (nodes.Count == 0))
-                throw new SecurityException($"Kan ikke finne påkrevet element '{elementXPath}' i svar fra meldingsformidler.");
+                throw new SecurityException($"Kan ikke finne påkrevd element '{elementXPath}' i responsen");
             if (nodes.Count > 1)
-                throw new SecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {nodes.Count} ganger.");
+                throw new SecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang responsen, men ble funnet {nodes.Count} ganger.");
         }
     }
 
