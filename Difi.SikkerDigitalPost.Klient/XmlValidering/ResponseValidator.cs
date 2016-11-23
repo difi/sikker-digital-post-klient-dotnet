@@ -5,7 +5,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.Felles.Utility;
 using Difi.Felles.Utility.Security;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -223,18 +222,5 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             if (nodes.Count > 1)
                 throw new SecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang responsen, men ble funnet {nodes.Count} ganger.");
         }
-    }
-
-    internal class CertificateValidationProperties
-    {
-        public CertificateValidationProperties(X509Certificate2Collection allowedChainCertificates, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
-        {
-            AllowedChainCertificates = allowedChainCertificates;
-            OrganisasjonsnummerMeldingsformidler = organisasjonsnummerMeldingsformidler;
-        }
-
-        public X509Certificate2Collection AllowedChainCertificates { get; }
-
-        public Organisasjonsnummer OrganisasjonsnummerMeldingsformidler { get; }
     }
 }

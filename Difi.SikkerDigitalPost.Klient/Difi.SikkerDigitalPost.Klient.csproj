@@ -147,6 +147,7 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Utilities\XmlUtility.cs" />
+    <Compile Include="XmlValidering\CertificateValidationProperties.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
     <Compile Include="XmlValidering\SdpXmlValidator.cs" />
     <Compile Include="XmlValidering\ResponseValidator.cs" />
