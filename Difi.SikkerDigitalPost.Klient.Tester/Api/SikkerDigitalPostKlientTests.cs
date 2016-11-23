@@ -17,6 +17,7 @@ using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
+using SecurityException = Difi.SikkerDigitalPost.Klient.Domene.Exceptions.SecurityException;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 {
@@ -48,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
+                Assert.Throws<Felles.Utility.Exceptions.SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
             }
         }
 
@@ -103,7 +104,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 {
                     await sikkerDigitalPostKlient.SendAsync(forsendelse).ConfigureAwait(false);
                 }
-                catch (SdpSecurityException)
+                catch (SecurityException)
                 {
                     /*
                         We do not care about the results. Just do sending. Nasty hack as we are unable to mock validation 
@@ -131,7 +132,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 //Act
                 var forsendelse = DomainUtility.GetForsendelseSimple();
-                await Assert.ThrowsAsync<SdpSecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse)).ConfigureAwait(false);
+                await Assert.ThrowsAsync<SecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse)).ConfigureAwait(false);
             }
         }
     }

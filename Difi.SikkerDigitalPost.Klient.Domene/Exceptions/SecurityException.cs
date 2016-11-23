@@ -3,18 +3,18 @@
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
     [Serializable]
-    public class SdpSecurityException : SikkerDigitalPostException
+    public class SecurityException : SikkerDigitalPostException
     {
-        public SdpSecurityException()
+        public SecurityException()
         {
         }
 
-        public SdpSecurityException(string message)
+        public SecurityException(string message)
             : base(message)
         {
         }
 
-        public SdpSecurityException(string message, Exception inner)
+        public SecurityException(string message, Exception inner)
             : base(message, inner)
         {
         }

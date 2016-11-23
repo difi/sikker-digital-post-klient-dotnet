@@ -91,7 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SdpSecurityException>(() =>
+                Assert.Throws<SecurityException>(() =>
                     responseValidator.ValidateTransportReceipt(guidUtility)
                     );
             }
@@ -121,7 +121,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SdpSecurityException>(() =>
+                Assert.Throws<SecurityException>(() =>
                     responseValidator.ValidateTransportReceipt(guidUtility)
                     );
             }
@@ -150,7 +150,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SdpSecurityException>(() =>
+                Assert.Throws<SecurityException>(() =>
                     responseValidator.ValidateTransportReceipt(guidUtility)
                     );
             }

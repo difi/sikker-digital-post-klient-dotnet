@@ -96,7 +96,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             }
             else
             {
-                throw new SdpSecurityException("Fant ikke StandardBusinessDocument-node. Prøvde du å validere en transportkvittering?");
+                throw new SecurityException("Fant ikke StandardBusinessDocument-node. Prøvde du å validere en transportkvittering?");
             }
         }
 
@@ -116,10 +116,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             AsymmetricAlgorithm asymmetricAlgorithm;
             if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out asymmetricAlgorithm))
-                throw new SdpSecurityException("Signaturen i motatt svar er ikke gyldig.");
+                throw new SecurityException("Signaturen i motatt svar er ikke gyldig.");
 
             if (asymmetricAlgorithm.ToXmlString(false) != _sertifikat.PublicKey.Key.ToXmlString(false))
-                throw new SdpSecurityException(
+                throw new SecurityException(
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
@@ -129,7 +129,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
-                throw new SdpSecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");
+                throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");
             }
         }
 
@@ -157,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 var isValidDigest = ValidateDigestElement(sentMessageDigestPath, receivedMessageDigestPath, id, out sentMessageDigest, out reveivedMessageDigest);
                 if (!isValidDigest)
                 {
-                    throw new SdpSecurityException($"Digest verdien av uri {id} for sendt melding ({sentMessageDigest}) matcher ikke motatt digest ({reveivedMessageDigest}).");
+                    throw new SecurityException($"Digest verdien av uri {id} for sendt melding ({sentMessageDigest}) matcher ikke motatt digest ({reveivedMessageDigest}).");
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
                 var targetNode = GetTargetNode(elementId);
                 if (targetNode != nodes[0])
-                    throw new SdpSecurityException(
+                    throw new SecurityException(
                         $"Signaturreferansen med id '{elementId}' må refererer til node med sti '{elementXPath}'");
             }
         }
@@ -211,9 +211,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             var references = _signatureNode.SelectNodes($"./ds:SignedInfo/ds:Reference[@URI='#{elementId}']",
                 _nsMgr);
             if (references == null || references.Count == 0)
-                throw new SdpSecurityException($"Kan ikke finne påkrevet refereanse til element '{elementXPath}' i signatur fra meldingsformidler.");
+                throw new SecurityException($"Kan ikke finne påkrevet refereanse til element '{elementXPath}' i signatur fra meldingsformidler.");
             if (references.Count > 1)
-                throw new SdpSecurityException($"Påkrevd refereanse til element '{elementXPath}' kan kun forekomme én gang i signatur. Ble funnet {references.Count} ganger.");
+                throw new SecurityException($"Påkrevd refereanse til element '{elementXPath}' kan kun forekomme én gang i signatur. Ble funnet {references.Count} ganger.");
         }
 
         private static string ElementId(XmlNodeList nodes)
@@ -225,9 +225,9 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             nodes = ResponseMessage.SelectNodes(elementXPath, _nsMgr);
             if (nodes == null || nodes.Count == 0)
-                throw new SdpSecurityException($"Kan ikke finne påkrevet element '{elementXPath}' i svar fra meldingsformidler.");
+                throw new SecurityException($"Kan ikke finne påkrevet element '{elementXPath}' i svar fra meldingsformidler.");
             if (nodes.Count > 1)
-                throw new SdpSecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {nodes.Count} ganger.");
+                throw new SecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {nodes.Count} ganger.");
         }
     }
 }
