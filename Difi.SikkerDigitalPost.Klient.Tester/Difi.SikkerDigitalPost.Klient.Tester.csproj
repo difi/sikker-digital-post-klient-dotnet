@@ -134,6 +134,7 @@
     <Compile Include="Entiteter\OrganisasjonsnummerTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
+    <Compile Include="ExceptionInheritanceTests.cs" />
     <Compile Include="Exceptions\XmlParseExceptionTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
     <Compile Include="Exceptions\XmlValidationExceptionTests.cs" />
