@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SentMessage { get; internal set; }
 
-        public void ValidateMessageReceiptThrowsIfInvalid()
+        public void ValidateMessageReceipt()
         {
             ValidateHeaderSignature();
             ValidateReceiptSignature();

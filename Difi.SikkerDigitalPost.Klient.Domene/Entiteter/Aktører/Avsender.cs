@@ -1,4 +1,6 @@
-﻿namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
+﻿using System;
+
+namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     /// <summary>
     ///     Offentlig virksomhet som produserer informasjon/brev/post som skal fomidles. Vil i de aller fleste tilfeller være
@@ -14,15 +16,6 @@
         public Avsender(Organisasjonsnummer organisasjonsnummer)
         {
             Organisasjonsnummer = organisasjonsnummer;
-        }
-
-        /// <summary>
-        ///     Lager et nytt instans av Avsender.
-        /// </summary>
-        /// <param name="organisasjonsnummer">Organisasjonsnummeret til den behandlingsansvarlige.</param>
-        public Avsender(string organisasjonsnummer)
-            : this(new Organisasjonsnummer(organisasjonsnummer))
-        {
         }
 
         public Organisasjonsnummer Organisasjonsnummer { get; private set; }

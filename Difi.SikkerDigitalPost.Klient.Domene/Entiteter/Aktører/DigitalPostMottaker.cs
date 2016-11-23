@@ -14,10 +14,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         /// <param name="postkasseadresse">Mottakerens adresse hos postkasseleverandøren.</param>
         /// <param name="sertifikat">Mottakerens sertifikat.</param>
         /// <param name="organisasjonsnummerPostkasse">
-        ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i
-        ///     meldingsprosessen.
+        ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i meldingsprosessen.
         /// </param>
-        public DigitalPostMottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, string organisasjonsnummerPostkasse)
+        public DigitalPostMottaker(string personidentifikator, string postkasseadresse, X509Certificate2 sertifikat, Organisasjonsnummer organisasjonsnummerPostkasse)
             : base(sertifikat, organisasjonsnummerPostkasse)
         {
             Personidentifikator = personidentifikator;

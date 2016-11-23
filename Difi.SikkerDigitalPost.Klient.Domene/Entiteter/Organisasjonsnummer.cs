@@ -18,17 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
 
         internal string WithCountryCode => Verdi.StartsWith($"{CountryCodeOrganizationNumberNorway}:") ? Verdi : $"{CountryCodeOrganizationNumberNorway}:{Verdi}";
 
-        /// <summary>
-        ///     Organisasjonsnummer på ISO6523-format
-        /// </summary>
-        /// <returns>Organisasjonsnummer, prefikset med '9908':, som er id for 'Enhetsregistret ved Brønnøysundregisterne'</returns>
-        [Obsolete("Blir fjernet fordi navnet er obskurt og i beste fall litt feil, og skal ikke eksponeres ut av biblioteket.")]
-        public string Iso6523()
-        {
-            return WithCountryCode;
-        }
-
-        private static string GetValidatedOrganisasjonsnummerOrThrowException(string organisasjonsnummer)
+       private static string GetValidatedOrganisasjonsnummerOrThrowException(string organisasjonsnummer)
         {
             var match = Regex.Match(organisasjonsnummer, OrganisasjonsnummerPattern);
 
@@ -39,12 +29,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
             }
             const int organisasjonsnummerWithoutPrefixIndex = 2;
             return match.Groups[organisasjonsnummerWithoutPrefixIndex].ToString();
-        }
-
-        [Obsolete("Vil bli fjernet fordi den ikke skal eksponeres ut til brukere av biblioteket.")]
-        public static Organisasjonsnummer FraIso6523(string iso6523Orgnr)
-        {
-            return new Organisasjonsnummer(GetValidatedOrganisasjonsnummerOrThrowException(iso6523Orgnr));
         }
     }
 }
