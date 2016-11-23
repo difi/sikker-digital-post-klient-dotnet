@@ -17,7 +17,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     internal class ResponseValidator
     {
         private readonly XmlNamespaceManager _nsMgr;
-        private X509Certificate2 _sertifikat;
         private XmlElement _signatureNode;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
 
@@ -109,8 +108,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValidateSignatureAndCertificate(string path)
         {
-            _sertifikat = new X509Certificate2(Convert.FromBase64String(_signatureNode.SelectSingleNode(path, _nsMgr).InnerText));
-            ValidateResponseCertificate();
+            var certificate = new X509Certificate2(Convert.FromBase64String(_signatureNode.SelectSingleNode(path, _nsMgr).InnerText));
+            ValidateResponseCertificateAndThrowIfInvalid(certificate);
 
             _signedXmlWithAgnosticId.LoadXml(_signatureNode);
 
@@ -118,14 +117,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out asymmetricAlgorithm))
                 throw new SecurityException("Signaturen i motatt svar er ikke gyldig.");
 
-            if (asymmetricAlgorithm.ToXmlString(false) != _sertifikat.PublicKey.Key.ToXmlString(false))
+            if (asymmetricAlgorithm.ToXmlString(false) != certificate.PublicKey.Key.ToXmlString(false))
                 throw new SecurityException(
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
-        private void ValidateResponseCertificate()
+        private void ValidateResponseCertificateAndThrowIfInvalid(X509Certificate2 certificate)
         {
-            var certificateValidationResult = CertificateChainValidator.Validate(_sertifikat);
+            var certificateValidationResult = CertificateChainValidator.Validate(certificate);
 
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
