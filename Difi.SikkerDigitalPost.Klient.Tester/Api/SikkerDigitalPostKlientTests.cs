@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -49,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                Assert.Throws<Felles.Utility.Exceptions.SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
+                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
             }
         }
 
