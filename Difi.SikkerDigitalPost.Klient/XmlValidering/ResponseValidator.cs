@@ -17,11 +17,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     /// </summary>
     internal class ResponseValidator
     {
+        private readonly CertificateValidationProperties _certificateValidationProperties;
         private readonly XmlNamespaceManager _nsMgr;
         private XmlElement _signatureNode;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
-        private Organisasjonsnummer _meldingsformidlerOrganisasjonsnummer;
-        private X509Certificate2Collection _godkjenteKjedeSertifikater;
 
         /// <summary>
         ///     Oppretter en ny instanse av responsvalidatoren.
@@ -32,11 +31,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         ///     forsendelse av brev eller kvittering.
         /// </param>
         /// <param name="chainCertificates"></param>
-        public ResponseValidator(XmlDocument sentMessage, XmlDocument responseMessage)
+        public ResponseValidator(XmlDocument sentMessage, XmlDocument responseMessage, CertificateValidationProperties certificateValidationProperties)
         {
+            _certificateValidationProperties = certificateValidationProperties;
             ResponseMessage = responseMessage;
             SentMessage = sentMessage;
-            
+
             _nsMgr = new XmlNamespaceManager(ResponseMessage.NameTable);
             _nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             _nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
@@ -52,29 +52,20 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SentMessage { get; internal set; }
 
-        public void ValidateMessageReceipt(X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
+        public void ValidateMessageReceipt()
         {
-            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
-            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerMeldingsformidler;
-
             ValidateHeaderSignature();
             ValidateReceiptSignature();
         }
 
-        public void ValidateTransportReceipt(GuidUtility guidUtility, X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerResponsAvsender)
+        public void ValidateTransportReceipt(GuidUtility guidUtility)
         {
-            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
-            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerResponsAvsender;
-
             ValidateHeaderSignature();
             ValidateDigest(guidUtility);
         }
 
-        public void ValidateEmptyQueueReceipt(X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
+        public void ValidateEmptyQueueReceipt()
         {
-            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
-            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerMeldingsformidler;
-
             ValidateHeaderSignature();
         }
 
@@ -133,8 +124,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValidateResponseCertificateAndThrowIfInvalid(X509Certificate2 certificate)
         {
-            var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(certificate, _meldingsformidlerOrganisasjonsnummer.Verdi, _godkjenteKjedeSertifikater);
-            
+            var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(
+                certificate,
+                _certificateValidationProperties.OrganisasjonsnummerMeldingsformidler.Verdi,
+                _certificateValidationProperties.AllowedChainCertificates
+            );
+
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
                 throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");
@@ -183,7 +178,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             if (responseMessageSelectedNode != null)
                 receivedMessageDigest = responseMessageSelectedNode.InnerText;
 
-            return sentMessageDigest != null && responseMessageSelectedNode != null && sentMessageDigest == receivedMessageDigest;
+            return (sentMessageDigest != null) && (responseMessageSelectedNode != null) && (sentMessageDigest == receivedMessageDigest);
         }
 
         /// <summary>
@@ -218,7 +213,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             var references = _signatureNode.SelectNodes($"./ds:SignedInfo/ds:Reference[@URI='#{elementId}']",
                 _nsMgr);
-            if (references == null || references.Count == 0)
+            if ((references == null) || (references.Count == 0))
                 throw new SecurityException($"Kan ikke finne påkrevet refereanse til element '{elementXPath}' i signatur fra meldingsformidler.");
             if (references.Count > 1)
                 throw new SecurityException($"Påkrevd refereanse til element '{elementXPath}' kan kun forekomme én gang i signatur. Ble funnet {references.Count} ganger.");
@@ -232,10 +227,23 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private void ResponseContainsRequiredSignatureNodes(string elementXPath, out XmlNodeList nodes)
         {
             nodes = ResponseMessage.SelectNodes(elementXPath, _nsMgr);
-            if (nodes == null || nodes.Count == 0)
+            if ((nodes == null) || (nodes.Count == 0))
                 throw new SecurityException($"Kan ikke finne påkrevet element '{elementXPath}' i svar fra meldingsformidler.");
             if (nodes.Count > 1)
                 throw new SecurityException($"Påkrevet element '{elementXPath}' kan kun forekomme én gang i svar fra meldingsformidler. Ble funnet {nodes.Count} ganger.");
         }
+    }
+
+    internal class CertificateValidationProperties
+    {
+        public CertificateValidationProperties(X509Certificate2Collection allowedChainCertificates, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
+        {
+            AllowedChainCertificates = allowedChainCertificates;
+            OrganisasjonsnummerMeldingsformidler = organisasjonsnummerMeldingsformidler;
+        }
+
+        public X509Certificate2Collection AllowedChainCertificates { get; }
+
+        public Organisasjonsnummer OrganisasjonsnummerMeldingsformidler { get; }
     }
 }
