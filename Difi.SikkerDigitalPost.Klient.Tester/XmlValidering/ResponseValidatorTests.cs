@@ -3,6 +3,7 @@ using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Tester.testdata.meldinger;
+using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
@@ -28,12 +29,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
                 var response = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
                 var environment = Miljø.FunksjoneltTestmiljø;
-                var responseValidator = new ResponseValidator(sentMessage, response, environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentMessage, response);
 
                 //Act
 
                 //Assert
-                Assert.Equal(environment.CertificateChainValidator, responseValidator.CertificateChainValidator);
                 Assert.Equal(sentMessage, responseValidator.SentMessage);
                 Assert.Equal(response, responseValidator.ResponseMessage);
             }
@@ -47,9 +47,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 AddRsaSha256AlgorithmToCryptoConfig();
 
-                var environment = Miljø.FunksjoneltTestmiljø;
+                var miljø = Miljø.FunksjoneltTestmiljø;
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
-                var responseValidator = new ResponseValidator(sentMessage, XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø), environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentMessage, XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø));
                 var guidUtility = new GuidUtility
                 {
                     BinarySecurityTokenId = "X509-513ffecb-cd7e-4bb3-a4c5-47eff314683f",
@@ -61,7 +61,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                responseValidator.ValidateTransportReceipt(guidUtility);
+                responseValidator.ValidateTransportReceipt(guidUtility, miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
 
                 //Assert
             }
@@ -74,11 +74,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 const string idResponse = "hei27c07-8a0f-45a9-954e-c658f6c480af@meldingsformidler.sdp.difi.no";
                 AddRsaSha256AlgorithmToCryptoConfig();
 
-                var environment = Miljø.FunksjoneltTestmiljø;
+                var miljø = Miljø.FunksjoneltTestmiljø;
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput());
 
                 var transportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(idResponse));
-                var responseValidator = new ResponseValidator(sentMessage, transportReceipt, environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentMessage, transportReceipt);
 
                 var guidUtility = new GuidUtility
                 {
@@ -91,9 +91,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SecurityException>(() =>
-                    responseValidator.ValidateTransportReceipt(guidUtility)
-                    );
+                Assert.Throws<SecurityException>(() => responseValidator.ValidateTransportReceipt(guidUtility, miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler()));
             }
 
             [Fact]
@@ -109,7 +107,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sendtMeldingXmlDocument = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljøMedInput());
 
                 var receivedTransportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(securityBinary: corruptSecurityBinaryResponse));
-                var responseValidator = new ResponseValidator(sendtMeldingXmlDocument, receivedTransportReceipt, miljø.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sendtMeldingXmlDocument, receivedTransportReceipt);
                 var guidUtility = new GuidUtility
                 {
                     BinarySecurityTokenId = "X509-513ffecb-cd7e-4bb3-a4c5-47eff314683f",
@@ -121,9 +119,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SecurityException>(() =>
-                    responseValidator.ValidateTransportReceipt(guidUtility)
-                    );
+                Assert.Throws<SecurityException>(() => responseValidator.ValidateTransportReceipt(guidUtility, miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler()));
             }
 
             [Fact]
@@ -132,12 +128,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 //Arrange
                 AddRsaSha256AlgorithmToCryptoConfig();
 
-                var environment = Miljø.FunksjoneltTestmiljø;
+                var miljø = Miljø.FunksjoneltTestmiljø;
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
 
                 var receivedTransportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvitteringMedByttetDokumentpakkeIdFunksjoneltTestmiljø);
-                var responseValidator = new ResponseValidator(sentMessage,
-                    receivedTransportReceipt, environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentMessage, receivedTransportReceipt);
 
                 var guidUtility = new GuidUtility
                 {
@@ -150,9 +145,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 };
 
                 //Act
-                Assert.Throws<SecurityException>(() =>
-                    responseValidator.ValidateTransportReceipt(guidUtility)
-                    );
+                Assert.Throws<SecurityException>(() => responseValidator.ValidateTransportReceipt(guidUtility, miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler()));
             }
         }
 
@@ -163,14 +156,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             {
                 //Arrange
                 AddRsaSha256AlgorithmToCryptoConfig();
-                var environment = Miljø.FunksjoneltTestmiljø;
+                var miljø = Miljø.FunksjoneltTestmiljø;
 
                 var sentReceiptRequest = new XmlDocument();
                 sentReceiptRequest.LoadXml(Kvitteringsforespørsel.FunksjoneltTestmiljø);
-                var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø), environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø));
 
                 //Act
-                responseValidator.ValidateMessageReceipt();
+                responseValidator.ValidateMessageReceipt(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
 
                 //Assert
             }
@@ -183,14 +176,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
             {
                 //Arrange
                 AddRsaSha256AlgorithmToCryptoConfig();
+                Miljø miljø = Miljø.FunksjoneltTestmiljø;
 
-                var environment = Miljø.FunksjoneltTestmiljø;
                 var sentReceiptRequest = new XmlDocument();
                 sentReceiptRequest.LoadXml(Kvitteringsforespørsel.FunksjoneltTestmiljø);
-                var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø), environment.CertificateChainValidator);
+                var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø));
 
                 //Act
-                responseValidator.ValidateEmptyQueueReceipt();
+                responseValidator.ValidateEmptyQueueReceipt(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
 
                 //Assert
             }
