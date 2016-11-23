@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Difi.Felles.Utility;
 using Difi.Felles.Utility.Security;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -19,6 +20,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private readonly XmlNamespaceManager _nsMgr;
         private XmlElement _signatureNode;
         private SignedXmlWithAgnosticId _signedXmlWithAgnosticId;
+        private Organisasjonsnummer _meldingsformidlerOrganisasjonsnummer;
+        private X509Certificate2Collection _godkjenteKjedeSertifikater;
 
         /// <summary>
         ///     Oppretter en ny instanse av responsvalidatoren.
@@ -28,13 +31,12 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         ///     Et soap dokument i tekstform. Dette er svaret som har blitt motatt fra meldingsformidleren ved en
         ///     forsendelse av brev eller kvittering.
         /// </param>
-        /// <param name="certificateChainValidator"></param>
-        public ResponseValidator(XmlDocument sentMessage, XmlDocument responseMessage, CertificateChainValidator certificateChainValidator)
+        /// <param name="chainCertificates"></param>
+        public ResponseValidator(XmlDocument sentMessage, XmlDocument responseMessage)
         {
             ResponseMessage = responseMessage;
             SentMessage = sentMessage;
-            CertificateChainValidator = certificateChainValidator;
-
+            
             _nsMgr = new XmlNamespaceManager(ResponseMessage.NameTable);
             _nsMgr.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
             _nsMgr.AddNamespace("wsse", NavneromUtility.WssecuritySecext10);
@@ -50,22 +52,29 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SentMessage { get; internal set; }
 
-        public CertificateChainValidator CertificateChainValidator { get; internal set; }
-
-        public void ValidateMessageReceipt()
+        public void ValidateMessageReceipt(X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
         {
+            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
+            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerMeldingsformidler;
+
             ValidateHeaderSignature();
             ValidateReceiptSignature();
         }
 
-        public void ValidateTransportReceipt(GuidUtility guidUtility)
+        public void ValidateTransportReceipt(GuidUtility guidUtility, X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerResponsAvsender)
         {
+            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
+            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerResponsAvsender;
+
             ValidateHeaderSignature();
             ValidateDigest(guidUtility);
         }
 
-        public void ValidateEmptyQueueReceipt()
+        public void ValidateEmptyQueueReceipt(X509Certificate2Collection godkjenteKjedeSertifikater, Organisasjonsnummer organisasjonsnummerMeldingsformidler)
         {
+            _godkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
+            _meldingsformidlerOrganisasjonsnummer = organisasjonsnummerMeldingsformidler;
+
             ValidateHeaderSignature();
         }
 
@@ -124,8 +133,8 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private void ValidateResponseCertificateAndThrowIfInvalid(X509Certificate2 certificate)
         {
-            var certificateValidationResult = CertificateChainValidator.Validate(certificate);
-
+            var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(certificate, _meldingsformidlerOrganisasjonsnummer.Verdi, _godkjenteKjedeSertifikater);
+            
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
                 throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");

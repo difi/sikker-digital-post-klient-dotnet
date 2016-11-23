@@ -106,29 +106,34 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return "dangfart.utnes#1BK5";
         }
 
-        internal static string GetOrganisasjonsnummerPostkasse()
+        public static Organisasjonsnummer OrganisasjonsnummerMeldingsformidler()
         {
-            return "984661185";
+            return GetOrganisasjonsnummerPostkasse();
+        }
+
+        internal static Organisasjonsnummer GetOrganisasjonsnummerPostkasse()
+        {
+            return new Organisasjonsnummer("984661185");
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
         {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottakerWithTestCertificate()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse().Verdi);
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
