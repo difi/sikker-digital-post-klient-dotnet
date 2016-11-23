@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             : base(settings, context)
         {
             _fysiskPostInfo = (FysiskPostInfo) Settings.Forsendelse.PostInfo;
-            _returmottaker = _fysiskPostInfo.Returpostmottaker;
+            _returmottaker = _fysiskPostInfo.ReturpostMottaker;
         }
 
         public override XmlNode Xml()
