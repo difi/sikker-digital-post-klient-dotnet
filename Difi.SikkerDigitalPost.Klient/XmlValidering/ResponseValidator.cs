@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SentMessage { get; internal set; }
 
-        public void ValidateMessageReceipt()
+        public void ValidateMessageReceiptThrowsIfInvalid()
         {
             ValidateHeaderSignature();
             ValidateReceiptSignature();
@@ -75,7 +75,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _signatureNode = (XmlElement) responseRoot.SelectSingleNode("/env:Envelope/env:Header/wsse:Security/ds:Signature", _nsMgr);
             _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(ResponseMessage);
 
-            ValidateSignatureElements();
+            ValidateHeaderSignatureNodeElements();
             ValidateSignatureAndCertificate("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
         }
 
@@ -109,7 +109,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         private void ValidateSignatureAndCertificate(string path)
         {
             var certificate = new X509Certificate2(Convert.FromBase64String(_signatureNode.SelectSingleNode(path, _nsMgr).InnerText));
-            ValidateResponseCertificateAndThrowIfInvalid(certificate);
+            ValidateResponseCertificate(certificate);
 
             _signedXmlWithAgnosticId.LoadXml(_signatureNode);
 
@@ -122,7 +122,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
-        private void ValidateResponseCertificateAndThrowIfInvalid(X509Certificate2 certificate)
+        private void ValidateResponseCertificate(X509Certificate2 certificate)
         {
             var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(
                 certificate,
@@ -185,14 +185,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         ///     Sjekker at soap envelopen inneholder timestamp, body og messaging element med korrekt id og referanser i security
         ///     signaturen.
         /// </summary>
-        private void ValidateSignatureElements()
+        private void ValidateHeaderSignatureNodeElements()
         {
             string[] requiredSignatureElements = {"/env:Envelope/env:Header/wsse:Security/wsu:Timestamp", "/env:Envelope/env:Body", "/env:Envelope/env:Header/eb:Messaging"};
 
             foreach (var elementXPath in requiredSignatureElements)
             {
                 XmlNodeList nodes;
-                ResponseContainsRequiredSignatureNodes(elementXPath, out nodes);
+                VerifyResponseContainsRequiredSignatureNodes(elementXPath, out nodes);
 
                 var elementId = ElementId(nodes);
                 FindReferenceToNodeInSignatureElement(elementId, elementXPath);
@@ -224,7 +224,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return nodes[0].Attributes["wsu:Id"].Value;
         }
 
-        private void ResponseContainsRequiredSignatureNodes(string elementXPath, out XmlNodeList nodes)
+        private void VerifyResponseContainsRequiredSignatureNodes(string elementXPath, out XmlNodeList nodes)
         {
             nodes = ResponseMessage.SelectNodes(elementXPath, _nsMgr);
             if ((nodes == null) || (nodes.Count == 0))
