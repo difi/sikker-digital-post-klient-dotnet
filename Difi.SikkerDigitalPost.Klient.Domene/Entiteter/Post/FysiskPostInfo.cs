@@ -11,7 +11,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     /// </summary>
     public class FysiskPostInfo : PostInfo
     {
-        private FysiskPostMottakerAbstrakt _returmottakerAbstrakt;
+        
 
         public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker)
             : base(mottaker)
@@ -19,8 +19,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Posttype = posttype;
             Utskriftsfarge = utskriftsfarge;
             Posthåndtering = posthåndtering;
-            _returmottakerAbstrakt = returmottaker;
+            ReturpostMottaker = returmottaker;
         }
+
+        public FysiskPostReturmottaker ReturpostMottaker { get; set; }
 
         public Posttype Posttype { get; set; }
 
@@ -28,6 +30,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 
         public Posthåndtering Posthåndtering { get; set; }
 
-        public FysiskPostReturmottaker Returpostmottaker => new FysiskPostReturmottaker(_returmottakerAbstrakt.Navn, _returmottakerAbstrakt.Adresse);
     }
 }

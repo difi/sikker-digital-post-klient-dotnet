@@ -120,7 +120,6 @@
     <Compile Include="AsicE\SimpleDocumentBundleProcessor.cs" />
     <Compile Include="Enhetstester\EpostvarselTester.cs" />
     <Compile Include="Enhetstester\SmsVarselTester.cs" />
-    <Compile Include="Enhetstester\FysiskPostInfoTester.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\FeilmeldingTester.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\LeveringskvitteringTester.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\MottakskvitteringTester.cs" />
@@ -134,7 +133,6 @@
     <Compile Include="Entiteter\OrganisasjonsnummerTests.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
     <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
-    <Compile Include="ExceptionInheritanceTests.cs" />
     <Compile Include="Exceptions\XmlParseExceptionTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
     <Compile Include="Exceptions\XmlValidationExceptionTests.cs" />
