@@ -205,7 +205,7 @@ namespace Difi.SikkerDigitalPost.Klient
 
             if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
             {
-                throw new SdpSecurityException(
+                throw new SecurityException(
                     $"Id i PartInfo og i Body matcher er ikke like. Partinfo har '{partInfoBodyId}', body har '{bodyId}'");
             }
             return bodyId;

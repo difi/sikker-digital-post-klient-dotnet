@@ -109,7 +109,7 @@
     <Compile Include="Entiteter\Aktører\Person.cs" />
     <Compile Include="Entiteter\Organisasjonsnummer.cs" />
     <Compile Include="Exceptions\KonfigurasjonsException.cs" />
-    <Compile Include="Exceptions\SdpSecurityException.cs" />
+    <Compile Include="Exceptions\SecurityException.cs" />
     <Compile Include="Exceptions\SendException.cs" />
     <Compile Include="Exceptions\SikkerDigitalPostException.cs" />
     <Compile Include="Exceptions\XmlParseException.cs" />

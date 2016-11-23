@@ -1,4 +1,5 @@
 ﻿using System;
+using Difi.Felles.Utility.Exceptions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {

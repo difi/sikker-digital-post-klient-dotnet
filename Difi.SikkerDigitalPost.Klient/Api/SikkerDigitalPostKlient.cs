@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
 using Difi.Felles.Utility;
-using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
