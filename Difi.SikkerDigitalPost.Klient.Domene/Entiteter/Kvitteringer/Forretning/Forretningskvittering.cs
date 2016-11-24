@@ -28,7 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning
 
         public override string ToString()
         {
-            return $"{base.ToString()}, BodyReferenceUri: {BodyReferenceUri}, DigestValue: {DigestValue}";
+            return $"{base.ToString()}, KonversasjonsId: {KonversasjonsId},  BodyReferenceUri: {BodyReferenceUri}, DigestValue: {DigestValue}";
         }
     }
 }

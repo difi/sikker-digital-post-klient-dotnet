@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTestsHelper Create_digital_forsendelse_with_different_sender()
         {
             _forsendelse = DomainUtility.GetForsendelseSimple();
-            _forsendelse.Avsender = new Avsender("984661185") {Avsenderidentifikator = "digipost"};
+            _forsendelse.Avsender = new Avsender(new Organisasjonsnummer("984661185")) {Avsenderidentifikator = "digipost"};
 
             return this;
         }

@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;F</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
@@ -147,6 +147,7 @@
     <Compile Include="Security\SecurityTokenReferenceClause.cs" />
     <Compile Include="Security\Sha256Reference.cs" />
     <Compile Include="Utilities\XmlUtility.cs" />
+    <Compile Include="XmlValidering\CertificateValidationProperties.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
     <Compile Include="XmlValidering\SdpXmlValidator.cs" />
     <Compile Include="XmlValidering\ResponseValidator.cs" />
@@ -250,7 +251,9 @@
     <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="C:\Keys\signingkey.snk">
       <Link>signingkey.snk</Link>
     </None>

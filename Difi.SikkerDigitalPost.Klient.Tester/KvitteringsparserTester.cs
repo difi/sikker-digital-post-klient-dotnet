@@ -67,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(meldingsId, returpostkvittering.MeldingsId);
                 Assert.Equal(referanseTilMeldingId, returpostkvittering.ReferanseTilMeldingId);
                 Assert.Equal(DateTime.Parse(tidspunkt), returpostkvittering.Returnert);
-                Assert.Equal(xml.OuterXml, returpostkvittering.Rådata);
+                Assert.Equal(xml, returpostkvittering.Xml);
             }
 
             [Fact]
@@ -92,7 +92,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(DateTime.Parse(tidspunkt), varslingfeiletkvittering.Feilet);
                 Assert.Equal(beskrivelse, varslingfeiletkvittering.Beskrivelse);
                 Assert.Equal(varslingskanal, varslingfeiletkvittering.Varslingskanal);
-                Assert.Equal(xml.OuterXml, varslingfeiletkvittering.Rådata);
+                Assert.Equal(xml, varslingfeiletkvittering.Xml);
             }
 
             [Fact]
@@ -113,7 +113,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(meldingsId, åpningskvittering.MeldingsId);
                 Assert.Equal(referanseTilMeldingId, åpningskvittering.ReferanseTilMeldingId);
                 Assert.Equal(DateTime.Parse(tidspunkt), åpningskvittering.Åpnet);
-                Assert.Equal(xml.OuterXml, åpningskvittering.Rådata);
+                Assert.Equal(xml, åpningskvittering.Xml);
             }
 
             [Fact]
@@ -138,7 +138,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(DateTime.Parse(tidspunkt), feilmelding.Feilet);
                 Assert.Equal(detaljer, feilmelding.Detaljer);
                 Assert.Equal(feiltype, feilmelding.Skyldig);
-                Assert.Equal(xml.OuterXml, feilmelding.Rådata);
+                Assert.Equal(xml, feilmelding.Xml);
             }
 
             [Fact]
@@ -157,7 +157,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(DateTime.Parse(tidspunkt), tomKøKvittering.SendtTidspunkt);
                 Assert.Equal(meldingsId, tomKøKvittering.MeldingsId);
                 Assert.Equal(referanseTilMeldingId, tomKøKvittering.ReferanseTilMeldingId);
-                Assert.Equal(xml.OuterXml, tomKøKvittering.Rådata);
+                Assert.Equal(xml, tomKøKvittering.Xml);
             }
 
             [Fact]
@@ -188,7 +188,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(referanseTilMeldingId, transportFeiletKvittering.ReferanseTilMeldingId);
                 Assert.Equal(DateTime.Parse(sendtTidspunkt), transportFeiletKvittering.SendtTidspunkt);
                 Assert.Equal(skyldig, transportFeiletKvittering.Skyldig);
-                Assert.Equal(xml.OuterXml, transportFeiletKvittering.Rådata);
+                Assert.Equal(xml, transportFeiletKvittering.Xml);
             }
 
             [Fact]
@@ -207,7 +207,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 Assert.Equal(DateTime.Parse(tidspunkt), transportOkKvittering.SendtTidspunkt);
                 Assert.Equal(meldingsId, transportOkKvittering.MeldingsId);
                 Assert.Equal(referanseTilMeldingId, transportOkKvittering.ReferanseTilMeldingId);
-                Assert.Equal(xml.OuterXml, transportOkKvittering.Rådata);
+                Assert.Equal(xml, transportOkKvittering.Xml);
             }
         }
     }

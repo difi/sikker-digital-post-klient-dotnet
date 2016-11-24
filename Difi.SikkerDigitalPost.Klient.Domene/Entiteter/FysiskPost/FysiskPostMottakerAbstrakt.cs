@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i
         ///     meldingsprosessen.
         /// </param>
-        protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, string organisasjonsnummer)
+        protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, Organisasjonsnummer organisasjonsnummer)
             : base(utskriftstjenesteSertifikat, organisasjonsnummer)
         {
             Navn = navn;
@@ -33,7 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         /// <param name="navn">Fullt navn på mottaker av fysisk post.</param>
         /// <param name="adresse">Adresse for mottaker av fysisk post.</param>
         protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse)
-            : this(navn, adresse, new X509Certificate2(), "000000000")
+            : this(navn, adresse, new X509Certificate2(), new Organisasjonsnummer("000000000"))
         {
         }
 
