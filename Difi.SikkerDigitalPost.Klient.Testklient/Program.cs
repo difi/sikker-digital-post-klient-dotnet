@@ -45,7 +45,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
              * SETT OPP MOTTAKER OG INNSTILLINGER
              */
             var postInfo = GenererPostInfo(ErDigitalPostMottaker, ErNorskBrev);
-            var avsender = new Avsender(Settings.Default.OrgnummerPosten);
+            var avsender = new Avsender(new Organisasjonsnummer(Settings.Default.OrgnummerPosten));
 
             var databehandler = new Databehandler(
                 new Organisasjonsnummer(Settings.Default.OrgnummerPosten),
@@ -193,8 +193,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             if (erDigitalPostMottaker)
             {
                 mottaker = new DigitalPostMottaker(Settings.Default.MottakerPersonnummer,
-                    Settings.Default.MottakerDigipostadresse, sertifikat, Settings.Default.OrgnummerPosten
-                    );
+                    Settings.Default.MottakerDigipostadresse, sertifikat, new Organisasjonsnummer(Settings.Default.OrgnummerPosten));
 
                 postInfo = new DigitalPostInfo((DigitalPostMottaker) mottaker, "Ikke-sensitiv tittel",
                     Sikkerhetsnivå.Nivå3, true);
@@ -211,7 +210,7 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
                     adresse = new UtenlandskAdresse("SE", "Saltkråkan 22");
 
                 mottaker = new FysiskPostMottaker("Rolf Rolfsen", adresse,
-                    sertifikat, Settings.Default.OrgnummerPosten);
+                    sertifikat, new Organisasjonsnummer(Settings.Default.OrgnummerPosten));
 
                 var returMottaker = new FysiskPostReturmottaker("ReturKongen", new NorskAdresse("1533", "Søppeldynga"));
 

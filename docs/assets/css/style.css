@@ -39,8 +39,10 @@ body{
 }
 
 .list-versions {
+  font-size: 1.3rem;
   position: fixed;
-  bottom: 10%;
+  bottom: 0%;
+  right: 12%;
   width: 107px;
 }
 @media (max-width: 768px){
@@ -48,6 +50,13 @@ body{
     top:0%;
     font-size: 0.5em;
     right: 0%;
+  }
+}
+
+
+@media (max-width:995px){
+  .list-group {
+    display: none;
   }
 }
 

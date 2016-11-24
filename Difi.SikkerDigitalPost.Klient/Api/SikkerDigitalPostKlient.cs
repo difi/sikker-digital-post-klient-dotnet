@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
 using Difi.Felles.Utility;
-using Difi.Felles.Utility.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -30,6 +29,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        internal CertificateValidationProperties CertificateValidationProperties { get; set; }
+
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
@@ -48,6 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
+            CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
         }
 
         private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
@@ -55,7 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var valideringsResultat = CertificateValidator.ValidateCertificateAndChain(
                 databehandler.Sertifikat, 
                 databehandler.Organisasjonsnummer.Verdi, 
-                miljø.CertificateChainValidator.CertificateStore
+                miljø.GodkjenteKjedeSertifikater
             );
 
             if (valideringsResultat.Type != CertificateValidationType.Valid)
@@ -102,13 +104,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
-            var transportReceiptXml = XmlUtility.TilXmlDokument(transportReceipt.Rådata);
+            var transportReceiptXml = transportReceipt.Xml;
 
             if (transportReceipt is TransportOkKvittering)
             {
                 Log.Debug($"{transportReceipt}");
 
-                var responsvalidator = new ResponseValidator(forretningsmeldingEnvelope.Xml(), transportReceiptXml, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+                var responsvalidator = new ResponseValidator(forretningsmeldingEnvelope.Xml(), transportReceiptXml, CertificateValidationProperties);
                 responsvalidator.ValidateTransportReceipt(guidUtility);
             }
             else
@@ -252,7 +254,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
 
             var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-            var transportReceiptXml = XmlUtility.TilXmlDokument(receipt.Rådata);
+            var transportReceiptXml = receipt.Xml;
 
             if (receipt is TomKøKvittering)
             {
@@ -352,13 +354,13 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
         {
-            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, CertificateValidationProperties);
             responseValidator.ValidateEmptyQueueReceipt();
         }
 
         private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
         {
-            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, Klientkonfigurasjon.Miljø.CertificateChainValidator);
+            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, CertificateValidationProperties);
             valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 

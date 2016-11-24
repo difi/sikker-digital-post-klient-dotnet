@@ -21,13 +21,6 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
-    /// <summary>
-    ///     Hjelpeklasse for instansiering av domeneobjekter. Klassen kan virke tilstandsløs, og vil for alle praktiske formål
-    ///     være det,
-    ///     da man vil få det samme tilbake hver gang / deterministisk. Likevel er det viktig å vite at filobjekter vil leses
-    ///     fra disk kun èn
-    ///     gang for økt ytelse.
-    /// </summary>
     internal static class DomainUtility
     {
         internal static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
@@ -106,9 +99,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return "dangfart.utnes#1BK5";
         }
 
-        internal static string GetOrganisasjonsnummerPostkasse()
+        public static Organisasjonsnummer OrganisasjonsnummerMeldingsformidler()
         {
-            return "984661185";
+            return GetOrganisasjonsnummerPostkasse();
+        }
+
+        internal static Organisasjonsnummer GetOrganisasjonsnummerPostkasse()
+        {
+            return new Organisasjonsnummer("984661185");
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottaker()
