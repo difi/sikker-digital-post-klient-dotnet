@@ -15,8 +15,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     internal class SmokeTestsHelper
     {
-        private static readonly Organisasjonsnummer BringOrganisasjonsnummer = new Organisasjonsnummer("988015814");
-        private const string BringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
+        private static readonly Organisasjonsnummer DifiOrganisasjonsnummer = new Organisasjonsnummer("991825827");
+        private const string DifiThumbprint = "b0cb922214d11e8ce993838db4c6d04c0c0970b8";
         private readonly SikkerDigitalPostKlient _klient;
 
         private Forsendelse _forsendelse;
@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper(Miljø miljø)
         {
-            _klient = new SikkerDigitalPostKlient(new Databehandler(BringOrganisasjonsnummer, BringThumbprint), new Klientkonfigurasjon(miljø));
+            _klient = new SikkerDigitalPostKlient(new Databehandler(DifiOrganisasjonsnummer, DifiThumbprint), new Klientkonfigurasjon(miljø));
         }
 
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()

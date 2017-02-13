@@ -85,8 +85,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Avsender GetAvsender()
         {
-            var orgnrBring = new Organisasjonsnummer("988015814");
-            return new Avsender(orgnrBring);
+            var orgnrDifi = new Organisasjonsnummer("991825827");
+            return new Avsender(orgnrDifi);
         }
 
         internal static string GetPersonnummerMottaker()
@@ -258,8 +258,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetAvsenderCertificate()
         {
-            string bringThumbprint = "2d7f30dd05d3b7fc7ae5973a73f849083b2040ed";
-            return CertificateUtility.SenderCertificate(bringThumbprint, Language.Norwegian);
+            string difiThumbprint = "‎b0cb922214d11e8ce993838db4c6d04c0c0970b8";
+            return CertificateUtility.SenderCertificate(difiThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerCertificate()
