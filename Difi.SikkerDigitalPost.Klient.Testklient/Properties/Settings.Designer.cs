@@ -26,48 +26,36 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("04036125433")]
-        public string MottakerPersonnummer {
+        public string DigipostMottakerPersonnummer {
             get {
-                return ((string)(this["MottakerPersonnummer"]));
+                return ((string)(this["DigipostMottakerPersonnummer"]));
             }
             set {
-                this["MottakerPersonnummer"] = value;
+                this["DigipostMottakerPersonnummer"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ove.jonsen#6K5A")]
-        public string MottakerDigipostadresse {
+        public string DigipostMottakerDigipostadresse {
             get {
-                return ((string)(this["MottakerDigipostadresse"]));
+                return ((string)(this["DigipostMottakerDigipostadresse"]));
             }
             set {
-                this["MottakerDigipostadresse"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD")]
-        public string MottakerSertifikatThumbprint {
-            get {
-                return ((string)(this["MottakerSertifikatThumbprint"]));
-            }
-            set {
-                this["MottakerSertifikatThumbprint"] = value;
+                this["DigipostMottakerDigipostadresse"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("984661185")]
-        public string OrgnummerPosten {
+        public string PostenOrgNr {
             get {
-                return ((string)(this["OrgnummerPosten"]));
+                return ((string)(this["PostenOrgNr"]));
             }
             set {
-                this["OrgnummerPosten"] = value;
+                this["PostenOrgNr"] = value;
             }
         }
         
@@ -80,6 +68,78 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient.Properties {
             }
             set {
                 this["DatabehandlerSertifikatThumbprint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("991825827")]
+        public string DifiOrgNummer {
+            get {
+                return ((string)(this["DifiOrgNummer"]));
+            }
+            set {
+                this["DifiOrgNummer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("b0cb922214d11e8ce993838db4c6d04c0c0970b8")]
+        public string DifiSertifikatThumbprint {
+            get {
+                return ((string)(this["DifiSertifikatThumbprint"]));
+            }
+            set {
+                this["DifiSertifikatThumbprint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("02118449641")]
+        public string EboksMottakerPersonnummer {
+            get {
+                return ((string)(this["EboksMottakerPersonnummer"]));
+            }
+            set {
+                this["EboksMottakerPersonnummer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0000167396")]
+        public string EboksMottakerEboksadresse {
+            get {
+                return ((string)(this["EboksMottakerEboksadresse"]));
+            }
+            set {
+                this["EboksMottakerEboksadresse"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("984661185")]
+        public string DigipostOrgNr {
+            get {
+                return ((string)(this["DigipostOrgNr"]));
+            }
+            set {
+                this["DigipostOrgNr"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("996460320")]
+        public string EboksOrgNr {
+            get {
+                return ((string)(this["EboksOrgNr"]));
+            }
+            set {
+                this["EboksOrgNr"] = value;
             }
         }
     }

@@ -94,7 +94,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Resources\Sertifikater\testmottakerFraOppslagstjenesten.pem" />
+    <EmbeddedResource Include="Resources\Sertifikater\testmottakerFraOppslagstjenesten_digipost.pem" />
+    <EmbeddedResource Include="Resources\Sertifikater\testmottakerFraOppslagstjenesten_eboks.pem" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
