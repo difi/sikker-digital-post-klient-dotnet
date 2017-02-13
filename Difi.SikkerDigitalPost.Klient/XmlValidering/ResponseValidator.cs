@@ -8,6 +8,7 @@ using Difi.Felles.Utility.Security;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -42,10 +43,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public XmlDocument SentMessage { get; internal set; }
 
-        public void ValidateMessageReceipt()
+        public void ValidateMessageReceipt(Organisasjonsnummer postkasseOrganisasjonsnummer)
         {
             ValidateHeaderSignature();
-            ValidateReceiptSignature();
+            ValidateReceiptSignature(postkasseOrganisasjonsnummer);
         }
 
         public void ValidateTransportReceipt(GuidUtility guidUtility)
@@ -66,10 +67,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(ResponseMessage);
 
             ValidateHeaderSignatureNodeElements();
-            ValidateSignatureAndCertificate("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
+            ValidateSignatureAndCertificate("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken", _certificateValidationProperties.OrganisasjonsnummerMeldingsformidler);
         }
 
-        private void ValidateReceiptSignature()
+        private void ValidateReceiptSignature(Organisasjonsnummer postkasseOrganisasjonsnummer)
         {
             var standardBusinessDocumentNode =
                 ResponseMessage.SelectSingleNode("/env:Envelope/env:Body/sbd:StandardBusinessDocument", _nsMgr);
@@ -81,7 +82,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(standardBusinessDocument);
                 _signatureNode = (XmlElement) standardBusinessDocument.SelectSingleNode("//ds:Signature", _nsMgr);
 
-                ValidateSignatureAndCertificate("./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
+                ValidateSignatureAndCertificate("./ds:KeyInfo/ds:X509Data/ds:X509Certificate", postkasseOrganisasjonsnummer);
             }
             else
             {
@@ -96,10 +97,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return sbd;
         }
 
-        private void ValidateSignatureAndCertificate(string path)
+        private void ValidateSignatureAndCertificate(string path, Organisasjonsnummer organisasjonsnummer)
         {
             var certificate = new X509Certificate2(Convert.FromBase64String(_signatureNode.SelectSingleNode(path, _nsMgr).InnerText));
-            ValidateResponseCertificate(certificate);
+            ValidateResponseCertificate(certificate, organisasjonsnummer);
 
             _signedXmlWithAgnosticId.LoadXml(_signatureNode);
 
@@ -112,14 +113,14 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
-        private void ValidateResponseCertificate(X509Certificate2 certificate)
+        private void ValidateResponseCertificate(X509Certificate2 certificate, Organisasjonsnummer organisasjonsnummer)
         {
+            
             var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(
                 certificate,
-                _certificateValidationProperties.OrganisasjonsnummerMeldingsformidler.Verdi,
+                organisasjonsnummer.Verdi,
                 _certificateValidationProperties.AllowedChainCertificates
             );
-
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
                 throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");

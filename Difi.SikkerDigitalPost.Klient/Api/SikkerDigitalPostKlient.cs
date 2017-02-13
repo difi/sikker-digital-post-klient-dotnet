@@ -22,6 +22,7 @@ using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
 namespace Difi.SikkerDigitalPost.Klient.Api
 {
@@ -38,6 +39,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         /// <param name="klientkonfigurasjon">
         ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken.
+        ///     Brukes også for å sette implementasjon av <see cref="IForsendelsesLager"/> som kan brukes for å implisitt
+        ///     lagre forsendelser ved utsending og som må brukes for å hente fram igjen opprinnelig forsendelse ved
+        ///     validering av forretningskvitteringer.
         /// </param>
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
@@ -86,7 +90,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         }
 
         /// <summary>
-        ///     Sender en <see cref="Forsendelse" /> til Meldingsformidler.
+        ///     Sender en <see cref="Forsendelse" /> til Meldingsformidler. Lagrer
+        ///      <see cref="Forsendelse" /> med hjelp av <see cref="IForsendelseLager"/>.
         /// </summary>
         /// <param name="forsendelse">
         ///     All informasjon, klar til å kunne sendes (mottakerinformasjon, sertifikater,
@@ -94,6 +99,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
+            Klientkonfigurasjon.ForsendelseLager.lagreForsendelse(forsendelse);
             var guidUtility = new GuidUtility();
             Log.Debug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
@@ -117,7 +123,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 Log.Error($"{transportReceipt}");
             }
-
+            
             return transportReceipt;
         }
 
@@ -216,7 +222,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         ///     <see cref="BekreftAsync">bekrefte</see> på forrige <see cref="Kvittering" /> for å slippe å
         ///     kjøre eget kall for <see cref="BekreftAsync" />. <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort
         ///     etterhvert som de er klare i Meldingsformidler. Det er ikke mulig å etterspørre
-        ///     <see cref="Kvittering" /> for en spesifikk forsendelse.
+        ///     <see cref="Kvittering" /> for en spesifikk forsendelse. Gjør oppslag av opprinnelig forsendelse med hjelp av
+        ///     <see cref="IForsendelseLager" /> for å kunne validere at kvittering er signert av rett postkasse.
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
@@ -259,12 +266,19 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             if (receipt is TomKøKvittering)
             {
                 Log.Debug($"{receipt}");
-                SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
+                 SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
             }
             else if (receipt is Forretningskvittering)
             {
                 Log.Debug($"{receipt}");
-                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
+                Forretningskvittering f = (Forretningskvittering)receipt;
+                var forsendelse = Klientkonfigurasjon.ForsendelseLager.hentForsendelse(f.KonversasjonsId.ToString());
+                if (forsendelse == null)
+                {
+                    throw new SecurityException("Kan ikke validere at kvittering ble sendt fra rett postkasse. Kan ikke finne opprinnelig forsendelse.");
+                }
+                var postkasseOrganisasjonsnummer = forsendelse.PostInfo.Mottaker.OrganisasjonsnummerPostkasse;
+                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope, postkasseOrganisasjonsnummer);
             }
 
             return receipt;
@@ -358,10 +372,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             responseValidator.ValidateEmptyQueueReceipt();
         }
 
-        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope, Organisasjonsnummer postkasseOrganisasjonsnummer)
         {
+            
             var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, CertificateValidationProperties);
-            valideringAvResponsSignatur.ValidateMessageReceipt();
+            valideringAvResponsSignatur.ValidateMessageReceipt(postkasseOrganisasjonsnummer);
         }
 
         private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string prefix)

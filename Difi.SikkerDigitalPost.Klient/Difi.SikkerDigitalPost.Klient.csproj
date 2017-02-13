@@ -98,7 +98,9 @@
     <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Api\IForsendelseLager.cs" />
     <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
+    <Compile Include="Api\EnkeltForsendelseLager.cs" />
     <Compile Include="Internal\AsicE\AsiceArchive.cs" />
     <Compile Include="Internal\AsicE\AsiceAttachableProcessor.cs" />
     <Compile Include="Internal\AsicE\AsiceGenerator.cs" />

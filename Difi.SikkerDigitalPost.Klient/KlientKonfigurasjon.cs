@@ -5,6 +5,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Difi.SikkerDigitalPost.Klient.Api;
 
 namespace Difi.SikkerDigitalPost.Klient
 {
@@ -13,16 +14,25 @@ namespace Difi.SikkerDigitalPost.Klient
         public Klientkonfigurasjon(Miljø miljø)
         {
             Miljø = miljø;
+            ForsendelseLager = new InMemoryForsendelseLager();
+        }
+
+        public Klientkonfigurasjon(Miljø miljø, IForsendelseLager meldingsLager)
+        {
+            Miljø = miljø;
+            ForsendelseLager = meldingsLager;
         }
 
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; } = new Organisasjonsnummer("984661185");
 
         public Miljø Miljø { get; set; }
 
-        /// <summary>
-        ///     Angir host som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en
-        ///     proxy skal benyttes.
-        public string ProxyHost { get; set; } = null;
+        public IForsendelseLager ForsendelseLager { get; set; }
+
+    /// <summary>
+    ///     Angir host som skal benyttes i forbindelse med bruk av proxy. Både ProxyHost og ProxyPort må spesifiseres for at en
+    ///     proxy skal benyttes.
+    public string ProxyHost { get; set; } = null;
 
         /// <summary>
         ///     Angir schema ved bruk av proxy. Standardverdien er 'https'.

@@ -174,7 +174,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø), certificateValidationProperties);
 
                 //Act
-                responseValidator.ValidateMessageReceipt();
+                responseValidator.ValidateMessageReceipt(DomainUtility.GetOrganisasjonsnummerPostkasse());
 
                 //Assert
             }
