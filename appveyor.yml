@@ -12,7 +12,7 @@
   configuration: Release 
   environment:
     strong_name_signingkey_secret:
-      secure: klTrmUGElJ32M1IvA5ecksVOZoUhA22ZAEVhpi5qaZY=
+      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_secret:
       secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
