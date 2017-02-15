@@ -14,9 +14,9 @@
     strong_name_signingkey_secret:
       secure: klTrmUGElJ32M1IvA5ecksVOZoUhA22ZAEVhpi5qaZY=
     virksomhetssertifikat_secret:
-      secure: **REPLACED**
+      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
-      secure: **REPLACED**
+      secure: 1GZYP7hef/X/3sNeNpGukg==
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
