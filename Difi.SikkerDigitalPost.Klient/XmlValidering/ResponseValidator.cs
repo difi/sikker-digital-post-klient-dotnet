@@ -66,7 +66,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(ResponseMessage);
 
             ValidateHeaderSignatureNodeElements();
-            ValidateSignatureAndCertificate("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken");
+            ValidateSignatureAndCertificate("/env:Envelope/env:Header/wsse:Security/wsse:BinarySecurityToken", _certificateValidationProperties.OrganisasjonsnummerMeldingsformidler.Verdi);
         }
 
         private void ValidateReceiptSignature()
@@ -81,7 +81,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                 _signedXmlWithAgnosticId = new SignedXmlWithAgnosticId(standardBusinessDocument);
                 _signatureNode = (XmlElement) standardBusinessDocument.SelectSingleNode("//ds:Signature", _nsMgr);
 
-                ValidateSignatureAndCertificate("./ds:KeyInfo/ds:X509Data/ds:X509Certificate");
+                ValidateSignatureAndCertificate("./ds:KeyInfo/ds:X509Data/ds:X509Certificate", String.Empty); // Validerer ikke organisasjonsnummer for sertifikat brukt til å signere forretningskvittering
             }
             else
             {
@@ -96,10 +96,10 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return sbd;
         }
 
-        private void ValidateSignatureAndCertificate(string path)
+        private void ValidateSignatureAndCertificate(string path, string orgNr)
         {
             var certificate = new X509Certificate2(Convert.FromBase64String(_signatureNode.SelectSingleNode(path, _nsMgr).InnerText));
-            ValidateResponseCertificate(certificate);
+            ValidateResponseCertificate(certificate, orgNr);
 
             _signedXmlWithAgnosticId.LoadXml(_signatureNode);
 
@@ -112,11 +112,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
         }
 
-        private void ValidateResponseCertificate(X509Certificate2 certificate)
+        private void ValidateResponseCertificate(X509Certificate2 certificate, string orgNr)
         {
             var certificateValidationResult = CertificateValidator.ValidateCertificateAndChain(
                 certificate,
-                _certificateValidationProperties.OrganisasjonsnummerMeldingsformidler.Verdi,
+                orgNr,
                 _certificateValidationProperties.AllowedChainCertificates
             );
 
