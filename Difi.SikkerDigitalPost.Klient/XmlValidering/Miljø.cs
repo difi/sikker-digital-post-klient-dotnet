@@ -28,6 +28,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
             );
 
+        public static Miljø Ytelsestestmiljø => new Miljø(
+            new Uri("https://qa.meldingsformidler.digipost.no/api/"),
+            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
+            );
+
         public static Miljø Produksjonsmiljø => new Miljø(
             new Uri("https://meldingsformidler.digipost.no/api/"),
             CertificateChainUtility.ProduksjonsSertifikater()
