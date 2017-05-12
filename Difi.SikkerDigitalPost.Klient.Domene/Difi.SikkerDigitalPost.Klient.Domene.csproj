@@ -44,13 +44,13 @@
       <HintPath>..\packages\api-client-shared.2.0.0\lib\net45\ApiClientShared.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.0.0\lib\net45\Difi.Felles.Utility.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility.Resources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
+    <Reference Include="Difi.Felles.Utility, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.0.0\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
+      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Difi.Felles.Utility.Resources, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -127,6 +127,9 @@
       <Link>signingkey.snk</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
