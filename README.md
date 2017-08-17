@@ -7,3 +7,4 @@ som må utføres av avsendervirksomheter. For mer informasjon om sikker digital 
 
 #Online Dokumentasjon#
 [ONLINE DOKUMENTASJON FINNER DU HER](http://difi.github.io/sikker-digital-post-klient-dotnet/)
+
