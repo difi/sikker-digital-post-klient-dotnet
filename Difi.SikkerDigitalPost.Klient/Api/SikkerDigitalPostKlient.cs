@@ -267,6 +267,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
             }
 
+            else if (receipt is Transportkvittering)
+            {
+                Log.Debug($"{receipt}");
+            }
+
             return receipt;
         }
 
