@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Difi.SikkerDigitalPost.Klient.Domene</RootNamespace>
     <AssemblyName>Difi.SikkerDigitalPost.Klient.Domene</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,18 +41,20 @@
     <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApiClientShared, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.2.0.0\lib\net45\ApiClientShared.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Difi.Felles.Utility, Version=2.0.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
+      <HintPath>..\packages\difi-felles-utility-dotnet.2.0.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
+    <Reference Include="Difi.Felles.Utility.Resources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
+      <HintPath>..\packages\difi-felles-utility-dotnet.1.0.0\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
     </Reference>
-    <Reference Include="Difi.Felles.Utility.Resources, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
+    <Reference Include="Digipost.Api.Client.Shared, Version=3.0.0.0, Culture=neutral, PublicKeyToken=13a04c7692843c1c, processorArchitecture=MSIL">
+      <HintPath>..\packages\api-client-shared.3.0.0\lib\net46\Digipost.Api.Client.Shared.dll</HintPath>
     </Reference>
+    <Reference Include="Digipost.Api.Client.Shared.Resources">
+      <HintPath>..\packages\api-client-shared.3.0.0\lib\net46\Digipost.Api.Client.Shared.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
@@ -123,13 +126,11 @@
     <Compile Include="Sha256Reference.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="C:\Keys\signingkey.snk">
       <Link>signingkey.snk</Link>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

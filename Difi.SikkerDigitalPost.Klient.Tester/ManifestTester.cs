@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Xml;
-using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Digipost.Api.Client.Shared.Resources.Resource;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
