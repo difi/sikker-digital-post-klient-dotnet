@@ -147,12 +147,6 @@
     <Compile Include="XmlValidering\ResponseValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
-      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
-      <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -254,6 +248,12 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
+      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
+      <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
