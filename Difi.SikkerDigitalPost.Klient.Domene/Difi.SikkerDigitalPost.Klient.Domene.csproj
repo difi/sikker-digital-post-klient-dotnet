@@ -126,7 +126,6 @@
     <Compile Include="Sha256Reference.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="C:\Keys\signingkey.snk">
       <Link>signingkey.snk</Link>
     </None>

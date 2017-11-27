@@ -73,7 +73,6 @@
     <EmbeddedResource Include="Xml\Data\Response\CreateTransportOk.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="C:\Keys\signingkey.snk">
       <Link>signingkey.snk</Link>
     </None>
