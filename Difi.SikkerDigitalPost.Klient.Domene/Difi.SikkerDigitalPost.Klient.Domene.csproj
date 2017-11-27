@@ -44,10 +44,6 @@
     <Reference Include="Difi.Felles.Utility, Version=2.0.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
       <HintPath>..\packages\difi-felles-utility-dotnet.2.0.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="Difi.Felles.Utility.Resources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.0.0\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
-    </Reference>
     <Reference Include="Digipost.Api.Client.Shared, Version=3.0.0.0, Culture=neutral, PublicKeyToken=13a04c7692843c1c, processorArchitecture=MSIL">
       <HintPath>..\packages\api-client-shared.3.0.0\lib\net46\Digipost.Api.Client.Shared.dll</HintPath>
     </Reference>
