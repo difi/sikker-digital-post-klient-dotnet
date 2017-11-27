@@ -12,11 +12,11 @@
   configuration: Release 
   environment:
     strong_name_signingkey_secret:
-      secure: klTrmUGElJ32M1IvA5ecksVOZoUhA22ZAEVhpi5qaZY=
+      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_secret:
-      secure: ***REMOVED***
+      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
-      secure: ***REMOVED***    
+      secure: 1GZYP7hef/X/3sNeNpGukg==
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
@@ -46,7 +46,7 @@
   deploy:
     provider: NuGet
     api_key:
-      secure: ShY/hyVGNf4W+jmwNVZDhWjqxh2jx9r5wSR6Cuq1AsVPcsxv+cYlSCwoIl0I6kpZ
+      secure: FOXLwWfzLY3ytQflbFVGu/y2PkGFYApAhCxxGR5u+SucZ6Y3dBU6pEKZ320unXfs
     skip_symbols: true
     artifact: /.*\.nupkg/
 
@@ -64,9 +64,9 @@
     strong_name_signingkey_secret:
       secure: klTrmUGElJ32M1IvA5ecksVOZoUhA22ZAEVhpi5qaZY=
     virksomhetssertifikat_secret:
-      secure: ***REMOVED***
+      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
-      secure: ***REMOVED***    
+      secure: 1GZYP7hef/X/3sNeNpGukg==  
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion

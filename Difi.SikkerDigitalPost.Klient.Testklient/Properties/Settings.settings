@@ -1,24 +1,36 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
-              GeneratedClassNamespace="Difi.SikkerDigitalPost.Klient.Testklient.Properties"
-              GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Difi.SikkerDigitalPost.Klient.Testklient.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MottakerPersonnummer" Type="System.String" Scope="User">
+    <Setting Name="DigipostMottakerPersonnummer" Type="System.String" Scope="User">
       <Value Profile="(Default)">04036125433</Value>
     </Setting>
-    <Setting Name="MottakerDigipostadresse" Type="System.String" Scope="User">
+    <Setting Name="DigipostMottakerDigipostadresse" Type="System.String" Scope="User">
       <Value Profile="(Default)">ove.jonsen#6K5A</Value>
     </Setting>
-    <Setting Name="MottakerSertifikatThumbprint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">B43CAAA0FBEE6C8DA85B47D1E5B7BCAB42AB9ADD</Value>
-    </Setting>
-    <Setting Name="OrgnummerPosten" Type="System.String" Scope="User">
+    <Setting Name="PostenOrgNr" Type="System.String" Scope="User">
       <Value Profile="(Default)">984661185</Value>
     </Setting>
     <Setting Name="DatabehandlerSertifikatThumbprint" Type="System.String" Scope="User">
       <Value Profile="(Default)">8702F5E55217EC88CF2CCBADAC290BB4312594AC</Value>
+    </Setting>
+    <Setting Name="DifiOrgNummer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">991825827</Value>
+    </Setting>
+    <Setting Name="DifiSertifikatThumbprint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">b0cb922214d11e8ce993838db4c6d04c0c0970b8</Value>
+    </Setting>
+    <Setting Name="EboksMottakerPersonnummer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">02118449641</Value>
+    </Setting>
+    <Setting Name="EboksMottakerEboksadresse" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0000167396</Value>
+    </Setting>
+    <Setting Name="DigipostOrgNr" Type="System.String" Scope="User">
+      <Value Profile="(Default)">984661185</Value>
+    </Setting>
+    <Setting Name="EboksOrgNr" Type="System.String" Scope="User">
+      <Value Profile="(Default)">996460320</Value>
     </Setting>
   </Settings>
 </SettingsFile>
