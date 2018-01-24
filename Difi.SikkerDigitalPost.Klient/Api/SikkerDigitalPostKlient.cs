@@ -13,6 +13,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Envelope;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;

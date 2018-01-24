@@ -1,14 +1,14 @@
 ﻿using System.IO;
 using System.Xml;
 using Difi.Felles.Utility;
-using Difi.SikkerDigitalPost.Klient.Utilities;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Utvidelser;
 using Digipost.Api.Client.Shared.Resources.Resource;
 
-namespace Difi.SikkerDigitalPost.Klient.XmlValidering
+namespace Difi.SikkerDigitalPost.Klient.Domene.XmlValidering
 {
     internal class SdpXmlValidator : XmlValidator
     {
-        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.XmlValidering.xsd");
+        private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Domene.XmlValidering.xsd");
 
         private SdpXmlValidator()
         {
@@ -34,6 +34,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             AddXsd(NavneromUtility.StandardBusinessDocumentHeader, GetResource("SBDH20040506_02.BasicTypes.xsd"));
             AddXsd(NavneromUtility.WssecurityUtility10, GetResource("wssecurity.oasis-200401-wss-wssecurity-utility-1.0.xsd"));
             AddXsd(NavneromUtility.WssecuritySecext10, GetResource("wssecurity.oasis-200401-wss-wssecurity-secext-1.0.xsd"));
+            AddXsd(NavneromUtility.Lenke, GetResource("Utvidelser.lenke.xsd"));
         }
 
         public static SdpXmlValidator Instance { get; } = new SdpXmlValidator();

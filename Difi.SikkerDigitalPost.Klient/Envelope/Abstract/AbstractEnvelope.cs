@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Abstract

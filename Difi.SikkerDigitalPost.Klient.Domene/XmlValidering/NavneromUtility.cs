@@ -1,4 +1,4 @@
-﻿namespace Difi.SikkerDigitalPost.Klient.Utilities
+﻿namespace Difi.SikkerDigitalPost.Klient.Domene.XmlValidering
 {
     internal static class NavneromUtility
     {
@@ -46,6 +46,11 @@
         ///     http://begrep.difi.no/sdp/schema_v10
         /// </summary>
         public const string DifiSdpSchema10 = "http://begrep.difi.no/sdp/schema_v10";
+
+        /// <summary>
+        ///     http://begrep.difi.no/sdp/utvidelser/lenke
+        /// </summary>
+        public const string Lenke = "http://begrep.difi.no/sdp/utvidelser/lenke";
 
         /// <summary>
         ///     http://uri.etsi.org/2918/v1.2.1#

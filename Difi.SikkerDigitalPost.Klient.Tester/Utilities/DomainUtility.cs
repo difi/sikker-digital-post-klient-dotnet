@@ -9,6 +9,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Utvidelser;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Envelope;
@@ -32,6 +33,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             return new Dokumentpakke(GetHoveddokumentSimple());
         }
+
+        internal static Dokumentpakke GetDokumentpakkeWithDataDokumentAndMultipleVedlegg(int antall = 3)
+        {
+            var dokumentpakke = new Dokumentpakke(new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf", dataDokument: new Lenke("lenke.xml", "https://avsender.no")));
+            dokumentpakke.LeggTilVedlegg(GetVedlegg(antall));
+            return dokumentpakke;
+        }
+
 
         internal static Dokumentpakke GetDokumentpakkeWithMultipleVedlegg(int antall = 3)
         {
@@ -204,6 +213,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             var asiceAttachables = new List<IAsiceAttachable>();
             asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
             asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
+            asiceAttachables.AddRange(message.Dokumentpakke.DataDokumenter);
             asiceAttachables.Add(manifest);
             asiceAttachables.Add(signature);
 

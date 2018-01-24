@@ -3,6 +3,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 

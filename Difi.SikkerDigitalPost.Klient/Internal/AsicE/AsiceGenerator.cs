@@ -5,6 +5,7 @@ using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 
@@ -23,6 +24,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             var asiceAttachables = new List<IAsiceAttachable>();
             asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
             asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
+            asiceAttachables.AddRange(forsendelse.Dokumentpakke.DataDokumenter);
             asiceAttachables.Add(manifest);
             asiceAttachables.Add(signature);
 

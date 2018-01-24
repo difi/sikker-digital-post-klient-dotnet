@@ -9,6 +9,7 @@ using Difi.Felles.Utility.Security;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Security;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Sha256Reference = Difi.SikkerDigitalPost.Klient.Domene.Sha256Reference;
@@ -51,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 var signaturnode = Signaturnode();
 
                 var referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument,
-                    _forsendelse.Dokumentpakke.Vedlegg, _manifest);
+                    _forsendelse.Dokumentpakke.Vedlegg, _manifest, _forsendelse.Dokumentpakke.DataDokumenter);
                 OpprettReferanser(signaturnode, referanser);
 
                 var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.EndCertOnly);
@@ -94,11 +95,12 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
 
-        private static IEnumerable<IAsiceAttachable> Referanser(Dokument hoveddokument, IEnumerable<IAsiceAttachable> vedlegg, Manifest manifest)
+        private static IEnumerable<IAsiceAttachable> Referanser(Dokument hoveddokument, IEnumerable<IAsiceAttachable> vedlegg, Manifest manifest, IEnumerable<IAsiceAttachable> dataDokumenter)
         {
             var referanser = new List<IAsiceAttachable> {hoveddokument};
             referanser.AddRange(vedlegg);
             referanser.Add(manifest);
+            referanser.AddRange(dataDokumenter);
             return referanser;
         }
 

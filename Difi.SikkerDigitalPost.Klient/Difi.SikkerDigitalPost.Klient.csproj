@@ -136,7 +136,6 @@
     <Compile Include="KvitteringFactory.cs" />
     <Compile Include="Kvitteringsparser.cs" />
     <Compile Include="LagreDokumentpakkeTilDiskProsessor.cs" />
-    <Compile Include="Utilities\NavneromUtility.cs" />
     <Compile Include="Api\SikkerDigitalPostKlient.cs" />
     <Compile Include="Utilities\DateUtility.cs" />
     <Compile Include="Klientkonfigurasjon.cs">
@@ -153,90 +152,7 @@
     <Compile Include="Utilities\XmlUtility.cs" />
     <Compile Include="XmlValidering\CertificateValidationProperties.cs" />
     <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\SdpXmlValidator.cs" />
     <Compile Include="XmlValidering\ResponseValidator.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebms-header-3_0-200704.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\BasicTypes.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\BusinessScope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\DocumentIdentification.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\Manifest.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\Partner.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\StandardBusinessDocumentHeader.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-feil.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-felles.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-kvittering.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-manifest.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-melding.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\exc-c14n.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\soap-envelope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\ts_102918v010201.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\XAdES.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xenc-schema.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xml.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xmldsig-core-schema.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-200401-wss-wssecurity-secext-1.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-200401-wss-wssecurity-utility-1.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-wss-wssecurity-secext-1.1.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\xmlsoap\envelope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xlink.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3CA3.cer" />

@@ -7,6 +7,7 @@ using Difi.Felles.Utility;
 using Difi.Felles.Utility.Security;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering

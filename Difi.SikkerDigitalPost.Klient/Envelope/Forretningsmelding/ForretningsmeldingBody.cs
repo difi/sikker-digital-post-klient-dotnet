@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 

@@ -5,6 +5,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
@@ -49,11 +50,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             _manifestXml.DocumentElement.AppendChild(AvsenderNode());
 
             var hoveddokument = Forsendelse.Dokumentpakke.Hoveddokument;
-            _manifestXml.DocumentElement.AppendChild(DokumentNode(hoveddokument, "hoveddokument", hoveddokument.Tittel));
+            _manifestXml.DocumentElement.AppendChild(DokumentNode(hoveddokument, "hoveddokument"));
 
             foreach (var vedlegg in Forsendelse.Dokumentpakke.Vedlegg)
             {
-                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg", vedlegg.Tittel));
+                _manifestXml.DocumentElement.AppendChild(DokumentNode(vedlegg, "vedlegg"));
             }
 
             return _manifestXml;
@@ -100,7 +101,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             return avsender;
         }
 
-        private XmlElement DokumentNode(Dokument dokument, string elementnavn, string innholdstekst)
+        private XmlElement DokumentNode(Dokument dokument, string elementnavn)
         {
             var dokumentXml = _manifestXml.CreateElement(elementnavn, NavneromUtility.DifiSdpSchema10);
             dokumentXml.SetAttribute("href", dokument.FilnavnRådata);
@@ -108,8 +109,15 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             {
                 var tittel = dokumentXml.AppendChildElement("tittel", NavneromUtility.DifiSdpSchema10, _manifestXml);
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);
-                tittel.InnerText = innholdstekst;
+                tittel.InnerText = dokument.Tittel;
             }
+            if (dokument.DataDokument != null)
+            {
+                var data = dokumentXml.AppendChildElement("data", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                data.SetAttribute("href", dokument.DataDokument.Filnavn);
+                data.SetAttribute("mime", dokument.DataDokument.MimeType);
+            }
+
             return dokumentXml;
         }
     }
