@@ -1,7 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Xml;
+using Common.Logging;
 using Difi.Felles.Utility;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Utvidelser;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.XmlValidering
@@ -9,6 +14,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.XmlValidering
     internal class SdpXmlValidator : XmlValidator
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Domene.XmlValidering.xsd");
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private SdpXmlValidator()
         {
@@ -37,12 +44,24 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.XmlValidering
             AddXsd(NavneromUtility.Lenke, GetResource("Utvidelser.lenke.xsd"));
         }
 
-        public static SdpXmlValidator Instance { get; } = new SdpXmlValidator();
+        private static SdpXmlValidator Instance { get; } = new SdpXmlValidator();
 
         private static XmlReader GetResource(string path)
         {
             var bytes = ResourceUtility.ReadAllBytes(true, path);
             return XmlReader.Create(new MemoryStream(bytes));
+        }
+
+        public static void Validate(XmlDocument xml, string prefix)
+        {
+            List<string> validationMessages;
+            var valid = Instance.Validate(xml.OuterXml, out validationMessages);
+            if (!valid)
+            {
+                var errorDescription = $"{prefix} er ikke gyldig ihht. XSD.  {validationMessages.Aggregate((current, variable) => current + Environment.NewLine + variable)}";
+                Log.Warn(errorDescription);
+                throw new XmlValidationException(errorDescription, validationMessages);
+            }
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System.Xml;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -17,10 +16,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var envelope = DomainUtility.GetForretningsmeldingEnvelopeWithTestTestCertificate();
                 var forretningsmeldingEnvelopeXml = envelope.Xml();
 
-                string validationMessages;
-                var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
-
-                Assert.True(validert, validationMessages);
+                SdpXmlValidator.Validate(forretningsmeldingEnvelopeXml, "Forretningsmelding");
             }
 
             [Fact]
@@ -46,9 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = securityNode.Attributes["mustUnderstand"].Value;
                 securityNode.Attributes["mustUnderstand"].Value = "en_tekst_som_ikke_er_bool";
 
-                string validationMessages;
-                var validert = SdpXmlValidator.Instance.Validate(forretningsmeldingEnvelopeXml.OuterXml, out validationMessages);
-                Assert.False(validert, validationMessages);
+                Assert.Throws<XmlValidationException>(() => SdpXmlValidator.Validate(forretningsmeldingEnvelopeXml, "Forretningsmelding"));
 
                 securityNode.Attributes["mustUnderstand"].Value = gammelVerdi;
             }

@@ -3,11 +3,10 @@ using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post.Utvidelser;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Resources.Resource;
 using Xunit;
 
@@ -47,7 +46,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var manifest = new Manifest(DomainUtility.GetForsendelseWithTestCertificate());
 
                 var manifestXml = manifest.Xml();
-                var manifestValidator = SdpXmlValidator.Instance;
 
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
                 namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
@@ -58,9 +56,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var gammelVerdi = hoveddokumentNode.Attributes["href"].Value;
                 hoveddokumentNode.Attributes["href"].Value = "abc"; //Endre navn på hoveddokument til å være for kort
 
-                string validationMessages;
-                var validert = manifestValidator.Validate(manifestXml.OuterXml, out validationMessages);
-                Assert.False(validert, validationMessages);
+                Assert.Throws<XmlValidationException>(() => SdpXmlValidator.Validate(manifestXml, "Manifest"));
 
                 hoveddokumentNode.Attributes["href"].Value = gammelVerdi;
             }
@@ -98,11 +94,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 var hoveddokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
-                var vedlegg = new Dokument("vedlegg", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf", dataDokument:lenke);
+                var vedlegg = new Dokument("vedlegg", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf", dataDokument: lenke);
 
                 var dokumentPakke = new Dokumentpakke(hoveddokument);
                 dokumentPakke.LeggTilVedlegg(vedlegg);
-
 
                 var forsendelse = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
                 var manifestXml = new Manifest(forsendelse).Xml();
@@ -189,9 +184,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
                 var manifestXml = new Manifest(message).Xml();
 
-                string validationMessages;
-                var validert = SdpXmlValidator.Instance.Validate(manifestXml.OuterXml, out validationMessages);
-                Assert.True(validert, validationMessages);
+                SdpXmlValidator.Validate(manifestXml, "Manifest");
             }
         }
     }

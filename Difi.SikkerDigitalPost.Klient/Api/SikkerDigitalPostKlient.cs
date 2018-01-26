@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Common.Logging;
@@ -15,7 +12,6 @@ using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Envelope;
-using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
@@ -101,7 +97,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
-            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
+            SdpXmlValidator.Validate(forretningsmeldingEnvelope.Xml(), forretningsmeldingEnvelope.GetType().Name);
 
             var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
             transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
@@ -252,7 +248,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
             var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
-            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
+            SdpXmlValidator.Validate(kvitteringsforespørselEnvelope.Xml(), kvitteringsforespørselEnvelope.GetType().Name);
 
             var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
             var transportReceiptXml = receipt.Xml;
@@ -352,7 +348,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var envelopeSettings = new EnvelopeSettings(kvittering, Databehandler, new GuidUtility());
             var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
 
-            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, bekreftKvitteringEnvelope.GetType().Name);
+            SdpXmlValidator.Validate(bekreftKvitteringEnvelope.Xml(), bekreftKvitteringEnvelope.GetType().Name);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope).ConfigureAwait(false);
             Log.Debug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
@@ -370,16 +366,5 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
-        private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string prefix)
-        {
-            List<string> validationMessages;
-            var isValid = SdpXmlValidator.Instance.Validate(envelope.Xml().OuterXml, out validationMessages);
-            if (!isValid)
-            {
-                var errorDescription = $"Ikke gyldig innhold i {prefix}. {validationMessages.Aggregate((current, variable) => current + Environment.NewLine + variable)}";
-                Log.Warn(errorDescription);
-                throw new XmlValidationException(errorDescription, validationMessages);
-            }
-        }
     }
 }
