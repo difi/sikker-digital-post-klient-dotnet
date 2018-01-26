@@ -76,8 +76,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 var hoveddokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf", dataDokument: lenke);
                 var dokumentPakke = new Dokumentpakke(hoveddokument);
-                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var manifestXml = new Manifest(message).Xml();
+                var forsendelse = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var manifestXml = new Manifest(forsendelse).Xml();
 
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
                 namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
@@ -104,8 +104,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 dokumentPakke.LeggTilVedlegg(vedlegg);
 
 
-                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
-                var manifestXml = new Manifest(message).Xml();
+                var forsendelse = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), dokumentPakke, Prioritet.Normal, Guid.NewGuid().ToString());
+                var manifestXml = new Manifest(forsendelse).Xml();
 
                 var namespaceManager = new XmlNamespaceManager(manifestXml.NameTable);
                 namespaceManager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
