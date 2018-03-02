@@ -32,6 +32,15 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
+      <xsd:element name="data" minOccurs="0" maxOccurs="1" type="DokumentData">
+        <xsd:annotation>
+          <xsd:documentation>
+            Ekstra data som beriker dokumentet i postkassen.
+            Se https://begrep.difi.no/SikkerDigitalPost/utvidelser for en oversikt over hvilke utvidelser
+            som finnes og er tilgjengelig hos de ulike postkasseleverandørene.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
     </xsd:sequence>
     <xsd:attribute name="href" use="required">
       <xsd:annotation>
@@ -50,6 +59,35 @@
       <xsd:annotation>
         <xsd:documentation>
           For tillatte MIME-typer, se http://begrep.difi.no/ (TODO)
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="DokumentData">
+    <xsd:attribute name="href" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          Navn på filen i dokumentpakken.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="4" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="mime" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          For tillatte MIME-typer, se https://begrep.difi.no/SikkerDigitalPost/utvidelser
         </xsd:documentation>
       </xsd:annotation>
       <xsd:simpleType>

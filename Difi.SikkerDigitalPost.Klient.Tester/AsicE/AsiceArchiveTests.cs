@@ -48,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
             public void ConstructorGeneratesBytes()
             {
                 //Arrange
-                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithMultipleVedlegg());
+                var message = new Forsendelse(DomainUtility.GetAvsender(), DomainUtility.GetDigitalPostInfoSimple(), DomainUtility.GetDokumentpakkeWithDataDokumentAndMultipleVedlegg());
 
                 var asiceArchive = DomainUtility.GetAsiceArchive(message);
 
@@ -63,6 +63,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.AsicE
                         Assert.True(archive.Entries.Any(entry => entry.FullName == "manifest.xml"));
                         Assert.True(archive.Entries.Any(entry => entry.FullName == "META-INF/signatures.xml"));
                         Assert.True(archive.Entries.Any(entry => entry.FullName == message.Dokumentpakke.Hoveddokument.Filnavn));
+                        Assert.True(archive.Entries.Any(entry => entry.FullName == message.Dokumentpakke.Hoveddokument.DataDokument.Filnavn));
 
                         foreach (var document in message.Dokumentpakke.Vedlegg)
                         {
