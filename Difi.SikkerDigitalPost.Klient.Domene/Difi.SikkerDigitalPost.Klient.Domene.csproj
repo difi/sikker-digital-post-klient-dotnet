@@ -76,6 +76,7 @@
     <Compile Include="Entiteter\FysiskPost\FysiskPostMottakerAbstrakt.cs" />
     <Compile Include="Entiteter\FysiskPost\FysiskPostReturMottaker.cs" />
     <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
+    <Compile Include="Entiteter\FysiskPost\Printinstruksjon.cs" />
     <Compile Include="Entiteter\FysiskPost\UtenlandskAdresse.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Mottakskvittering.cs" />
     <Compile Include="Entiteter\Kvitteringer\Forretning\Returpostkvittering.cs" />

@@ -1,11 +1,11 @@
-﻿using System.Xml;
+﻿using System.Linq;
+using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Domene.XmlValidering;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
-using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
@@ -42,6 +42,11 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 }
 
                 fysiskPostInfoElement.AppendChild(ReturElement());
+
+                if (_fysiskPostInfo.Printinstruksjoner.Any())
+                {
+                    fysiskPostInfoElement.AppendChild(PrintinstruksjonerElement());
+                }
             }
 
             return fysiskPostInfoElement;
@@ -74,6 +79,25 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
             }
 
             return returElement;
+        }
+
+        private XmlElement PrintinstruksjonerElement()
+        {
+            var printinstruksjonerElement = Context.CreateElement("ns9", "printinstruksjoner", NavneromUtility.DifiSdpSchema10);
+            {
+                foreach (var printinstruksjon in _fysiskPostInfo.Printinstruksjoner)
+                {
+                    var printinstruksjonElement = Context.CreateElement("ns9", "printinstruksjon", NavneromUtility.DifiSdpSchema10);
+                    {
+                        var navnElement = printinstruksjonElement.AppendChildElement("navn", "ns9", NavneromUtility.DifiSdpSchema10, Context);
+                        navnElement.InnerText = printinstruksjon.Navn;
+                        var verdiElement = printinstruksjonElement.AppendChildElement("verdi", "ns9", NavneromUtility.DifiSdpSchema10, Context);
+                        verdiElement.InnerText = printinstruksjon.Verdi;
+                    }
+                    printinstruksjonerElement.AppendChild(printinstruksjonElement);
+                }
+            }
+            return printinstruksjonerElement;
         }
 
         private XmlNode UtenlandskAdresseNode(UtenlandskAdresse adresse)
