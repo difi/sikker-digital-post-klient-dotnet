@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             _t = new SmokeTestsHelper(miljø);
         }
 
-        [Fact]
+        [Fact(Skip = "Skipping because it requires working certificates")]
         public void Send_digital_with_multiple_documents()
         {
             _t
@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 .ConfirmReceipt();
         }
 
-        [Fact]
+        [Fact(Skip = "Skipping because it requires working certificates")]
         public void Send_physical()
         {
             _t
@@ -39,7 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 .ConfirmReceipt();
         }
 
-        [Fact]
+        [Fact(Skip = "Skipping because it requires working certificates")]
         public void Send_on_behalf_of()
         {
             _t
