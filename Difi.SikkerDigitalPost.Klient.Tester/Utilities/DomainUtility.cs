@@ -258,13 +258,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetAvsenderCertificate()
         {
-            string difiThumbprint = "‎b0cb922214d11e8ce993838db4c6d04c0c0970b8";
+            string difiThumbprint = "88bdb74fadaed87f52d2f5c11aed607deb9700ba";//"‎b0cb922214d11e8ce993838db4c6d04c0c0970b8";
             return CertificateUtility.SenderCertificate(difiThumbprint, Language.Norwegian);
         }
 
         internal static X509Certificate2 GetMottakerCertificate()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "testmottakersertifikatFraOppslagstjenesten.pem"));
+            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "posten-test.pem"));//"testmottakersertifikatFraOppslagstjenesten.pem"));
         }
 
         internal static Leveringskvittering GetLeveringskvittering()

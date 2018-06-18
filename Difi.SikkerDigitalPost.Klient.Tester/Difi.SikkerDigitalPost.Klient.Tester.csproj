@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
@@ -215,6 +215,7 @@
     <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Åpningskvittering.xml" />
     <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TomKøKvittering.xml" />
+    <EmbeddedResource Include="testdata\sertifikater\test\posten-test.pem" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
@@ -11,15 +12,16 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     /// </summary>
     public class FysiskPostInfo : PostInfo
     {
-        
+        private readonly List<Printinstruksjon> _printinstruksjoner;
 
-        public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker)
+        public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker, List<Printinstruksjon> printinstruksjoner = null)
             : base(mottaker)
         {
             Posttype = posttype;
             Utskriftsfarge = utskriftsfarge;
             Posthåndtering = posthåndtering;
             ReturpostMottaker = returmottaker;
+            _printinstruksjoner = printinstruksjoner ?? new List<Printinstruksjon>();
         }
 
         public FysiskPostReturmottaker ReturpostMottaker { get; set; }
@@ -30,5 +32,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 
         public Posthåndtering Posthåndtering { get; set; }
 
+        public IReadOnlyList<Printinstruksjon> Printinstruksjoner => new ReadOnlyCollection<Printinstruksjon>(_printinstruksjoner);
     }
 }
