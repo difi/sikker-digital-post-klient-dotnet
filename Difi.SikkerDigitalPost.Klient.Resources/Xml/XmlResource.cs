@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Xml;
-using ApiClientShared;
-using Difi.Felles.Utility.Resources.Xml;
+using Digipost.Api.Client.Shared.Resources.Resource;
+using Digipost.Api.Client.Shared.Resources.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Resources.Xml
 {

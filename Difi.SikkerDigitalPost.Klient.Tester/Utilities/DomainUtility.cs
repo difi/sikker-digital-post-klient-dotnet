@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using ApiClientShared;
-using ApiClientShared.Enums;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -18,6 +16,8 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Digipost.Api.Client.Shared.Certificate;
+using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -259,7 +259,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static X509Certificate2 GetAvsenderCertificate()
         {
             string difiThumbprint = "88bdb74fadaed87f52d2f5c11aed607deb9700ba";//"‎b0cb922214d11e8ce993838db4c6d04c0c0970b8";
-            return CertificateUtility.SenderCertificate(difiThumbprint, Language.Norwegian);
+            return CertificateUtility.SenderCertificate(difiThumbprint);
         }
 
         internal static X509Certificate2 GetMottakerCertificate()

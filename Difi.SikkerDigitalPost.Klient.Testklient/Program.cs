@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using ApiClientShared;
 using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
@@ -17,6 +16,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Testklient.Properties;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using System.Linq;
+using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
