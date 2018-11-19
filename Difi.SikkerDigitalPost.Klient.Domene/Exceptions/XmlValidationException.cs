@@ -7,7 +7,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
     public class XmlValidationException : SikkerDigitalPostException
     {
         public XmlValidationException(string message, List<string> validationMessages)
-            : base(message)
+            : base(message + validationMessages)
         {
             ValidationMessages = validationMessages;
         }
