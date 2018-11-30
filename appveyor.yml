@@ -11,8 +11,6 @@
     - packages -> **\packages.config
   configuration: Release 
   environment:
-    strong_name_signingkey_secret:
-      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_secret:
       secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
@@ -20,7 +18,6 @@
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
-    - secure-file\tools\secure-file -decrypt signingkey.snk.enc -secret %strong_name_signingkey_secret%
     - secure-file\tools\secure-file -decrypt bring.p12.enc -secret %virksomhetssertifikat_secret%
   before_build:
   - ps: >-
@@ -61,8 +58,6 @@
     - packages -> **\packages.config
   configuration: Release 
   environment:
-    strong_name_signingkey_secret:
-      secure: klTrmUGElJ32M1IvA5ecksVOZoUhA22ZAEVhpi5qaZY=
     virksomhetssertifikat_secret:
       secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
@@ -70,7 +65,6 @@
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
-    - secure-file\tools\secure-file -decrypt signingkey.snk.enc -secret %strong_name_signingkey_secret%
     - secure-file\tools\secure-file -decrypt bring.p12.enc -secret %virksomhetssertifikat_secret%
   before_build:
   - ps: >-
