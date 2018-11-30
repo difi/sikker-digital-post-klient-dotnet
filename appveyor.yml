@@ -22,7 +22,6 @@
   before_build:
   - ps: >-
       .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12;
-      .\appveyor-deploy\MoveSigningKey.ps1 -signingKeyPath "$env:APPVEYOR_BUILD_FOLDER\signingkey.snk" -signingKeyDestination "C:\Keys\signingkey.snk";
       .\appveyor-deploy\NugetRestore.ps1;
       .\appveyor-deploy\AssemblyInfoVersionPatcher.ps1 -assemblyInfoPath  ".\SolutionItems\SharedAssemblyInfo.cs"; 
       .\appveyor-deploy\BuildPreamble.ps1   
@@ -69,7 +68,6 @@
   before_build:
   - ps: >-
       .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12;
-      .\appveyor-deploy\MoveSigningKey.ps1 -signingKeyPath "$env:APPVEYOR_BUILD_FOLDER\signingkey.snk" -signingKeyDestination "C:\Keys\signingkey.snk";
       .\appveyor-deploy\NugetRestore.ps1;
       .\appveyor-deploy\BuildPreamble.ps1          
   build:
