@@ -93,7 +93,7 @@
   <xsd:simpleType name="TittelString">
     <xsd:restriction base="xsd:string">
       <xsd:minLength value="1" />
-      <xsd:maxLength value="100" />
+      <xsd:maxLength value="255" />
     </xsd:restriction>
   </xsd:simpleType>
 

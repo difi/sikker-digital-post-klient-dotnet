@@ -28,8 +28,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public void Initializes_fields()
             {
                 //Arrange
-                var difiOrgNr = "991825827";
-                var databehandler = new Databehandler(new Organisasjonsnummer(difiOrgNr), DomainUtility.GetAvsenderCertificate());
+                var databehandler = new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate());
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
