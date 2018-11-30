@@ -11,17 +11,17 @@
     - packages -> **\packages.config
   configuration: Release 
   environment:
-    virksomhetssertifikat_secret:
-      secure: bjxsFmbUwz8FwDx9d6dqR1q+kVdZ7JGbKKShVrAIRIs=
     virksomhetssertifikat_pass:
-      secure: 1GZYP7hef/X/3sNeNpGukg==
+      secure: eQknhCDP94FWkv9tOvX6LnWvdhZMPBaEDIbVTvCNi2g=
+    virksomhetssertifikat_secret:
+      secure: eQknhCDP94FWkv9tOvX6LnWvdhZMPBaEDIbVTvCNi2g=  
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
-    - secure-file\tools\secure-file -decrypt bring.p12.enc -secret %virksomhetssertifikat_secret%
+    - secure-file\tools\secure-file -decrypt Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12.enc -secret %virksomhetssertifikat_secret%
   before_build:
   - ps: >-
-      .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat bring.p12;
+      .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12;
       .\appveyor-deploy\MoveSigningKey.ps1 -signingKeyPath "$env:APPVEYOR_BUILD_FOLDER\signingkey.snk" -signingKeyDestination "C:\Keys\signingkey.snk";
       .\appveyor-deploy\NugetRestore.ps1;
       .\appveyor-deploy\AssemblyInfoVersionPatcher.ps1 -assemblyInfoPath  ".\SolutionItems\SharedAssemblyInfo.cs"; 
@@ -65,10 +65,10 @@
   install:
     - git submodule update --init --recursive
     - nuget install secure-file -ExcludeVersion
-    - secure-file\tools\secure-file -decrypt bring.p12.enc -secret %virksomhetssertifikat_secret%
+    - secure-file\tools\secure-file -decrypt Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12.enc -secret %virksomhetssertifikat_secret%
   before_build:
   - ps: >-
-      .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat bring.p12;
+      .\appveyor-deploy\InstallVirksomhetssertifikat.ps1 -virksomhetssertifikat Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12;
       .\appveyor-deploy\MoveSigningKey.ps1 -signingKeyPath "$env:APPVEYOR_BUILD_FOLDER\signingkey.snk" -signingKeyDestination "C:\Keys\signingkey.snk";
       .\appveyor-deploy\NugetRestore.ps1;
       .\appveyor-deploy\BuildPreamble.ps1          
