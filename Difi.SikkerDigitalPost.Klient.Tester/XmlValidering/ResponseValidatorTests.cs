@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
                 var response = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø);
                 var miljø = Miljø.FunksjoneltTestmiljø;
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
 
                 var responseValidator = new ResponseValidator(sentMessage, response, certificateValidationProperties);
 
@@ -51,7 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var miljø = Miljø.FunksjoneltTestmiljø;
                 var sentMessage = XmlUtility.TilXmlDokument(SendtMelding.FunksjoneltTestMiljø);
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sentMessage, XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljø), certificateValidationProperties);
                 var guidUtility = new GuidUtility
                 {
@@ -82,7 +82,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var transportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(idResponse));
 
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sentMessage, transportReceipt, certificateValidationProperties);
 
                 var guidUtility = new GuidUtility
@@ -113,7 +113,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var receivedTransportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvittertingFunksjoneltTestmiljøMedInput(securityBinary: corruptSecurityBinaryResponse));
 
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sendtMeldingXmlDocument, receivedTransportReceipt,certificateValidationProperties);
                 var guidUtility = new GuidUtility
                 {
@@ -140,7 +140,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
 
                 var receivedTransportReceipt = XmlUtility.TilXmlDokument(TransportKvittering.TransportOkKvitteringMedByttetDokumentpakkeIdFunksjoneltTestmiljø);
 
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sentMessage, receivedTransportReceipt,certificateValidationProperties);
 
                 var guidUtility = new GuidUtility
@@ -170,7 +170,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sentReceiptRequest = new XmlDocument();
                 sentReceiptRequest.LoadXml(Kvitteringsforespørsel.FunksjoneltTestmiljø);
 
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.FunksjoneltTestmiljø), certificateValidationProperties);
 
                 //Act
@@ -192,7 +192,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering
                 var sentReceiptRequest = new XmlDocument();
                 sentReceiptRequest.LoadXml(Kvitteringsforespørsel.FunksjoneltTestmiljø);
 
-                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler());
+                var certificateValidationProperties = new CertificateValidationProperties(miljø.GodkjenteKjedeSertifikater, DomainUtility.OrganisasjonsnummerMeldingsformidler(), true);
                 var responseValidator = new ResponseValidator(sentReceiptRequest, XmlUtility.TilXmlDokument(KvitteringsRespons.TomKøResponsFunksjoneltTestmiljø), certificateValidationProperties);
 
                 //Act

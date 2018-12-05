@@ -74,5 +74,11 @@ namespace Difi.SikkerDigitalPost.Klient
             ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
             ((List<IDokumentpakkeProsessor>) Dokumentpakkeprosessorer).Add(documentBundleToDiskProcessor);
         }
+
+        /// <summary>
+        /// Validering av respons. Settes denne til false vi akseptere responser fra utgåtte sertifikater og vi validerer ikke signatur. 
+        /// Dette vil i størst grad være aktuelt om man skal hente gamle kvitteringer. Gjøres på avsenders eget ansvar.
+        /// </summary>
+        public bool ValiderRespons { get; set; } = true;
     }
 }

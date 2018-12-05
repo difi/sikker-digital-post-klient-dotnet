@@ -49,7 +49,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon);
-            CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
+            CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon, Klientkonfigurasjon.ValiderRespons);
         }
 
         private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
