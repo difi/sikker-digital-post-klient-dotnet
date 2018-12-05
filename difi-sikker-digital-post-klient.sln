@@ -1,14 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CC279EA-A5FB-4BB0-AE55-946B5A7E8834}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionItems\App.config = SolutionItems\App.config
 		SolutionItems\SharedAssemblyInfo.cs = SolutionItems\SharedAssemblyInfo.cs
-		C:\Keys\signingkey.snk = C:\Keys\signingkey.snk
-		SolutionItems\VersionInfo.cs = SolutionItems\VersionInfo.cs
 		SolutionItems\VersionInfo.ps1 = SolutionItems\VersionInfo.ps1
 	EndProjectSection
 EndProject
@@ -53,5 +51,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95722C3F-2E33-4C46-B98C-80E699110A94}
 	EndGlobalSection
 EndGlobal

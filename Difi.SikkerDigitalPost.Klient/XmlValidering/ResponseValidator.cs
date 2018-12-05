@@ -44,18 +44,24 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         public void ValidateMessageReceipt()
         {
+            if (!_certificateValidationProperties.ValidateResponse) return;
+
             ValidateHeaderSignature();
             ValidateReceiptSignature();
         }
 
         public void ValidateTransportReceipt(GuidUtility guidUtility)
         {
+            if (!_certificateValidationProperties.ValidateResponse) return;
+
             ValidateHeaderSignature();
             ValidateDigest(guidUtility);
         }
 
         public void ValidateEmptyQueueReceipt()
         {
+            if (!_certificateValidationProperties.ValidateResponse) return;
+
             ValidateHeaderSignature();
         }
 
