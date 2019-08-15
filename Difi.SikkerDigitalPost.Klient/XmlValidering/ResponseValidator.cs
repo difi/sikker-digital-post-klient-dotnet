@@ -6,7 +6,6 @@ using System.Xml;
 using Difi.Felles.Utility;
 using Difi.Felles.Utility.Security;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
-using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
@@ -122,7 +121,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
             if (certificateValidationResult.Type != CertificateValidationType.Valid)
             {
-                throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type.ToNorwegianString()}', med melding '{certificateValidationResult.Message}'");
+                throw new SecurityException($"Sertifikatet som ble mottatt i responsen er ikke gyldig. Grunnen er '{certificateValidationResult.Type}', med melding '{certificateValidationResult.Message}'");
             }
         }
 

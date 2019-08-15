@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Xml;
-using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             public static XmlDocument TilXmlDokument(string kvittering)
             {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
             }
         }
 
@@ -68,7 +68,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             public static XmlDocument TilXmlDokument(string kvittering)
             {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
             }
         }
     }

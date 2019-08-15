@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
-using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -13,12 +13,13 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Handlers;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
+using log4net;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
 {
     internal class RequestHelper
     {
-        private static readonly ILog RequestResponseLog = LogManager.GetLogger("Difi.SikkerDigitalPost.Klient.RequestResponse");
+        private static readonly ILog RequestResponseLog = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public RequestHelper(Klientkonfigurasjon klientkonfigurasjon):
             this(klientkonfigurasjon, new DelegatingHandler[0])

@@ -1,0 +1,21 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+
+        <Version>2.1.0</Version>
+        <AssemblyVersion>2.1.0</AssemblyVersion>
+
+        <Authors>Direktoratet for forvaltning og IKT (Difi)</Authors>
+        <Company>Direktoratet for forvaltning og IKT (Difi)</Company>
+        <Copyright>� 2015-2019 Direktoratet for forvaltning og IKT (Difi)</Copyright>
+
+        <PackageProjectUrl>https://github.com/difi/sikker-digital-post-klient-dotnet</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageTags>DIFI digital elektronisk dotnet api klient client kontakt reservasjonregisteret</PackageTags>
+        <Description>Klientbibliotek for integrasjon mot Oppslagstjenesten for kontakt og reservasjonregisteret</Description>
+
+        <UserSecretsId>smoke-certificate</UserSecretsId>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+</Project>

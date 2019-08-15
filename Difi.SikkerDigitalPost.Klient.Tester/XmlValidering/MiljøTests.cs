@@ -1,6 +1,6 @@
-﻿using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
+﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Digipost.Api.Client.Shared.Certificate;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.XmlValidering

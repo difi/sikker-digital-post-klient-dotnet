@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Xml;
-using ApiClientShared;
-using Difi.Felles.Utility;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Digipost.Api.Client.Shared.Resources.Resource;
+using Digipost.Api.Client.Shared.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
@@ -40,7 +40,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 
         private static XmlReader GetResource(string path)
         {
-            var bytes = ResourceUtility.ReadAllBytes(true, path);
+            var bytes = ResourceUtility.ReadAllBytes(path);
             return XmlReader.Create(new MemoryStream(bytes));
         }
     }

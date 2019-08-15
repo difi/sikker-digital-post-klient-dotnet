@@ -1,271 +1,82 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <TeamCityBuild>false</TeamCityBuild>
-    <ProjectGuid>{7EC19624-21F7-4BEE-8206-10608E70D2C2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Difi.SikkerDigitalPost.Klient.Tester</RootNamespace>
-    <AssemblyName>Difi.SikkerDigitalPost.Klient.Tester</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ApiClientShared, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.2.0.0\lib\net45\ApiClientShared.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility.Resources, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
-    </Reference>
-    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.5.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompareNETObjects.3.05.0.0\lib\net45\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml" />
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
-  <ItemGroup>
-    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Api\SikkerDigitalPostKlientTests.cs" />
-    <Compile Include="AsicE\AsiceArchiveTests.cs" />
-    <Compile Include="AsicE\SimpleDocumentBundleProcessor.cs" />
-    <Compile Include="Enhetstester\EpostvarselTester.cs" />
-    <Compile Include="Enhetstester\SmsVarselTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\FeilmeldingTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\LeveringskvitteringTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\MottakskvitteringTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\ReturpostkvitteringTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvitteringTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\ÅpningskvitteringTester.cs" />
-    <Compile Include="Entiteter\Kvitteringer\KvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TomKøKvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvitteringTests.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvitteringTests.cs" />
-    <Compile Include="Entiteter\OrganisasjonsnummerTests.cs" />
-    <Compile Include="Entiteter\Post\ForsendelseTester.cs" />
-    <Compile Include="Entiteter\Post\ForsendelseTests.cs" />
-    <Compile Include="Exceptions\XmlParseExceptionTests.cs" />
-    <Compile Include="Extensions\EnumExtensionsTests.cs" />
-    <Compile Include="Exceptions\XmlValidationExceptionTests.cs" />
-    <Compile Include="Fakes\FakeResponseHandler.cs" />
-    <Compile Include="Internal\AsicE\AsiceAttachableProcessorTests.cs" />
-    <Compile Include="Internal\AsicE\AsiceGeneratorTests.cs" />
-    <Compile Include="Internal\AsicE\DocumentBundleTests.cs" />
-    <Compile Include="Internal\RequestHelperTests.cs" />
-    <Compile Include="KlientkonfigurasjonTests.cs" />
-    <Compile Include="KvitteringFactoryTester.cs" />
-    <Compile Include="KvitteringsparserTester.cs" />
-    <Compile Include="LagreDokumentpakkeTilDiskProsessorTests.cs" />
-    <Compile Include="SmokeTests.cs" />
-    <Compile Include="SmokeTestsHelper.cs" />
-    <Compile Include="testdata\meldinger\KvitteringsRespons.cs" />
-    <Compile Include="testdata\meldinger\Kvitteringsforespørsel.cs" />
-    <Compile Include="testdata\meldinger\TransportKvittering.cs" />
-    <Compile Include="testdata\meldinger\SendtMelding.cs" />
-    <Compile Include="Utilities\Comparator.cs" />
-    <Compile Include="Utilities\Difference.cs" />
-    <Compile Include="Utilities\IComparator.cs" />
-    <Compile Include="Utilities\IDifference.cs" />
-    <Compile Include="Utilities\KvitteringsUtility.cs" />
-    <Compile Include="Utilities\DomainUtility.cs" />
-    <Compile Include="EnvelopeTester.cs" />
-    <Compile Include="ManifestTester.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DokumentpakkeTests.cs" />
-    <Compile Include="X509Certificate2ThumbprintTests.cs" />
-    <Compile Include="XmlValidering\ResponseValidatorTests.cs" />
-    <Compile Include="XmlValidering\MiljøTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
-      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
-      <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj">
-      <Project>{dc581ec3-ca16-473b-bdd5-07b30a8b4f05}</Project>
-      <Name>Difi.SikkerDigitalPost.Klient.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
-      <Project>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</Project>
-      <Name>Difi.SikkerDigitalPost.Klient</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.docx" />
-    <EmbeddedResource Include="testdata\vedlegg\VedleggsGris.docx" />
-    <EmbeddedResource Include="testdata\vedlegg\VedleggsHjelm.pdf" />
-    <EmbeddedResource Include="testdata\vedlegg\VedleggsKatt.docx" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\Post\manifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\SolutionItems\App.config">
-      <Link>App.config</Link>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="C:\Keys\signingkey.snk">
-      <Link>signingkey.snk</Link>
-    </None>
-    <None Include="packages.config" />
-    <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.cer" />
-    <EmbeddedResource Include="testdata\sertifikater\enhetstester\difi-enhetstester.p12" />
-    <EmbeddedResource Include="testdata\sertifikater\prod\BPClass3CA3.cer" />
-    <EmbeddedResource Include="testdata\sertifikater\prod\BPClass3RootCA.cer" />
-    <EmbeddedResource Include="testdata\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
-    <EmbeddedResource Include="testdata\sertifikater\prod\cpn rootca sha256 class 3.crt" />
-    <EmbeddedResource Include="testdata\sertifikater\test\Buypass_Class_3_Test4_CA_3.cer" />
-    <EmbeddedResource Include="testdata\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
-    <EmbeddedResource Include="testdata\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
-    <EmbeddedResource Include="testdata\sertifikater\test\root - cpn root sha256 ca - test.crt" />
-    <EmbeddedResource Include="testdata\sertifikater\test\testmottakersertifikatFraOppslagstjenesten.pem" />
-    <EmbeddedResource Include="testdata\sertifikater\enhetstester\utgått.pem" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Åpningskvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TomKøKvittering.xml" />
-    <EmbeddedResource Include="testdata\sertifikater\test\posten-test.pem" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.pdf" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\sertifikater\prod\produksjonsmottakersertifikatFraOppslagstjenesten.pem" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\vedlegg\Vedlegg.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\vedlegg\Vedlegg2.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="testdata\hoveddokument\Hoveddokument.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Leveringskvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Mottakskvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Returpostkvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\VarslingFeiletKvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Forretning\Feilmelding.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TransportFeiletKvittering.xml" />
-    <EmbeddedResource Include="Skjema\Eksempler\Kvitteringer\Transport\TransportOkKvittering.xml" />
-  </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+
+    <PropertyGroup>
+        <Title>Difi Sikker Digital Post Klient Tester</Title>
+        <PackageId>Difi.SikkerDigitalPost.Klient.Tester</PackageId>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <RootNamespace>Difi.SikkerDigitalPost.Klient.Tester</RootNamespace>
+        <AssemblyName>Difi.SikkerDigitalPost.Klient.Tester</AssemblyName>
+        <ProjectGuid>{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}</ProjectGuid>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+        <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Tester.XML</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CompareNETObjects" Version="4.62.0" />
+        <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0-beta.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+        <PackageReference Include="xunit.assert" Version="2.4.1" />
+        <PackageReference Include="xunit.core" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
+            <Link>Properties\SharedAssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
+            <Project>{C231BA31-5C58-4D8A-9040-DC604B6755E4}</Project>
+            <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj">
+            <Project>{A55CAB23-63C7-4E1D-951E-24936601180D}</Project>
+            <Name>Difi.SikkerDigitalPost.Klient</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj">
+            <Project>{1B519AE0-E22F-4691-9399-33D9D04526E6}</Project>
+            <Name>Difi.SikkerDigitalPost.Klient.Resources</Name>
+        </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <None Update="testdata/**/*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Remove="testdata\**\*" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="testdata\**\*" />
+    </ItemGroup>
+
 </Project>

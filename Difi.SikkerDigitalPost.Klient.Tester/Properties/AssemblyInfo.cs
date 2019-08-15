@@ -1,5 +1,6 @@
-﻿using System.Reflection;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("SikkerDigitalPost.Net.Tests")]
+[assembly: AssemblyTitle("Difi.SikkerDigitalPost.Klient.Tester")]
 [assembly: ComVisible(false)]

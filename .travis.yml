@@ -1,0 +1,35 @@
+sudo: required
+language: csharp
+dist: xenial
+solution: difi-sikkwe-digital-post-klient-dotnet.sln
+
+git:
+  submodules: false
+
+matrix:
+  include:
+    - dotnet: 2.2.104
+      mono: none
+      env: DOTNETCORE=2
+
+before_install:
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+  - ./travis-deploy/patch-assembly-version.sh Directory.Build.props $TRAVIS_TAG
+
+install:
+  - dotnet restore
+
+script:
+  - set -e
+  - dotnet build -c Release
+
+  - dotnet test Difi.SikkerDigitalPost.Klient.Tester/Difi.SikkerDigitalPost.Klient.Tester.csproj
+
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ./travis-deploy/pack-and-push.sh $TRAVIS_TAG $NUGET_API_KEY $TRAVIS_BUILD_DIR Difi.SikkerDigitalPost.Klient Difi.SikkerDigitalPost.Klient.Domene Difi.SikkerDigitalPost.Klient.Resources
+  on:
+    tags: true

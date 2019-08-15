@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("SikkerDigitalPost.Net.Klient")]
-[assembly: ComVisible(false)]
+[assembly: AssemblyTitle("Difi.SikkerDigitalPost.Klient")]
 [assembly: InternalsVisibleTo("Difi.SikkerDigitalPost.Klient.Tester")]
-[assembly: InternalsVisibleTo("SikkerDigitalPost.TestKlient")]
+[assembly: InternalsVisibleTo("Difi.SikkerDigitalPost.Klient.Testklient")]
+[assembly: ComVisible(false)]

@@ -2,8 +2,6 @@
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using ApiClientShared;
-using Common.Logging;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -17,6 +15,8 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Testklient.Properties;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using System.Linq;
+using Digipost.Api.Client.Shared.Resources.Resource;
+using log4net;
 
 namespace Difi.SikkerDigitalPost.Klient.Testklient
 {
@@ -174,8 +174,8 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
         {
             var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Testklient.Resources");
 
-            var hoveddokument = resourceUtility.ReadAllBytes(true, "Hoveddokument.pdf");
-            var vedlegg = resourceUtility.ReadAllBytes(true, "Vedlegg.txt");
+            var hoveddokument = resourceUtility.ReadAllBytes("Hoveddokument.pdf");
+            var vedlegg = resourceUtility.ReadAllBytes("Vedlegg.txt");
 
             //Forsendelse
             var dokumentpakke =
@@ -204,14 +204,14 @@ namespace Difi.SikkerDigitalPost.Klient.Testklient
             if (erDigipost)
             {
                 sertifikat =
-                new X509Certificate2(resourceUtility.ReadAllBytes(true, "testmottakerFraOppslagstjenesten_digipost.pem"));
+                new X509Certificate2(resourceUtility.ReadAllBytes("testmottakerFraOppslagstjenesten_digipost.pem"));
                 mottaker = new DigitalPostMottaker(Settings.Default.DigipostMottakerPersonnummer,
                     Settings.Default.DigipostMottakerDigipostadresse, sertifikat, new Organisasjonsnummer(Settings.Default.PostenOrgNr));
             }
             else
             {
                 sertifikat =
-                new X509Certificate2(resourceUtility.ReadAllBytes(true, "testmottakerFraOppslagstjenesten_eboks.pem"));
+                new X509Certificate2(resourceUtility.ReadAllBytes("testmottakerFraOppslagstjenesten_eboks.pem"));
                 mottaker = new DigitalPostMottaker(Settings.Default.EboksMottakerPersonnummer,
                     Settings.Default.EboksMottakerEboksadresse, sertifikat, new Organisasjonsnummer(Settings.Default.EboksOrgNr));
             }

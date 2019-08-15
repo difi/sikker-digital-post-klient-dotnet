@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Xml;
-using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Digipost.Api.Client.Shared.Resources.Resource;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -71,9 +71,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             {
                 //Arrange
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
-                var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+                var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
                 var vedleggTittel = "tittel";
-                var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
+                var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
                 var dokumentPakke = new Dokumentpakke(dokument);
@@ -100,9 +100,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
                 const string hoveddokumentTittel = "hoveddokument tittel";
-                var dokument = new Dokument(hoveddokumentTittel, resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+                var dokument = new Dokument(hoveddokumentTittel, resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
 
-                var vedlegg = new Dokument("vedlegg tittel", resourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"),
+                var vedlegg = new Dokument("vedlegg tittel", resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"),
                     "application/pdf");
 
                 var dokumentPakke = new Dokumentpakke(dokument);
