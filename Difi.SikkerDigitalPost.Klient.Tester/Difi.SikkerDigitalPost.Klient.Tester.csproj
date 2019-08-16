@@ -70,14 +70,17 @@
 
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <None Update="testdata/**/*" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="Skjema/Eksempler/Kvitteringer/**/*" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
     
     <ItemGroup>
         <None Remove="testdata\**\*" />
+        <None Remove="Skjema/Eksempler/Kvitteringer/**/*" />
     </ItemGroup>
     
     <ItemGroup>
         <EmbeddedResource Include="testdata\**\*" />
+        <EmbeddedResource Include="Skjema/Eksempler/Kvitteringer/**/*" />
     </ItemGroup>
 
 </Project>

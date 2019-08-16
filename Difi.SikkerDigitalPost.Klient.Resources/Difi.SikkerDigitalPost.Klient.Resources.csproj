@@ -36,7 +36,17 @@
         <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Resources.XML</DocumentationFile>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <None Update="Xml/Data/Response/*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="Xml/Data/Response/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Xml/Data/Response/*" />
+    </ItemGroup>
 
     <ItemGroup>
         <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">

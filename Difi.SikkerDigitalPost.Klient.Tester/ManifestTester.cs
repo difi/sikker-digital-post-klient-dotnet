@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
@@ -70,7 +71,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void VedleggTittelSkalSettesIManifestet()
             {
                 //Arrange
-                var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+                var resourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "testdata");
                 var dokument = new Dokument("hoved", resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
                 var vedleggTittel = "tittel";
                 var vedlegg = new Dokument(vedleggTittel, resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"),
@@ -98,7 +99,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void HoveddokumentTittelSkalSettesIManifestet()
             {
                 //Arrange
-                var resourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+                var resourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "testdata");
                 const string hoveddokumentTittel = "hoveddokument tittel";
                 var dokument = new Dokument(hoveddokumentTittel, resourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
 

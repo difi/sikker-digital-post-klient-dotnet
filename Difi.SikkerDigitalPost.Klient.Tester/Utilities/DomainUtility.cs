@@ -23,7 +23,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     internal static class DomainUtility
     {
-        internal static readonly ResourceUtility ResourceUtility = new ResourceUtility(typeof(DomainUtility).GetTypeInfo().Assembly, "Difi.SikkerDigitalPost.Klient.Tester.testdata");
+        internal static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "testdata");
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
@@ -252,12 +252,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 GetEternalTestCertificateWithoutPrivateKey()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
         }
 
         private static X509Certificate2 GetEternalTestCertificateMedPrivateKey()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("difi-enhetstester.p12"), "Qwer1234", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.p12"), "Qwer1234", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderCertificate()
