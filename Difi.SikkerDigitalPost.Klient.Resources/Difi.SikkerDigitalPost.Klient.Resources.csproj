@@ -47,6 +47,7 @@
 
 
     <ItemGroup>
+      <PackageReference Include="Difi.Felles.Utility" Version="3.0.0-beta.1" />
       <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0-beta.2" />
     </ItemGroup>
 

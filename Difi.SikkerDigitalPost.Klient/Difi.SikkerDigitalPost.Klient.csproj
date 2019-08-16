@@ -88,6 +88,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <PackageReference Include="Difi.Felles.Utility" Version="3.0.0-beta.1" />
         <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0-beta.2" />
         <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
@@ -98,12 +99,6 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Reference Include="Difi.Felles.Utility, Version=2.0.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550">
-        <HintPath>..\..\..\.nuget\packages\difi-felles-utility-dotnet\2.0.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
-      </Reference>
     </ItemGroup>
     
 </Project>

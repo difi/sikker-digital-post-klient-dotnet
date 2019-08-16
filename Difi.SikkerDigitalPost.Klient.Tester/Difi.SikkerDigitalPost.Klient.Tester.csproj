@@ -38,6 +38,7 @@
 
     <ItemGroup>
         <PackageReference Include="CompareNETObjects" Version="4.62.0" />
+        <PackageReference Include="Difi.Felles.Utility" Version="3.0.0-beta.1" />
         <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0-beta.2" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
         <PackageReference Include="xunit.assert" Version="2.4.1" />
