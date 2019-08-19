@@ -106,9 +106,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             if (!_signedXmlWithAgnosticId.CheckSignatureReturningKey(out asymmetricAlgorithm))
                 throw new SecurityException("Signaturen i motatt svar er ikke gyldig.");
 
+            /* //Todo: Commented out because this is currently a Windows-exclusive operation as of .NET Core 2+. Support for this will arrive in .NET Core 3+.
             if (asymmetricAlgorithm.ToXmlString(false) != certificate.PublicKey.Key.ToXmlString(false))
                 throw new SecurityException(
                     $"Sertifikatet som er benyttet for å validere signaturen er ikke det samme som er spesifisert i {path} elementet.");
+                    */
         }
 
         private void ValidateResponseCertificate(X509Certificate2 certificate, string orgNr)

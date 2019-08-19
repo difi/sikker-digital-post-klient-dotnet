@@ -39,7 +39,7 @@
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <None Update="XmlValidering/xsd/*" />
         <None Update="XmlValidering/xsd/ebxml/*" />
-        <None Update="XmlValidering/xsd/SBDH20040506-0/*" />
+        <None Update="XmlValidering/xsd/SBDH2004050602/*" />
         <None Update="XmlValidering/xsd/w3/*" />
         <None Update="XmlValidering/xsd/wssecurity/*" />
         <None Update="XmlValidering/xsd/xmlsoap/*" />
@@ -50,7 +50,7 @@
     <ItemGroup>
         <None Remove="XmlValidering/xsd/*" />
         <None Remove="XmlValidering/xsd/ebxml/*" />
-        <None Remove="XmlValidering/xsd/SBDH20040506-0/*" />
+        <None Remove="XmlValidering/xsd/SBDH2004050602/*" />
         <None Remove="XmlValidering/xsd/w3/*" />
         <None Remove="XmlValidering/xsd/wssecurity/*" />
         <None Remove="XmlValidering/xsd/xmlsoap/*" />
@@ -65,7 +65,7 @@
         <EmbeddedResource Include="XmlValidering/xsd/ebxml/*">
             <SubType>Designer</SubType>
         </EmbeddedResource>
-        <EmbeddedResource Include="XmlValidering/xsd/SBDH20040506-0/*">
+        <EmbeddedResource Include="XmlValidering/xsd/SBDH2004050602/*">
             <SubType>Designer</SubType>
         </EmbeddedResource>
         <EmbeddedResource Include="XmlValidering/xsd/w3/*">

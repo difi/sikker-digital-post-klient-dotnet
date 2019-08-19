@@ -15,6 +15,7 @@ matrix:
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
+  - openssl aes-256-cbc -K $encrypted_3afad0b3f334_key -iv $encrypted_3afad0b3f334_iv -in bring.p12.enc -out bring.p12 -d
   - ./travis-deploy/patch-assembly-version.sh Directory.Build.props $TRAVIS_TAG
 
 install:
@@ -24,7 +25,7 @@ script:
   - set -e
   - dotnet build -c Release
 
-  - ./travis-deploy/add-secrets.sh Difi.SikkerDigitalPost.Klient digipost_smoke_tests_certificate.p12
+  - ./travis-deploy/add-secrets.sh Difi.SikkerDigitalPost.Klient bring.p12
   - find /home/travis/.microsoft
   - cat /home/travis/.microsoft/usersecrets/smoke-certificate/secrets.json
 
