@@ -257,7 +257,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 GetEternalTestCertificateMedPrivateKey()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.p12"), "Qwer1234", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderCertificate()
