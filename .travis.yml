@@ -15,7 +15,7 @@ matrix:
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
-  - openssl aes-256-cbc -K $encrypted_3afad0b3f334_key -iv $encrypted_3afad0b3f334_iv -in bring.p12.enc -out bring.p12 -d
+  - openssl aes-256-cbc -K $encrypted_3afad0b3f334_key -iv $encrypted_3afad0b3f334_iv -in Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12.enc -out Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12 -d
   - ./travis-deploy/patch-assembly-version.sh Directory.Build.props $TRAVIS_TAG
 
 install:
