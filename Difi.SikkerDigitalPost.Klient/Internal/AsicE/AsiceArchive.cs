@@ -14,7 +14,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
     internal class AsiceArchive : ISoapVedlegg
     {
-        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility, IEnumerable<AsiceAttachableProcessor> asiceAttachableProcessors, params IAsiceAttachable[] asiceAttachables)
+        public AsiceArchive(X509Certificate2 cryptographicCertificate, GuidUtility guidUtility,
+            IEnumerable<AsiceAttachableProcessor> asiceAttachableProcessors, params IAsiceAttachable[] asiceAttachables)
         {
             CryptographicCertificate = cryptographicCertificate;
             GuidUtility = guidUtility;
@@ -27,7 +28,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         public long UnzippedContentBytesCount
         {
-            get { return AsiceAttachables.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length); }
+            get
+            {
+                return AsiceAttachables.Aggregate(0L,
+                    (current, asiceAttachable) => current + asiceAttachable.Bytes.Length);
+            }
         }
 
         public IAsiceAttachable[] AsiceAttachables { get; }
@@ -61,21 +66,19 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
         private byte[] CreateZipFile()
         {
             var stream = new MemoryStream();
-            using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
+            using (stream)
             {
-                foreach (var asiceAttachable in AsiceAttachables)
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
-                    if (asiceAttachable is Dokument)
+                    foreach (var asiceAttachable in AsiceAttachables)
                     {
-                        AddFilesToArchive(archive, ((Dokument) asiceAttachable).FilnavnRådata, asiceAttachable.Bytes);
-                    }
-                    else
-                    {
-                        AddFilesToArchive(archive, asiceAttachable.Filnavn, asiceAttachable.Bytes);
+                        AddFilesToArchive(archive, asiceAttachable is Dokument
+                            ? ((Dokument) asiceAttachable).FilnavnRådata
+                            : asiceAttachable.Filnavn, asiceAttachable.Bytes);
                     }
                 }
             }
-
+            
             var zipFile = stream.ToArray();
             SendArchiveThroughBundleProcessors(zipFile);
             return zipFile;
