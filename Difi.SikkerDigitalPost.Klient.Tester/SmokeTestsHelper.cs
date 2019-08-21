@@ -96,10 +96,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTestsHelper Expect_Receipt_To_Be(Type forretningskvitteringType)
         {
             Assert_state(_transportkvittering);
-
-            Assert.IsType(forretningskvitteringType, _forretningskvittering);
-
-            return this;
+            if (_forretningskvittering.GetType() == forretningskvitteringType) return this;
+            
+            var feilmelding = (Feilmelding) _forretningskvittering;
+            throw new Exception($"Fikk tilbake noe annet enn en forventet '{forretningskvitteringType}': {feilmelding}");
         }
 
         public SmokeTestsHelper ConfirmReceipt()
