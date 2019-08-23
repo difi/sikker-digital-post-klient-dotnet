@@ -18,6 +18,8 @@ using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Resources.Resource;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -237,7 +239,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
         {
-            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
+            var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø), serviceProvider.GetService<ILoggerFactory>());
         }
         
         internal static X509Certificate2 GetAvsenderEnhetstesterSertifikat()

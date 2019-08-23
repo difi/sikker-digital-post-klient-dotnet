@@ -21,14 +21,15 @@ using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Certificate;
-using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace Difi.SikkerDigitalPost.Klient.Api
 {
     public class SikkerDigitalPostKlient : ISikkerDigitalPostKlient
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        private readonly ILogger<SikkerDigitalPostKlient> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+        
         internal CertificateValidationProperties CertificateValidationProperties { get; set; }
 
         /// <param name="databehandler">
@@ -39,16 +40,22 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <param name="klientkonfigurasjon">
         ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken.
         /// </param>
+        /// <param name="loggerFactory">
+        ///     Brukes for å sette loggeren.
+        /// </param>
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<SikkerDigitalPostKlient>();
+            _loggerFactory = loggerFactory;
+            
             ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
 
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
-            RequestHelper = new RequestHelper(klientkonfigurasjon);
+            RequestHelper = new RequestHelper(klientkonfigurasjon, _loggerFactory);
             CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
         }
 
@@ -95,7 +102,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
             var guidUtility = new GuidUtility();
-            Log.Debug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
+            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
@@ -108,14 +115,14 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             if (transportReceipt is TransportOkKvittering)
             {
-                Log.Debug($"{transportReceipt}");
+                _logger.LogDebug($"{transportReceipt}");
 
                 var responsvalidator = new ResponseValidator(forretningsmeldingEnvelope.Xml(), transportReceiptXml, CertificateValidationProperties);
                 responsvalidator.ValidateTransportReceipt(guidUtility);
             }
             else
             {
-                Log.Error($"{transportReceipt}");
+                _logger.LogError(($"{transportReceipt}"));
             }
 
             return transportReceipt;
@@ -246,7 +253,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             var guidUtility = new GuidUtility();
 
-            Log.Debug($"Utgående kvitteringsforespørsel, messageId '{guidUtility.MessageId}'.");
+            _logger.LogDebug($"Utgående kvitteringsforespørsel, messageId '{guidUtility.MessageId}'.");
 
             var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
             var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
@@ -258,18 +265,18 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             if (receipt is TomKøKvittering)
             {
-                Log.Debug($"{receipt}");
+                _logger.LogDebug($"{receipt}");
                 SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
             }
             else if (receipt is Forretningskvittering)
             {
-                Log.Debug($"{receipt}");
+                _logger.LogDebug($"{receipt}");
                 SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
             }
 
             else if (receipt is Transportkvittering)
             {
-                Log.Debug($"{receipt}");
+                _logger.LogDebug($"{receipt}");
             }
 
             return receipt;
@@ -354,7 +361,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, bekreftKvitteringEnvelope.GetType().Name);
 
             await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope).ConfigureAwait(false);
-            Log.Debug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
+            _logger.LogDebug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
         }
 
         private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
@@ -376,7 +383,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             if (!isValid)
             {
                 var errorDescription = $"Ikke gyldig innhold i {prefix}. {validationMessages.Aggregate((current, variable) => current + Environment.NewLine + variable)}";
-                Log.Warn(errorDescription);
+                //_logger.LogWarning(errorDescription);
                 throw new XmlValidationException(errorDescription, validationMessages);
             }
         }

@@ -11,8 +11,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTests()
         {
             var miljø = Miljø.FunksjoneltTestmiljø;
+            //var miljø = Miljø.LokalMFMiljø;
 
-            _t = new SmokeTestsHelper(miljø);
+            _t = new SmokeTestsHelper(miljø, loggHttp: true);
         }
 
         [Fact]

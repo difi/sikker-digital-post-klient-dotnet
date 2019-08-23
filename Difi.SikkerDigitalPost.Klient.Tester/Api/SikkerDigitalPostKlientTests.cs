@@ -13,7 +13,10 @@ using Difi.SikkerDigitalPost.Klient.Resources.Xml;
 using Difi.SikkerDigitalPost.Klient.Tester.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using SecurityException = Difi.SikkerDigitalPost.Klient.Domene.Exceptions.SecurityException;
 
@@ -31,7 +34,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon);
+                var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon, serviceProvider.GetService<ILoggerFactory>());
 
                 //Assert
                 Assert.Equal(klientkonfigurasjon, sikkerDigitalPostKlient.Klientkonfigurasjon);
@@ -47,7 +51,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon));
+                var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon, serviceProvider.GetService<ILoggerFactory>()));
             }
         }
 
@@ -86,7 +91,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                     }
                 };
 
-                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(DomainUtility.GetDatabehandler(), klientkonfigurasjon);
+                var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(DomainUtility.GetDatabehandler(), klientkonfigurasjon, serviceProvider.GetService<ILoggerFactory>());
 
                 DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
                 var fakeHttpClientHandlerResponse = new FakeResponseHandler()

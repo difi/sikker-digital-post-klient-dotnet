@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
+using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
@@ -14,21 +15,25 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Handlers;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
 {
     internal class RequestHelper
     {
-        private static readonly ILog RequestResponseLog = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon):
-            this(klientkonfigurasjon, new DelegatingHandler[0])
+        private readonly ILogger<RequestHelper> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+        
+        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory):
+            this(klientkonfigurasjon, loggerFactory, new DelegatingHandler[0])
         {
         }
 
-        internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, params DelegatingHandler[] additionalHandlers)
+        internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory, params DelegatingHandler[] additionalHandlers)
         {
             ClientConfiguration = klientkonfigurasjon;
+            _loggerFactory = loggerFactory;
+            _logger = loggerFactory.CreateLogger<RequestHelper>();
             HttpClient = HttpClientWithHandlerChain(additionalHandlers);
         }
 
@@ -59,7 +64,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         {
             var proxyClientHandler = GetProxyOrDefaultHttpClientHandler();
 
-            var allDelegatingHandlers = new List<DelegatingHandler> {new UserAgentHandler()};
+            var allDelegatingHandlers = new List<DelegatingHandler> {new UserAgentHandler(), new LoggingHandler(ClientConfiguration, _loggerFactory)};
             allDelegatingHandlers.AddRange(additionalHandlers);
 
             var client = HttpClientFactory.Create(
@@ -85,21 +90,25 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 proxyOrNotHandler = new HttpClientHandler();
             }
 
+            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            
             return proxyOrNotHandler;
         }
 
         private WebProxy CreateProxy()
         {
-            return new WebProxy(
+            var webProxy = new WebProxy(
                 new UriBuilder(ClientConfiguration.ProxyScheme,
-                    ClientConfiguration.ProxyHost, ClientConfiguration.ProxyPort).Uri);
+                    ClientConfiguration.ProxyHost, ClientConfiguration.ProxyPort).Uri, true);
+
+            return webProxy;
         }
 
         private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)
         {
-            if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
+            if (ClientConfiguration.LoggForespørselOgRespons)
             {
-                RequestResponseLog.Debug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
+                _logger.LogDebug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
             }
 
             var requestUri = RequestUri(envelope);
@@ -108,9 +117,9 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var responseMessage = await HttpClient.PostAsync(requestUri, httpContent).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (ClientConfiguration.LoggForespørselOgRespons && RequestResponseLog.IsDebugEnabled)
+            if (ClientConfiguration.LoggForespørselOgRespons)
             {
-                RequestResponseLog.Debug($" Innkommende {responseContent}");
+                _logger.LogDebug($" Innkommende {responseContent}");
             }
 
             return responseContent;
