@@ -13,7 +13,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var miljø = Miljø.FunksjoneltTestmiljø;
             //var miljø = Miljø.LokalMFMiljø;
 
-            _t = new SmokeTestsHelper(miljø, loggHttp: true);
+            _t = new SmokeTestsHelper(miljø);
         }
 
         [Fact]
