@@ -376,14 +376,14 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             valideringAvResponsSignatur.ValidateMessageReceipt();
         }
 
-        private static void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string prefix)
+        private void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string prefix)
         {
             List<string> validationMessages;
             var isValid = SdpXmlValidator.Instance.Validate(envelope.Xml().OuterXml, out validationMessages);
             if (!isValid)
             {
                 var errorDescription = $"Ikke gyldig innhold i {prefix}. {validationMessages.Aggregate((current, variable) => current + Environment.NewLine + variable)}";
-                //_logger.LogWarning(errorDescription);
+                _logger.LogWarning(errorDescription);
                 throw new XmlValidationException(errorDescription, validationMessages);
             }
         }

@@ -270,7 +270,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static X509Certificate2 GetMottakerCertificate()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "test", "posten-test.pem"));//"testmottakersertifikatFraOppslagstjenesten.pem"));
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "test", "posten-test.pem"));
         }
 
         internal static Leveringskvittering GetLeveringskvittering()
