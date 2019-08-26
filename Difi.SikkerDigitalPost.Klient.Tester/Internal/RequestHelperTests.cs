@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
@@ -11,6 +10,7 @@ using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
                 var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
-                var requestHelper = new RequestHelper(clientConfiguration);
+                var requestHelper = new RequestHelper(clientConfiguration, new NullLoggerFactory());
 
                 //Assert
                 Assert.Equal(clientConfiguration, requestHelper.ClientConfiguration);
@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 var documentBundle = AsiceGenerator.Create(DomainUtility.GetForsendelseSimple(), new GuidUtility(), DomainUtility.GetAvsenderCertificate(), DomainUtility.GetKlientkonfigurasjon());
 
-                var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
+                var requestHelper = new RequestHelper(new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø), new NullLoggerFactory());
                 var fakeHttpClientHandlerResponse = new FakeResponseHandler()
                 {
                     HttpContent = new StringContent(XmlResource.Response.GetTransportOk().OuterXml),
@@ -74,6 +74,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
 
                 var requestHelper = new RequestHelper(
                     new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø),
+                    new NullLoggerFactory(),
                     new FakeResponseHandler()
                     {
                         TestingAction = testingAction,

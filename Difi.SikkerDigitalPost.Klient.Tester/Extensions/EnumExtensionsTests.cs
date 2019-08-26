@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Difi.Felles.Utility;
 using Xunit;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
+using Digipost.Api.Client.Shared.Certificate;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Extensions
 {

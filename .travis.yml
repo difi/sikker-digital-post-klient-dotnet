@@ -1,0 +1,40 @@
+sudo: required
+language: csharp
+dist: xenial
+solution: difi-sikker-digital-post-klient-dotnet.sln
+
+git:
+  submodules: false
+
+matrix:
+  include:
+    - dotnet: 2.2.104
+      mono: none
+      env: DOTNETCORE=2
+
+before_install:
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+  - openssl aes-256-cbc -K $encrypted_220b053559d6_key -iv $encrypted_220b053559d6_iv -in Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12.enc -out Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12 -d
+  - ./travis-deploy/patch-assembly-version.sh Directory.Build.props $TRAVIS_TAG
+
+install:
+  - dotnet restore
+
+script:
+  - set -e
+  - dotnet build -c Release
+
+  - ./travis-deploy/add-secrets.sh Difi.SikkerDigitalPost.Klient Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12
+  - find /home/travis/.microsoft
+  - cat /home/travis/.microsoft/usersecrets/smoke-certificate/secrets.json
+
+  - dotnet test Difi.SikkerDigitalPost.Klient.Tester/Difi.SikkerDigitalPost.Klient.Tester.csproj
+
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ./travis-deploy/pack-and-push.sh $TRAVIS_TAG $NUGET_API_KEY $TRAVIS_BUILD_DIR Difi.SikkerDigitalPost.Klient Difi.SikkerDigitalPost.Klient.Domene Difi.SikkerDigitalPost.Klient.Resources
+  on:
+    tags: true

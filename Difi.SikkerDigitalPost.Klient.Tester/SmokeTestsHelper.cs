@@ -8,7 +8,10 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
+using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -22,9 +25,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         private Transportkvittering _transportkvittering;
         private Forretningskvittering _forretningskvittering;
 
-        public SmokeTestsHelper(Miljø miljø)
+        public SmokeTestsHelper(Miljø miljø, bool loggHttp = false, bool brukProxy = false)
         {
-            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate()), new Klientkonfigurasjon(miljø));
+            var config = new Klientkonfigurasjon(miljø);
+
+            config.LoggForespørselOgRespons = loggHttp;
+            
+            if (brukProxy)
+            {
+                config.ProxyHost = "127.0.0.1";
+                config.ProxyPort = 8888;
+                config.ProxyScheme = "http";
+                config.TimeoutIMillisekunder = 2000;
+            }
+
+            var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate()), config, serviceProvider.GetService<ILoggerFactory>());
         }
 
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()
@@ -96,10 +112,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         public SmokeTestsHelper Expect_Receipt_To_Be(Type forretningskvitteringType)
         {
             Assert_state(_transportkvittering);
-
-            Assert.IsType(forretningskvitteringType, _forretningskvittering);
-
-            return this;
+            if (_forretningskvittering.GetType() == forretningskvitteringType) return this;
+            
+            var feilmelding = (Feilmelding) _forretningskvittering;
+            throw new Exception($"Fikk tilbake noe annet enn en forventet '{forretningskvitteringType}': {feilmelding}");
         }
 
         public SmokeTestsHelper ConfirmReceipt()

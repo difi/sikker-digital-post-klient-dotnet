@@ -1,143 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7666E57-D563-40A5-AE3C-B36E29824E87}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Difi.SikkerDigitalPost.Klient.Domene</RootNamespace>
-    <AssemblyName>Difi.SikkerDigitalPost.Klient.Domene</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Domene.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ApiClientShared, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.2.0.0\lib\net45\ApiClientShared.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility.Resources, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.Resources.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Entiteter\Aktører\Avsender.cs" />
-    <Compile Include="Entiteter\Aktører\PostMottaker.cs" />
-    <Compile Include="Entiteter\FysiskPost\Adresse.cs" />
-    <Compile Include="Entiteter\FysiskPost\FysiskPostMottaker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Entiteter\FysiskPost\FysiskPostMottakerAbstrakt.cs" />
-    <Compile Include="Entiteter\FysiskPost\FysiskPostReturMottaker.cs" />
-    <Compile Include="Entiteter\FysiskPost\NorskAdresse.cs" />
-    <Compile Include="Entiteter\FysiskPost\Printinstruksjon.cs" />
-    <Compile Include="Entiteter\FysiskPost\UtenlandskAdresse.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Mottakskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Returpostkvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TomKøKvittering.cs" />
-    <Compile Include="Entiteter\Post\FysiskPostInfo.cs" />
-    <Compile Include="Entiteter\Post\PostInfo.cs" />
-    <Compile Include="Enums\Postmetode.cs" />
-    <Compile Include="Enums\Utskriftsfarge.cs" />
-    <Compile Include="Entiteter\Interface\ISoapVedlegg.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Feilmelding.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Forretningskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Kvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TransportFeiletKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\Transportkvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Transport\TransportOkKvittering.cs" />
-    <Compile Include="Entiteter\Post\DigitalPostInfo.cs" />
-    <Compile Include="Entiteter\Post\Dokument.cs" />
-    <Compile Include="Entiteter\Post\Dokumentpakke.cs" />
-    <Compile Include="Entiteter\Varsel\EpostVarsel.cs" />
-    <Compile Include="Enums\PMode.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Kvitteringsforespørsel.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Leveringskvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\VarslingFeiletKvittering.cs" />
-    <Compile Include="Entiteter\Kvitteringer\Forretning\Åpningskvittering.cs" />
-    <Compile Include="Entiteter\Varsel\SmsVarsel.cs" />
-    <Compile Include="Enums\Feiltype.cs" />
-    <Compile Include="Enums\Posthåndtering.cs" />
-    <Compile Include="Enums\Posttype.cs" />
-    <Compile Include="Enums\Sikkerhetsnivå.cs" />
-    <Compile Include="Entiteter\Varsel\Varsel.cs" />
-    <Compile Include="Enums\Prioritet.cs" />
-    <Compile Include="Entiteter\Post\Forsendelse.cs" />
-    <Compile Include="Entiteter\Interface\IAsiceAttachable.cs" />
-    <Compile Include="Entiteter\Aktører\DigitalPostMottaker.cs" />
-    <Compile Include="Enums\Varslingskanal.cs" />
-    <Compile Include="Entiteter\Aktører\Person.cs" />
-    <Compile Include="Entiteter\Organisasjonsnummer.cs" />
-    <Compile Include="Exceptions\KonfigurasjonsException.cs" />
-    <Compile Include="Exceptions\SecurityException.cs" />
-    <Compile Include="Exceptions\SendException.cs" />
-    <Compile Include="Exceptions\SikkerDigitalPostException.cs" />
-    <Compile Include="Exceptions\XmlParseException.cs" />
-    <Compile Include="Exceptions\XmlValidationException.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\XmlElementExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entiteter\Aktører\Databehandler.cs" />
-    <Compile Include="Sha256Reference.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="C:\Keys\signingkey.snk">
-      <Link>signingkey.snk</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+
+    <PropertyGroup>
+        <Title>Difi Sikker Digital Post Klient Domene</Title>
+        <PackageId>Difi.SikkerDigitalPost.Klient.Domene</PackageId>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <RootNamespace>Difi.SikkerDigitalPost.Klient.Domene</RootNamespace>
+        <AssemblyName>Difi.SikkerDigitalPost.Klient.Domene</AssemblyName>
+        <ProjectGuid>{C231BA31-5C58-4D8A-9040-DC604B6755E4}</ProjectGuid>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+        <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Domene.XML</DocumentationFile>
+    </PropertyGroup>
+
+
+
+    <ItemGroup>
+        <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
+            <Link>Properties\SharedAssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <PackageReference Include="BouncyCastle" Version="1.8.5" />
+      <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
+      <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
+      <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Reference Include="Digipost.Api.Client.Shared, Version=3.0.0.0, Culture=neutral, PublicKeyToken=13a04c7692843c1c">
+        <HintPath>..\..\..\.nuget\packages\api-client-shared\3.0.0\lib\net46\Digipost.Api.Client.Shared.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

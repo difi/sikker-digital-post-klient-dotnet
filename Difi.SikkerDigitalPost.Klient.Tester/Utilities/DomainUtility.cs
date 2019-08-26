@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using ApiClientShared;
-using ApiClientShared.Enums;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -18,12 +17,15 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Digipost.Api.Client.Shared.Resources.Resource;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
     internal static class DomainUtility
     {
-        internal static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.testdata");
+        internal static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "testdata");
 
         private static readonly GuidUtility GuidUtility = new GuidUtility();
 
@@ -41,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Dokument GetHoveddokumentSimple()
         {
-            return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes(true, "hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+            return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
         }
 
         internal static string[] GetVedleggFilesPaths()
@@ -54,11 +56,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static IEnumerable<Dokument> GetVedlegg(int antall = 5)
         {
 
-            var vedleggTxt0 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
-            var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes(true, "vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
-            var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
-            var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes(true, "vedlegg", "Vedlegg.txt"), "text/plain");
+            var vedleggTxt0 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes("vedlegg", "Vedlegg.txt"), "text/plain");
+            var vedleggDocx = new Dokument("Vedleggsgris", ResourceUtility.ReadAllBytes("vedlegg", "VedleggsGris.docx"), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            var vedleggPdf = new Dokument("Vedleggshjelm", ResourceUtility.ReadAllBytes("vedlegg", "VedleggsHjelm.pdf"), "application/pdf");
+            var vedleggTxt1 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes("vedlegg", "Vedlegg.txt"), "text/plain");
+            var vedleggTxt2 = new Dokument("Vedlegg", ResourceUtility.ReadAllBytes("vedlegg", "Vedlegg.txt"), "text/plain");
 
             var vedlegg = new[] {vedleggTxt0, vedleggDocx, vedleggPdf, vedleggTxt1, vedleggTxt2};
 
@@ -237,9 +239,10 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()
         {
-            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
+            var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø), serviceProvider.GetService<ILoggerFactory>());
         }
-
+        
         internal static X509Certificate2 GetAvsenderEnhetstesterSertifikat()
         {
             return GetEternalTestCertificateMedPrivateKey();
@@ -252,23 +255,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         private static X509Certificate2 GetEternalTestCertificateWithoutPrivateKey()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "enhetstester", "difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
         }
 
         private static X509Certificate2 GetEternalTestCertificateMedPrivateKey()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "enhetstester", "difi-enhetstester.p12"), "", X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.p12"), "Qwer1234", X509KeyStorageFlags.Exportable);
         }
 
         internal static X509Certificate2 GetAvsenderCertificate()
         {
-            string difiThumbprint = "4addc8e8dc962889cf52c145860a017844e6399e"; //Bring Testintegrasjon, gyldig til november 2021
-            return CertificateUtility.SenderCertificate(difiThumbprint, Language.Norwegian);
+            return CertificateReader.ReadCertificate();
         }
 
         internal static X509Certificate2 GetMottakerCertificate()
         {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes(true, "sertifikater", "test", "posten-test.pem"));//"testmottakersertifikatFraOppslagstjenesten.pem"));
+            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "test", "posten-test.pem"));
         }
 
         internal static Leveringskvittering GetLeveringskvittering()

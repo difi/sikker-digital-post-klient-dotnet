@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml;
-using Difi.Felles.Utility.Resources.Xml;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {

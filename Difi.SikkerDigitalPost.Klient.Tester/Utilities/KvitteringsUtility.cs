@@ -1,7 +1,8 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Xml;
-using ApiClientShared;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {
@@ -9,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     {
         public static class Forretningskvittering
         {
-            private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Forretning");
+            private static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "Skjema.Eksempler.Kvitteringer.Forretning");
 
             public static XmlDocument FeilmeldingXml()
             {
@@ -43,13 +44,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             public static XmlDocument TilXmlDokument(string kvittering)
             {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
             }
         }
 
         public static class Transportkvittering
         {
-            private static readonly ResourceUtility ResourceUtility = new ResourceUtility("Difi.SikkerDigitalPost.Klient.Tester.Skjema.Eksempler.Kvitteringer.Transport");
+            private static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "Skjema.Eksempler.Kvitteringer.Transport");
 
             public static XmlDocument TomKøKvitteringXml()
             {
@@ -68,7 +69,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
             public static XmlDocument TilXmlDokument(string kvittering)
             {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(true, kvittering)));
+                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
             }
         }
     }

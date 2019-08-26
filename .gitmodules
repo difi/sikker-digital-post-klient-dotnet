@@ -1,3 +1,3 @@
-[submodule "appveyor-deploy"]
-	path = appveyor-deploy
-	url = https://github.com/digipost/appveyor-deploy.git
+[submodule "travis-deploy"]
+	path = travis-deploy
+	url = https://github.com/digipost/travis-deploy

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using Difi.Felles.Utility;
 using Difi.Felles.Utility.Utilities;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
@@ -48,6 +47,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             CertificateChainUtility.ProduksjonsSertifikater()
             );
 
+        public static  Miljø LokalMFMiljø => new Miljø(
+            new Uri("http://127.0.0.1:8049/"),
+            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
+            );
+        
         internal static Miljø Localhost => new Miljø(
             new Uri("http://192.168.36.1:8049"),
             CertificateChainUtility.FunksjoneltTestmiljøSertifikater()

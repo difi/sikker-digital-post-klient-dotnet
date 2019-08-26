@@ -1,272 +1,107 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <TeamCityBuild>false</TeamCityBuild>
-    <ProjectGuid>{D516DE44-9AFD-495D-B4C7-CCE751CA0369}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Difi.SikkerDigitalPost.Klient</RootNamespace>
-    <AssemblyName>Difi.SikkerDigitalPost.Klient</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TEAMCITY_BUILD_PROPERTIES_FILE)' != ''">
-    <TeamCityBuild>true</TeamCityBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;F</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\Keys\signingkey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ApiClientShared, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6e6972f540d5419a, processorArchitecture=MSIL">
-      <HintPath>..\packages\api-client-shared.2.0.0\lib\net45\ApiClientShared.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Difi.Felles.Utility, Version=1.2.1.0, Culture=neutral, PublicKeyToken=03cc8be9ca792550, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\difi-felles-utility-dotnet.1.2.1\lib\net45\Difi.Felles.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Api\ISikkerDigitalPostKlient.cs" />
-    <Compile Include="Internal\AsicE\AsiceArchive.cs" />
-    <Compile Include="Internal\AsicE\AsiceAttachableProcessor.cs" />
-    <Compile Include="Internal\AsicE\AsiceGenerator.cs" />
-    <Compile Include="Internal\AsicE\DocumentBundle.cs" />
-    <Compile Include="Internal\AsicE\IAsiceConfiguration.cs" />
-    <Compile Include="Internal\AsicE\IDokumentpakkeProsessor.cs" />
-    <Compile Include="Internal\AsicE\Manifest.cs" />
-    <Compile Include="Internal\AsicE\Signature.cs" />
-    <Compile Include="Envelope\Abstract\AbstractEnvelope.cs" />
-    <Compile Include="Envelope\Abstract\AbstractHeader.cs" />
-    <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingBody.cs" />
-    <Compile Include="Envelope\Forretningsmelding\DigitalPostElement.cs" />
-    <Compile Include="Envelope\Forretningsmelding\FysiskPostInfoElement.cs" />
-    <Compile Include="Envelope\UtenInnholdBody.cs" />
-    <Compile Include="Envelope\Forretningsmelding\StandardBusinessDocument.cs" />
-    <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingEnvelope.cs" />
-    <Compile Include="Envelope\Forretningsmelding\StandardBusinessDocumentHeader.cs" />
-    <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingHeader.cs" />
-    <Compile Include="Envelope\Forretningsmelding\ForretningsmeldingMessaging.cs" />
-    <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseHeader.cs" />
-    <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseMessaging.cs" />
-    <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselMessaging.cs" />
-    <Compile Include="Envelope\Security.cs" />
-    <Compile Include="Envelope\EnvelopeSettings.cs" />
-    <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselHeader.cs" />
-    <Compile Include="Envelope\Kvitteringsbekreftelse\KvitteringsbekreftelseEnvelope.cs" />
-    <Compile Include="Envelope\Kvitteringsforespørsel\KvitteringsforespørselEnvelope.cs" />
-    <Compile Include="Envelope\Abstract\EnvelopeXmlPart.cs" />
-    <Compile Include="Handlers\UserAgentHandler.cs" />
-    <Compile Include="Internal\RequestHelper.cs" />
-    <Compile Include="KvitteringFactory.cs" />
-    <Compile Include="Kvitteringsparser.cs" />
-    <Compile Include="LagreDokumentpakkeTilDiskProsessor.cs" />
-    <Compile Include="Utilities\NavneromUtility.cs" />
-    <Compile Include="Api\SikkerDigitalPostKlient.cs" />
-    <Compile Include="Utilities\DateUtility.cs" />
-    <Compile Include="Klientkonfigurasjon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\GuidUtility.cs" />
-    <Compile Include="Utilities\FileUtility.cs" />
-    <Compile Include="Security\AttachmentContentSignatureTransform.cs" />
-    <Compile Include="Security\QualifyingPropertiesObject.cs" />
-    <Compile Include="Security\RsaPkCs1Sha256SignatureDescription.cs" />
-    <Compile Include="Security\SecurityTokenReferenceClause.cs" />
-    <Compile Include="Security\Sha256Reference.cs" />
-    <Compile Include="Utilities\XmlUtility.cs" />
-    <Compile Include="XmlValidering\CertificateValidationProperties.cs" />
-    <Compile Include="XmlValidering\Miljø.cs" />
-    <Compile Include="XmlValidering\SdpXmlValidator.cs" />
-    <Compile Include="XmlValidering\ResponseValidator.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebbp-signals-2.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\ebxml\ebms-header-3_0-200704.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\BasicTypes.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\BusinessScope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\DocumentIdentification.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\Manifest.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\Partner.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\SBDH20040506-02\StandardBusinessDocumentHeader.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-feil.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-felles.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-kvittering.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-manifest.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp-melding.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\sdp.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\exc-c14n.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\soap-envelope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\ts_102918v010201.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\XAdES.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xenc-schema.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xml.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xmldsig-core-schema.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-200401-wss-wssecurity-secext-1.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-200401-wss-wssecurity-utility-1.0.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\wssecurity\oasis-wss-wssecurity-secext-1.1.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XmlValidering\xsd\xmlsoap\envelope.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XmlValidering\xsd\w3\xlink.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3CA3.cer" />
-    <EmbeddedResource Include="Resources\sertifikater\prod\BPClass3RootCA.cer" />
-    <EmbeddedResource Include="Resources\sertifikater\prod\cpn enterprise sha256 class 3.crt" />
-    <EmbeddedResource Include="Resources\sertifikater\prod\cpn rootca sha256 class 3.crt" />
-    <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_CA_3.cer" />
-    <EmbeddedResource Include="Resources\sertifikater\test\Buypass_Class_3_Test4_Root_CA.cer" />
-    <EmbeddedResource Include="Resources\sertifikater\test\intermediate - commfides cpn enterprise-norwegian sha256 ca - test2.crt" />
-    <EmbeddedResource Include="Resources\sertifikater\test\root - cpn root sha256 ca - test.crt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="C:\Keys\signingkey.snk">
-      <Link>signingkey.snk</Link>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj">
-      <Project>{c7666e57-d563-40a5-ae3c-b36e29824e87}</Project>
-      <Name>Difi.SikkerDigitalPost.Klient.Domene</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Target Name="TeamCity" AfterTargets="Build" Condition=" '$(TeamCityBuild)'=='true'">
-    <GetAssemblyIdentity AssemblyFiles="bin\$(ConfigurationName)\$(TargetFileName)">
-      <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
-    </GetAssemblyIdentity>
-    <Message Text="##teamcity[buildNumber '%(AssemblyIdentity.Version)']" />
-  </Target>
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+
+    <PropertyGroup>
+        <Title>Difi Sikker Digital Post Klient</Title>
+        <PackageId>Difi.SikkerDigitalPost.Klient</PackageId>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <RootNamespace>Difi.SikkerDigitalPost.Klient</RootNamespace>
+        <AssemblyName>Difi.SikkerDigitalPost.Klient</AssemblyName>
+        <ProjectGuid>{A55CAB23-63C7-4E1D-951E-24936601180D}</ProjectGuid>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <NoWarn>1591;NU1701</NoWarn>
+        <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.XML</DocumentationFile>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <None Update="XmlValidering/xsd/*" />
+        <None Update="XmlValidering/xsd/ebxml/*" />
+        <None Update="XmlValidering/xsd/SBDH2004050602/*" />
+        <None Update="XmlValidering/xsd/w3/*" />
+        <None Update="XmlValidering/xsd/wssecurity/*" />
+        <None Update="XmlValidering/xsd/xmlsoap/*" />
+        <None Update="Resources/sertifikater/prod/*" />
+        <None Update="Resources/sertifikater/test/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="XmlValidering/xsd/*" />
+        <None Remove="XmlValidering/xsd/ebxml/*" />
+        <None Remove="XmlValidering/xsd/SBDH2004050602/*" />
+        <None Remove="XmlValidering/xsd/w3/*" />
+        <None Remove="XmlValidering/xsd/wssecurity/*" />
+        <None Remove="XmlValidering/xsd/xmlsoap/*" />
+        <None Remove="Resources/sertifikater/prod/*" />
+        <None Remove="Resources/sertifikater/test/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="XmlValidering/xsd/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="XmlValidering/xsd/ebxml/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="XmlValidering/xsd/SBDH2004050602/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="XmlValidering/xsd/w3/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="XmlValidering/xsd/wssecurity/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="XmlValidering/xsd/xmlsoap/*">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources/sertifikater/prod/*" />
+        <EmbeddedResource Include="Resources/sertifikater/test/*" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
+            <Link>Properties\SharedAssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="BouncyCastle" Version="1.8.5" />
+        <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
+        <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
+        <PackageReference Include="log4net" Version="2.0.8" />
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0-preview8.19405.4" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="1.5.2" />
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="4.5.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj" />
+    </ItemGroup>
+    
 </Project>

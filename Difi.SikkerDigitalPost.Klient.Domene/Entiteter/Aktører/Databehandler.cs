@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using ApiClientShared;
-using ApiClientShared.Enums;
+using Digipost.Api.Client.Shared.Certificate;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
@@ -23,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         public Databehandler(Organisasjonsnummer organisasjonsnummer, string sertifikatThumbprint)
         {
             Organisasjonsnummer = organisasjonsnummer;
-            Sertifikat = CertificateUtility.SenderCertificate(sertifikatThumbprint, Language.Norwegian);
+            Sertifikat = CertificateUtility.SenderCertificate(sertifikatThumbprint);
         }
 
         /// <summary>

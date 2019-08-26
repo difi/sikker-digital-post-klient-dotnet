@@ -31,7 +31,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 _store.Close();
             }
 
-            [Fact]
+            [Fact(Skip = "Skipping because we don't use thumbprints anymore. Leaving so I can confirm that before deleting entirely.")]
             public void TestLowercaseThumbprint()
             {
                 var lowercaseThumbprint = _certificate.Thumbprint.ToLower();
@@ -42,7 +42,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     "Sertifikat funnet med thumbprint matcher ikke referansesertifikat");
             }
 
-            [Fact]
+            [Fact(Skip = "Skipping because we don't use thumbprints anymore. Leaving so I can confirm that before deleting entirely.")]
             public void TestRandomSpacingThumbprint()
             {
                 var randomSpacingThumb = string.Empty;

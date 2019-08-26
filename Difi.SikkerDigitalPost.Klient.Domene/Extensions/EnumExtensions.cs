@@ -1,5 +1,5 @@
 ﻿using System;
-using Difi.Felles.Utility;
+using Digipost.Api.Client.Shared.Certificate;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Extensions
 {
