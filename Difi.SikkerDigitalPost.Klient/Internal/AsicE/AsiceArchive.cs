@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
@@ -12,8 +10,6 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Security;
-using AlgorithmIdentifier = System.Security.Cryptography.Pkcs.AlgorithmIdentifier;
-using ContentInfo = System.Security.Cryptography.Pkcs.ContentInfo;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 {
@@ -60,26 +56,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
 
         private byte[] EncryptedBytes(byte[] bytes)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Work-around for this bug: https://github.com/dotnet/corefx/issues/32978
-            {
-                var contentInfo = new ContentInfo(bytes);
-                var encryptAlgoOid = new Oid("2.16.840.1.101.3.4.1.42"); // AES-256-CBC     
-                var envelopedCms = new EnvelopedCms(contentInfo, new AlgorithmIdentifier(encryptAlgoOid));
-                var recipient = new CmsRecipient(CryptographicCertificate);
-                envelopedCms.Encrypt(recipient);
-                return envelopedCms.Encode();
-            }
-            else
-            {
-                var bouncyCastleCms = new CmsProcessableByteArray(bytes);
-                var generator = new CmsEnvelopedDataGenerator();
+            var bouncyCastleCms = new CmsProcessableByteArray(bytes);
+            var generator = new CmsEnvelopedDataGenerator();
 
-                generator.AddKeyTransRecipient(DotNetUtilities.FromX509Certificate(CryptographicCertificate));
-                CmsEnvelopedData cmsData = generator.Generate(bouncyCastleCms, CmsEnvelopedGenerator.Aes256Cbc);
+            generator.AddKeyTransRecipient(DotNetUtilities.FromX509Certificate(CryptographicCertificate));
+            CmsEnvelopedData cmsData = generator.Generate(bouncyCastleCms, CmsEnvelopedGenerator.Aes256Cbc);
 
                 
-                return cmsData.GetEncoded();
-            }
+            return cmsData.GetEncoded();
         }
 
         private byte[] CreateZipFile()
