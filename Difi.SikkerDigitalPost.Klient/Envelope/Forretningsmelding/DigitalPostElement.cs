@@ -7,13 +7,14 @@ using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Utilities;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
 {
     internal class DigitalPostElement : EnvelopeXmlPart
     {
-        private readonly Sha256Digest _managedSha256;
+        private readonly IDigest _managedSha256;
 
         public DigitalPostElement(EnvelopeSettings settings, XmlDocument context)
             : base(settings, context)
@@ -165,7 +166,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 digestMethod.SetAttribute("Algorithm", "http://www.w3.org/2001/04/xmlenc#sha256");
 
                 var digestValue = dokumentpakkefingeravtrykk.AppendChildElement("DigestValue", "ns5", NavneromUtility.XmlDsig, Context);
-
+                
                 var hash = new byte[_managedSha256.GetDigestSize()];
                 _managedSha256.BlockUpdate(Settings.DocumentBundle.BundleBytes, 0, Settings.DocumentBundle.BundleBytes.Length);
                 _managedSha256.DoFinal(hash, 0);
