@@ -6,77 +6,98 @@ description: Integrer SDP.NET mot din loggplattform
 isHome: false
 ---
 
-### Generelt
+### Debugging
+#### Sette opp logging
+Klient biblioteket har evnen til å logge nyttig informasjon som kan bli brukt for debugging.
+For å skru på logging, gi `SikkerDigitalPostKlient` en `Microsoft.Extensions.Logging.ILoggerFactory` i konstruktøren.
+Dette er Microsoft sitt eget logging API og lar brukeren velge deres egen logging framework.
 
-Klienten bruker _Common.Logging API_ for å abstrahere logging. Det er opp til brukeren å imlementere API med et passende loggrammeverk, men vi viser hvordan dette kan gjøres med Log4Net.
+Om du skrur på logging med nivå `DEBUG` vil output være positive resultater av requests og verre, `WARN` gir bare feilet requests eller verre, mens `ERROR` gir bare feilet requests.
+Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient` namespace.
 
-Loggnivå `DEBUG` vil logge resultat for forespørsler som går bra og de  som feiler, `WARN` bare for feilede forespørsler eller verre, mens `ERROR`  bare skjer om sending av brev feilet. Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient`
+#### Implementing using NLog
+Det er flere måter å implementere en logger, men følgene eksempler vil være basert på [NLog dokumentasjonen](https://github.com/NLog/NLog.Extensions.Logging/wiki/Getting-started-with-.NET-Core-2---Console-application).
 
-### Implementere Log4Net som logger
-
-1. Installer Nuget-pakke `Common.Logging.Log4Net`. Denne vil da også installere avhengighetene `Common.Logging.Core` og `Common.Logging`. Merk at versjoneringen her er litt underlig, men et søk i Nuget Gallery vil f.eks. vise at Log4Net 2.0.3 har pakkenavn _Log4net [1.2.13] 2.0.3_. Da er det `Common.Logging.Log4Net1213` som skal installeres. 
-2. Legg merke til hvilken versjon av Log4net som faktisk installeres. Av en eller annen grunn kan det bli 2.0.0 som installeres. Da må versjonen oppdateres til 2.0.3.
-
-En fullstendig App.config med Log4Net-adapter og en `RollingFileAppender`:
-
+1. Installer Nuget pakkene `NLog`, `NLog.Extensions.Logging` og `Microsoft.Extensions.DependencyInjection`.
+1. Leg en `nlog.config` fil. Den følgende er ett eksempel som logger til både fil og konsol:
 ``` xml
 <?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <configSections>
-    <sectionGroup name="common">
-      <section name="logging" type="Common.Logging.ConfigurationSectionHandler, Common.Logging" />
-    </sectionGroup>
-    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
-  </configSections>
 
-  <common>
-    <logging>
-      <factoryAdapter type="Common.Logging.Log4Net.Log4NetLoggerFactoryAdapter, Common.Logging.Log4net1213">
-        <arg key="configType" value="INLINE" />
-      </factoryAdapter>
-    </logging>
-  </common>
+<!-- XSD manual extracted from package NLog.Schema: https://www.nuget.org/packages/NLog.Schema-->
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xsi:schemaLocation="NLog NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      autoReload="true"
+      internalLogFile="c:\temp\console-example-internal.log"
+      internalLogLevel="Info">
+    <!-- the targets to write to -->
+    <targets>
+        <!-- write logs to file -->
+        <target xsi:type="File"
+                name="fileTarget"
+                fileName="${specialfolder:folder=UserProfile}/logs/difi-sikker-digital-post-klient-dotnet/difi-sikker-digital-post-klient-dotnet.log"
+                layout="${date}|${level:uppercase=true}|${message} ${exception}|${logger}|${all-event-properties}"
+                archiveEvery="Day"
+                archiveNumbering="Date"
+                archiveDateFormat="yyyy-MM-dd"/>
+        <target xsi:type="Console"
+                name="consoleTarget"
+                layout="${date}|${level:uppercase=true}|${message} ${exception}|${logger}|${all-event-properties}" />
+    </targets>
 
-   <log4net>
-    <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-      <lockingModel type="log4net.Appender.FileAppender+MinimalLock" />
-      <file value="${AppData}\Digipost\SikkerDigitalPost\" />
-      <appendToFile value="true" />
-      <rollingStyle value="Date" />
-      <staticLogFileName value="false" />
-      <rollingStyle value="Composite" />
-      <param name="maxSizeRollBackups" value="10" />
-      <datePattern value="yyyy.MM.dd' sikker-digital-post-klient-dotnet.log'" />
-      <maximumFileSize value="100MB" />
-      <layout type="log4net.Layout.PatternLayout">
-        <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
-      </layout>
-    </appender>
-   <root>
-      <appender-ref ref="RollingFileAppender"/>
-    </root>
-  </log4net>
-</configuration>
-
+    <!-- rules to map from logger name to target -->
+    <rules>
+        <logger name="*" minlevel="Trace" writeTo="fileTarget,consoleTarget"/>
+    </rules>
+</nlog>
 ```
 
-
-<h3 id="loggeforsporselogrespons"> Logge forespørsel og respons</h3>
-
-Når det sendes brev gjennom Sikker Digital Post, så legges det også ved en del ekstra informasjon. Denne informasjonen er strukturert som XML og er nødvending for at brevet skal leveres til mottaker. Ofte kan dette være svært nyttig informasjon å logge. 
-
-For å aktivere logging av forespørsel og respons så setter du følgende på <code>Klientkonfigurasjon</code>:
+I din applikasjon, gjør følgende for å lage en logger og gi den til `SikkerDigitalPostKlient`:
 
 ``` csharp
-Klientkonfigurasjon.LoggForespørselOgRespons = true;
+private static IServiceProvider CreateServiceProviderAndSetUpLogging()
+{
+    var services = new ServiceCollection();
+
+    services.AddSingleton<ILoggerFactory, LoggerFactory>();
+    services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+    services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Trace));
+
+    var serviceProvider = services.BuildServiceProvider();
+    SetUpLoggingForTesting(serviceProvider);
+
+    return serviceProvider;
+}
+
+private static void SetUpLoggingForTesting(IServiceProvider serviceProvider)
+{
+    var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+    loggerFactory.AddNLog(new NLogProviderOptions {CaptureMessageTemplates = true, CaptureMessageProperties = true});
+    NLog.LogManager.LoadConfiguration("./nlog.config");
+}
+
+static void Main(string[] args)
+{
+    //Oppsett beskrevet tidligere:
+    Klientkonfigurasjon klientKonfig = null;
+    DataBehandler dataBehandler = null;
+    
+    var serviceProvider = CreateServiceProviderAndSetUpLogging();
+    var client = new SikkerDigitalPostKlient(dataBehandler, klientKonfig, serviceProvider.GetService<ILoggerFactory>());
+}
 ```
 
-Da  vil det logges til en logger med navn `Difi.SikkerDigitalPost.Klient.RequestResponse`.
 
-<blockquote> Merk at logging av forespørsel og respons kan gi mye dårligere ytelse. Det er ingen grunn til å logge dette i et produksjonsmiljø.</blockquote>
+#### Request og Response Logging
+Til integrasjon og debugging formål så kan det være nyttig å logge direkte requests og responses som kommer "over the wire". Dette kan oppnåes ved å gjøre følgende:
 
-<h3 id="dokumentpakkelogger">Prosessere dokumentpakke som sendes</h3>
+Sett denne property `Klientkonfigurasjon.LoggForespørselOgRespons = true`.
+
+> <span style="color:red">Advarsel: Man skal aldri skru på request logging i ett produksjonsmiljø. Det vil ha en sterk negativ virkning på ytelse.</span>
+
+
+#### Prosessere dokumentpakke som sendes
 
 Når man logger forespørsel og respons, så logges  bare XML som sendes, ikke selve dokumentpakken. Det er to måter å logge denne på:
-1. Aktiver logging til disk vha <code>Klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk</code>.
-2. Implementer <code>IDokumentPakkeProsessor</code> og legg til i <code>Klientkonfigurasjon.Dokumentpakkeprosessorer</code>
+1. Aktiver logging til disk vha `Klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk`.
+2. Implementer `IDokumentPakkeProsessor` og legg til i `Klientkonfigurasjon.Dokumentpakkeprosessorer`
