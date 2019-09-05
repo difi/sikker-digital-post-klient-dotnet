@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon" href="//www.difi.no/profiles/difino/themes/difi3_difino/favicon.ico" type="image/vnd.microsoft.icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link type="text/css" rel="stylesheet" href="//www.difi.no/_style/site/difino/style.css" media="screen" />
+	<link href="/sikker-digital-post-klient-dotnet/assets/css/docs.min.css" rel="stylesheet">
+	<link href="/sikker-digital-post-klient-dotnet/assets/css/style.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7COpen+Sans+Condensed:300,700%7CSource+Sans+Pro:200,300,regular,600,700,900&amp;subset=latin-ext,vietnamese,latin" media="all" />
+	
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="//www.difi.no/_style/lib/html5shiv/html5shiv-3.7.2.min.js"></script>
+	<script type="text/javascript" src="//www.difi.no/_style/lib/respond/respond-1.4.2.min.js"></script>
+	<![endif]-->
+	<body class="nodetype-blogg content-article aside-right" >
+		<a id="top"/>
+			<div id="skip-link">
+				<a href="#content">Hopp til hovedinnhold</a>
+			</div>
+			<div id="page">
+				<header>
+					<div class="branding sub-portal">
+						<div class="logo">
+							<a href="/sikker-digital-post-klient-dotnet/"><span>difi.github.io/difi-sikker-digital-post-klient-dotnet</span></a>
+						</div>
+						<div class="seperator"></div>
+						<div class="sub-portal">
+							<h1>Sikker Digital Post .NET</h1>
+							<p>difi.github.io/difi-sikker-digital-post-klient-dotnet</p>
+						</div>
+					</div>
+					<div class="tools">
+						<div class="menu">
+							<h2>Sekundærmeny</h2>
+							<ul class="links">
+								
+									<li  class="first" ><a href="/sikker-digital-post-klient-dotnet/about.html">Om sikker digital post</a></li>
+								
+									<li ><a href="https://github.com/difi/sikker-digital-post-net-klient">GitHub</a></li>
+								
+									<li  class="last" ><a href="https://github.com/difi/sikker-digital-post-net-klient/issues">Issues</a></li>
+								
+							</ul>
+						</div>
+					</div>
+					
+				</header>
+				<div id="above-content">
+					<div>
+						<section class="box title">
+							<div class="heading">
+							</div>
+							<div class="body">
+								<h1>
+								<span style="opacity: 1; transition: opacity 500ms; -webkit-transition: opacity 500ms;">
+									.NET Core-bibliotek for sending av sikker digital post for offentlig sektor
+								</span>
+								</h1>
+							</div>
+						</section>
+						<div class="col-md-9" role="main">
+							<!-- Info box notifying that you are using old documentation -->
+							
+							
+						</div>
+					</div>
+				</div>
+				
+					<div id="main" class="with-aside">
+						<section id="content" tabindex="-1">
+							<article class="one-col">
+								
+									<div class="body">
+										<div class="button custom" data-button-type="0" data-url="https://www.nuget.org/packages?q=Difi.SikkerDigitalPost.Klient" role="button" tabindex="0">
+											<div class="logo">
+												<img alt="logo" src="//www.difi.no/modules/contrib/difi_ckeditor_widgets/plugins/difibutton/icons/difibutton.png">
+											</div>
+											<div class="text">
+												<div class="title">Last ned</div>
+												<div class="sub-title">Gå til https://www.nuget.org/packages?q=Difi.SikkerDigitalPost.Klient</div>
+											</div>
+											<div class="arrow">›</div>
+										</div>
+									</div>
+								
+								
+	
+		<h2 id="hvordankommeigang">Hvordan komme i gang</h2>
+		<div class="body">
+			<p><p>Klienten er tilgjengelig som en NuGet-pakke. Denne vil oppdateres jevnlig etter hvert som ny funksjonalitet legges til.</p>
+
+<p>For å installere NuGet-pakken, gjør følgende i Visual Studio/Rider:</p>
+
+<ol>
+  <li>Velg <em>TOOLS -&gt; NuGet Package Manager -&gt; Manage Nuget Packages for Solution…</em></li>
+  <li>Søk etter <em>Difi.SikkerDigitalPost.Klient</em>. Flere pakker vil dukke opp. Installer de som er relevant for deg. Pass på å <em>IKKE</em> installer <code class="highlighter-rouge">difi-sikker-digital-post-klient</code> pakken. Den er ett .NET Framework bibliotek med uheldig likt navn.
+Hvis du leter etter .NET Framework dokumentasjonen, se versjon <a href="http://difi.github.io/sikker-digital-post-klient-dotnet/v2/">2</a>.
+    <ul>
+      <li>Ønsker du pre-release, må du sørge for at det står <em>Include Prerelease</em> i drop-down menyen rett over søkeresuløtatene (der det står <em>Stable Only</em>).</li>
+    </ul>
+  </li>
+  <li>Velg <em>Difi.SikkerDigitalPost.Klient.X</em> og trykk <em>Install</em>.</li>
+</ol>
+
+<h3 id="installer-og-bruk-databehandlersertifikat">Installer og bruk databehandlersertifikat</h3>
+<p>Som bruker av dette biblioteket er du en Databehandler som har ansvar for sending av meldinger. For å gjøre dette trenger du et sertifikat for å kunne autentisere deg mot Meldingsformidleren. Du kan lese mer om aktørene hos <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">begrep.difi.no</a>. 
+Dette bør installeres på maskinen som skal bruke klientbiblioteket. Grunnen til at vi ønsker å installere det er for å ikke ha passord i klartekst i koden.</p>
+
+<blockquote>SSL Certificates are small data files that digitally bind a cryptographic key to an organization's details. When installed on a web server, it activates the padlock and the https protocol (over port 443) and allows secure connections from a web server to a browser.</blockquote>
+
+<p>For å kommunisere over HTTPS trenger du å signere dine requests med ett databehandlersertifikat. Dette sertifikatet kan lastes direkte fra en fil eller fra Windows Certificate Store.</p>
+
+<p>Følgende steg vil installere sertifikatet i din Certificate Store. Dette burde gjøres på serveren hvor din applikasjon skal kjøre.</p>
+
+<p>For mer informasjon, se <a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-2.2&amp;tabs=windows#how-the-secret-manager-tool-works">Microsoft Dokumentasjonen</a>.</p>
+
+<p>Filplasseringen og passord til sertifikatet må legges ett trygt sted.</p>
+
+<p>Filplassering i Windows er:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>%APPDATA%\Microsoft\UserSecrets\&lt;user_secrets_id&gt;\secrets.json
+</code></pre>
+</div>
+
+<p>Filplassering i MacOS/Linux er:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>~/.microsoft/usersecrets/&lt;user_secrets_id&gt;/secrets.json
+</code></pre>
+</div>
+
+<p>Legg til følgende <code class="highlighter-rouge">UserSecretsId</code> element i din <code class="highlighter-rouge">.csproj</code> fil:</p>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;PropertyGroup&gt;</span>
+     <span class="nt">&lt;TargetFramework&gt;</span>netcoreapp2.1<span class="nt">&lt;/TargetFramework&gt;</span>
+     <span class="nt">&lt;UserSecretsId&gt;</span>enterprise-certificate<span class="nt">&lt;/UserSecretsId&gt;</span>
+<span class="nt">&lt;/PropertyGroup&gt;</span>
+</code></pre>
+</div>
+
+<p>Dette betyr at elementet <code class="highlighter-rouge">&lt;user_secrets_id&gt;</code> in the filplasseringen vil være <code class="highlighter-rouge">enterprise-certificate</code>.</p>
+
+<p>Fra command linjen, naviger til filplassering hvor din hoved <code class="highlighter-rouge">.csproj</code> fil ligger og kjør følgene kommandoer med dine egne sertifikat verdier:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>dotnet user-secrets set "Certificate:Path:Absolute" "&lt;your-certificate.p12&gt;"
+dotnet user-secrets set "Certificate:Password" "&lt;your-certificate-password&gt;"
+</code></pre>
+</div>
+
+<h4 id="stol-på-sertifikatet-i-windows">Stol på sertifikatet i Windows:</h4>
+<ol>
+  <li>Dobbeltklikk på sertifikatet (Sertifikatnavn.p12)</li>
+  <li>Velg at sertifikatet skal lagres i <code class="highlighter-rouge">Current User</code> eller <code class="highlighter-rouge">Local Machine</code> og trykk <em>Next</em>
+If you are running the client library from a system account, but debugging from a different user, please install it on <code class="highlighter-rouge">Local Machine</code>, as this enables loading it from any user.</li>
+  <li>Filnavn skal nå være utfylt. Trykk <em>Next</em></li>
+  <li>Skriv inn passord for privatnøkkel og velg <em>Mark this key as exportable …</em>, trykk <em>Next</em></li>
+  <li>Velg <em>Automatically select the certificate store based on the type of certificate</em></li>
+  <li>Klikk <em>Next</em> og <em>Finish</em></li>
+  <li>Får du spørsmål om å godta sertifikatkjeden så du gjør det.</li>
+  <li>Du skal da få en dialog som sier at importeringen var vellykket. Trykk <em>OK</em>.</li>
+</ol>
+
+<h4 id="stol-på-sertifikatet-i-macos">Stol på sertifikatet i MacOS:</h4>
+<ol>
+  <li>Åpne <code class="highlighter-rouge">Keychain Access</code></li>
+  <li>Velg <code class="highlighter-rouge">login</code> keychain</li>
+  <li>Trykk på <em>File</em> og deretter <em>Import</em></li>
+  <li>Velg databehandlersertifikatet og legg den til</li>
+</ol>
+
+<h4 id="stol-på-sertifikatet-i-linux">Stol på sertifikatet i Linux:</h4>
+<p>Last ned <em>root</em> og <em>intermediate</em> sertifikatene fra <a href="https://begrep.difi.no/SikkerDigitalPost/1.2.6/sikkerhet/sertifikathandtering">Difi</a> for din databehandlersertifkat utgiver.
+Merk navnendringen til å ha <code class="highlighter-rouge">.crt</code> på slutten for <code class="highlighter-rouge">update-ca-certificates</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo cp Buypass_Class_3_Test4_Root_CA.pem /usr/local/share/ca-certificates/Buypass_Class_3_Test4_Root_CA.crt
+sudo cp Buypass_Class_3_Test4_CA_3.pem /usr/local/share/ca-certificates/Buypass_Class_3_Test4_CA_3.crt
+sudo update-ca-certificates
+</code></pre>
+</div>
+</p>
+		</div>
+	
+
+	
+		<h2 id="sendepost">Sende post</h2>
+		<div class="body">
+			<p><blockquote>
+  <p>Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.</p>
+</blockquote>
+
+<h3 id="postinfo-for-digital-post">PostInfo for digital post</h3>
+
+<p>Først, lag en motaker av type <code class="highlighter-rouge">DigitalPostMottaker</code>:</p>
+
+<blockquote>
+  <p>Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se <a href="http://begrep.difi.no/Felles/ikkeSensitivTittel">begrep.difi.no</a> for detaljer om denne forskjellen.</p>
+</blockquote>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">personnummer</span> <span class="p">=</span> <span class="s">"01013300002"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">postkasseadresse</span> <span class="p">=</span> <span class="s">"ola.nordmann#2233"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">mottakersertifikat</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">X509Certificate2</span><span class="p">();</span> <span class="c1">//sertifikat hentet fra Oppslagstjenesten
+</span><span class="kt">var</span> <span class="n">orgnummerPostkasse</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Organisasjonsnummer</span><span class="p">(</span><span class="s">"123456789"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">mottaker</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DigitalPostMottaker</span><span class="p">(</span>
+        <span class="n">personnummer</span><span class="p">,</span> 
+        <span class="n">postkasseadresse</span><span class="p">,</span> 
+        <span class="n">mottakersertifikat</span><span class="p">,</span> 
+        <span class="n">orgnummerPostkasse</span>
+<span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">ikkeSensitivTittel</span> <span class="p">=</span> <span class="s">"En tittel som ikke er sensitiv"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">sikkerhetsniv</span><span class="err">å</span> <span class="p">=</span> <span class="n">Sikkerhetsniv</span><span class="err">å</span><span class="p">.</span><span class="n">Niv</span><span class="err">å</span><span class="m">3</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">postInfo</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DigitalPostInfo</span><span class="p">(</span><span class="n">mottaker</span><span class="p">,</span> <span class="n">ikkeSensitivTittel</span><span class="p">,</span> <span class="n">sikkerhetsniv</span><span class="err">å</span><span class="p">);</span>
+
+</code></pre>
+</div>
+
+<blockquote>
+  <p>Husk at <code class="highlighter-rouge">OrgnummerPostkasse</code> er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.</p>
+</blockquote>
+
+<h3 id="postinfo-for-fysisk-post">PostInfo for fysisk post</h3>
+
+<p>Skal du sende fysisk post må du først lage en <code class="highlighter-rouge">FysiskPostMottaker</code>, en <code class="highlighter-rouge">FysiskPostReturMottaker</code> og sette informasjon om farge og makulering:</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">navn</span> <span class="p">=</span> <span class="s">"Ola Nordmann"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">adresse</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">NorskAdresse</span><span class="p">(</span><span class="s">"0001"</span><span class="p">,</span> <span class="s">"Oslo"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">mottakersertifikat</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">X509Certificate2</span><span class="p">();</span> <span class="c1">// sertifikat hentet fra Oppslagstjenesten
+</span><span class="kt">var</span> <span class="n">orgnummerPostkasse</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Organisasjonsnummer</span><span class="p">(</span><span class="s">"123456789"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">mottaker</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FysiskPostMottaker</span><span class="p">(</span><span class="n">navn</span><span class="p">,</span> <span class="n">adresse</span><span class="p">,</span> <span class="n">mottakersertifikat</span><span class="p">,</span> <span class="n">orgnummerPostkasse</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">returMottaker</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FysiskPostReturmottaker</span><span class="p">(</span>
+    <span class="s">"John Doe"</span><span class="p">,</span> 
+    <span class="k">new</span> <span class="nf">NorskAdresse</span><span class="p">(</span><span class="s">"0566"</span><span class="p">,</span> <span class="s">"Oslo"</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Adresselinje1</span> <span class="p">=</span> <span class="s">"Returgata 22"</span>
+    <span class="p">});</span>
+
+<span class="kt">var</span> <span class="n">postInfo</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FysiskPostInfo</span><span class="p">(</span>
+            <span class="n">mottaker</span><span class="p">,</span> 
+            <span class="n">Posttype</span><span class="p">.</span><span class="n">A</span><span class="p">,</span> 
+            <span class="n">Utskriftsfarge</span><span class="p">.</span><span class="n">SortHvitt</span><span class="p">,</span> 
+            <span class="n">Posth</span><span class="err">å</span><span class="n">ndtering</span><span class="p">.</span><span class="n">MakuleringMedMelding</span><span class="p">,</span> 
+            <span class="n">returMottaker</span>
+<span class="p">);</span>
+
+</code></pre>
+</div>
+
+<p>Her er adressen av type <code class="highlighter-rouge">NorskAdresse</code> eller <code class="highlighter-rouge">UtenlandskAdresse</code>.</p>
+
+<p>Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til <code class="highlighter-rouge">Posthåndtering.MakuleringMedMelding</code>. Oppretting av en FysiskPostInfo vil da se slik ut:</p>
+
+<h3 id="oppsett-før-sending">Oppsett før sending</h3>
+
+<p>Opprett en avsender og en databehandler:</p>
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">orgnummerAvsender</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Organisasjonsnummer</span><span class="p">(</span><span class="s">"123456789"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">avsender</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Avsender</span><span class="p">(</span><span class="n">orgnummerAvsender</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">orgnummerDatabehandler</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Organisasjonsnummer</span><span class="p">(</span><span class="s">"987654321"</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">avsendersertifikat</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">X509Certificate2</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">databehandler</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Databehandler</span><span class="p">(</span><span class="n">orgnummerDatabehandler</span><span class="p">,</span> <span class="n">avsendersertifikat</span><span class="p">);</span>
+
+</code></pre>
+</div>
+
+<p>Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fått unike avsenderidentifikatorer, og kan settes på følgende måte:</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code><span class="n">avsender</span><span class="p">.</span><span class="n">Avsenderidentifikator</span> <span class="p">=</span> <span class="s">"Avsenderidentifikator.I.Organisasjon"</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h3 id="opprette-forsendelse">Opprette forsendelse</h3>
+
+<p>Deretterer kan du opprette forsendelse. Forsendelsen inneholder de dokumentene
+ som skal til mottakeren:</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">hoveddokument</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Dokument</span><span class="p">(</span>
+        <span class="n">tittel</span><span class="p">:</span> <span class="s">"Dokumenttittel"</span><span class="p">,</span> 
+        <span class="n">dokumentsti</span><span class="p">:</span> <span class="s">"/Dokumenter/Hoveddokument.pdf"</span><span class="p">,</span> 
+        <span class="n">mimeType</span><span class="p">:</span> <span class="s">"application/pdf"</span><span class="p">,</span> 
+        <span class="n">spr</span><span class="err">å</span><span class="n">kkode</span><span class="p">:</span> <span class="s">"NO"</span><span class="p">,</span> 
+        <span class="n">filnavn</span><span class="p">:</span> <span class="s">"filnavn"</span>
+    <span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">dokumentpakke</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Dokumentpakke</span><span class="p">(</span><span class="n">hoveddokument</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">vedleggssti</span> <span class="p">=</span> <span class="s">"/Dokumenter/Vedlegg.pdf"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">vedlegg</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Dokument</span><span class="p">(</span>
+    <span class="n">tittel</span><span class="p">:</span> <span class="s">"tittel"</span><span class="p">,</span> 
+    <span class="n">dokumentsti</span><span class="p">:</span> <span class="n">vedleggssti</span><span class="p">,</span> 
+    <span class="n">mimeType</span><span class="p">:</span> <span class="s">"application/pdf"</span><span class="p">,</span> 
+    <span class="n">spr</span><span class="err">å</span><span class="n">kkode</span><span class="p">:</span> <span class="s">"NO"</span><span class="p">,</span> 
+    <span class="n">filnavn</span><span class="p">:</span> <span class="s">"filnavn"</span><span class="p">);</span>
+
+<span class="n">dokumentpakke</span><span class="p">.</span><span class="nf">LeggTilVedlegg</span><span class="p">(</span><span class="n">vedlegg</span><span class="p">);</span>
+
+<span class="n">Avsender</span> <span class="n">avsender</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span> <span class="c1">//Som initiert tidligere
+</span><span class="n">PostInfo</span> <span class="n">postInfo</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span> <span class="c1">//Som initiert tidligere
+</span><span class="kt">var</span> <span class="n">forsendelse</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Forsendelse</span><span class="p">(</span><span class="n">avsender</span><span class="p">,</span> <span class="n">postInfo</span><span class="p">,</span> <span class="n">dokumentpakke</span><span class="p">);</span>
+
+</code></pre>
+</div>
+
+<h3 id="opprette-klient-og-sende-post">Opprette klient og sende post</h3>
+
+<p>Siste steg er å opprette en <code class="highlighter-rouge">SikkerDigitalPostKlient</code>:</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">klientKonfig</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Klientkonfigurasjon</span><span class="p">(</span><span class="n">Milj</span><span class="err">ø</span><span class="p">.</span><span class="n">FunksjoneltTestmilj</span><span class="err">ø</span><span class="p">);</span>
+
+<span class="n">Databehandler</span> <span class="n">databehandler</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span> <span class="c1">//Som initiert tidligere
+</span><span class="n">Forsendelse</span> <span class="n">forsendelse</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>     <span class="c1">//Som initiert tidligere
+</span>
+<span class="kt">var</span> <span class="n">sdpKlient</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SikkerDigitalPostKlient</span><span class="p">(</span><span class="n">databehandler</span><span class="p">,</span> <span class="n">klientKonfig</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">transportkvittering</span> <span class="p">=</span> <span class="n">sdpKlient</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">forsendelse</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">transportkvittering</span> <span class="k">is</span> <span class="n">TransportOkKvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//Når alt går fint	
+</span><span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">transportkvittering</span> <span class="k">is</span> <span class="n">TransportFeiletKvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">beskrivelse</span> <span class="p">=</span> <span class="p">((</span><span class="n">TransportFeiletKvittering</span><span class="p">)</span><span class="n">transportkvittering</span><span class="p">).</span><span class="n">Beskrivelse</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+
+<p>Transportkvitteringen får du tilbake umiddelbart; den trenger du ikke å polle for å få.</p>
+
+<h3 id="hente-kvitteringer">Hente kvitteringer</h3>
+
+<p>For å hente kvitteringer må du sende en kvitteringsforespørsel:</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code>
+<span class="kt">var</span> <span class="n">k</span><span class="err">ø</span><span class="n">Id</span> <span class="p">=</span> <span class="s">"MpcId"</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">kvitteringsForesp</span><span class="err">ø</span><span class="n">rsel</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Kvitteringsforesp</span><span class="err">ø</span><span class="nf">rsel</span><span class="p">(</span><span class="n">Prioritet</span><span class="p">.</span><span class="n">Prioritert</span><span class="p">,</span> <span class="n">k</span><span class="err">ø</span><span class="n">Id</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">" &gt; Henter kvittering på kø '{0}'..."</span><span class="p">,</span> <span class="n">kvitteringsForesp</span><span class="err">ø</span><span class="n">rsel</span><span class="p">.</span><span class="n">Mpc</span><span class="p">);</span>
+
+<span class="n">Kvittering</span> <span class="n">kvittering</span> <span class="p">=</span> <span class="n">sdpKlient</span><span class="p">.</span><span class="nf">HentKvittering</span><span class="p">(</span><span class="n">kvitteringsForesp</span><span class="err">ø</span><span class="n">rsel</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">TomK</span><span class="err">ø</span><span class="n">Kvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - Kø '{0}' er tom. Stopper å hente meldinger. "</span><span class="p">,</span> <span class="n">kvitteringsForesp</span><span class="err">ø</span><span class="n">rsel</span><span class="p">.</span><span class="n">Mpc</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">TransportFeiletKvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">feil</span> <span class="p">=</span> <span class="p">((</span><span class="n">TransportFeiletKvittering</span><span class="p">)</span> <span class="n">kvittering</span><span class="p">).</span><span class="n">Beskrivelse</span><span class="p">;</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"En feil skjedde under transport."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">Leveringskvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - En leveringskvittering ble hentet!"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="err">Å</span><span class="n">pningskvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - Har du sett. Noen har åpnet et brev. Moro."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">Returpostkvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - Du har fått en returpostkvittering for fysisk post."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">Mottakskvittering</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - Kvittering på sending av fysisk post mottatt."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">kvittering</span> <span class="k">is</span> <span class="n">Feilmelding</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">feil</span> <span class="p">=</span> <span class="p">(</span><span class="n">Feilmelding</span><span class="p">)</span><span class="n">kvittering</span><span class="p">;</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"  - En feilmelding ble hentet :"</span> <span class="p">+</span> <span class="n">feil</span><span class="p">.</span><span class="n">Detaljer</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+
+<blockquote>
+  <p>Husk at det ikke er mulig å hente nye kvitteringer før du har bekreftet mottak av nåværende.</p>
+</blockquote>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code><span class="n">sdpKlient</span><span class="p">.</span><span class="nf">Bekreft</span><span class="p">((</span><span class="n">Forretningskvittering</span><span class="p">)</span><span class="n">kvittering</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: <code class="highlighter-rouge">Leveringskvittering</code>,<code class="highlighter-rouge">Åpningskvittering</code>, <code class="highlighter-rouge">Returpostkvittering</code>, <code class="highlighter-rouge">Mottakskvittering</code> eller <code class="highlighter-rouge">Feilmelding</code>. Kvittering kan også være av typen<code class="highlighter-rouge">TransportFeiletKvittering</code>. Dette kan skje når selve kvitteringsforespørselen er feilformatert.</p>
+
+<blockquote>
+  <p>Husk at hvis du får <code class="highlighter-rouge">TomKøKvittering</code> så er køen tom. Du henter bare kvitteringer fra kø gitt av <code class="highlighter-rouge">MpcId</code> og <code class="highlighter-rouge">Prioritet</code>. Hvis ikke dette blir satt spesifikt vil det hentes fra kø hvor <code class="highlighter-rouge">MpcId = ""</code> og <code class="highlighter-rouge">Prioritet = Prioritet.Normal</code>.</p>
+</blockquote>
+
+</p>
+		</div>
+	
+
+	
+		<h2 id="logging">Logging</h2>
+		<div class="body">
+			<p><h3 id="debugging">Debugging</h3>
+<h4 id="sette-opp-logging">Sette opp logging</h4>
+<p>Klient biblioteket har evnen til å logge nyttig informasjon som kan bli brukt for debugging.
+For å skru på logging, gi <code class="highlighter-rouge">SikkerDigitalPostKlient</code> en <code class="highlighter-rouge">Microsoft.Extensions.Logging.ILoggerFactory</code> i konstruktøren.
+Dette er Microsoft sitt eget logging API og lar brukeren velge deres egen logging framework.</p>
+
+<p>Om du skrur på logging med nivå <code class="highlighter-rouge">DEBUG</code> vil output være positive resultater av requests og verre, <code class="highlighter-rouge">WARN</code> gir bare feilet requests eller verre, mens <code class="highlighter-rouge">ERROR</code> gir bare feilet requests.
+Disse loggerne vil være under <code class="highlighter-rouge">Difi.SikkerDigitalPost.Klient</code> namespace.</p>
+
+<h4 id="implementing-using-nlog">Implementing using NLog</h4>
+<p>Det er flere måter å implementere en logger, men følgene eksempler vil være basert på <a href="https://github.com/NLog/NLog.Extensions.Logging/wiki/Getting-started-with-.NET-Core-2---Console-application">NLog dokumentasjonen</a>.</p>
+
+<ol>
+  <li>Installer Nuget pakkene <code class="highlighter-rouge">NLog</code>, <code class="highlighter-rouge">NLog.Extensions.Logging</code> og <code class="highlighter-rouge">Microsoft.Extensions.DependencyInjection</code>.</li>
+  <li>Leg en <code class="highlighter-rouge">nlog.config</code> fil. Den følgende er ett eksempel som logger til både fil og konsol:
+``` xml
+<?xml version="1.0" encoding="utf-8"?></li>
+</ol>
+
+<!-- XSD manual extracted from package NLog.Schema: https://www.nuget.org/packages/NLog.Schema-->
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xsi:schemaLocation="NLog NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" autoReload="true" internalLogFile="c:\temp\console-example-internal.log" internalLogLevel="Info">
+    <!-- the targets to write to -->
+    <targets>
+        <!-- write logs to file -->
+        <target xsi:type="File" name="fileTarget" fileName="${specialfolder:folder=UserProfile}/logs/difi-sikker-digital-post-klient-dotnet/difi-sikker-digital-post-klient-dotnet.log" layout="${date}|${level:uppercase=true}|${message} ${exception}|${logger}|${all-event-properties}" archiveEvery="Day" archiveNumbering="Date" archiveDateFormat="yyyy-MM-dd" />
+        <target xsi:type="Console" name="consoleTarget" layout="${date}|${level:uppercase=true}|${message} ${exception}|${logger}|${all-event-properties}" />
+    </targets>
+
+    <!-- rules to map from logger name to target -->
+    <rules>
+        <logger name="*" minlevel="Trace" writeTo="fileTarget,consoleTarget" />
+    </rules>
+</nlog>
+<div class="highlighter-rouge"><pre class="highlight"><code>
+I din applikasjon, gjør følgende for å lage en logger og gi den til `SikkerDigitalPostKlient`:
+
+``` csharp
+private static IServiceProvider CreateServiceProviderAndSetUpLogging()
+{
+    var services = new ServiceCollection();
+
+    services.AddSingleton&lt;ILoggerFactory, LoggerFactory&gt;();
+    services.AddSingleton(typeof(ILogger&lt;&gt;), typeof(Logger&lt;&gt;));
+    services.AddLogging((builder) =&gt; builder.SetMinimumLevel(LogLevel.Trace));
+
+    var serviceProvider = services.BuildServiceProvider();
+    SetUpLoggingForTesting(serviceProvider);
+
+    return serviceProvider;
+}
+
+private static void SetUpLoggingForTesting(IServiceProvider serviceProvider)
+{
+    var loggerFactory = serviceProvider.GetRequiredService&lt;ILoggerFactory&gt;();
+
+    loggerFactory.AddNLog(new NLogProviderOptions {CaptureMessageTemplates = true, CaptureMessageProperties = true});
+    NLog.LogManager.LoadConfiguration("./nlog.config");
+}
+
+static void Main(string[] args)
+{
+    //Oppsett beskrevet tidligere:
+    Klientkonfigurasjon klientKonfig = null;
+    DataBehandler dataBehandler = null;
+    
+    var serviceProvider = CreateServiceProviderAndSetUpLogging();
+    var client = new SikkerDigitalPostKlient(dataBehandler, klientKonfig, serviceProvider.GetService&lt;ILoggerFactory&gt;());
+}
+</code></pre>
+</div>
+
+<h4 id="request-og-response-logging">Request og Response Logging</h4>
+<p>Til integrasjon og debugging formål så kan det være nyttig å logge direkte requests og responses som kommer “over the wire”. Dette kan oppnåes ved å gjøre følgende:</p>
+
+<p>Sett denne property <code class="highlighter-rouge">Klientkonfigurasjon.LoggForespørselOgRespons = true</code>.</p>
+
+<blockquote>
+  <p><span style="color:red">Advarsel: Man skal aldri skru på request logging i ett produksjonsmiljø. Det vil ha en sterk negativ virkning på ytelse.</span></p>
+</blockquote>
+
+<h4 id="prosessere-dokumentpakke-som-sendes">Prosessere dokumentpakke som sendes</h4>
+
+<p>Når man logger forespørsel og respons, så logges  bare XML som sendes, ikke selve dokumentpakken. Det er to måter å logge denne på:</p>
+<ol>
+  <li>Aktiver logging til disk vha <code class="highlighter-rouge">Klientkonfigurasjon.AktiverLagringAvDokumentpakkeTilDisk</code>.</li>
+  <li>Implementer <code class="highlighter-rouge">IDokumentPakkeProsessor</code> og legg til i <code class="highlighter-rouge">Klientkonfigurasjon.Dokumentpakkeprosessorer</code></li>
+</ol>
+</p>
+		</div>
+	
+
+	
+		<h2 id="ytelse">Ytelse</h2>
+		<div class="body">
+			<p><p>Klientbiblioteket benytter en <code class="highlighter-rouge">HttpWebRequest</code> for å kommunisere med Meldingsformidleren. I en konsollapplikasjon er denne begrenset til maks to samtidige forbindelser om gangen, mens den i en asp.net applikasjon er begrenset til ti. Dersom du ønsker å sende flere brev samtidig kan denne verdien endres f.eks til 3. Mer enn dette anbefales ikke.</p>
+
+<div class="language-csharp highlighter-rouge"><pre class="highlight"><code><span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">ServicePointManager</span><span class="p">.</span><span class="n">DefaultConnectionLimit</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>Se <a href="http://msdn.microsoft.com/en-us/library/system.net.servicepointmanager.defaultconnectionlimit(v=vs.110).aspx">ServicePointManager.DefaultConnectionLimit</a> for mer informasjon.</p>
+
+<p>Klassen <code class="highlighter-rouge">SikkerDigitalPostKlient</code> fungerer best ved at man oppretter en instans per applikasjon. <code class="highlighter-rouge">SikkerDigitalPostKlient</code> bruker en og samme instans av <a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=netcore-2.2">HttpClient</a> under panseret. Denne klassen er trådsikker og beste måte å bruke denne klassen på er å ha en instans per applikasjon som gjenbrukes for alle http-kall i applikasjons levetid. Av trådsikkerhetshensyn og ytelse er dette også måten brukere av biblioteket bør benytte <code class="highlighter-rouge">SikkerDigitalPostKlient</code> på.</p>
+</p>
+		</div>
+	
+
+	
+
+							</article>
+						</section>
+						<aside>
+							<section class="box">
+								<div class="heading hidden-print hidden-xs hidden-sm">
+									<h2>Innhold</h2>
+								</div>
+								<div class="body">
+									<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top" id="aside-nav">
+									</nav>
+								</div>
+							</section>
+							<!-- List of documentation versions -->
+							<div class="list-group col-md-1 list-versions ">
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v3/" class="list-group-item active"> v3</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v2/" class="list-group-item "> v2</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v1.6-1.11/" class="list-group-item "> v1.6-1.11</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v1.5/" class="list-group-item "> v1.5</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v1.4/" class="list-group-item "> v1.4</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v1.3/" class="list-group-item "> v1.3</a>
+								
+									
+									<a href="/sikker-digital-post-klient-dotnet/v1.2/" class="list-group-item "> v1.2</a>
+								
+							</div>
+						</aside>
+					</div>
+				
+				<footer>
+					<div class="seperator">
+						<hr />
+					</div>
+					<address>
+						<ul>
+							<li>Kontakt: <a href="mailto:idporten@difi.no">idporten@difi.no</a></li>
+							<li>Telefon: +47 95 73 61 03</li>
+							<li>E-post: <a href="mailto:postmottak@difi.no">postmottak@difi.no</a></li>
+							<li>Org.no: 991 825 827</li>
+							<li ><a href="http://www.difi.no/artikkel/2014/12/difis-nettsteder">Difis nettsteder</a></li>
+							<li class="last"><a href="http://www.difi.no/artikkel/2014/12/personvernerklaering">Personvern</a></li>
+						</ul>
+					</address>
+				</footer>
+
+				
+			  	<script>
+				    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				    ga('create', 'UA-78356843-1', 'auto', {
+				        anonymizeIp: true
+				    });
+				    ga('send', 'pageview');
+				</script>  				
+  				
+
+			</div>
+			<div role="complementary">
+				<a class="scroll-to-top" href="#top">
+					<span class="hidden">Go to top of page </span>
+					<div class="up-arrow">↑</div>
+				</a>
+			</div>
+			
+			<script type="text/javascript" src="//www.difi.no/_style/lib/jquery/jquery-1.11.1.min.js"></script>
+			<script type="text/javascript" src="//www.difi.no/_style/lib/bootstrap3/js/bootstrap.js"></script>
+			<script type="text/javascript" src="//www.difi.no/themes/contrib/difi3/js/jquery.flexnav.min.js"></script>
+			<script type="text/javascript" src="/sikker-digital-post-klient-dotnet/assets/js/docs.min.js"></script>
+		</body>
+	</html>

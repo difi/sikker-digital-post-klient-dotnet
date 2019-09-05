@@ -85,21 +85,3 @@ sudo cp Buypass_Class_3_Test4_Root_CA.pem /usr/local/share/ca-certificates/Buypa
 sudo cp Buypass_Class_3_Test4_CA_3.pem /usr/local/share/ca-certificates/Buypass_Class_3_Test4_CA_3.crt
 sudo update-ca-certificates
 ```
-
-#### <span style="color:red">\[Advarsel: Dette er teknisksett støttet på andre operativsystemer enn Windows, men vi har ikke testet det grundig. Bruk på eget risiko.\]</span> Finne og bruke thumbprint til installert sertifikat
-1. Start mmc.exe (Klikk windowsbutton og skriv mmc.exe)
-1. _Choose File_ -> _Add/Remove Snap-in…_ (Ctrl + M)
-1. Velg certificate og klikk _Add >_
-1. Hvis sertifikatet var installert i `Current User` velg `My User Account` ellers hvis den var installert i `Local Machine` velg `Computer Account`. Så klikk _Finish_ og deretter _Ok_.
-1. Utvid _Certificates_ noden, velg _Personal_ og åpne _Certificates_
-1. Dobbelklikk på det installerte sertifikatet
-1. Gå til _Details_ tabben
-1. Scroll ned til _Thumbprint_
-1. Kopier thumbprint og last som vist under
-
-``` csharp
-
- var clientConfig = new ClientConfig(broker, Environment.Production);
- var client = new DigipostClient(clientConfig, thumbprint: "84e492a972b7e...");
-
-```

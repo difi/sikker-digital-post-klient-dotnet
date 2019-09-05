@@ -77,7 +77,7 @@ analytics:
   trackingid: UA-78356843-1
   domain: auto
 
-highlighter: rouge  
+highlight: rouge  
 
 gems:
   - jekyll-redirect-from
