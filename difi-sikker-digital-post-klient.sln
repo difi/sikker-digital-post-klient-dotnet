@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient", "Difi.SikkerDigitalPost.Klient\Difi.SikkerDigitalPost.Klient.csproj", "{A55CAB23-63C7-4E1D-951E-24936601180D}"
 EndProject
+Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Docs", "Difi.SikkerDigitalPost.Klient.Docs\Difi.SikkerDigitalPost.Klient.Docs.csproj", "{880298B2-689E-4202-B73E-BF8BD07096F2}"
+EndProject
 Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Domene", "Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj", "{C231BA31-5C58-4D8A-9040-DC604B6755E4}"
 EndProject
 Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Resources", "Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj", "{1B519AE0-E22F-4691-9399-33D9D04526E6}"
@@ -30,5 +32,9 @@ Global
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880298B2-689E-4202-B73E-BF8BD07096F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880298B2-689E-4202-B73E-BF8BD07096F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880298B2-689E-4202-B73E-BF8BD07096F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880298B2-689E-4202-B73E-BF8BD07096F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
