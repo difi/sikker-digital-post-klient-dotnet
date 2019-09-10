@@ -14,7 +14,7 @@
         <PackageTags>DIFI digital elektronisk dotnet api klient client kontakt reservasjonregisteret</PackageTags>
         <Description>Klientbibliotek for integrasjon mot Oppslagstjenesten for kontakt og reservasjonregisteret</Description>
 
-        <UserSecretsId>smoke-certificate</UserSecretsId>
+        <UserSecretsId>enterprise-certificate</UserSecretsId>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     </PropertyGroup>
 

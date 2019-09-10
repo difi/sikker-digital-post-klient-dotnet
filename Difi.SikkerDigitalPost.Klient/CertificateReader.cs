@@ -31,7 +31,7 @@ namespace Difi.SikkerDigitalPost.Klient
         
         X509Certificate2 ReadCertificatePrivate()
         {
-            var pathToSecrets = $"{System.Environment.GetEnvironmentVariable("HOME")}/.microsoft/usersecrets/smoke-certificate/secrets.json";
+            var pathToSecrets = $"{System.Environment.GetEnvironmentVariable("HOME")}/.microsoft/usersecrets/enterprise-certificate/secrets.json";
             _logger.LogDebug($"Reading certificate details from secrets file: {pathToSecrets}");
             var fileExists = File.Exists(pathToSecrets);
 
