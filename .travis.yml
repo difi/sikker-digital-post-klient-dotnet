@@ -27,7 +27,7 @@ script:
 
   - ./travis-deploy/add-secrets.sh Difi.SikkerDigitalPost.Klient Bring_Digital_Signature_Key_Encipherment_Data_Encipherment.p12
   - find /home/travis/.microsoft
-  - cat /home/travis/.microsoft/usersecrets/smoke-certificate/secrets.json
+  - cat /home/travis/.microsoft/usersecrets/enterprise-certificate/secrets.json
 
   - dotnet test Difi.SikkerDigitalPost.Klient.Tester/Difi.SikkerDigitalPost.Klient.Tester.csproj
 
