@@ -22,6 +22,7 @@ using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Certificate;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Difi.SikkerDigitalPost.Klient.Api
 {
@@ -32,6 +33,22 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         
         internal CertificateValidationProperties CertificateValidationProperties { get; set; }
 
+        /// <param name="databehandler">
+        ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
+        ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
+        ///     <see cref="Avsender" /> til Meldingsformidler.
+        /// </param>
+        /// <param name="klientkonfigurasjon">
+        ///     Brukes for å sette parametere som proxy, timeout, logging av forespørsel/respons og selve dokumentpakken.
+        /// </param>
+        /// <remarks>
+        ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
+        /// </remarks>
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon) 
+            : this(databehandler, klientkonfigurasjon, new NullLoggerFactory())
+        {
+        }
+        
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
