@@ -17,8 +17,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse" /> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, string dokumentsti, string mimeType, string språkkode = null, string filnavn = null)
-            : this(tittel, File.ReadAllBytes(dokumentsti), mimeType, språkkode, filnavn ?? Path.GetFileName(dokumentsti))
+        public Dokument(string tittel, string dokumentsti, string mimeType, string språkkode = null, string filnavn = null, string dataType = null)
+            : this(tittel, File.ReadAllBytes(dokumentsti), mimeType, språkkode, filnavn ?? Path.GetFileName(dokumentsti), dataType)
         {
         }
 
@@ -30,8 +30,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse" /> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, Stream dokumentstrøm, string mimeType, string språkkode = null, string filnavn = null)
-            : this(tittel, File.ReadAllBytes(new StreamReader(dokumentstrøm).ReadToEnd()), mimeType, språkkode, filnavn)
+        public Dokument(string tittel, Stream dokumentstrøm, string mimeType, string språkkode = null, string filnavn = null, string dataType = null)
+            : this(tittel, File.ReadAllBytes(new StreamReader(dokumentstrøm).ReadToEnd()), mimeType, språkkode, filnavn, dataType)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// </param>
         /// <param name="språkkode">Språkkode for dokumentet. Om ikke satt, brukes <see cref="Forsendelse" /> sitt språk.</param>
         /// <param name="filnavn">Filnavnet til dokumentet.</param>
-        public Dokument(string tittel, byte[] dokumentbytes, string mimeType, string språkkode = null, string filnavn = null)
+        public Dokument(string tittel, byte[] dokumentbytes, string mimeType, string språkkode = null, string filnavn = null, string dataType = null)
         {
             filnavn = filnavn ?? Path.GetRandomFileName();
             var vasketFilnavn = filnavn.RemoveIllegalCharacters();
@@ -54,6 +54,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Filnavn = UrlEncode(filnavn.RemoveIllegalCharacters());
             FilnavnRådata = vasketFilnavn;
             Språkkode = språkkode;
+            DataType = dataType;
         }
 
         public string Tittel { get; private set; }
@@ -69,6 +70,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         public string MimeType { get; }
 
         public string Id { get; set; }
+        
+        public string DataType { get; set; }
 
         private string UrlEncode(string raw)
         {

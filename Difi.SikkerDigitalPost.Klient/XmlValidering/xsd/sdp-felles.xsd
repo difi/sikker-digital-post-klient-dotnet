@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-
 <xsd:schema xmlns="http://begrep.difi.no/sdp/schema_v10"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
             targetNamespace="http://begrep.difi.no/sdp/schema_v10"
             elementFormDefault="qualified" version="1.0">
 
-  <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="w3/xmldsig-core-schema.xsd" />
+  <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="w3/xmldsig-core-schema.xsd"/>
 
   <xsd:complexType name="Melding" abstract="true">
     <xsd:sequence>
@@ -16,18 +15,18 @@
 
   <xsd:complexType name="Avsender">
     <xsd:sequence>
-      <xsd:element name="organisasjon" type="Organisasjon" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="organisasjon" type="Organisasjon" minOccurs="1" maxOccurs="1"/>
       <xsd:element name="avsenderidentifikator" minOccurs="0" maxOccurs="1">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">
-            <xsd:maxLength value="100" />
+            <xsd:maxLength value="100"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:element>
       <xsd:element name="fakturaReferanse" minOccurs="0" maxOccurs="1">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">
-            <xsd:maxLength value="40" />
+            <xsd:maxLength value="40"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:element>
@@ -37,14 +36,14 @@
   <xsd:complexType name="Organisasjon">
     <xsd:simpleContent>
       <xsd:extension base="Iso6523Identitet">
-        <xsd:attribute name="authority" type="Iso6523Authority" use="optional" default="iso6523-actorid-upis" />
+        <xsd:attribute name="authority" type="Iso6523Authority" use="optional" default="iso6523-actorid-upis"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
 
   <xsd:complexType name="Mottaker">
     <xsd:sequence>
-      <xsd:element name="person" type="Person" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="person" type="Person" minOccurs="1" maxOccurs="1"/>
     </xsd:sequence>
   </xsd:complexType>
 
@@ -53,11 +52,11 @@
       <xsd:element name="personidentifikator" minOccurs="1" maxOccurs="1">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">
-            <xsd:pattern value="[0-9]{11}" />
+            <xsd:pattern value="[0-9]{11}"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:element>
-      <xsd:element name="postkasseadresse" type="xsd:string" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="postkasseadresse" type="xsd:string" minOccurs="1" maxOccurs="1"/>
     </xsd:sequence>
   </xsd:complexType>
 
@@ -73,27 +72,27 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
-      <xsd:pattern value="[0-9]{4}:\w{1,35}" />
+      <xsd:pattern value="[0-9]{4}:\w{1,35}"/>
     </xsd:restriction>
   </xsd:simpleType>
 
   <xsd:simpleType name="Iso6523Authority">
     <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="iso6523-actorid-upis" />
+      <xsd:enumeration value="iso6523-actorid-upis"/>
     </xsd:restriction>
   </xsd:simpleType>
 
   <xsd:complexType name="Tittel">
     <xsd:simpleContent>
       <xsd:extension base="TittelString">
-        <xsd:attribute name="lang" type="Spraakkode" use="required" />
+        <xsd:attribute name="lang" type="Spraakkode" use="required"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <xsd:simpleType name="TittelString">
     <xsd:restriction base="xsd:string">
-      <xsd:minLength value="1" />
-      <xsd:maxLength value="255" />
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="255"/>
     </xsd:restriction>
   </xsd:simpleType>
 

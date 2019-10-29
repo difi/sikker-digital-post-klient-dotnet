@@ -10,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     internal class SdpXmlValidator : XmlValidator
     {
         private static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "XmlValidering.xsd");
-
+        
         private SdpXmlValidator()
         {
             AddXsd(NavneromUtility.SoapEnvelopeEnv12, GetResource("w3", "soap-envelope.xsd"));

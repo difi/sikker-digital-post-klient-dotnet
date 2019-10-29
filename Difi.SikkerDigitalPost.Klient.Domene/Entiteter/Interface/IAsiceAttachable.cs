@@ -1,6 +1,6 @@
 ﻿namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface
 {
-    internal interface IAsiceAttachable
+    public interface IAsiceAttachable
     {
         string Filnavn { get; }
 

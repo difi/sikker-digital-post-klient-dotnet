@@ -15,9 +15,9 @@ licenseUrl: http://opensource.org/licenses/MIT
 baseurl: "/sikker-digital-post-klient-dotnet"
 
 ##Version handling
-currentCollecion: "v3"
-currentVersion: "3"
-versions: ["3","2","1.6-1.11","1.5","1.4","1.3","1.2"]
+currentCollecion: "v3_1"
+currentVersion: "3.1"
+versions: ["3.1", "3.0","2.0","1.6-1.11","1.5","1.4","1.3","1.2"]
 
 # Collection of versions
 collections:
@@ -36,12 +36,15 @@ collections:
   v1_6_11:  
     output: true
     permalink: /v1.6-1.11/
-  v2:
+  v2_0:
     output: true
-    permalink: /v2/
-  v3:
+    permalink: /v2.0/
+  v3_0:
     output: true
-    permalink: /v3/
+    permalink: /v3.0/
+  v3_1:
+    output: true
+    permalink: /v3.1/
 ## End of Version handling
 
 aboutSide: "about.html"
@@ -52,6 +55,8 @@ headerLinks:
     url: /sikker-digital-post-klient-dotnet/about.html
   - title: GitHub
     url: https://github.com/difi/sikker-digital-post-net-klient
+  - title: Download Nuget Package
+    url: https://www.nuget.org/packages?q=Difi.SikkerDigitalPost.Klient
   - title: Issues
     url: https://github.com/difi/sikker-digital-post-net-klient/issues
 

@@ -19,8 +19,9 @@ Disse loggerne vil være under `Difi.SikkerDigitalPost.Klient` namespace.
 Det er flere måter å implementere en logger, men følgene eksempler vil være basert på [NLog dokumentasjonen](https://github.com/NLog/NLog.Extensions.Logging/wiki/Getting-started-with-.NET-Core-2---Console-application).
 
 1. Installer Nuget pakkene `NLog`, `NLog.Extensions.Logging` og `Microsoft.Extensions.DependencyInjection`.
-1. Leg en `nlog.config` fil. Den følgende er ett eksempel som logger til både fil og konsol:
-``` xml
+1. Legg en `nlog.config` fil. Den følgende er ett eksempel som logger til både fil og konsol:
+
+{% highlight xml %}
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- XSD manual extracted from package NLog.Schema: https://www.nuget.org/packages/NLog.Schema-->
@@ -49,7 +50,7 @@ Det er flere måter å implementere en logger, men følgene eksempler vil være 
         <logger name="*" minlevel="Trace" writeTo="fileTarget,consoleTarget"/>
     </rules>
 </nlog>
-```
+{% endhighlight %}
 
 I din applikasjon, gjør følgende for å lage en logger og gi den til `SikkerDigitalPostKlient`:
 

@@ -36,6 +36,7 @@ namespace Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding
                 {
                     digitalPostElement.AppendChild(FysiskPostInfoElement());
                 }
+                
                 digitalPostElement.AppendChild(DokumentpakkeFingeravtrykkElement());
             }
             return digitalPostElement;
