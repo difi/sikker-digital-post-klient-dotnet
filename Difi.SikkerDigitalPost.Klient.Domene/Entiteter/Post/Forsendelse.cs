@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
@@ -104,6 +105,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// </summary>
         public string MpcId { get; set; }
 
+        public MetadataDocument MetadataDocument { get; set; }
+        
         /// <summary>
         ///     Returnerer en ferdig formattert mpc-Forretningskvittering.
         /// </summary>

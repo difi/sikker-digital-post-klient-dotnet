@@ -179,6 +179,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
+        
+        internal static Forsendelse GetForsendelseWithDataType()
+        {
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
+        }
 
         internal static Forsendelse GetForsendelseWithTestCertificate()
         {

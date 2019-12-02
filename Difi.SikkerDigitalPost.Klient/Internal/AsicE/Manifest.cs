@@ -110,6 +110,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 tittel.SetAttribute("lang", dokument.Språkkode ?? Forsendelse.Språkkode);
                 tittel.InnerText = innholdstekst;
             }
+            
+            if (Forsendelse.MetadataDocument != null)
+            {
+                var data = dokumentXml.AppendChildElement("data", NavneromUtility.DifiSdpSchema10, _manifestXml);
+                data.SetAttribute("href", Forsendelse.MetadataDocument.Filnavn);
+                data.SetAttribute("mime", Forsendelse.MetadataDocument.MimeType);
+            }
+            
             return dokumentXml;
         }
     }

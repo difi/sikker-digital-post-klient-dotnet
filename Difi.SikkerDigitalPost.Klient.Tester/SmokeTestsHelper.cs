@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
+using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
@@ -43,6 +46,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate()), config, serviceProvider.GetService<ILoggerFactory>());
         }
 
+        public SmokeTestsHelper Create_Digital_Forsendelse_with_Datatype()
+        {
+            _forsendelse = DomainUtility.GetForsendelseSimple();
+            
+            var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">Dette er en lenke utvidelse</beskrivelse></lenke>";
+
+            MetadataDocument metadataDocument = new MetadataDocument("lenke.xml", "application/vnd.difi.dpi.lenke+xml", raw);
+
+            _forsendelse.MetadataDocument = metadataDocument;
+            
+            return this;
+        }
+        
         public SmokeTestsHelper Create_Digital_Forsendelse_with_multiple_documents()
         {
             _forsendelse = DomainUtility.GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(3);

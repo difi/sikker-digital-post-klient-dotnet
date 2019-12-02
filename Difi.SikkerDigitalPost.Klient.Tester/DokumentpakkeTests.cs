@@ -32,7 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 for (var i = 0; i < dokumentpakke.Vedlegg.Count; i++)
                 {
                     var vedlegg = dokumentpakke.Vedlegg[i];
-                    Assert.Equal(vedlegg.Id, "Id_" + (i + 3));
+                    Assert.Equal(vedlegg.Id, "Id_" + (i + Dokumentpakke.VEDLEGG_START_ID));
                 }
             }
         }

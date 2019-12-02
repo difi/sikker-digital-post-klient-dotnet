@@ -36,15 +36,11 @@
         <DocumentationFile>bin\Release\Difi.SikkerDigitalPost.Klient.Domene.XML</DocumentationFile>
     </PropertyGroup>
 
-
-
     <ItemGroup>
         <Compile Include="..\SolutionItems\SharedAssemblyInfo.cs">
             <Link>Properties\SharedAssemblyInfo.cs</Link>
         </Compile>
     </ItemGroup>
-
-
 
     <ItemGroup>
       <PackageReference Include="BouncyCastle" Version="1.8.5" />
@@ -52,9 +48,7 @@
       <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
       <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0" />
     </ItemGroup>
-
-
-
+    
     <ItemGroup>
       <Reference Include="Digipost.Api.Client.Shared, Version=3.0.0.0, Culture=neutral, PublicKeyToken=13a04c7692843c1c">
         <HintPath>..\..\..\.nuget\packages\api-client-shared\3.0.0\lib\net46\Digipost.Api.Client.Shared.dll</HintPath>

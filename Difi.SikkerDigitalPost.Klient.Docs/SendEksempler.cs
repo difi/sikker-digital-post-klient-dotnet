@@ -1,9 +1,11 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
@@ -95,6 +97,37 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
             Avsender avsender = null; //Som initiert tidligere
             PostInfo postInfo = null; //Som initiert tidligere
             var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke);
+        }
+        
+        public void OpprettForsendelseMedUtvidelse()
+        {
+            var hoveddokument = new Dokument(
+                tittel: "Dokumenttittel", 
+                dokumentsti: "/Dokumenter/Hoveddokument.pdf", 
+                mimeType: "application/pdf", 
+                språkkode: "NO", 
+                filnavn: "filnavn"
+            );
+
+            var dokumentpakke = new Dokumentpakke(hoveddokument);
+
+            var vedleggssti = "/Dokumenter/Vedlegg.pdf";
+            var vedlegg = new Dokument(
+                tittel: "tittel", 
+                dokumentsti: vedleggssti, 
+                mimeType: "application/pdf", 
+                språkkode: "NO", 
+                filnavn: "filnavn");
+
+            dokumentpakke.LeggTilVedlegg(vedlegg);
+
+            var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">This was raw string</beskrivelse></lenke>";
+            
+            MetadataDocument metadataDocument = new MetadataDocument("lenke.xml", "application/vnd.difi.dpi.lenke", raw);
+            
+            Avsender avsender = null; //Som initiert tidligere
+            PostInfo postInfo = null; //Som initiert tidligere
+            var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke) { MetadataDocument = metadataDocument };
         }
 
         public void OpprettKlientOgSendPost()

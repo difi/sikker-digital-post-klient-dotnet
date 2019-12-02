@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
@@ -17,15 +18,27 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             var manifest = new Manifest(forsendelse);
             ValidateXmlAndThrowIfInvalid(manifest.Xml(), "Manifest");
 
-            var signature = new Signature(forsendelse, manifest, senderCertificate);
-            ValidateXmlAndThrowIfInvalid(signature.Xml(), "Signatur");
-
             var asiceAttachables = new List<IAsiceAttachable>();
             asiceAttachables.AddRange(forsendelse.Dokumentpakke.Vedlegg);
             asiceAttachables.Add(forsendelse.Dokumentpakke.Hoveddokument);
             asiceAttachables.Add(manifest);
-            asiceAttachables.Add(signature);
 
+            if (forsendelse.MetadataDocument != null)
+            {
+                var signature = new Signature(forsendelse, manifest, senderCertificate, forsendelse.MetadataDocument);
+                ValidateXmlAndThrowIfInvalid(signature.Xml(), "Signatur");
+                
+                asiceAttachables.Add(forsendelse.MetadataDocument);
+                asiceAttachables.Add(signature);
+            }
+            else
+            {
+                var signature = new Signature(forsendelse, manifest, senderCertificate);
+                ValidateXmlAndThrowIfInvalid(signature.Xml(), "Signatur");
+                
+                asiceAttachables.Add(signature);
+            }
+            
             var asiceAttachableProcessors = ConvertDocumentBundleProcessorsToAsiceAttachableProcessors(forsendelse, asiceConfiguration);
 
             var asiceArchive = new AsiceArchive(forsendelse.PostInfo.Mottaker.Sertifikat, guidUtility, asiceAttachableProcessors, asiceAttachables.ToArray());

@@ -19,14 +19,16 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
     {
         private readonly Forsendelse _forsendelse;
         private readonly Manifest _manifest;
+        private readonly MetadataDocument _metadataDocument;
         private readonly X509Certificate2 _sertifikat;
         private XmlDocument _xml;
 
-        public Signature(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat)
+        public Signature(Forsendelse forsendelse, Manifest manifest, X509Certificate2 sertifikat, MetadataDocument metadataDocument = null)
         {
             _forsendelse = forsendelse;
             _manifest = manifest;
             _sertifikat = sertifikat;
+            _metadataDocument = metadataDocument;
         }
 
         public string Filnavn => "META-INF/signatures.xml";
@@ -51,7 +53,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
                 var signaturnode = Signaturnode();
 
                 var referanser = Referanser(_forsendelse.Dokumentpakke.Hoveddokument,
-                    _forsendelse.Dokumentpakke.Vedlegg, _manifest);
+                    _forsendelse.Dokumentpakke.Vedlegg, _manifest, _metadataDocument);
                 OpprettReferanser(signaturnode, referanser);
 
                 var keyInfoX509Data = new KeyInfoX509Data(_sertifikat, X509IncludeOption.EndCertOnly);
@@ -94,11 +96,17 @@ namespace Difi.SikkerDigitalPost.Klient.Internal.AsicE
             signaturnode.AddReference(SignedPropertiesReferanse());
         }
 
-        private static IEnumerable<IAsiceAttachable> Referanser(Dokument hoveddokument, IEnumerable<IAsiceAttachable> vedlegg, Manifest manifest)
+        private static IEnumerable<IAsiceAttachable> Referanser(Dokument hoveddokument, IEnumerable<IAsiceAttachable> vedlegg, Manifest manifest, MetadataDocument metadataDocument = null)
         {
             var referanser = new List<IAsiceAttachable> {hoveddokument};
             referanser.AddRange(vedlegg);
             referanser.Add(manifest);
+
+            if (metadataDocument != null)
+            {
+                referanser.Add(metadataDocument);
+            }
+            
             return referanser;
         }
 

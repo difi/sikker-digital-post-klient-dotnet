@@ -7,6 +7,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
     public class Dokumentpakke
     {
+        internal static readonly int VEDLEGG_START_ID = 4;
+        
         private readonly List<Dokument> _vedlegg;
 
         /// <param name="hoveddokument">Dokumentpakkens hoveddokument</param>
@@ -57,7 +59,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
                     throw new KonfigurasjonsException(
                         $"Dokumentet {dokument.Filnavn} som du prøver å legge til som vedlegg er tomt. Det er ikke tillatt å sende tomme dokumenter.");
 
-                dokument.Id = $"Id_{i + 3 + startId}";
+                dokument.Id = $"Id_{i + VEDLEGG_START_ID + startId}";
                 _vedlegg.Add(dokument);
             }
         }
