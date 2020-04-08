@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -141,6 +142,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             var documentParts = new List<Dokument>();
             documentParts.AddRange(forsendelse.Dokumentpakke.Vedlegg);
             documentParts.Add(forsendelse.Dokumentpakke.Hoveddokument);
+
             
             var stream = new MemoryStream();
             using (stream)

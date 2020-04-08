@@ -43,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
-        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
+        public async Task<Kvittering>  SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
             var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
 

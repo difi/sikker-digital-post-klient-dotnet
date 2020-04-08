@@ -8,7 +8,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter
     {
         private const string CountryCodeOrganizationNumberNorway = "9908";
         public static readonly string OrganisasjonsnummerPattern = "^([0-9]{4}:)?([0-9]{9})$";
-
+        public static readonly string ISO6523_ACTORID = "iso6523-actorid-upis";
+        public static readonly string COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "0192";
+            
         public Organisasjonsnummer(string organisasjonsnummer)
         {
             Verdi = GetValidatedOrganisasjonsnummerOrThrowException(organisasjonsnummer);
