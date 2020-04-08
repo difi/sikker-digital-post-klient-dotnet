@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
@@ -67,6 +69,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var allDelegatingHandlers = new List<DelegatingHandler> {new UserAgentHandler(), new LoggingHandler(ClientConfiguration, _loggerFactory)};
             allDelegatingHandlers.AddRange(additionalHandlers);
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            
             var client = HttpClientFactory.Create(
                 proxyClientHandler,
                 allDelegatingHandlers.ToArray()
@@ -91,6 +95,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             }
 
             proxyOrNotHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            proxyOrNotHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            //proxyOrNotHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+//            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
+//            {
+//                // Log it, then use the same answer it would have had if we didn't make a callback.
+//                _logger.LogError(cert.ToString());
+//                return errors == SslPolicyErrors.None;
+//            };
             
             return proxyOrNotHandler;
         }
@@ -127,10 +139,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private Uri RequestUri(AbstractEnvelope envelope)
         {
-            var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
-            return isOutgoingForsendelse
-                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer)
-                : ClientConfiguration.Miljø.Url;
+            return new Uri(ClientConfiguration.Miljø.Url, $"messages/out/{envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}");
+//            var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
+//            return isOutgoingForsendelse
+//                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer)
+//                : ClientConfiguration.Miljø.Url;
         }
 
         private static HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)

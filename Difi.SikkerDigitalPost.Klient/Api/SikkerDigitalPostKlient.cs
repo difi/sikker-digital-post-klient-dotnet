@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -68,12 +70,12 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             _logger = loggerFactory.CreateLogger<SikkerDigitalPostKlient>();
             _loggerFactory = loggerFactory;
             
-            ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
+            //ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
 
             Databehandler = databehandler;
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon, _loggerFactory);
-            CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
+            //CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
         }
 
         private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
@@ -106,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
-            return SendAsync(forsendelse).Result;
+            return SendAsyncNoAsice(forsendelse).Result;
         }
 
         /// <summary>
@@ -122,6 +124,47 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
 
             var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
+            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
+
+            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
+            
+            await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
+
+            return null;
+        }
+
+        public async Task<Transportkvittering> SendAsyncNoAsice(Forsendelse forsendelse)
+        {
+            var guidUtility = new GuidUtility();
+            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
+
+            var documentParts = new List<Dokument>();
+            documentParts.AddRange(forsendelse.Dokumentpakke.Vedlegg);
+            documentParts.Add(forsendelse.Dokumentpakke.Hoveddokument);
+            
+            var stream = new MemoryStream();
+            using (stream)
+            {
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
+                {
+                    foreach (var document in documentParts)
+                    {
+                        var entry = archive.CreateEntry(document.FilnavnRådata, CompressionLevel.Optimal);
+                        using (var stream2 = entry.Open())
+                        {
+                            stream2.Write(document.Bytes, 0, document.Bytes.Length);
+                        }
+                    }
+                }
+            }
+            
+            var bytes = stream.ToArray();
+            
+            var documentBundle = new DocumentBundle(
+                bytes, 
+                documentParts.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length), 
+                $"{Guid.NewGuid()}");
+            
             var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
 
             ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
@@ -144,7 +187,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             return transportReceipt;
         }
-
+        
         /// <summary>
         ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>.
         ///     <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i

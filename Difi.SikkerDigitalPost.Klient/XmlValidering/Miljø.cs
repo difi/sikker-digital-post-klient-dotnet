@@ -21,6 +21,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         {
             return new Uri(Url, $"{databehandler.WithCountryCode}/{avsender.WithCountryCode}");
         }
+        
+        public static Miljø IntegrasjonsPunktMiljø => new Miljø(
+            new Uri("http://127.0.0.1:9093/api/"),
+            null
+            );
 
         public static Miljø FunksjoneltTestmiljø => new Miljø(
             new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/"),
