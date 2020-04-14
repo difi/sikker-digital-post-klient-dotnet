@@ -2,11 +2,11 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class MessageInfo
     {
-        private readonly string messageType;
-        private readonly string receiverOrgNumber;
-        private readonly string senderOrgNumber;
-        private readonly string conversationId;
-        private readonly string messageId;
+        private string messageType { get; set; }
+        private string receiverOrgNumber { get; set; }
+        private string senderOrgNumber { get; set; }
+        private string conversationId { get; set; }
+        private string messageId { get; set; }
 
         public MessageInfo(string messageType, string receiverOrgNumber, string senderOrgNumber, string conversationId, string messageId)
         {

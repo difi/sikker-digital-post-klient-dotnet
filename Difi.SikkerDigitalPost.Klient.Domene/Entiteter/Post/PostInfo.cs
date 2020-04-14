@@ -10,8 +10,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     /// </summary>
     public abstract class PostInfo
     {
-        protected PostInfo(PostMottaker mottaker)
+
+        public string Type { get; set; }
+        
+        protected PostInfo(PostMottaker mottaker, string type)
         {
+            Type = type;
             Mottaker = mottaker;
         }
 

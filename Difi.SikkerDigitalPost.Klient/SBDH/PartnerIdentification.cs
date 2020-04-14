@@ -2,7 +2,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class PartnerIdentification
     {
-        private Partner partner;
+        private Partner partner { get; set; }
 
         public string value { get; set; }
 

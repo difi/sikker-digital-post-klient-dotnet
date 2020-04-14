@@ -6,10 +6,13 @@ using System.Net.Http.Headers;
 using System.Net.Security;
 using System.Reflection;
 using System.Security.Authentication;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
 using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
@@ -18,6 +21,7 @@ using Difi.SikkerDigitalPost.Klient.Handlers;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using log4net;
 using Microsoft.Extensions.Logging;
+using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusinessDocument;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
 {
@@ -43,6 +47,25 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
+        public async Task<string> SendMessage(StandardBusinessDocument standardBusinessDocument, Dokumentpakke dokumentpakke)
+        {
+            var requestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
+
+            string json = JsonSerializer.Serialize(standardBusinessDocument);
+            
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            var responseMessage = await HttpClient.PostAsync(requestUri, content).ConfigureAwait(false);
+            var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($" Innkommende {responseContent}");
+            }
+
+            return responseContent;
+        }
+        
         public async Task<Kvittering>  SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
         {
             var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);

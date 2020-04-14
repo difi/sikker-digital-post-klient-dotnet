@@ -29,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         /// </param>
         /// <param name="åpningskvittering">Ønskes kvittering når brevet blir åpnet av mottaker? Standard er false.</param>
         public DigitalPostInfo(DigitalPostMottaker mottaker, string ikkeSensitivTittel, Sikkerhetsnivå sikkerhetsnivå = Sikkerhetsnivå.Nivå4, bool åpningskvittering = false)
-            : base(mottaker)
+            : base(mottaker, "urn:no:difi:digitalpost:xsd:digital::digital")
         {
             IkkeSensitivTittel = ikkeSensitivTittel;
             Sikkerhetsnivå = sikkerhetsnivå;

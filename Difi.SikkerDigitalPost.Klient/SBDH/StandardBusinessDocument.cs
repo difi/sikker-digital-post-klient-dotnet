@@ -4,9 +4,9 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class StandardBusinessDocument
     {
-        private StandardBusinessDocumentHeader _standardBusinessDocumentHeader;
+        public StandardBusinessDocumentHeader standardBusinessDocumentHeader { get; set; }
 
-        private Object any;
+        public Object any { get; set; }
 
         
         public ForretningsMelding GetForretningsMelding()

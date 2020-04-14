@@ -4,8 +4,8 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class CorrelationInformation
     {
-        protected DateTime requestingDocumentCreationDateTime;
-        protected string requestingDocumentInstanceIdentifier;
-        protected DateTime expectedResponseDateTime;
+        public DateTime requestingDocumentCreationDateTime { get; set; }
+        public string requestingDocumentInstanceIdentifier { get; set; }
+        public DateTime expectedResponseDateTime { get; set; }
     }
 }

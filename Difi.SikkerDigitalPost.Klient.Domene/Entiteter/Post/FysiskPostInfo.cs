@@ -15,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         private readonly List<Printinstruksjon> _printinstruksjoner;
 
         public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker, List<Printinstruksjon> printinstruksjoner = null)
-            : base(mottaker)
+            : base(mottaker, "urn:no:difi:digitalpost:xsd:fysisk::print")
         {
             Posttype = posttype;
             Utskriftsfarge = utskriftsfarge;

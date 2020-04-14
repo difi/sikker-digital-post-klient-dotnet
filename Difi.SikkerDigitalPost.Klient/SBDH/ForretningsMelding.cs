@@ -2,12 +2,12 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class ForretningsMelding
     {
-        private ForretningsMeldingType type;
+        public ForretningsMeldingType type  { get; set; }
 
-        public string hoveddokument;
+        public string hoveddokument { get; set; }
 
-        private string avsenderId;
-        private string fakturaReferanse;
+        private string avsenderId { get; set; }
+        private string fakturaReferanse { get; set; }
     }
 
     public enum ForretningsMeldingType

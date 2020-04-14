@@ -9,10 +9,24 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
     public class StandardBusinessDocumentHeader
     {
         private string headerVersion { get; set; }
-        private List<Sender> sender = new List<Sender>();
-        private List<Receiver> receiver = new List<Receiver>();
-        private DocumentIdentification documentIdentification;
-        private BusinessScope businessScope;
+
+        public List<Sender> sender
+        {
+            get { return _sender; }
+            set { _sender = value; }
+        }
+        
+        private List<Sender> _sender = new List<Sender>();
+
+        public List<Receiver> receiver
+        {
+            get { return _receiver; }
+            set { _receiver = value; }
+        }
+        
+        private List<Receiver> _receiver = new List<Receiver>();
+        public DocumentIdentification documentIdentification { get; set; }
+        public BusinessScope businessScope { get; set; }
 
 
         public StandardBusinessDocumentHeader AddSender(Sender sender)
@@ -101,6 +115,12 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
             public Builder WithCreationDateAndTime(DateTime creationDateAndTime) {
                 this.creationDateAndTime = creationDateAndTime;
+                return this;
+            }
+
+            public Builder WithProcess(Process.ProcessType processType)
+            {
+                this.process = processType;
                 return this;
             }
             

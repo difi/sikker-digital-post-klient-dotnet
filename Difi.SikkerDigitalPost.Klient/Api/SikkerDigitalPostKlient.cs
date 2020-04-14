@@ -26,6 +26,7 @@ using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Certificate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusinessDocument;
 
 namespace Difi.SikkerDigitalPost.Klient.Api
 {
@@ -136,58 +137,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
         public async Task<Transportkvittering> SendAsyncNoAsice(Forsendelse forsendelse)
         {
-            var guidUtility = new GuidUtility();
-            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
+            StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(forsendelse);
 
-            var documentParts = new List<Dokument>();
-            documentParts.AddRange(forsendelse.Dokumentpakke.Vedlegg);
-            documentParts.Add(forsendelse.Dokumentpakke.Hoveddokument);
+            await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke);
 
-            
-            var stream = new MemoryStream();
-            using (stream)
-            {
-                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
-                {
-                    foreach (var document in documentParts)
-                    {
-                        var entry = archive.CreateEntry(document.FilnavnRådata, CompressionLevel.Optimal);
-                        using (var stream2 = entry.Open())
-                        {
-                            stream2.Write(document.Bytes, 0, document.Bytes.Length);
-                        }
-                    }
-                }
-            }
-            
-            var bytes = stream.ToArray();
-            
-            var documentBundle = new DocumentBundle(
-                bytes, 
-                documentParts.Aggregate(0L, (current, asiceAttachable) => current + asiceAttachable.Bytes.Length), 
-                $"{Guid.NewGuid()}");
-            
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
-
-            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
-
-            var transportReceipt = (Transportkvittering) await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
-            transportReceipt.AntallBytesDokumentpakke = documentBundle.BillableBytes;
-            var transportReceiptXml = transportReceipt.Xml;
-
-            if (transportReceipt is TransportOkKvittering)
-            {
-                _logger.LogDebug($"{transportReceipt}");
-
-                var responsvalidator = new ResponseValidator(forretningsmeldingEnvelope.Xml(), transportReceiptXml, CertificateValidationProperties);
-                responsvalidator.ValidateTransportReceipt(guidUtility);
-            }
-            else
-            {
-                _logger.LogError(($"{transportReceipt}"));
-            }
-
-            return transportReceipt;
+            return null;
         }
         
         /// <summary>
