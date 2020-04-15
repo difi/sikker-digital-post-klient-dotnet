@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
@@ -33,8 +34,8 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
     public enum ScopeType
     {
-        CONVERSATION_ID,
-        SENDER_REF,
-        RECEIVER_REF,
+        ConversationId,
+        SenderRef,
+        ReceiverRef,
     }
 }

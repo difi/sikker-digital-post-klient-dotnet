@@ -1,5 +1,4 @@
 using System;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.SBDH;
@@ -10,19 +9,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
     {
         public static StandardBusinessDocument BuildSBD(Forsendelse forsendelse)
         {
-            ForretningsMelding forretningsMelding = new ForretningsMelding();
-            forretningsMelding.type = ForretningsMeldingType.DIGITAL;
-            forretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
-            
-            //Avsender avsender = forsendelse.getAvsender();
-            //forretningsMelding.setAvsenderId(avsender.getAvsenderIdentifikator());
-            //forretningsMelding.setFakturaReferanse(avsender.getFakturaReferanse());
-
-//            if(forsendelse.type == DIGITAL) {
-//                forsendelse.getDokumentpakke().getHoveddokumentOgVedlegg()
-//                    .filter(dokument -> dokument.getMetadataDocument().isPresent())
-//                    .forEach(dokument -> ((DigitalPost)forretningsMelding).addMetadataMapping(dokument.getFileName(), dokument.getMetadataDocument().get().getFileName()));
-//            }
+            ForretningsMelding forretningsMelding = ForretningsMeldingBuilder.BuildForretningsMelding(forsendelse);
 
             StandardBusinessDocument sbd = new StandardBusinessDocument();
 

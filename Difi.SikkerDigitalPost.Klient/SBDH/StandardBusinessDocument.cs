@@ -6,6 +6,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
     {
         public StandardBusinessDocumentHeader standardBusinessDocumentHeader { get; set; }
 
+        
         public Object any { get; set; }
 
         

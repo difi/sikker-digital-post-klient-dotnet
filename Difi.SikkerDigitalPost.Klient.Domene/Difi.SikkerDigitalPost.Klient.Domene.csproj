@@ -47,11 +47,15 @@
       <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
       <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
       <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0" />
+      <PackageReference Include="System.Text.Json" Version="4.7.1" />
     </ItemGroup>
     
     <ItemGroup>
       <Reference Include="Digipost.Api.Client.Shared, Version=3.0.0.0, Culture=neutral, PublicKeyToken=13a04c7692843c1c">
         <HintPath>..\..\..\.nuget\packages\api-client-shared\3.0.0\lib\net46\Digipost.Api.Client.Shared.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+        <HintPath>..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
       </Reference>
     </ItemGroup>
 

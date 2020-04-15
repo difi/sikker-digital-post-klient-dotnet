@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -19,8 +20,12 @@ using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
 using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Handlers;
 using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
+using Difi.SikkerDigitalPost.Klient.SBDH;
 using log4net;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusinessDocument;
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
@@ -49,15 +54,57 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public async Task<string> SendMessage(StandardBusinessDocument standardBusinessDocument, Dokumentpakke dokumentpakke)
         {
-            var requestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
+            var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/");
+            var putRequestUri = new Uri(openRequestUri, $"{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
 
-            string json = JsonSerializer.Serialize(standardBusinessDocument);
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+            {
+                IgnoreNullValues = true
+            };
             
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            string json = JsonSerializer.Serialize(standardBusinessDocument, jsonSerializerOptions);
+
+            JObject sbdobj = JObject.Parse(json);
+            sbdobj.Add(standardBusinessDocument.any is DigitalForretningsMelding ? "digital" : "fysisk", sbdobj["any"]);
+            sbdobj.Remove("any");
+
+            string newjson = sbdobj.ToString();
             
-            var responseMessage = await HttpClient.PostAsync(requestUri, content).ConfigureAwait(false);
+            StringContent content = new StringContent(newjson, Encoding.UTF8, "application/json");
+            
+            var responseMessage = await HttpClient.PostAsync(openRequestUri, content).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+            ByteArrayContent put = new ByteArrayContent(dokumentpakke.Hoveddokument.Bytes);
+            put.Headers.Add("content-type", dokumentpakke.Hoveddokument.MimeType);
+
+            string contentDisposition = $"attachment; filename=\"{dokumentpakke.Hoveddokument.Filnavn}\"";
+            contentDisposition += dokumentpakke.Hoveddokument.Tittel == null ? "" : $"; name=\"{dokumentpakke.Hoveddokument.Tittel}\"";
+
+            put.Headers.Add("content-disposition", contentDisposition);
+            
+            responseMessage = await HttpClient.PutAsync(putRequestUri, put).ConfigureAwait(false);
+            responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            
+            {
+                foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
+                {
+                    ByteArrayContent vedleggPut = new ByteArrayContent(vedlegg.Bytes);
+                    vedleggPut.Headers.Add("content-type", vedlegg.MimeType);
+
+                    string vedleggContentDisposition = $"attachment; filename=\"{vedlegg.Filnavn}\"";
+                    vedleggContentDisposition += vedlegg.Tittel == null ? "" : $"; name=\"{vedlegg.Tittel}\"";
+
+                    vedleggPut.Headers.Add("content-disposition", vedleggContentDisposition);
+
+                    responseMessage = await HttpClient.PutAsync(putRequestUri, vedleggPut).ConfigureAwait(false);
+                    responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+            }
+
+            responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
+            responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
                 _logger.LogDebug($" Innkommende {responseContent}");

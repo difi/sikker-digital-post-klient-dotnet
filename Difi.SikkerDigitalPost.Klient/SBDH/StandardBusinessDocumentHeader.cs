@@ -8,7 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class StandardBusinessDocumentHeader
     {
-        private string headerVersion { get; set; }
+        public readonly string headerVersion = "1.0";
 
         public List<Sender> sender
         {
@@ -52,14 +52,8 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
             return this;
         }
 
-        public StandardBusinessDocumentHeader WithHeaderVersion(string headerVersion) {
-            this.headerVersion = headerVersion;
-            return this;
-        }
-        
         public class Builder
         {
-            private static readonly string HEADER_VERSION = "1.0";
             private static readonly string TYPE_VERSION = "1.0";
 
             private string mottaker { get; set; }
@@ -128,7 +122,6 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
                 StandardBusinessDocumentHeader standardBusinessDocumentHeader = new StandardBusinessDocumentHeader();
 
                 return standardBusinessDocumentHeader
-                    .WithHeaderVersion(HEADER_VERSION)
                     .AddReceiver(CreateReciever(mottaker))
                     .AddSender(CreateSender(sender, onBehalfOf))
                     .SetBusinessScope(CreateBusinessScope(FromConversationId(conversationId)))
@@ -181,7 +174,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
             private Scope FromConversationId(String conversationId) {
                 Scope scope = CreateDefaultScope();
-                scope.type = ScopeType.CONVERSATION_ID.ToString();
+                scope.type = ScopeType.ConversationId.ToString();
                 scope.instanceIdentifier = conversationId;
                 return scope;
             }

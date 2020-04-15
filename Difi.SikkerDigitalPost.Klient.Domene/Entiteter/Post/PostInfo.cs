@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
@@ -11,15 +12,25 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     public abstract class PostInfo
     {
 
+        [JsonIgnore]
         public string Type { get; set; }
+        
+        [JsonIgnore]
+        public string hoveddokument { get; set; }
+
+        [JsonIgnore]
+        private string avsenderId { get; set; }
+        
+        [JsonIgnore]
+        private string fakturaReferanse { get; set; }
+        
+        public PostMottaker Mottaker { get; set; }
         
         protected PostInfo(PostMottaker mottaker, string type)
         {
             Type = type;
             Mottaker = mottaker;
         }
-
-        public PostMottaker Mottaker { get; set; }
 
         internal PMode PMode()
         {
