@@ -15,9 +15,12 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 
             string konversasjonsId = forsendelse.KonversasjonsId.ToString();
             
+            
+            
             StandardBusinessDocumentHeader sbdHeader = new StandardBusinessDocumentHeader.Builder().WithProcess(Process.ProcessType.DIGITAL_POST_INFO)
                 .WithStandard(forsendelse.PostInfo.Type)
-                //.WithFrom(databehandler).onBehalfOf(avsender.getOrganisasjonsnummer())
+                .WithFrom(forsendelse.Avsender.Organisasjonsnummer) //TODO: From databehandler.
+                .WithOnBehalfOf(forsendelse.Avsender.Organisasjonsnummer)
                 .WithTo(forsendelse.PostInfo.Mottaker as DigitalPostMottaker)
                 .WithType(forretningsMelding.type.ToString())
                 .WithRelatedToConversationId(konversasjonsId)

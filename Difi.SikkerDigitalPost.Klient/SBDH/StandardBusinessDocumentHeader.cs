@@ -8,7 +8,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 {
     public class StandardBusinessDocumentHeader
     {
-        public readonly string headerVersion = "1.0";
+        public string headerVersion { get;  }  = "1.0";
 
         public List<Sender> sender
         {
@@ -84,6 +84,16 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
             
             public Builder WithFrom(Databehandler sender) {
                 this.sender = sender.Organisasjonsnummer.Verdi;
+                return this;
+            }
+            
+            public Builder WithFrom(Organisasjonsnummer sender) {
+                this.sender = sender.Verdi;
+                return this;
+            }
+            
+            public Builder WithOnBehalfOf(Organisasjonsnummer onBehalfOf) {
+                this.onBehalfOf = onBehalfOf.Verdi;
                 return this;
             }
             

@@ -92,7 +92,9 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Organisasjonsnummer Organisasjonsnummer()
         {
-            return new Organisasjonsnummer("988015814");
+            var bring = "988015814";
+            var posten = "984661185";
+            return new Organisasjonsnummer(posten);
         }
 
         internal static string GetPersonnummerMottaker()

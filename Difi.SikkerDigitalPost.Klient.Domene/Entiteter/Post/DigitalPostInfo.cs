@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using DateTimeConverter = Difi.SikkerDigitalPost.Klient.Domene.Extensions.DateTimeConverter;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
@@ -18,6 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         ///     Standardverdi er nå.
         /// </summary>
         [JsonPropertyName("virkningsdato")]
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime Virkningstidspunkt { get; set; } = DateTime.Now.ToLocalTime();
 
         // Used for serialization only
