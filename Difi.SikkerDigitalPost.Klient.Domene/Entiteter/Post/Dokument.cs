@@ -7,7 +7,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
 {
-    public class Dokument : IAsiceAttachable
+    public class Dokument : IWithDocumentProperties
     {
         /// <param name="tittel">Tittel som vises til brukeren gitt riktig sikkerhetsnivå.</param>
         /// <param name="dokumentsti">Stien som viser til hvor dokumentet ligger på disk.</param>

@@ -34,13 +34,14 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
     {
         private readonly ILogger<RequestHelper> _logger;
         private readonly ILoggerFactory _loggerFactory;
-        
-        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory):
+
+        public RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory) :
             this(klientkonfigurasjon, loggerFactory, new DelegatingHandler[0])
         {
         }
 
-        internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory, params DelegatingHandler[] additionalHandlers)
+        internal RequestHelper(Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory,
+            params DelegatingHandler[] additionalHandlers)
         {
             ClientConfiguration = klientkonfigurasjon;
             _loggerFactory = loggerFactory;
@@ -52,16 +53,18 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
-        public async Task<string> SendMessage(StandardBusinessDocument standardBusinessDocument, Dokumentpakke dokumentpakke)
+        public async Task<string> SendMessage(StandardBusinessDocument standardBusinessDocument,
+            Dokumentpakke dokumentpakke, MetadataDocument metadataDocument)
         {
             var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/");
-            var putRequestUri = new Uri(openRequestUri, $"{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
+            var putRequestUri = new Uri(openRequestUri,
+                $"{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
 
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
             {
                 IgnoreNullValues = true,
             };
-            
+
             string json = JsonSerializer.Serialize(standardBusinessDocument, jsonSerializerOptions);
 
             JObject sbdobj = JObject.Parse(json);
@@ -69,42 +72,24 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             sbdobj.Remove("any");
 
             string newjson = sbdobj.ToString();
-            
+
             StringContent content = new StringContent(newjson, Encoding.UTF8, "application/json");
-            
+
             var responseMessage = await HttpClient.PostAsync(openRequestUri, content).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            ByteArrayContent put = new ByteArrayContent(dokumentpakke.Hoveddokument.Bytes);
-            put.Headers.Add("content-type", dokumentpakke.Hoveddokument.MimeType);
-
-            string contentDisposition = $"attachment; filename=\"{dokumentpakke.Hoveddokument.Filnavn}\"";
-            contentDisposition += dokumentpakke.Hoveddokument.Tittel == null ? "" : $"; name=\"{dokumentpakke.Hoveddokument.Tittel}\"";
-
-            put.Headers.Add("content-disposition", contentDisposition);
-            
-            responseMessage = await HttpClient.PutAsync(putRequestUri, put).ConfigureAwait(false);
-            responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-            
+            await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
             {
+                addDocument(metadataDocument, putRequestUri);
                 foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
                 {
-                    ByteArrayContent vedleggPut = new ByteArrayContent(vedlegg.Bytes);
-                    vedleggPut.Headers.Add("content-type", vedlegg.MimeType);
-
-                    string vedleggContentDisposition = $"attachment; filename=\"{vedlegg.Filnavn}\"";
-                    vedleggContentDisposition += vedlegg.Tittel == null ? "" : $"; name=\"{vedlegg.Tittel}\"";
-
-                    vedleggPut.Headers.Add("content-disposition", vedleggContentDisposition);
-
-                    responseMessage = await HttpClient.PutAsync(putRequestUri, vedleggPut).ConfigureAwait(false);
-                    responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    await addDocument(vedlegg, putRequestUri);
                 }
             }
 
             responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
             responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-            
+
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
                 _logger.LogDebug($" Innkommende {responseContent}");
@@ -112,8 +97,23 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
             return responseContent;
         }
-        
-        public async Task<Kvittering>  SendMessage(ForretningsmeldingEnvelope envelope, DocumentBundle asiceDocumentBundle)
+
+        private async Task addDocument(IWithDocumentProperties document, Uri putRequestUri)
+        {
+            var docContent = new ByteArrayContent(document.Bytes);
+            docContent.Headers.Add("content-type", document.MimeType);
+
+            var vedleggContentDisposition = $"attachment; filename=\"{document.Filnavn}\"";
+            vedleggContentDisposition += document.Tittel == null ? "" : $"; name=\"{document.Tittel}\"";
+            docContent.Headers.Add("content-disposition", vedleggContentDisposition);
+
+            var responseMessage = await HttpClient.PutAsync(putRequestUri, docContent).ConfigureAwait(false);
+            var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            _logger.LogInformation(responseContent);
+        }
+
+        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope,
+            DocumentBundle asiceDocumentBundle)
         {
             var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
 
@@ -136,11 +136,13 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         {
             var proxyClientHandler = GetProxyOrDefaultHttpClientHandler();
 
-            var allDelegatingHandlers = new List<DelegatingHandler> {new UserAgentHandler(), new LoggingHandler(ClientConfiguration, _loggerFactory)};
+            var allDelegatingHandlers = new List<DelegatingHandler>
+                {new UserAgentHandler(), new LoggingHandler(ClientConfiguration, _loggerFactory)};
             allDelegatingHandlers.AddRange(additionalHandlers);
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
             var client = HttpClientFactory.Create(
                 proxyClientHandler,
                 allDelegatingHandlers.ToArray()
@@ -164,7 +166,10 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 proxyOrNotHandler = new HttpClientHandler();
             }
 
-            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+            {
+                return true;
+            };
             proxyOrNotHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
             //proxyOrNotHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 //            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
@@ -173,7 +178,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 //                _logger.LogError(cert.ToString());
 //                return errors == SslPolicyErrors.None;
 //            };
-            
+
             return proxyOrNotHandler;
         }
 
@@ -190,7 +195,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         {
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
-                _logger.LogDebug($"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
+                _logger.LogDebug(
+                    $"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
             }
 
             var requestUri = RequestUri(envelope);
@@ -209,7 +215,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         private Uri RequestUri(AbstractEnvelope envelope)
         {
-            return new Uri(ClientConfiguration.Miljø.Url, $"messages/out/{envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}");
+            return new Uri(ClientConfiguration.Miljø.Url,
+                $"messages/out/{envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}");
 //            var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
 //            return isOutgoingForsendelse
 //                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer)
@@ -221,7 +228,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var boundary = Guid.NewGuid().ToString();
             var multipartFormDataContent = new MultipartFormDataContent(boundary);
 
-            var contentType = $"Multipart/Related; boundary=\"{boundary}\"; " + "type=\"application/soap+xml\"; " + $"start=\"<{envelope.ContentId}>\"";
+            var contentType = $"Multipart/Related; boundary=\"{boundary}\"; " + "type=\"application/soap+xml\"; " +
+                              $"start=\"<{envelope.ContentId}>\"";
 
             var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
             multipartFormDataContent.Headers.ContentType = mediaTypeHeaderValue;
@@ -245,7 +253,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             meldingsinnhold.Add(byteArrayContent);
         }
 
-        private static void AddDocumentBundleToMultipart(DocumentBundle documentBundle, MultipartFormDataContent meldingsinnhold)
+        private static void AddDocumentBundleToMultipart(DocumentBundle documentBundle,
+            MultipartFormDataContent meldingsinnhold)
         {
             if (documentBundle != null)
             {

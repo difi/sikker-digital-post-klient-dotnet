@@ -11,12 +11,8 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         {
             ForretningsMelding forretningsMelding = ForretningsMeldingBuilder.BuildForretningsMelding(forsendelse);
 
-            StandardBusinessDocument sbd = new StandardBusinessDocument();
+            var konversasjonsId = forsendelse.KonversasjonsId.ToString();
 
-            string konversasjonsId = forsendelse.KonversasjonsId.ToString();
-            
-            
-            
             StandardBusinessDocumentHeader sbdHeader = new StandardBusinessDocumentHeader.Builder().WithProcess(Process.ProcessType.DIGITAL_POST_INFO)
                 .WithStandard(forsendelse.PostInfo.Type)
                 .WithFrom(forsendelse.Avsender.Organisasjonsnummer) //TODO: From databehandler.
@@ -27,7 +23,8 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
                 .WithRelatedToMessageId(konversasjonsId)
                 .WithCreationDateAndTime(DateTime.Now.ToLocalTime())
                 .Build();
-
+            
+            StandardBusinessDocument sbd = new StandardBusinessDocument();
             sbd.standardBusinessDocumentHeader = sbdHeader;
             sbd.any = forretningsMelding;
 

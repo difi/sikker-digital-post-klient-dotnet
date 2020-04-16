@@ -2,12 +2,13 @@ using System.Text;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface
 {
-    public class MetadataDocument : IAsiceAttachable
+    public class MetadataDocument : IWithDocumentProperties
     {
         public string Filnavn { get; }
         public byte[] Bytes { get; }
         public string MimeType { get; }
         public string Id { get; }
+        public string Tittel => null;
 
         public MetadataDocument(string filnavn, string mimeType, string xml)
         {

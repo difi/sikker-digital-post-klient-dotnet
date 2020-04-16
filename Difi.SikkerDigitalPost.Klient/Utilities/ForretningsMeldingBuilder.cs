@@ -17,24 +17,21 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 
         private static ForretningsMelding BuildDigitalForretningsMelding(Forsendelse forsendelse)
         {
-            DigitalForretningsMelding digitalForretningsMelding = new DigitalForretningsMelding(
-                forsendelse.Dokumentpakke.Hoveddokument.Tittel);
+            DigitalForretningsMelding digitalForretningsMelding =
+                new DigitalForretningsMelding(forsendelse.Dokumentpakke.Hoveddokument.Tittel);
 
-            DigitalPostInfo digitalPostInfo = forsendelse.PostInfo as DigitalPostInfo;
-            
-            if (digitalPostInfo == null)
+            if (!(forsendelse.PostInfo is DigitalPostInfo digitalPostInfo))
             {
                 throw new NullReferenceException("PostInfo må være en DigitalPostInfo");
             }
-            
+
             digitalForretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
             digitalForretningsMelding.digitalPostInfo = new DigitalPostInfo
             {
                 Virkningstidspunkt = digitalPostInfo.Virkningstidspunkt,
-                Åpningskvittering = digitalPostInfo.Åpningskvittering, 
+                Åpningskvittering = digitalPostInfo.Åpningskvittering,
             };
-            
-            //digitalForretningsMelding.digitalPostInfo = digitalPostInfo;
+
             digitalForretningsMelding.tittel = digitalPostInfo.IkkeSensitivTittel;
 
             switch (forsendelse.Språkkode)
@@ -53,18 +50,21 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
             }
 
             digitalForretningsMelding.sikkerhetsnivaa = digitalPostInfo.Sikkerhetsnivå;
-            
+
             DigitaltVarsel digitaltVarsel = new DigitaltVarsel();
-            digitaltVarsel.epostTekst = digitalPostInfo.EpostVarsel.Varslingstekst;
-            digitaltVarsel.smsTekst = digitalPostInfo.SmsVarsel.Varslingstekst;
-            
+            if (digitalPostInfo.EpostVarsel != null)
+                digitaltVarsel.epostTekst = digitalPostInfo.EpostVarsel.Varslingstekst;
+            if (digitalPostInfo.SmsVarsel != null) digitaltVarsel.smsTekst = digitalPostInfo.SmsVarsel.Varslingstekst;
+
             digitalForretningsMelding.varsler = digitaltVarsel;
 
-            foreach (Dokument dok in forsendelse.Dokumentpakke.Vedlegg)
+
+            if (forsendelse.MetadataDocument != null)
             {
-                //Do stuff with metadata
+                digitalForretningsMelding.addMetadataMapping(forsendelse.Dokumentpakke.Hoveddokument.Filnavn,
+                    forsendelse.MetadataDocument.Filnavn);
             }
-            
+
             return digitalForretningsMelding;
         }
 
@@ -72,22 +72,18 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
         {
             FysiskForretningsMelding fysiskForretningsMelding = new FysiskForretningsMelding();
 
-            FysiskPostInfo fysiskPostInfo = forsendelse.PostInfo as FysiskPostInfo;
-
-            if (fysiskPostInfo == null)
+            if (!(forsendelse.PostInfo is FysiskPostInfo fysiskPostInfo))
             {
                 throw new NullReferenceException("PostInfo må være en FysiskPostInfo");
             }
-            
+
             fysiskForretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
 
-            FysiskPostMottaker fysiskPostMottaker = forsendelse.PostInfo.Mottaker as FysiskPostMottaker;
-
-            if (fysiskPostMottaker == null)
+            if (!(forsendelse.PostInfo.Mottaker is FysiskPostMottaker fysiskPostMottaker))
             {
                 throw new NullReferenceException("Motakker må være en FysiskPostMotakker");
             }
-            
+
             fysiskForretningsMelding.mottakerAdresse = fysiskPostMottaker.Adresse;
 
             fysiskForretningsMelding.posttype = fysiskPostInfo.Posttype;
@@ -97,7 +93,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
             fysiskForretningsMelding.returhaandtering = fysiskPostInfo.Posthåndtering;
 
             fysiskForretningsMelding.utskriftsfarge = fysiskPostInfo.Utskriftsfarge;
-            
+
             return fysiskForretningsMelding;
         }
     }

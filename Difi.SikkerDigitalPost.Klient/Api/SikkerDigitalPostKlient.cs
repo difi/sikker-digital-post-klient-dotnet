@@ -139,7 +139,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(forsendelse);
 
-            await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke);
+            await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke, forsendelse.MetadataDocument);
 
             return null;
         }
