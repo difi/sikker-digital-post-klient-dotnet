@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
                 .WithType(forretningsMelding.type.ToString())
                 .WithRelatedToConversationId(konversasjonsId)
                 .WithRelatedToMessageId(konversasjonsId)
-                .WithCreationDateAndTime(DateTime.Now)
+                .WithCreationDateAndTime(DateTime.Now.ToLocalTime())
                 .Build();
 
             sbd.standardBusinessDocumentHeader = sbdHeader;

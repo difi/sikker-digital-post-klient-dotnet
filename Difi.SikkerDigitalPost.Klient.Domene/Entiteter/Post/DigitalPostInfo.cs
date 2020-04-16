@@ -18,7 +18,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         ///     Standardverdi er nå.
         /// </summary>
         [JsonPropertyName("virkningsdato")]
-        public DateTime Virkningstidspunkt { get; set; } = DateTime.Now;
+        public DateTime Virkningstidspunkt { get; set; } = DateTime.Now.ToLocalTime();
 
         // Used for serialization only
         public DigitalPostInfo() : base(null, "urn:no:difi:digitalpost:xsd:digital::digital")

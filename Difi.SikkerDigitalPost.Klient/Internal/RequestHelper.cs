@@ -59,7 +59,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
             {
-                IgnoreNullValues = true
+                IgnoreNullValues = true,
             };
             
             string json = JsonSerializer.Serialize(standardBusinessDocument, jsonSerializerOptions);
