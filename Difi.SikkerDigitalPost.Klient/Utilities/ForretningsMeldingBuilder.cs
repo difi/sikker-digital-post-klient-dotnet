@@ -10,9 +10,14 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
     {
         public static ForretningsMelding BuildForretningsMelding(Forsendelse forsendelse)
         {
-            return forsendelse.PostInfo is DigitalPostInfo
+            var forretningsMelding = forsendelse.PostInfo is DigitalPostInfo
                 ? BuildDigitalForretningsMelding(forsendelse)
                 : BuildFysiskForretningsMelding(forsendelse);
+
+            forretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
+            forretningsMelding.avsenderId = forsendelse.Avsender.Avsenderidentifikator == string.Empty ? null : forsendelse.Avsender.Avsenderidentifikator;
+            forretningsMelding.fakturaReferanse = forsendelse.Avsender.Fakturareferanse;
+            return forretningsMelding;
         }
 
         private static ForretningsMelding BuildDigitalForretningsMelding(Forsendelse forsendelse)
@@ -25,7 +30,6 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
                 throw new NullReferenceException("PostInfo må være en DigitalPostInfo");
             }
 
-            digitalForretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
             digitalForretningsMelding.digitalPostInfo = new DigitalPostInfo
             {
                 Virkningstidspunkt = digitalPostInfo.Virkningstidspunkt,
@@ -76,9 +80,6 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
             {
                 throw new NullReferenceException("PostInfo må være en FysiskPostInfo");
             }
-
-            fysiskForretningsMelding.hoveddokument = forsendelse.Dokumentpakke.Hoveddokument.Filnavn;
-
             if (!(forsendelse.PostInfo.Mottaker is FysiskPostMottaker fysiskPostMottaker))
             {
                 throw new NullReferenceException("Motakker må være en FysiskPostMotakker");
