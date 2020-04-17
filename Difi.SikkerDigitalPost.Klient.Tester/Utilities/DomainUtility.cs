@@ -34,6 +34,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Dokumentpakke(GetHoveddokumentSimple());
         }
 
+        internal static Dokumentpakke GetDokumentpakkeMedEHFDokument()
+        {
+            return new Dokumentpakke(GetHoveddokumentEHF());
+        }
+        
         internal static Dokumentpakke GetDokumentpakkeWithMultipleVedlegg(int antall = 3)
         {
             var dokumentpakke = new Dokumentpakke(GetHoveddokumentSimple());
@@ -44,6 +49,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Dokument GetHoveddokumentSimple()
         {
             return new Dokument("Hoveddokument", ResourceUtility.ReadAllBytes("hoveddokument", "Hoveddokument.pdf"), "application/pdf");
+        }
+        
+        internal static Dokument GetHoveddokumentEHF()
+        {
+            return new Dokument("ehf_BII05_T10_gyldig_faktura", ResourceUtility.ReadAllBytes("hoveddokument", "ehf_BII05_T10_gyldig_faktura.xml"), "application/ehf+xml");
         }
 
         internal static string[] GetVedleggFilesPaths()
@@ -180,6 +190,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Forsendelse GetForsendelseSimple()
         {
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
+        }
+
+        internal static Forsendelse GetForsendelseWithEHF()
+        {
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeMedEHFDokument(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
         
         internal static Forsendelse GetForsendelseWithDataType()

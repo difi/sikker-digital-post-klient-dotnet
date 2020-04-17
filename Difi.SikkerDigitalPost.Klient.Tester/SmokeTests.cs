@@ -28,6 +28,18 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         }
         
         [Fact]
+        public void Send_digital_with_EHF()
+        {
+            _t
+                .CreateDigitalForsendelseWithEHF()
+                .Send();
+            //.Expect_Message_Response_To_Be_TransportOkKvittering()
+            //.Fetch_Receipt()
+            //.Expect_Receipt_To_Be(typeof(Leveringskvittering))
+            //.ConfirmReceipt();
+        }
+        
+        [Fact]
         public void Send_digital_with_Datatype()
         {
             _t

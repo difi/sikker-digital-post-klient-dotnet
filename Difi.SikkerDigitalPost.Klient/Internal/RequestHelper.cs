@@ -79,7 +79,12 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
-            await addDocument(metadataDocument, putRequestUri);
+
+            if (metadataDocument != null)
+            { 
+                await addDocument(metadataDocument, putRequestUri);
+            }
+            
             foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
             {
                 await addDocument(vedlegg, putRequestUri);

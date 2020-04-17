@@ -46,6 +46,13 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate()), config, serviceProvider.GetService<ILoggerFactory>());
         }
 
+        public SmokeTestsHelper CreateDigitalForsendelseWithEHF()
+        {
+            _forsendelse = DomainUtility.GetForsendelseWithEHF();
+
+            return this;
+        }
+        
         public SmokeTestsHelper Create_Digital_Forsendelse_with_Datatype()
         {
             _forsendelse = DomainUtility.GetForsendelseSimple();
