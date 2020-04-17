@@ -32,6 +32,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
     }
 
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum ScopeType
     {
         ConversationId,

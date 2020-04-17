@@ -1,5 +1,4 @@
 using System;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.SBDH;
 
@@ -13,11 +12,12 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
 
             var konversasjonsId = forsendelse.KonversasjonsId.ToString();
 
-            StandardBusinessDocumentHeader sbdHeader = new StandardBusinessDocumentHeader.Builder().WithProcess(Process.ProcessType.DIGITAL_POST_INFO)
+            StandardBusinessDocumentHeader sbdHeader = new StandardBusinessDocumentHeader.Builder()
+                .WithProcess(forsendelse.PostInfo is DigitalPostInfo ? Process.ProcessType.DIGITAL_POST_INFO : Process.ProcessType.DIGITAL_POST_VEDTAK)
                 .WithStandard(forsendelse.PostInfo.Type)
                 .WithFrom(forsendelse.Avsender.Organisasjonsnummer) //TODO: From databehandler.
                 .WithOnBehalfOf(forsendelse.Avsender.Organisasjonsnummer)
-                .WithTo(forsendelse.PostInfo.Mottaker as DigitalPostMottaker)
+                .WithTo(forsendelse.MottakerPersonIdentifikator)
                 .WithType(forretningsMelding.type.ToString())
                 .WithRelatedToConversationId(konversasjonsId)
                 .WithRelatedToMessageId(konversasjonsId)

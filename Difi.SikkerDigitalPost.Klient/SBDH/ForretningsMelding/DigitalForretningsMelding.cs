@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
         private Dictionary<string, object> _metadataFiler = new Dictionary<string, object>();
 
-        public DigitalForretningsMelding(string tittel) : base(ForretningsMeldingType.DIGITAL)
+        public DigitalForretningsMelding(string tittel) : base(ForretningsMeldingType.digital)
         {
             this.tittel = tittel;
         }

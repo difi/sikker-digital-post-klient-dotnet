@@ -22,7 +22,7 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
             return new Uri(Url, $"{databehandler.WithCountryCode}/{avsender.WithCountryCode}");
         }
         
-        public static Miljø IntegrasjonsPunktMiljø => new Miljø(
+        public static Miljø IntegrasjonsPunktLokalHostMiljø => new Miljø(
             new Uri("http://127.0.0.1:9093/api/"),
             null
             );
@@ -50,16 +50,6 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
         public static Miljø ProduksjonsmiljøNorskHelsenett => new Miljø(
             new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
             CertificateChainUtility.ProduksjonsSertifikater()
-            );
-
-        public static  Miljø LokalMFMiljø => new Miljø(
-            new Uri("http://127.0.0.1:8049/"),
-            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
-            );
-        
-        internal static Miljø Localhost => new Miljø(
-            new Uri("http://192.168.36.1:8049"),
-            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
             );
     }
 }

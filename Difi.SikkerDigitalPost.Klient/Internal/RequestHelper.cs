@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
@@ -64,11 +65,11 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             {
                 IgnoreNullValues = true,
             };
-
-            string json = JsonSerializer.Serialize(standardBusinessDocument, jsonSerializerOptions);
+            
+            string json = JsonSerializer.Serialize(standardBusinessDocument, standardBusinessDocument.GetType(), jsonSerializerOptions);
 
             JObject sbdobj = JObject.Parse(json);
-            sbdobj.Add(standardBusinessDocument.any is DigitalForretningsMelding ? "digital" : "fysisk", sbdobj["any"]);
+            sbdobj.Add(standardBusinessDocument.any is DigitalForretningsMelding ? "digital" : "print", sbdobj["any"]);
             sbdobj.Remove("any");
 
             string newjson = sbdobj.ToString();

@@ -1,5 +1,4 @@
 using System;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.SBDH;
@@ -85,16 +84,20 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
                 throw new NullReferenceException("Motakker må være en FysiskPostMotakker");
             }
 
-            fysiskForretningsMelding.mottakerAdresse = fysiskPostMottaker.Adresse;
+            fysiskForretningsMelding.mottaker = fysiskPostMottaker;
 
             fysiskForretningsMelding.posttype = fysiskPostInfo.Posttype;
 
             fysiskForretningsMelding.returadresse = fysiskPostInfo.ReturpostMottaker.Adresse;
 
-            fysiskForretningsMelding.returhaandtering = fysiskPostInfo.Posthåndtering;
-
             fysiskForretningsMelding.utskriftsfarge = fysiskPostInfo.Utskriftsfarge;
 
+            fysiskForretningsMelding.retur = new Retur
+            {
+                mottaker = fysiskPostMottaker,
+                returhaandtering = fysiskPostInfo.Posthåndtering
+            };
+            
             return fysiskForretningsMelding;
         }
     }

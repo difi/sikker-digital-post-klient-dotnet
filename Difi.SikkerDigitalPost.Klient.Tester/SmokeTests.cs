@@ -10,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTests()
         {
-            var miljø = Miljø.IntegrasjonsPunktMiljø;
+            var miljø = Miljø.IntegrasjonsPunktLokalHostMiljø;
 
             _t = new SmokeTestsHelper(miljø);
         }

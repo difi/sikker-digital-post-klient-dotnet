@@ -21,7 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.SBDH
 
     public enum ForretningsMeldingType
     {
-        DIGITAL,
-        PRINT,
+        digital,
+        print,
     }
 }
