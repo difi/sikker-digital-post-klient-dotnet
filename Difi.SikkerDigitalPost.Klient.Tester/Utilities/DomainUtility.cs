@@ -134,7 +134,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen"), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen") { Adresselinje1 = "Testgate" }, GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
         }
 
         internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
@@ -209,7 +209,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetFysiskPostSimple()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString(), mottakerPersonIdentifikator: GetPersonnummerMottaker());
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString(), mottakerPersonIdentifikator: "27127000293");
         }
 
         internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(int antallVedlegg = 5)

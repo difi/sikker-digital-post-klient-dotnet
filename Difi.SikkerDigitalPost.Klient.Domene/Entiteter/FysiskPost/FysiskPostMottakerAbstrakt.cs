@@ -53,10 +53,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         public string adresselinje1 => Adresse.Adresselinje1;
         public string adresselinje2 => Adresse.Adresselinje2;
         public string adresselinje3 => Adresse.Adresselinje3;
-        public string adresselinje4 => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Adresselinje4 : "";
-        public string postnummer => Adresse is NorskAdresse ? (Adresse as NorskAdresse).Postnummer : "";
-        public string poststed => Adresse is NorskAdresse ? (Adresse as NorskAdresse).Poststed : "";
-        public string land => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Land : "";
-        public string landkode => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Landkode : "";
+        public string adresselinje4 => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Adresselinje4 : null;
+        public string postnummer => Adresse is NorskAdresse ? (Adresse as NorskAdresse).Postnummer : null;
+        public string poststed => Adresse is NorskAdresse ? (Adresse as NorskAdresse).Poststed : null;
+        public string land => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Land : "Norway";
+        public string landkode => Adresse is UtenlandskAdresse ? (Adresse as UtenlandskAdresse).Landkode : "NO";
     }
 }

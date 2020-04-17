@@ -22,11 +22,11 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
             Adresselinje1 = adresselinje1;
         }
 
-        public string Landkode { get; set; } = "";
+        public string Landkode { get; set; }
 
-        public string Land { get; set; } = "";
+        public string Land { get; set; }
 
-        public string Adresselinje4 { get; set; } = "";
+        public string Adresselinje4 { get; set; }
 
         public override string AdresseLinje(int index1)
         {
