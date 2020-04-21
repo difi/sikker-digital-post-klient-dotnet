@@ -9,21 +9,49 @@ namespace Difi.SikkerDigitalPost.Klient
 {
     public class KvitteringFactory
     {
-        public static Kvittering GetKvittering(string xml)
-        {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
+//        public static Kvittering GetKvittering(string xml)
+//        {
+//            var xmlDocument = new XmlDocument();
+//            xmlDocument.LoadXml(xml);
+//
+//            return GetKvittering(xmlDocument);
+//        }
 
-            return GetKvittering(xmlDocument);
+        public static Kvittering GetKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
+        {
+            if (integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.SENDT ||
+                integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.OPPRETTET)
+            {
+                return null;
+            }
+            
+            if (integrasjonspunktKvittering.rawReceipt != null)
+            {
+                return GetKvitteringFromIntegrasjonsPunktKvittering(integrasjonspunktKvittering);
+            } else if (integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.LEVETID_UTLOPT)
+            {
+                return new Feilmelding(integrasjonspunktKvittering.messageId.ToString(), integrasjonspunktKvittering.conversationId, "", "");
+            }
+            else if (integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.ANNET)
+            {
+                return new Feilmelding(integrasjonspunktKvittering.messageId.ToString(), integrasjonspunktKvittering.conversationId, "", "");
+            }
+            else
+            {
+                return new Feilmelding(integrasjonspunktKvittering.messageId.ToString(), integrasjonspunktKvittering.conversationId, "", "");
+            }
         }
 
-        public static Kvittering GetKvittering(XmlDocument xmlDocument)
+        private static Kvittering GetKvitteringFromIntegrasjonsPunktKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
         {
-            var kvittering = (Kvittering) LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
+            var kvittering = (Kvittering) LagForretningskvittering(integrasjonspunktKvittering) ?? LagTransportkvittering(integrasjonspunktKvittering);
 
             if (kvittering != null)
                 return kvittering;
 
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(integrasjonspunktKvittering.rawReceipt);
+            
             var ingenKvitteringstypeFunnetException = new XmlParseException(
                 "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
             {
@@ -32,40 +60,62 @@ namespace Difi.SikkerDigitalPost.Klient
 
             throw ingenKvitteringstypeFunnetException;
         }
+        
+//        public static Kvittering GetKvittering(XmlDocument xmlDocument)
+//        {
+//            var kvittering = (Kvittering) LagForretningskvittering(xmlDocument) ?? LagTransportkvittering(xmlDocument);
+//
+//            if (kvittering != null)
+//                return kvittering;
+//
+//            var ingenKvitteringstypeFunnetException = new XmlParseException(
+//                "Klarte ikke å finne ut hvilken type Kvittering som ble tatt inn. Sjekk rådata for mer informasjon.")
+//            {
+//                Xml = xmlDocument
+//            };
+//
+//            throw ingenKvitteringstypeFunnetException;
+//        }
 
-        private static Forretningskvittering LagForretningskvittering(XmlDocument xmlDocument)
+        private static Forretningskvittering LagForretningskvittering(IntegrasjonspunktKvittering kvittering)
         {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(kvittering.rawReceipt);
+            
             if (IsLeveringskvittering(xmlDocument))
-                return Kvitteringsparser.TilLeveringskvittering(xmlDocument);
+                return Kvitteringsparser.TilLeveringskvittering(kvittering);
 
             if (IsVarslingFeiletkvittering(xmlDocument))
-                return Kvitteringsparser.TilVarslingFeiletKvittering(xmlDocument);
+                return Kvitteringsparser.TilVarslingFeiletKvittering(kvittering);
 
             if (IsFeilmelding(xmlDocument))
-                return Kvitteringsparser.TilFeilmelding(xmlDocument);
+                return Kvitteringsparser.TilFeilmelding(kvittering);
 
             if (IsÅpningskvittering(xmlDocument))
-                return Kvitteringsparser.TilÅpningskvittering(xmlDocument);
+                return Kvitteringsparser.TilÅpningskvittering(kvittering);
 
             if (IsMottaksKvittering(xmlDocument))
-                return Kvitteringsparser.TilMottakskvittering(xmlDocument);
+                return Kvitteringsparser.TilMottakskvittering(kvittering);
 
             if (IsReturpost(xmlDocument))
-                return Kvitteringsparser.TilReturpostkvittering(xmlDocument);
+                return Kvitteringsparser.TilReturpostkvittering(kvittering);
 
             return null;
         }
 
-        private static Transportkvittering LagTransportkvittering(XmlDocument xmlDocument)
+        private static Transportkvittering LagTransportkvittering(IntegrasjonspunktKvittering kvittering)
         {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(kvittering.rawReceipt);
+            
             if (IsTransportOkKvittering(xmlDocument))
-                return Kvitteringsparser.TilTransportOkKvittering(xmlDocument);
+                return Kvitteringsparser.TilTransportOkKvittering(kvittering);
 
             if (IsTransportFeiletKvittering(xmlDocument))
-                return Kvitteringsparser.TilTransportFeiletKvittering(xmlDocument);
+                return Kvitteringsparser.TilTransportFeiletKvittering(kvittering);
 
             if (IsTomKøKvittering(xmlDocument))
-                return Kvitteringsparser.TilTomKøKvittering(xmlDocument);
+                return Kvitteringsparser.TilTomKøKvittering(kvittering);
 
             return null;
         }

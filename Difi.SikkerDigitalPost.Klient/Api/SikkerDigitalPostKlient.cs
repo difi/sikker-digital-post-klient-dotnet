@@ -122,16 +122,16 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
-            var guidUtility = new GuidUtility();
-            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
-
-            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
-            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
-
-            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
-            
-            await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
-
+//            var guidUtility = new GuidUtility();
+//            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
+//
+//            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
+//            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
+//
+//            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
+//            
+//            await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
+//
             return null;
         }
 
@@ -271,31 +271,48 @@ namespace Difi.SikkerDigitalPost.Klient.Api
 
             _logger.LogDebug($"Utgående kvitteringsforespørsel, messageId '{guidUtility.MessageId}'.");
 
-            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
-            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
 
-            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
+            Kvittering kvittering = null;
 
-            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-            var transportReceiptXml = receipt.Xml;
-
-            if (receipt is TomKøKvittering)
+            while (kvittering == null)
             {
-                _logger.LogDebug($"{receipt}");
-                SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
-            }
-            else if (receipt is Forretningskvittering)
-            {
-                _logger.LogDebug($"{receipt}");
-                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
-            }
+                IntegrasjonspunktKvittering ipKvittering = await RequestHelper.GetReceipt();
+                
+                kvittering = KvitteringFactory.GetKvittering(ipKvittering);
 
-            else if (receipt is Transportkvittering)
-            {
-                _logger.LogDebug($"{receipt}");
+                if (kvittering == null)
+                {
+                    await RequestHelper.ConfirmReceipt(ipKvittering);
+                }
             }
+            
+            return kvittering;
+            
+//            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
+//            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
+//
+//            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
+//
+//            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
+//            var transportReceiptXml = receipt.Xml;
+//
+//            if (receipt is TomKøKvittering)
+//            {
+//                _logger.LogDebug($"{receipt}");
+//                SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
+//            }
+//            else if (receipt is Forretningskvittering)
+//            {
+//                _logger.LogDebug($"{receipt}");
+//                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
+//            }
+//
+//            else if (receipt is Transportkvittering)
+//            {
+//                _logger.LogDebug($"{receipt}");
+//            }
 
-            return receipt;
+            //return receipt;
         }
 
         /// <summary>

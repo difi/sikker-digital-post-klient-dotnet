@@ -91,7 +91,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 await addDocument(vedlegg, putRequestUri);
             }
 
-
             responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
             responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -117,20 +116,38 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             _logger.LogInformation(responseContent);
         }
 
-        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope,
-            DocumentBundle asiceDocumentBundle)
+//        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope,
+//            DocumentBundle asiceDocumentBundle)
+//        {
+//            var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
+//
+//            return KvitteringFactory.GetKvittering(result);
+//        }
+
+        public async Task<IntegrasjonspunktKvittering> GetReceipt()
         {
-            var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
+            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/peek");
+            
+            var responseMessage = await HttpClient.GetAsync(uri).ConfigureAwait(false);
+            var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return KvitteringFactory.GetKvittering(result);
+            return JsonSerializer.Deserialize<IntegrasjonspunktKvittering>(responseContent);
         }
-
-        public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+        
+        public async Task<string> ConfirmReceipt(IntegrasjonspunktKvittering kvittering)
         {
-            var result = await Send(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-
-            return KvitteringFactory.GetKvittering(result);
+            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/{kvittering.id}");
+            
+            var responseMessage = await HttpClient.DeleteAsync(uri).ConfigureAwait(false);
+            return await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
+        
+//        public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
+//        {
+//            var result = await Send(kvitteringsforespørselEnvelope).ConfigureAwait(false);
+//
+//            return KvitteringFactory.GetKvittering(result);
+//        }
 
         public Task ConfirmReceipt(KvitteringsbekreftelseEnvelope kvitteringsbekreftelseEnvelope)
         {

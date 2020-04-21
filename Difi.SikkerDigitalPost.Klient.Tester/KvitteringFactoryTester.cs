@@ -1,4 +1,6 @@
-﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
+﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Xunit;
@@ -15,8 +17,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.FeilmeldingXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.FEIL, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<Feilmelding>(kvittering);
@@ -28,8 +44,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.LeveringskvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.LEVERT, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                    
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<Leveringskvittering>(kvittering);
@@ -41,8 +71,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.MottakskvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.MOTTATT, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<Mottakskvittering>(kvittering);
@@ -54,8 +98,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.ReturpostkvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.ANNET, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<Returpostkvittering>(kvittering);
@@ -67,8 +125,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.VarslingFeiletKvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.FEIL, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<VarslingFeiletKvittering>(kvittering);
@@ -80,8 +152,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Forretningskvittering.ÅpningskvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.LEST, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<Åpningskvittering>(kvittering);
@@ -93,8 +179,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Transportkvittering.TomKøKvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.FEIL, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<TomKøKvittering>(kvittering);
@@ -106,8 +206,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Transportkvittering.TransportFeiletKvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.FEIL, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<TransportFeiletKvittering>(kvittering);
@@ -119,8 +233,22 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 //Arrange
                 var xml = KvitteringsUtility.Transportkvittering.TransportOkKvitteringXml();
 
+                const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
+                const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
+                const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
+                
+                IntegrasjonspunktKvittering ipkvittering = new IntegrasjonspunktKvittering(
+                    1L, 
+                    DateTime.Parse(tidspunkt), 
+                    IntegrasjonspunktKvitteringType.LEVERT, 
+                    "", 
+                    xml.InnerText, 
+                    Guid.Parse(konversasjonsId), 
+                    Guid.Parse(meldingsId), 
+                    1L);
+                
                 //Act
-                var kvittering = KvitteringFactory.GetKvittering(xml);
+                var kvittering = KvitteringFactory.GetKvittering(ipkvittering);
 
                 //Assert
                 Assert.IsType<TransportOkKvittering>(kvittering);

@@ -55,7 +55,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         
         public SmokeTestsHelper Create_Digital_Forsendelse_with_Datatype()
         {
-            _forsendelse = DomainUtility.GetForsendelseSimple();
+            _forsendelse = DomainUtility.GetForsendelseForDataType();
             
             var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">Dette er en lenke utvidelse</beskrivelse></lenke>";
 
@@ -108,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Fetch_Receipt()
         {
-            Assert_state(_transportkvittering);
+            //Assert_state(_transportkvittering);
 
             const int maxTries = 10;
             var kvitteringReceived = false;

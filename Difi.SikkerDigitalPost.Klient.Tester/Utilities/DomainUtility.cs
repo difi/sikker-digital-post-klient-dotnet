@@ -194,12 +194,12 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetForsendelseWithEHF()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeMedEHFDokument(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeMedEHFDokument(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
         
-        internal static Forsendelse GetForsendelseWithDataType()
+        internal static Forsendelse GetForsendelseForDataType()
         {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
+            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetForsendelseWithTestCertificate()
