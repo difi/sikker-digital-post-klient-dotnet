@@ -176,8 +176,6 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             var forretningskvittergFelter = new Forretningskvitteringfelter();
 
-            //var bodyId = SjekkForretningskvitteringForKonsistens(integrasjonspunktKvittering);
-
             XmlDocument document = new XmlDocument();
             document.LoadXml(integrasjonspunktKvittering.rawReceipt);
             
@@ -199,26 +197,6 @@ namespace Difi.SikkerDigitalPost.Klient
             }
 
             return forretningskvittergFelter;
-        }
-
-        private static string SjekkForretningskvitteringForKonsistens(IntegrasjonspunktKvittering integrasjonspunktKvittering)
-        {
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(integrasjonspunktKvittering.rawReceipt);
-            
-            var partInfo = document.SelectSingleNode("//ns6:PartInfo", GetNamespaceManager(document));
-            var partInfoBodyId = string.Empty;
-            if (partInfo.Attributes.Count > 0)
-                partInfoBodyId = partInfo.Attributes["href"].Value;
-
-            var bodyId = document.SelectSingleNode("//env:Body", GetNamespaceManager(document)).Attributes["wsu:Id"].Value;
-
-            if (!partInfoBodyId.Equals(string.Empty) && !bodyId.Equals(partInfoBodyId))
-            {
-                throw new SecurityException(
-                    $"Id i PartInfo og i Body matcher er ikke like. Partinfo har '{partInfoBodyId}', body har '{bodyId}'");
-            }
-            return bodyId;
         }
 
         private static VarslingFeiletKvitteringsfelter HentVarslingFeiletKvitteringsfelter(IntegrasjonspunktKvittering integrasjonspunktKvittering)

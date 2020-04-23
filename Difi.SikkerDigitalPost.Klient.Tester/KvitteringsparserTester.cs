@@ -17,7 +17,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.LeveringskvitteringXml();
                 const string konversasjonsId = "716cffc1-58aa-4198-98df-281f4a1a1384";
                 const string meldingsId = "5a93d7e9-e9e5-4013-ab19-c32d9eb0f3d0";
-                const string referanseTilMeldingId = "03eafe0f-43ae-4184-82f6-ab194dd1b426";
+                const string referanseTilMeldingId = "716cffc1-58aa-4198-98df-281f4a1a1384";
                 const string tidspunkt = "2015-11-10T08:37:24.695+01:00";
 
                 IntegrasjonspunktKvittering kvittering = new IntegrasjonspunktKvittering(
@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.LEVERT, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -47,7 +47,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.MottakskvitteringXml();
                 const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
-                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string referanseTilMeldingId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
 
                 IntegrasjonspunktKvittering kvittering = new IntegrasjonspunktKvittering(
@@ -55,7 +55,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.MOTTATT, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -77,7 +77,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.ReturpostkvitteringXml();
                 const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
-                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string referanseTilMeldingId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
 
                 IntegrasjonspunktKvittering kvittering = new IntegrasjonspunktKvittering(
@@ -85,7 +85,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.ANNET, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -108,7 +108,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.VarslingFeiletKvitteringXml();
                 const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
-                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string referanseTilMeldingId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
                 const string beskrivelse = "Selvvalgt";
                 const Varslingskanal varslingskanal = Varslingskanal.Sms;
@@ -118,7 +118,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     beskrivelse, 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -143,7 +143,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.ÅpningskvitteringXml();
                 const string konversasjonsId = "1d4aff36-b6d2-4506-bc0b-bd62ae6f8966";
                 const string meldingsId = "2d476cb1-cf9a-4210-ba74-ee095f41c9f2";
-                const string referanseTilMeldingId = "b32d2b7c-2c88-456d-9d74-de348d7c30f8";
+                const string referanseTilMeldingId = "1d4aff36-b6d2-4506-bc0b-bd62ae6f8966";
                 const string tidspunkt = "2015-11-09T16:11:31.171+01:00";
 
                 IntegrasjonspunktKvittering kvittering = new IntegrasjonspunktKvittering(
@@ -151,7 +151,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.LEST, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -174,7 +174,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                 var xml = KvitteringsUtility.Forretningskvittering.FeilmeldingXml();
                 const string konversasjonsId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string meldingsId = "7142d8ab-9408-4cb5-8b80-dca3618dd722";
-                const string referanseTilMeldingId = "312034c8-c63a-46ac-8eec-bc22d0e534d8";
+                const string referanseTilMeldingId = "2049057a-9b53-41bb-9cc3-d10f55fa0f87";
                 const string tidspunkt = "2015-11-10T08:26:49.797+01:00";
                 const string detaljer = "detaljer";
                 const Feiltype feiltype = Feiltype.Server;
@@ -184,7 +184,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -216,7 +216,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Empty, 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -251,7 +251,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(sendtTidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     beskrivelse, 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(meldingsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -286,7 +286,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.LEVERT, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Empty, 
                     Guid.Parse(meldingsId), 
                     1L);
