@@ -44,7 +44,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         {
             _t
                 .Create_Digital_Forsendelse_with_Datatype()
-                .Send()
+                //.Send()
             //.Expect_Message_Response_To_Be_TransportOkKvittering()
                  .Fetch_Receipt();
             //.Expect_Receipt_To_Be(typeof(Leveringskvittering))

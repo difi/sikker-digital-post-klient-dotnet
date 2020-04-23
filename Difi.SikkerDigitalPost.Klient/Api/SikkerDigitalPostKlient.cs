@@ -110,7 +110,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public Transportkvittering Send(Forsendelse forsendelse)
         {
-            return SendAsyncNoAsice(forsendelse).Result;
+            return SendAsync(forsendelse).Result;
         }
 
         /// <summary>
@@ -122,26 +122,9 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
-//            var guidUtility = new GuidUtility();
-//            _logger.LogDebug($"Utgående forsendelse, conversationId '{forsendelse.KonversasjonsId}', messageId '{guidUtility.MessageId}'.");
-//
-//            var documentBundle = AsiceGenerator.Create(forsendelse, guidUtility, Databehandler.Sertifikat, Klientkonfigurasjon);
-//            var forretningsmeldingEnvelope = new ForretningsmeldingEnvelope(new EnvelopeSettings(forsendelse, documentBundle, Databehandler, guidUtility, Klientkonfigurasjon));
-//
-//            ValidateEnvelopeAndThrowIfInvalid(forretningsmeldingEnvelope, forretningsmeldingEnvelope.GetType().Name);
-//            
-//            await RequestHelper.SendMessage(forretningsmeldingEnvelope, documentBundle).ConfigureAwait(false);
-//
-            return null;
-        }
-
-        public async Task<Transportkvittering> SendAsyncNoAsice(Forsendelse forsendelse)
-        {
             StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(forsendelse);
 
-            await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke, forsendelse.MetadataDocument);
-
-            return null;
+            return await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke, forsendelse.MetadataDocument);
         }
         
         /// <summary>
@@ -277,12 +260,17 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             while (kvittering == null)
             {
                 IntegrasjonspunktKvittering ipKvittering = await RequestHelper.GetReceipt();
+
+                if (ipKvittering == null)
+                {
+                    return new TomKøKvittering();
+                }
                 
                 kvittering = KvitteringFactory.GetKvittering(ipKvittering);
 
                 if (kvittering == null)
                 {
-                    await RequestHelper.ConfirmReceipt(ipKvittering);
+                    await RequestHelper.ConfirmReceipt(ipKvittering.id);
                 }
             }
             
@@ -388,13 +376,18 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </remarks>
         public async Task BekreftAsync(Forretningskvittering kvittering)
         {
-            var envelopeSettings = new EnvelopeSettings(kvittering, Databehandler, new GuidUtility());
-            var bekreftKvitteringEnvelope = new KvitteringsbekreftelseEnvelope(envelopeSettings);
+            if (kvittering == null || kvittering.IntegrasjonsPunktId == -1L)
+            {
+                IntegrasjonspunktKvittering nyKvittering = await RequestHelper.GetReceipt();
 
-            ValidateEnvelopeAndThrowIfInvalid(bekreftKvitteringEnvelope, bekreftKvitteringEnvelope.GetType().Name);
-
-            await RequestHelper.ConfirmReceipt(bekreftKvitteringEnvelope).ConfigureAwait(false);
-            _logger.LogDebug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
+                await RequestHelper.ConfirmReceipt(nyKvittering.id);
+                _logger.LogDebug($"Bekreftet kvittering, conversationId '{nyKvittering.conversationId}'");
+            }
+            else
+            {
+                await RequestHelper.ConfirmReceipt(kvittering.IntegrasjonsPunktId);
+                _logger.LogDebug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
+            }
         }
 
         private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)

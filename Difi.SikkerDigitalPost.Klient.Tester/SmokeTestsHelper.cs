@@ -143,7 +143,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper ConfirmReceipt()
         {
-            Assert_state(_forretningskvittering);
+            //Assert_state(_forretningskvittering);
 
             _klient.Bekreft(_forretningskvittering);
 

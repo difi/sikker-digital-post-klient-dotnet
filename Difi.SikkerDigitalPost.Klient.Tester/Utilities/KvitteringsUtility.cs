@@ -47,30 +47,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
                 return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
             }
         }
-
-        public static class Transportkvittering
-        {
-            private static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "Skjema.Eksempler.Kvitteringer.Transport");
-
-            public static XmlDocument TomKøKvitteringXml()
-            {
-                return TilXmlDokument("TomKøKvittering.xml");
-            }
-
-            public static XmlDocument TransportFeiletKvitteringXml()
-            {
-                return TilXmlDokument("TransportFeiletKvittering.xml");
-            }
-
-            public static XmlDocument TransportOkKvitteringXml()
-            {
-                return TilXmlDokument("TransportOkKvittering.xml");
-            }
-
-            public static XmlDocument TilXmlDokument(string kvittering)
-            {
-                return XmlUtility.TilXmlDokument(Encoding.UTF8.GetString(ResourceUtility.ReadAllBytes(kvittering)));
-            }
-        }
     }
 }

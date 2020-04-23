@@ -35,7 +35,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport
         /// <summary>
         ///     Hvem man antar har skyld i feilen.
         /// </summary>
-        public Feiltype Skyldig { get; protected set; }
+        public Feiltype Skyldig { get; set; }
 
         public new string ToString()
         {

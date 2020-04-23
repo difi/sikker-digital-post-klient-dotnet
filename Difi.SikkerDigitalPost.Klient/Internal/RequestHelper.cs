@@ -1,30 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Security;
-using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
+using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
-using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
-using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
-using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
-using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Handlers;
-using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.SBDH;
-using log4net;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusinessDocument;
@@ -54,7 +43,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public HttpClient HttpClient { get; set; }
 
-        public async Task<string> SendMessage(StandardBusinessDocument standardBusinessDocument,
+        public async Task<Transportkvittering> SendMessage(StandardBusinessDocument standardBusinessDocument,
             Dokumentpakke dokumentpakke, MetadataDocument metadataDocument)
         {
             var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/");
@@ -79,30 +68,65 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var responseMessage = await HttpClient.PostAsync(openRequestUri, content).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return new TransportFeiletKvittering
+                {
+                    Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
+                    Beskrivelse = responseMessage.ReasonPhrase,
+                    Feilkode = responseMessage.StatusCode.ToString()
+                };
+            }
+            
+            Transportkvittering hovedAddKvittering = await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
 
+            if (hovedAddKvittering is TransportFeiletKvittering)
+            {
+                return hovedAddKvittering;
+            }
+            
             if (metadataDocument != null)
             { 
-                await addDocument(metadataDocument, putRequestUri);
+                Transportkvittering addKvittering = await addDocument(metadataDocument, putRequestUri);
+
+                if (addKvittering is TransportFeiletKvittering)
+                {
+                    return addKvittering;
+                }
             }
             
             foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
             {
-                await addDocument(vedlegg, putRequestUri);
+                Transportkvittering addKvittering = await addDocument(vedlegg, putRequestUri);
+                
+                if (addKvittering is TransportFeiletKvittering)
+                {
+                    return addKvittering;
+                }
             }
 
             responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
             responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return new TransportFeiletKvittering
+                {
+                    Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
+                    Beskrivelse = responseMessage.ReasonPhrase,
+                    Feilkode = responseMessage.StatusCode.ToString()
+                };
+            }
+            
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
                 _logger.LogDebug($" Innkommende {responseContent}");
             }
 
-            return responseContent;
+            return new TransportOkKvittering();
         }
-
-        private async Task addDocument(IWithDocumentProperties document, Uri putRequestUri)
+        
+        private async Task<Transportkvittering> addDocument(IWithDocumentProperties document, Uri putRequestUri)
         {
             var docContent = new ByteArrayContent(document.Bytes);
             docContent.Headers.Add("content-type", document.MimeType);
@@ -113,16 +137,21 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
             var responseMessage = await HttpClient.PutAsync(putRequestUri, docContent).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-            _logger.LogInformation(responseContent);
-        }
 
-//        public async Task<Kvittering> SendMessage(ForretningsmeldingEnvelope envelope,
-//            DocumentBundle asiceDocumentBundle)
-//        {
-//            var result = await Send(envelope, asiceDocumentBundle).ConfigureAwait(false);
-//
-//            return KvitteringFactory.GetKvittering(result);
-//        }
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return new TransportFeiletKvittering
+                {
+                    Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
+                    Beskrivelse = responseMessage.ReasonPhrase,
+                    Feilkode = responseMessage.StatusCode.ToString()
+                };
+            }
+            
+            _logger.LogInformation(responseContent);
+            
+            return new TransportOkKvittering();
+        }
 
         public async Task<IntegrasjonspunktKvittering> GetReceipt()
         {
@@ -131,27 +160,20 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             var responseMessage = await HttpClient.GetAsync(uri).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+            if (responseMessage.StatusCode == HttpStatusCode.NoContent)
+            {
+                return null;
+            }
+            
             return JsonSerializer.Deserialize<IntegrasjonspunktKvittering>(responseContent);
         }
         
-        public async Task<string> ConfirmReceipt(IntegrasjonspunktKvittering kvittering)
+        public async Task<string> ConfirmReceipt(long id)
         {
-            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/{kvittering.id}");
+            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/{id}");
             
             var responseMessage = await HttpClient.DeleteAsync(uri).ConfigureAwait(false);
             return await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-        }
-        
-//        public async Task<Kvittering> GetReceipt(KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
-//        {
-//            var result = await Send(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-//
-//            return KvitteringFactory.GetKvittering(result);
-//        }
-
-        public Task ConfirmReceipt(KvitteringsbekreftelseEnvelope kvitteringsbekreftelseEnvelope)
-        {
-            return Send(kvitteringsbekreftelseEnvelope);
         }
 
         private HttpClient HttpClientWithHandlerChain(IEnumerable<DelegatingHandler> additionalHandlers)
@@ -193,13 +215,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 return true;
             };
             proxyOrNotHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
-            //proxyOrNotHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-//            proxyOrNotHandler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
-//            {
-//                // Log it, then use the same answer it would have had if we didn't make a callback.
-//                _logger.LogError(cert.ToString());
-//                return errors == SslPolicyErrors.None;
-//            };
 
             return proxyOrNotHandler;
         }
@@ -211,83 +226,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                     ClientConfiguration.ProxyHost, ClientConfiguration.ProxyPort).Uri, true);
 
             return webProxy;
-        }
-
-        private async Task<string> Send(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle = null)
-        {
-            if (ClientConfiguration.LoggForespørselOgRespons)
-            {
-                _logger.LogDebug(
-                    $"Utgående {envelope.GetType().Name}, conversationId '{envelope.EnvelopeSettings.Forsendelse?.KonversasjonsId}', messageId '{envelope.EnvelopeSettings.GuidUtility.MessageId}': {envelope.Xml().OuterXml}");
-            }
-
-            var requestUri = RequestUri(envelope);
-            var httpContent = CreateHttpContent(envelope, asiceDocumentBundle);
-
-            var responseMessage = await HttpClient.PostAsync(requestUri, httpContent).ConfigureAwait(false);
-            var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            if (ClientConfiguration.LoggForespørselOgRespons)
-            {
-                _logger.LogDebug($" Innkommende {responseContent}");
-            }
-
-            return responseContent;
-        }
-
-        private Uri RequestUri(AbstractEnvelope envelope)
-        {
-            return new Uri(ClientConfiguration.Miljø.Url,
-                $"messages/out/{envelope.EnvelopeSettings.Forsendelse.KonversasjonsId}");
-//            var isOutgoingForsendelse = envelope.EnvelopeSettings.Forsendelse != null;
-//            return isOutgoingForsendelse
-//                ? ClientConfiguration.Miljø.UrlWithOrganisasjonsnummer(envelope.EnvelopeSettings.Databehandler.Organisasjonsnummer, envelope.EnvelopeSettings.Forsendelse.Avsender.Organisasjonsnummer)
-//                : ClientConfiguration.Miljø.Url;
-        }
-
-        private static HttpContent CreateHttpContent(AbstractEnvelope envelope, DocumentBundle asiceDocumentBundle)
-        {
-            var boundary = Guid.NewGuid().ToString();
-            var multipartFormDataContent = new MultipartFormDataContent(boundary);
-
-            var contentType = $"Multipart/Related; boundary=\"{boundary}\"; " + "type=\"application/soap+xml\"; " +
-                              $"start=\"<{envelope.ContentId}>\"";
-
-            var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
-            multipartFormDataContent.Headers.ContentType = mediaTypeHeaderValue;
-
-            AddEnvelopeToMultipart(envelope, multipartFormDataContent);
-            AddDocumentBundleToMultipart(asiceDocumentBundle, multipartFormDataContent);
-
-            return multipartFormDataContent;
-        }
-
-        private static void AddEnvelopeToMultipart(ISoapVedlegg vedlegg, MultipartFormDataContent meldingsinnhold)
-        {
-            var byteArrayContent = new ByteArrayContent(vedlegg.Bytes);
-
-            var adjustedContentType = vedlegg.Innholdstype.Split(';')[0];
-
-            byteArrayContent.Headers.ContentType = new MediaTypeHeaderValue(adjustedContentType);
-            byteArrayContent.Headers.Add("Content-Transfer-Encoding", vedlegg.TransferEncoding);
-            byteArrayContent.Headers.Add("Content-ID", $"<{vedlegg.ContentId}>");
-
-            meldingsinnhold.Add(byteArrayContent);
-        }
-
-        private static void AddDocumentBundleToMultipart(DocumentBundle documentBundle,
-            MultipartFormDataContent meldingsinnhold)
-        {
-            if (documentBundle != null)
-            {
-                var meldingsdata = new ByteArrayContent(documentBundle.BundleBytes);
-
-                meldingsdata.Headers.ContentType = new MediaTypeHeaderValue(documentBundle.ContentType);
-                meldingsdata.Headers.Add("Content-Transfer-Encoding", documentBundle.TransferEncoding);
-                meldingsdata.Headers.Add("Content-ID", $"<{documentBundle.ContentId}>");
-
-                meldingsinnhold.Add(meldingsdata);
-            }
         }
     }
 }

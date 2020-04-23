@@ -2,7 +2,6 @@
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -101,38 +100,6 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        public static TomKøKvittering TilTomKøKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
-        {
-            var kvitteringFelter = HentKvitteringsfelter(integrasjonspunktKvittering);
-
-            return new TomKøKvittering
-            {
-                MeldingsId = kvitteringFelter.MeldingsId,
-                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
-                Xml = kvitteringFelter.Xml
-            };
-        }
-
-        public static TransportFeiletKvittering TilTransportFeiletKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
-        {
-            var kvitteringFelter = HentKvitteringsfelter(integrasjonspunktKvittering, false);
-            var transportFeiletFelter = HentTransportFeiletKvitteringsfelter(integrasjonspunktKvittering);
-
-            return new TransportFeiletKvittering
-            {
-                MeldingsId = kvitteringFelter.MeldingsId,
-                ReferanseTilMeldingId = kvitteringFelter.ReferanseTilMeldingId,
-                SendtTidspunkt = kvitteringFelter.SendtTidspunkt,
-                Xml = kvitteringFelter.Xml,
-                Alvorlighetsgrad = transportFeiletFelter.Alvorlighetsgrad,
-                Beskrivelse = transportFeiletFelter.Beskrivelse,
-                Feilkode = transportFeiletFelter.Feilkode,
-                Kategori = transportFeiletFelter.Kategori,
-                Opprinnelse = transportFeiletFelter.Opprinnelse
-            };
-        }
-
         private static Kvitteringsfelter HentKvitteringsfelter(IntegrasjonspunktKvittering integrasjonspunktKvittering, bool sjekkEtterReferanseTilMeldingsId = true)
         {
             try
@@ -159,19 +126,6 @@ namespace Difi.SikkerDigitalPost.Klient
             };
         }
 
-        public static TransportOkKvittering TilTransportOkKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
-        {
-            var kvitteringsfelter = HentKvitteringsfelter(integrasjonspunktKvittering);
-
-            return new TransportOkKvittering
-            {
-                MeldingsId = kvitteringsfelter.MeldingsId,
-                ReferanseTilMeldingId = kvitteringsfelter.ReferanseTilMeldingId,
-                SendtTidspunkt = kvitteringsfelter.SendtTidspunkt,
-                Xml = kvitteringsfelter.Xml
-            };
-        }
-
         private static Forretningskvitteringfelter HentForretningskvitteringFelter(IntegrasjonspunktKvittering integrasjonspunktKvittering)
         {
             var forretningskvittergFelter = new Forretningskvitteringfelter();
@@ -184,6 +138,8 @@ namespace Difi.SikkerDigitalPost.Klient
                 var guidNode = GetXmlNodeFromDocument(document, "//ns3:BusinessScope/ns3:Scope/ns3:InstanceIdentifier");
                 forretningskvittergFelter.KonversasjonsId = new Guid(guidNode.InnerText);
 
+                forretningskvittergFelter.IntegrasjonsPunktId = integrasjonspunktKvittering.id;
+                
                 var tidspunktNode = GetXmlNodeFromDocument(document, "//ns9:tidspunkt");
                 forretningskvittergFelter.Generert = Convert.ToDateTime(tidspunktNode.InnerText);
 
@@ -250,35 +206,6 @@ namespace Difi.SikkerDigitalPost.Klient
             return feilmeldingsfelter;
         }
 
-        private static TransportFeiletKvitteringsfelter HentTransportFeiletKvitteringsfelter(IntegrasjonspunktKvittering integrasjonspunktKvittering)
-        {
-            var transportFeiletKvitteringsfelter = new TransportFeiletKvitteringsfelter();
-
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(integrasjonspunktKvittering.rawReceipt);
-            
-            try
-            {
-                var errorNode = GetXmlNodeFromDocument(document, "//ns6:Error");
-                transportFeiletKvitteringsfelter.Kategori = errorNode.Attributes["category"].Value;
-                transportFeiletKvitteringsfelter.Feilkode = errorNode.Attributes["errorCode"].Value;
-                transportFeiletKvitteringsfelter.Opprinnelse = errorNode.Attributes["origin"].Value;
-                transportFeiletKvitteringsfelter.Alvorlighetsgrad = errorNode.Attributes["severity"].Value;
-                transportFeiletKvitteringsfelter.Beskrivelse = GetXmlNodeFromDocument(document, "//ns6:Description").InnerText;
-                var skyldig = GetXmlNodeFromDocument(document, "//env:Value").InnerText;
-                transportFeiletKvitteringsfelter.SkyldigFeiltype = skyldig == Feiltype.Klient.ToString()
-                    ? Feiltype.Klient
-                    : Feiltype.Server;
-            }
-            catch (Exception e)
-            {
-                throw new XmlParseException(
-                    "Feil under bygging av TransportFeilet-kvittering.", e);
-            }
-
-            return transportFeiletKvitteringsfelter;
-        }
-
         protected static XmlNode GetXmlNodeFromDocument(XmlDocument document, string xPath)
         {
             try
@@ -323,6 +250,7 @@ namespace Difi.SikkerDigitalPost.Klient
         {
             public Guid KonversasjonsId { get; set; }
 
+            public long IntegrasjonsPunktId { get; set; }
             public string BodyReferenceUri { get; set; }
 
             public string DigestValue { get; set; }
@@ -342,21 +270,6 @@ namespace Difi.SikkerDigitalPost.Klient
             public Feiltype SkyldigFeiltype { get; set; }
 
             public string Detaljer { get; set; }
-        }
-
-        internal class TransportFeiletKvitteringsfelter
-        {
-            public string Feilkode { get; set; }
-
-            public string Kategori { get; set; }
-
-            public string Opprinnelse { get; set; }
-
-            public string Alvorlighetsgrad { get; set; }
-
-            public string Beskrivelse { get; set; }
-
-            public Feiltype SkyldigFeiltype { get; set; }
         }
     }
 }
