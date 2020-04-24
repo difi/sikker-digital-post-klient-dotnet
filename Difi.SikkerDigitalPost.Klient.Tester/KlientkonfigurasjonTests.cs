@@ -35,46 +35,5 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
         }
 
-        public class EnableDocumentBundleDiskDumpMethod : KlientkonfigurasjonTests
-        {
-            [Fact]
-            public void AddsDocumentBundleToDiskProcessor()
-            {
-                //Arrange
-                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-
-                //Act
-                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(Path.GetTempPath());
-
-                //Assert
-                Assert.True(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
-            }
-
-            [Fact]
-            public void NonExistingFolderShouldThrowException()
-            {
-                //Arrange
-                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-
-                //Act
-                Assert.Throws<DirectoryNotFoundException>(() =>
-                    clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(@"c:\nonexistentfolder\theoddsofthisexistingis\extremelylow")
-                    );
-            }
-
-            [Fact]
-            public void ExistingFolderShouldNotThrowException()
-            {
-                //Arrange
-                var clientConfiguration = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-                var path = Path.GetTempPath();
-
-                //Act
-                clientConfiguration.AktiverLagringAvDokumentpakkeTilDisk(path);
-
-                //Assert
-                Assert.True(clientConfiguration.Dokumentpakkeprosessorer.Any(p => p.GetType() == typeof (LagreDokumentpakkeTilDiskProsessor)));
-            }
-        }
     }
 }

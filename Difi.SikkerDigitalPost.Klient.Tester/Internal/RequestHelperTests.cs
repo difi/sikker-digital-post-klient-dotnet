@@ -1,14 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
-using Difi.SikkerDigitalPost.Klient.Internal;
-using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
-using Difi.SikkerDigitalPost.Klient.Resources.Xml;
-using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
-using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
-using Difi.SikkerDigitalPost.Klient.Utilities;
+﻿using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;

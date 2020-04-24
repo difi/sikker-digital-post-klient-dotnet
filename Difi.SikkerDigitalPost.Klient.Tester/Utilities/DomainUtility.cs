@@ -7,14 +7,10 @@ using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Interface;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
-using Difi.SikkerDigitalPost.Klient.Envelope;
-using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
-using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Resources.Resource;
@@ -215,48 +211,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(int antallVedlegg = 5)
         {
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithMultipleVedlegg(antallVedlegg), Prioritet.Normal, Guid.NewGuid().ToString());
-        }
-
-        internal static DocumentBundle GetAsiceArchiveSimple()
-        {
-            return AsiceGenerator.Create(GetForsendelseSimple(), new GuidUtility(), GetAvsenderCertificate(), GetKlientkonfigurasjon());
-        }
-
-        internal static AsiceArchive GetAsiceArchive(Forsendelse message)
-        {
-            var manifest = new Manifest(message);
-            var signature = new Signature(message, manifest, GetAvsenderEnhetstesterSertifikat());
-            var cryptographicCertificate = message.PostInfo.Mottaker.Sertifikat;
-
-            var asiceAttachables = new List<IAsiceAttachable>();
-            asiceAttachables.AddRange(message.Dokumentpakke.Vedlegg);
-            asiceAttachables.Add(message.Dokumentpakke.Hoveddokument);
-            asiceAttachables.Add(manifest);
-            asiceAttachables.Add(signature);
-
-            return new AsiceArchive(cryptographicCertificate, new GuidUtility(), new List<AsiceAttachableProcessor>(), asiceAttachables.ToArray());
-        }
-
-        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelopeWithTestTestCertificate()
-        {
-            var envelopeSettings = new EnvelopeSettings(
-                GetForsendelseWithTestCertificate(),
-                GetAsiceArchiveSimple(),
-                GetDatabehandlerWithTestCertificate(),
-                GuidUtility,
-                new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
-            return new ForretningsmeldingEnvelope(envelopeSettings);
-        }
-
-        internal static ForretningsmeldingEnvelope GetForretningsmeldingEnvelope()
-        {
-            var envelopeSettings = new EnvelopeSettings(
-                GetForsendelseSimple(),
-                GetAsiceArchiveSimple(),
-                GetDatabehandler(),
-                GuidUtility,
-                new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø));
-            return new ForretningsmeldingEnvelope(envelopeSettings);
         }
 
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientQaOffentlig()

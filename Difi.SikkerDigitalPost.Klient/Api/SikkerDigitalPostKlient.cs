@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
@@ -14,13 +10,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
 using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
-using Difi.SikkerDigitalPost.Klient.Envelope;
-using Difi.SikkerDigitalPost.Klient.Envelope.Abstract;
-using Difi.SikkerDigitalPost.Klient.Envelope.Forretningsmelding;
-using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsbekreftelse;
-using Difi.SikkerDigitalPost.Klient.Envelope.Kvitteringsforespørsel;
 using Difi.SikkerDigitalPost.Klient.Internal;
-using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Digipost.Api.Client.Shared.Certificate;
@@ -387,30 +377,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             {
                 await RequestHelper.ConfirmReceipt(kvittering.IntegrasjonsPunktId);
                 _logger.LogDebug($"Bekreftet kvittering, conversationId '{kvittering.KonversasjonsId}'");
-            }
-        }
-
-        private void SecurityValidationOfEmptyQueueReceipt(XmlDocument kvittering, XmlDocument forretningsmelding)
-        {
-            var responseValidator = new ResponseValidator(forretningsmelding, kvittering, CertificateValidationProperties);
-            responseValidator.ValidateEmptyQueueReceipt();
-        }
-
-        private void SecurityValidationOfMessageReceipt(XmlDocument kvittering, KvitteringsforespørselEnvelope kvitteringsforespørselEnvelope)
-        {
-            var valideringAvResponsSignatur = new ResponseValidator(kvitteringsforespørselEnvelope.Xml(), kvittering, CertificateValidationProperties);
-            valideringAvResponsSignatur.ValidateMessageReceipt();
-        }
-
-        private void ValidateEnvelopeAndThrowIfInvalid(AbstractEnvelope envelope, string prefix)
-        {
-            List<string> validationMessages;
-            var isValid = SdpXmlValidator.Instance.Validate(envelope.Xml().OuterXml, out validationMessages);
-            if (!isValid)
-            {
-                var errorDescription = $"Ikke gyldig innhold i {prefix}. {validationMessages.Aggregate((current, variable) => current + Environment.NewLine + variable)}";
-                _logger.LogWarning(errorDescription);
-                throw new XmlValidationException(errorDescription, validationMessages);
             }
         }
     }

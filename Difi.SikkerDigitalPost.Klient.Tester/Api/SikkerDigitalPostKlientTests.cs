@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,9 +7,7 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Internal;
-using Difi.SikkerDigitalPost.Klient.Internal.AsicE;
 using Difi.SikkerDigitalPost.Klient.Resources.Xml;
-using Difi.SikkerDigitalPost.Klient.Tester.AsicE;
 using Difi.SikkerDigitalPost.Klient.Tester.Fakes;
 using Difi.SikkerDigitalPost.Klient.Tester.Utilities;
 using Difi.SikkerDigitalPost.Klient.Utilities;
@@ -76,51 +73,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 
                 //Assert
                 Assert.IsType<TransportFeiletKvittering>(transportkvittering);
-            }
-
-            [Fact]
-            public async Task Calls_all_dokumentpakke_prosessors()
-            {
-                //Arrange
-                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø)
-                {
-                    Dokumentpakkeprosessorer = new List<IDokumentpakkeProsessor>
-                    {
-                        new SimpleDocumentBundleProcessor(),
-                        new SimpleDocumentBundleProcessor()
-                    }
-                };
-
-                var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
-                var sikkerDigitalPostKlient = new SikkerDigitalPostKlient(DomainUtility.GetDatabehandler(), klientkonfigurasjon, serviceProvider.GetService<ILoggerFactory>());
-
-                DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
-                var fakeHttpClientHandlerResponse = new FakeResponseHandler()
-                {
-                    HttpContent = new StringContent(XmlResource.Response.GetTransportOk().OuterXml),
-                };
-                sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
-
-                //Act
-                var forsendelse = DomainUtility.GetForsendelseSimple();
-
-                try
-                {
-                    await sikkerDigitalPostKlient.SendAsync(forsendelse).ConfigureAwait(false);
-                }
-                catch (SecurityException)
-                {
-                    /*
-                        We do not care about the results. Just do sending. Nasty hack as we are unable to mock validation 
-                        in SikkerDigitalPostKlient, which results in invalid timestamp since response is out of date.
-                    */
-                }
-
-                //Assert
-                foreach (var dokumentpakkeProsessor in klientkonfigurasjon.Dokumentpakkeprosessorer.Cast<SimpleDocumentBundleProcessor>())
-                {
-                    Assert.True(dokumentpakkeProsessor.CouldReadBytesStream);
-                }
             }
 
             [Fact]
