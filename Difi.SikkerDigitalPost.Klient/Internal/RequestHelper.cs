@@ -20,6 +20,16 @@ using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusi
 
 namespace Difi.SikkerDigitalPost.Klient.Internal
 {
+    
+    internal class TransportFeiletException : Exception {
+        public TransportFeiletException(TransportFeiletKvittering TransportFeiletKvittering)
+        {
+            this.TransportFeiletKvittering = TransportFeiletKvittering;
+        }
+
+        public TransportFeiletKvittering TransportFeiletKvittering { get; set; }
+    }
+    
     internal class RequestHelper
     {
         private readonly ILogger<RequestHelper> _logger;
@@ -47,8 +57,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             Dokumentpakke dokumentpakke, MetadataDocument metadataDocument)
         {
             var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/");
-            var putRequestUri = new Uri(openRequestUri,
-                $"{standardBusinessDocument.standardBusinessDocumentHeader.businessScope.scope[0].instanceIdentifier}");
+            var putRequestUri = new Uri(openRequestUri, $"{standardBusinessDocument.GetConversationId()}");
 
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
             {
@@ -62,71 +71,61 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             sbdobj.Remove("any");
 
             string newjson = sbdobj.ToString();
-
             StringContent content = new StringContent(newjson, Encoding.UTF8, "application/json");
+            
+            try
+            {
+                await CreateMessage(content, openRequestUri);
+
+                await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
+
+                if (metadataDocument != null)
+                {
+                    await addDocument(metadataDocument, putRequestUri);
+                }
+
+                foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
+                {
+                    await addDocument(vedlegg, putRequestUri);
+                }
+
+                await CloseMessage(putRequestUri);
+
+                return new TransportOkKvittering();
+            }
+            catch (TransportFeiletException e)
+            {
+                _logger.LogError($"Feil ifbm opprettelse av forsendelse mot integrasjonspunkt: {e.TransportFeiletKvittering.ToString()}");
+                return e.TransportFeiletKvittering;
+            }
+        }
+
+        private async Task CreateMessage(StringContent content, Uri openRequestUri)
+        {
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($"Oppretter forsendelse mot integrasjonspunkt: {content}");
+            }
 
             var responseMessage = await HttpClient.PostAsync(openRequestUri, content).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                return new TransportFeiletKvittering
+                var transportFeiletKvittering = new TransportFeiletKvittering
                 {
-                    Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
+                    Skyldig = ((int) responseMessage.StatusCode).ToString().StartsWith("4")
+                        ? Feiltype.Klient
+                        : Feiltype.Server,
                     Beskrivelse = responseMessage.ReasonPhrase,
                     Feilkode = responseMessage.StatusCode.ToString()
                 };
-            }
-            
-            Transportkvittering hovedAddKvittering = await addDocument(dokumentpakke.Hoveddokument, putRequestUri);
-
-            if (hovedAddKvittering is TransportFeiletKvittering)
-            {
-                return hovedAddKvittering;
-            }
-            
-            if (metadataDocument != null)
-            { 
-                Transportkvittering addKvittering = await addDocument(metadataDocument, putRequestUri);
-
-                if (addKvittering is TransportFeiletKvittering)
-                {
-                    return addKvittering;
-                }
-            }
-            
-            foreach (Dokument vedlegg in dokumentpakke.Vedlegg)
-            {
-                Transportkvittering addKvittering = await addDocument(vedlegg, putRequestUri);
                 
-                if (addKvittering is TransportFeiletKvittering)
-                {
-                    return addKvittering;
-                }
+                throw new TransportFeiletException(transportFeiletKvittering);
             }
-
-            responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
-            responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                return new TransportFeiletKvittering
-                {
-                    Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
-                    Beskrivelse = responseMessage.ReasonPhrase,
-                    Feilkode = responseMessage.StatusCode.ToString()
-                };
-            }
-            
-            if (ClientConfiguration.LoggForespørselOgRespons)
-            {
-                _logger.LogDebug($" Innkommende {responseContent}");
-            }
-
-            return new TransportOkKvittering();
         }
-        
-        private async Task<Transportkvittering> addDocument(IWithDocumentProperties document, Uri putRequestUri)
+
+        private async Task addDocument(IWithDocumentProperties document, Uri putRequestUri)
         {
             var docContent = new ByteArrayContent(document.Bytes);
             docContent.Headers.Add("content-type", document.MimeType);
@@ -135,45 +134,80 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
             vedleggContentDisposition += document.Tittel == null ? "" : $"; name=\"{document.Tittel}\"";
             docContent.Headers.Add("content-disposition", vedleggContentDisposition);
 
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($"Sender dokument med filnavn \"{document.Filnavn}\" til integrasjonspunkt.");
+            }
+            
             var responseMessage = await HttpClient.PutAsync(putRequestUri, docContent).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                return new TransportFeiletKvittering
+                var kvittering = new TransportFeiletKvittering
                 {
                     Skyldig = ((int)responseMessage.StatusCode).ToString().StartsWith("4") ? Feiltype.Klient : Feiltype.Server,
                     Beskrivelse = responseMessage.ReasonPhrase,
                     Feilkode = responseMessage.StatusCode.ToString()
                 };
+                throw new TransportFeiletException(kvittering);
+            }
+        }
+
+        private async Task CloseMessage(Uri putRequestUri)
+        {
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($"Fullfører opprettelse mot integrasjonspunkt.");
             }
             
-            _logger.LogInformation(responseContent);
-            
-            return new TransportOkKvittering();
+            HttpResponseMessage responseMessage = await HttpClient.PostAsync(putRequestUri, null).ConfigureAwait(false);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                var kvittering = new TransportFeiletKvittering
+                {
+                    Skyldig = ((int) responseMessage.StatusCode).ToString().StartsWith("4")
+                        ? Feiltype.Klient
+                        : Feiltype.Server,
+                    Beskrivelse = responseMessage.ReasonPhrase,
+                    Feilkode = responseMessage.StatusCode.ToString()
+                };
+                throw new TransportFeiletException(kvittering);
+            }
         }
 
         public async Task<IntegrasjonspunktKvittering> GetReceipt()
         {
             var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/peek");
-            
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($"Sjekker kvitteringskøen til integrasjonspunkt.");
+            }
             var responseMessage = await HttpClient.GetAsync(uri).ConfigureAwait(false);
             var responseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (responseMessage.StatusCode == HttpStatusCode.NoContent)
             {
+                if (ClientConfiguration.LoggForespørselOgRespons)
+                {
+                    _logger.LogDebug($"Kvitteringskøen var tom.");
+                }
                 return null;
             }
-            
             return JsonSerializer.Deserialize<IntegrasjonspunktKvittering>(responseContent);
         }
         
-        public async Task<string> ConfirmReceipt(long id)
+        public async Task ConfirmReceipt(long id)
         {
             var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/{id}");
-            
-            var responseMessage = await HttpClient.DeleteAsync(uri).ConfigureAwait(false);
-            return await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (ClientConfiguration.LoggForespørselOgRespons)
+            {
+                _logger.LogDebug($"Bekrefter id \"{id}\" fra integrasjonspunkt.");
+            }
+
+            //TODO: Check error handling here
+            await HttpClient.DeleteAsync(uri).ConfigureAwait(false);
         }
 
         private HttpClient HttpClientWithHandlerChain(IEnumerable<DelegatingHandler> additionalHandlers)
