@@ -6,11 +6,17 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
     public class Databehandler
     {
-        /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
-        /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>
-        public Databehandler(Organisasjonsnummer organisasjonsnummer, X509Certificate2 sertifikat)
+
+        public Databehandler(Organisasjonsnummer organisasjonsnummer)
         {
             Organisasjonsnummer = organisasjonsnummer;
+        }
+
+        /// <param name="organisasjonsnummer">Organisasjonsnummeret til avsender av brevet.</param>
+        /// <param name="sertifikat">Avsenders Sertifikat: Virksomhetssertifikat.</param>
+        [Obsolete]
+        public Databehandler(Organisasjonsnummer organisasjonsnummer, X509Certificate2 sertifikat) : this(organisasjonsnummer)
+        {
             Sertifikat = sertifikat;
         }
 
@@ -19,9 +25,9 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         ///     Thumbprint til databehandlersertifikatet. Se guide på
         ///     http://difi.github.io/sikker-digital-post-klient-dotnet/#databehandlersertifikat
         /// </param>
-        public Databehandler(Organisasjonsnummer organisasjonsnummer, string sertifikatThumbprint)
+        [Obsolete]
+        public Databehandler(Organisasjonsnummer organisasjonsnummer, string sertifikatThumbprint) : this(organisasjonsnummer)
         {
-            Organisasjonsnummer = organisasjonsnummer;
             Sertifikat = CertificateUtility.SenderCertificate(sertifikatThumbprint);
         }
 
@@ -33,6 +39,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         /// <summary>
         ///     Avsenders sertifikat: Virksomhetssertifikat.
         /// </summary>
-        public X509Certificate2 Sertifikat { get; private set; }
+        [Obsolete]
+        public X509Certificate2 Sertifikat { get; }
     }
 }

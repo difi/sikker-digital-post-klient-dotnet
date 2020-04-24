@@ -41,7 +41,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
 
             var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
-            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate()), config, serviceProvider.GetService<ILoggerFactory>());
+            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer()), config, serviceProvider.GetService<ILoggerFactory>());
         }
 
         public SmokeTestsHelper CreateDigitalForsendelseWithEHF()

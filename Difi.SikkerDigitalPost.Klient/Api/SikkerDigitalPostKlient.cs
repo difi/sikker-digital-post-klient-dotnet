@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Threading.Tasks;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Transport;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
-using Difi.SikkerDigitalPost.Klient.Domene.Exceptions;
-using Difi.SikkerDigitalPost.Klient.Domene.Extensions;
 using Difi.SikkerDigitalPost.Klient.Internal;
 using Difi.SikkerDigitalPost.Klient.Utilities;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
-using Digipost.Api.Client.Shared.Certificate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using StandardBusinessDocument = Difi.SikkerDigitalPost.Klient.SBDH.StandardBusinessDocument;
@@ -24,8 +17,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
     {
         private readonly ILogger<SikkerDigitalPostKlient> _logger;
         private readonly ILoggerFactory _loggerFactory;
-        
-        internal CertificateValidationProperties CertificateValidationProperties { get; set; }
 
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
@@ -68,21 +59,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             Klientkonfigurasjon = klientkonfigurasjon;
             RequestHelper = new RequestHelper(klientkonfigurasjon, _loggerFactory);
             //CertificateValidationProperties = new CertificateValidationProperties(klientkonfigurasjon.Miljø.GodkjenteKjedeSertifikater, Klientkonfigurasjon.MeldingsformidlerOrganisasjon);
-        }
-
-        private void ValidateDatabehandlerCertificateAndThrowIfInvalid(Databehandler databehandler, Miljø miljø)
-        {
-            var valideringsResultat = CertificateValidator.ValidateCertificateAndChain(
-                databehandler.Sertifikat, 
-                databehandler.Organisasjonsnummer.Verdi, 
-                miljø.GodkjenteKjedeSertifikater
-            );
-
-            if (valideringsResultat.Type != CertificateValidationType.Valid)
-            {
-                throw new SecurityException($"Sertifikatet som brukes for { nameof(Databehandler) } er ikke gyldig. Prøver du å sende med et testsertifikat i produksjonsmiljø eller omvendt? Grunnen er '{valideringsResultat.Type.ToNorwegianString()}', beskrivelse: '{valideringsResultat.Message}'");
-
-            }
         }
 
         public Databehandler Databehandler { get; }
