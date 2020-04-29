@@ -6,8 +6,6 @@ Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klie
 EndProject
 Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Domene", "Difi.SikkerDigitalPost.Klient.Domene\Difi.SikkerDigitalPost.Klient.Domene.csproj", "{C231BA31-5C58-4D8A-9040-DC604B6755E4}"
 EndProject
-Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Resources", "Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj", "{1B519AE0-E22F-4691-9399-33D9D04526E6}"
-EndProject
 Project("{AE45EF38-B08F-4092-96A3-B41CB38A87A9}") = "Difi.SikkerDigitalPost.Klient.Tester", "Difi.SikkerDigitalPost.Klient.Tester\Difi.SikkerDigitalPost.Klient.Tester.csproj", "{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}"
 EndProject
 Global
@@ -24,10 +22,6 @@ Global
 		{C231BA31-5C58-4D8A-9040-DC604B6755E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C231BA31-5C58-4D8A-9040-DC604B6755E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C231BA31-5C58-4D8A-9040-DC604B6755E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B519AE0-E22F-4691-9399-33D9D04526E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B519AE0-E22F-4691-9399-33D9D04526E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B519AE0-E22F-4691-9399-33D9D04526E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B519AE0-E22F-4691-9399-33D9D04526E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -225,11 +225,8 @@ namespace Difi.SikkerDigitalPost.Klient
         private static XmlNamespaceManager GetNamespaceManager(XmlDocument document)
         {
             var manager = new XmlNamespaceManager(document.NameTable);
-            manager.AddNamespace("env", NavneromUtility.SoapEnvelopeEnv12);
-            manager.AddNamespace("eb", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns3", NavneromUtility.StandardBusinessDocumentHeader);
             manager.AddNamespace("ns5", NavneromUtility.XmlDsig);
-            manager.AddNamespace("ns6", NavneromUtility.EbXmlCore);
             manager.AddNamespace("ns9", NavneromUtility.DifiSdpSchema10);
             manager.AddNamespace("ds", NavneromUtility.XmlDsig);
             return manager;

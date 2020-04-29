@@ -25,7 +25,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -52,7 +52,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.LEVERT, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -79,7 +79,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.MOTTATT, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -106,7 +106,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.ANNET, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -133,7 +133,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.FEIL, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);
@@ -160,7 +160,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
                     DateTime.Parse(tidspunkt), 
                     IntegrasjonspunktKvitteringType.LEST, 
                     "", 
-                    xml.InnerText, 
+                    xml.InnerXml, 
                     Guid.Parse(konversasjonsId), 
                     Guid.Parse(meldingsId), 
                     1L);

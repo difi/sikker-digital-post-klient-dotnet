@@ -23,8 +23,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
     {
         internal static readonly ResourceUtility ResourceUtility = new ResourceUtility(Assembly.GetExecutingAssembly(), "testdata");
 
-        private static readonly GuidUtility GuidUtility = new GuidUtility();
-
         internal static Dokumentpakke GetDokumentpakkeWithoutAttachments()
         {
             return new Dokumentpakke(GetHoveddokumentSimple());

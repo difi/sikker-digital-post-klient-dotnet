@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -8,6 +9,7 @@ using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace Difi.SikkerDigitalPost.Klient
 { 
+    [Obsolete]
     public class CertificateReader
     {
         private readonly ILogger<CertificateReader> _logger;
@@ -17,18 +19,21 @@ namespace Difi.SikkerDigitalPost.Klient
             _logger = loggerFactory.CreateLogger<CertificateReader>();
         }
 
+        [Obsolete]
         public static X509Certificate2 ReadCertificate()
         {
             var certificateReader = new CertificateReader(new NullLoggerFactory());
             return certificateReader.ReadCertificatePrivate();
         }
 
+        [Obsolete]
         public static X509Certificate2 ReadCertificate(ILoggerFactory loggerFactory)
         {
             var certificateReader = new CertificateReader(loggerFactory);
             return certificateReader.ReadCertificatePrivate();
         }
         
+        [Obsolete]
         X509Certificate2 ReadCertificatePrivate()
         {
             var pathToSecrets = $"{System.Environment.GetEnvironmentVariable("HOME")}/.microsoft/usersecrets/enterprise-certificate/secrets.json";
