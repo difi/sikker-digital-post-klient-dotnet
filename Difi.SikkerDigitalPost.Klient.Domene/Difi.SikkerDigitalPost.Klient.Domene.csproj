@@ -44,7 +44,7 @@
 
     <ItemGroup>
       <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
-      <PackageReference Include="Macross.Json.Extensions" Version="1.4.0" />
+      <PackageReference Include="Macross.Json.Extensions" Version="1.4.1" />
       <PackageReference Include="System.Text.Json" Version="4.7.1" />
     </ItemGroup>
     
