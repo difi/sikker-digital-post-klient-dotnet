@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using Difi.Felles.Utility.Utilities;
-using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 
 namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
