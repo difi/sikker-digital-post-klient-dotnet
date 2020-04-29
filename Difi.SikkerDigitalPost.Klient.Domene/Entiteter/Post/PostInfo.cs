@@ -15,15 +15,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         [JsonIgnore]
         public string Type { get; set; }
         
-        [JsonIgnore]
-        public string hoveddokument { get; set; }
-
-        [JsonIgnore]
-        private string avsenderId { get; set; }
-        
-        [JsonIgnore]
-        private string fakturaReferanse { get; set; }
-        
         public PostMottaker Mottaker { get; set; }
         
         protected PostInfo(PostMottaker mottaker, string type)
