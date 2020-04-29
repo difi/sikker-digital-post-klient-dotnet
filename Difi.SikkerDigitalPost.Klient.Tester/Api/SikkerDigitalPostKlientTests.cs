@@ -62,23 +62,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 //Assert
                 Assert.IsType<TransportFeiletKvittering>(transportkvittering);
             }
-
-            [Fact]
-            public async Task Throws_exception_on_response_not_matching_request()
-            {
-                //Arrange
-                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientIPLocalHost();
-                var fakeHttpClientHandlerResponse = new FakeResponseHandler()
-                {
-                    //TODO: Fix test
-                    HttpContent = new StringContent(""),
-                };
-                sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);
-
-                //Act
-                var forsendelse = DomainUtility.GetForsendelseSimple();
-                await Assert.ThrowsAsync<SecurityException>(async () => await sikkerDigitalPostKlient.SendAsync(forsendelse)).ConfigureAwait(false);
-            }
         }
     }
 }
