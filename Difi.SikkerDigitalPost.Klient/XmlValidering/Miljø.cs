@@ -7,49 +7,13 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
 {
     public class Miljø
     {
-        private Miljø(Uri url, X509Certificate2Collection godkjenteKjedeSertifikater)
+        public Miljø(Uri url)
         {
-            GodkjenteKjedeSertifikater = godkjenteKjedeSertifikater;
             Url = url;
         }
 
         public Uri Url { get; set; }
 
-        public X509Certificate2Collection GodkjenteKjedeSertifikater { get; set; }
-
-        internal Uri UrlWithOrganisasjonsnummer(Organisasjonsnummer databehandler, Organisasjonsnummer avsender)
-        {
-            return new Uri(Url, $"{databehandler.WithCountryCode}/{avsender.WithCountryCode}");
-        }
-        
-        public static Miljø IntegrasjonsPunktLokalHostMiljø => new Miljø(
-            new Uri("http://127.0.0.1:9093/api/"),
-            null
-            );
-
-        public static Miljø FunksjoneltTestmiljø => new Miljø(
-            new Uri("https://qaoffentlig.meldingsformidler.digipost.no/api/"),
-            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
-            );
-
-        public static Miljø Ytelsestestmiljø => new Miljø(
-            new Uri("https://qa.meldingsformidler.digipost.no/api/"),
-            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
-            );
-
-        public static Miljø Produksjonsmiljø => new Miljø(
-            new Uri("https://meldingsformidler.digipost.no/api/"),
-            CertificateChainUtility.ProduksjonsSertifikater()
-            );
-
-        public static Miljø FunksjoneltTestmiljøNorskHelsenett => new Miljø(
-            new Uri("https://qaoffentlig.meldingsformidler.nhn.digipost.no:4445/api/"),
-            CertificateChainUtility.FunksjoneltTestmiljøSertifikater()
-            );
-
-        public static Miljø ProduksjonsmiljøNorskHelsenett => new Miljø(
-            new Uri("https://meldingsformidler.nhn.digipost.no:4444/api/"),
-            CertificateChainUtility.ProduksjonsSertifikater()
-            );
+        public static Miljø IntegrasjonsPunktLocalHostMiljø => new Miljø(new Uri("http://127.0.0.1:9093/api/"));
     }
 }

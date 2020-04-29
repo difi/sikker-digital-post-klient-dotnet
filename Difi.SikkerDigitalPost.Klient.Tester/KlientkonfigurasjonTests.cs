@@ -14,7 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void InitializesProperties()
             {
                 //Arrange
-                var environment = Miljø.FunksjoneltTestmiljø;
+                var environment = Miljø.IntegrasjonsPunktLocalHostMiljø;
                 const string organizationNumberPosten = "984661185";
                 object proxyhost = null;
                 const string proxyScheme = "https";

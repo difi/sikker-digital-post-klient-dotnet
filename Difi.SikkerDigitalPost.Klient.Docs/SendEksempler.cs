@@ -132,7 +132,7 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
 
         public void OpprettKlientOgSendPost()
         {
-            var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+            var klientKonfig = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
 
             Databehandler databehandler = null; //Som initiert tidligere
             Forsendelse forsendelse = null;     //Som initiert tidligere

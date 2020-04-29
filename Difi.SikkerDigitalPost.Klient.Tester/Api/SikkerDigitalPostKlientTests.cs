@@ -27,7 +27,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             {
                 //Arrange
                 var databehandler = new Databehandler(DomainUtility.Organisasjonsnummer());
-                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
 
                 //Act
                 var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
@@ -46,7 +46,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task Returns_transport_error_receipt()
             {
                 //Arrange
-                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientIPLocalHost();
                 var fakeHttpClientHandlerResponse = new FakeResponseHandler()
                 {
                     //TODO: Fix test
@@ -67,7 +67,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public async Task Throws_exception_on_response_not_matching_request()
             {
                 //Arrange
-                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientQaOffentlig();
+                var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientIPLocalHost();
                 var fakeHttpClientHandlerResponse = new FakeResponseHandler()
                 {
                     //TODO: Fix test
