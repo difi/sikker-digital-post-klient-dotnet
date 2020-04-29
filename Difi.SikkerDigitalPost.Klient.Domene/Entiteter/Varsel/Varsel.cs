@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
@@ -18,6 +19,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
         /// <summary>
         ///     Angir hvor langt tid det skal ta (i dager) fra en postforsendelse er sendt til mottaker skal varsles.
         /// </summary>
+        [Obsolete]
         public readonly IEnumerable<int> VarselEtterDager;
 
         /// <summary>
@@ -25,6 +27,12 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel
         /// </summary>
         public readonly string Varslingstekst;
 
+        protected Varsel(string varslingstekst)
+        {
+            Varslingstekst = varslingstekst;
+        }
+
+        [Obsolete]
         protected Varsel(string varslingstekst, IEnumerable<int> varselEtterDager)
         {
             VarselEtterDager = !varselEtterDager.Any() ? new List<int> {0} : varselEtterDager;

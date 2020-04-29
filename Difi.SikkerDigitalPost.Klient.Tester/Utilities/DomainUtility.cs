@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -111,34 +110,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return "dangfart.utnes#1BK5";
         }
 
-        public static Organisasjonsnummer OrganisasjonsnummerMeldingsformidler()
-        {
-            return GetOrganisasjonsnummerPostkasse();
-        }
-
-        internal static Organisasjonsnummer GetOrganisasjonsnummerPostkasse()
-        {
-            return new Organisasjonsnummer("984661185");
-        }
-
         internal static DigitalPostMottaker GetDigitalPostMottaker()
         {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new DigitalPostMottaker(GetPersonnummerMottaker());
         }
 
         internal static FysiskPostMottaker GetFysiskPostMottaker()
         {
-            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen") { Adresselinje1 = "Testgate" }, GetMottakerCertificate(), GetOrganisasjonsnummerPostkasse());
-        }
-
-        internal static DigitalPostMottaker GetDigitalPostMottakerWithTestCertificate()
-        {
-            return new DigitalPostMottaker(GetPersonnummerMottaker(), GetDigipostadresseMottaker(), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
-        }
-
-        internal static FysiskPostMottaker GetFysiskPostMottakerWithTestCertificate()
-        {
-            return new FysiskPostMottaker("Testbruker i Tester .NET med testsertifikat", new NorskAdresse("0001", "Testekommunen"), GetReceiverUnitTestsCertificate(), GetOrganisasjonsnummerPostkasse());
+            return new FysiskPostMottaker("Testbruker i Tester .NET", new NorskAdresse("0001", "Testekommunen") { Adresselinje1 = "Testgate" });
         }
 
         internal static FysiskPostReturmottaker GetFysiskPostReturMottaker()
@@ -148,12 +127,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Databehandler GetDatabehandler()
         {
-            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderCertificate());
-        }
-
-        internal static Databehandler GetDatabehandlerWithTestCertificate()
-        {
-            return new Databehandler(GetAvsender().Organisasjonsnummer, GetAvsenderEnhetstesterSertifikat());
+            return new Databehandler(GetAvsender().Organisasjonsnummer);
         }
 
         internal static DigitalPostInfo GetDigitalPostInfoWithVarsel()
@@ -168,11 +142,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static DigitalPostInfo GetDigitalPostInfoSimple()
         {
             return new DigitalPostInfo(GetDigitalPostMottaker(), "Ikke-sensitiv tittel");
-        }
-
-        internal static DigitalPostInfo GetDigitalPostInfoWithTestCertificate()
-        {
-            return new DigitalPostInfo(GetDigitalPostMottakerWithTestCertificate(), "Ikke-sensitiv tittel");
         }
 
         internal static FysiskPostInfo GetFysiskPostInfoSimple()
@@ -196,11 +165,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
             return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithVarsel(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
-        internal static Forsendelse GetForsendelseWithTestCertificate()
-        {
-            return new Forsendelse(GetAvsender(), GetDigitalPostInfoWithTestCertificate(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
-        }
-
         internal static Forsendelse GetFysiskPostSimple()
         {
             return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString(), mottakerPersonIdentifikator: "27127000293");
@@ -215,36 +179,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         {
             var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
             return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø), serviceProvider.GetService<ILoggerFactory>());
-        }
-        
-        internal static X509Certificate2 GetAvsenderEnhetstesterSertifikat()
-        {
-            return GetEternalTestCertificateMedPrivateKey();
-        }
-
-        internal static X509Certificate2 GetReceiverUnitTestsCertificate()
-        {
-            return GetEternalTestCertificateWithoutPrivateKey();
-        }
-
-        private static X509Certificate2 GetEternalTestCertificateWithoutPrivateKey()
-        {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.cer"), "", X509KeyStorageFlags.Exportable);
-        }
-
-        private static X509Certificate2 GetEternalTestCertificateMedPrivateKey()
-        {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "enhetstester", "difi-enhetstester.p12"), "Qwer1234", X509KeyStorageFlags.Exportable);
-        }
-
-        internal static X509Certificate2 GetAvsenderCertificate()
-        {
-            return CertificateReader.ReadCertificate();
-        }
-
-        internal static X509Certificate2 GetMottakerCertificate()
-        {
-            return new X509Certificate2(ResourceUtility.ReadAllBytes("sertifikater", "test", "posten-test.pem"));
         }
 
         internal static Leveringskvittering GetLeveringskvittering()

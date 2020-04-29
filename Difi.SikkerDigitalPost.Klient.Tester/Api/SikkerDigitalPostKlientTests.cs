@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public void Initializes_fields()
             {
                 //Arrange
-                var databehandler = new Databehandler(DomainUtility.Organisasjonsnummer(), DomainUtility.GetAvsenderCertificate());
+                var databehandler = new Databehandler(DomainUtility.Organisasjonsnummer());
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
 
                 //Act
@@ -37,18 +37,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 Assert.Equal(klientkonfigurasjon, sikkerDigitalPostKlient.Klientkonfigurasjon);
                 Assert.Equal(databehandler, sikkerDigitalPostKlient.Databehandler);
                 Assert.IsType<RequestHelper>(sikkerDigitalPostKlient.RequestHelper);
-            }
-
-            [Fact]
-            public void Fails_if_invalid_certificate()
-            {
-                //Arrange
-                var databehandler = new Databehandler(new Organisasjonsnummer("988015814"),  DomainUtility.GetAvsenderEnhetstesterSertifikat());
-                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
-
-                //Act
-                var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
-                Assert.Throws<SecurityException>(()=> new SikkerDigitalPostKlient(databehandler, klientkonfigurasjon, serviceProvider.GetService<ILoggerFactory>()));
             }
         }
 

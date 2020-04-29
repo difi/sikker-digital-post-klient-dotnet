@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
 
@@ -19,6 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i
         ///     meldingsprosessen.
         /// </param>
+        [Obsolete]
         protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, Organisasjonsnummer organisasjonsnummer)
             : base(utskriftstjenesteSertifikat, organisasjonsnummer)
         {
