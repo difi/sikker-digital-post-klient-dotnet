@@ -31,18 +31,5 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             Type = type;
             Mottaker = mottaker;
         }
-
-        internal PMode PMode()
-        {
-            var type = GetType();
-
-            if (type == typeof (FysiskPostInfo))
-                return Enums.PMode.FormidleFysiskPost;
-
-            if (type == typeof (DigitalPostInfo))
-                return Enums.PMode.FormidleDigitalPost;
-
-            throw new ArgumentOutOfRangeException("postInfo", type, "PostInfo har feil type.");
-        }
     }
 }

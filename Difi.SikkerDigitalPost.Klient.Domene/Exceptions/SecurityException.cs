@@ -3,6 +3,7 @@
 namespace Difi.SikkerDigitalPost.Klient.Domene.Exceptions
 {
     [Serializable]
+    [Obsolete]
     public class SecurityException : SikkerDigitalPostException
     {
         public SecurityException()

@@ -17,20 +17,4 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Enums
         [EnumMember(Value = "FARGE")]
         Farge
     }
-
-    internal static class UtskriftsfargeHelper
-    {
-        internal static string EnumToString(Utskriftsfarge utskriftsfarge)
-        {
-            switch (utskriftsfarge)
-            {
-                case Utskriftsfarge.SortHvitt:
-                    return "SORT_HVIT";
-                case Utskriftsfarge.Farge:
-                    return "FARGE";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(utskriftsfarge));
-            }
-        }
-    }
 }
