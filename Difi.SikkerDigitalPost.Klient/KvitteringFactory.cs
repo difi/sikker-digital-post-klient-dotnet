@@ -10,12 +10,6 @@ namespace Difi.SikkerDigitalPost.Klient
     {
         public static Kvittering GetKvittering(IntegrasjonspunktKvittering integrasjonspunktKvittering)
         {
-            if (integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.SENDT ||
-                integrasjonspunktKvittering.status == IntegrasjonspunktKvitteringType.OPPRETTET)
-            {
-                return null;
-            }
-            
             if (integrasjonspunktKvittering.rawReceipt != null)
             {
                 return GetKvitteringFromIntegrasjonsPunktKvittering(integrasjonspunktKvittering);
@@ -75,7 +69,7 @@ namespace Difi.SikkerDigitalPost.Klient
             if (IsReturpost(xmlDocument))
                 return Kvitteringsparser.TilReturpostkvittering(kvittering);
 
-            return null;
+            throw new SikkerDigitalPostException("Ukjent kvitteringstype basert på XML-input fra ip-kvittering.");
         }
 
         private static bool IsLeveringskvittering(XmlDocument document)

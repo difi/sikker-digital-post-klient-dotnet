@@ -29,11 +29,11 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon) 
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon)
             : this(databehandler, klientkonfigurasjon, new NullLoggerFactory())
         {
         }
-        
+
         /// <param name="databehandler">
         ///     Virksomhet (offentlig eller privat) som har en kontraktfestet avtale med Avsender med
         ///     formål å dekke hele eller deler av prosessen med å formidle en digital postmelding fra
@@ -48,11 +48,12 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <remarks>
         ///     Se <a href="http://begrep.difi.no/SikkerDigitalPost/forretningslag/Aktorer">oversikt over aktører</a>
         /// </remarks>
-        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon, ILoggerFactory loggerFactory)
+        public SikkerDigitalPostKlient(Databehandler databehandler, Klientkonfigurasjon klientkonfigurasjon,
+            ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<SikkerDigitalPostKlient>();
             _loggerFactory = loggerFactory;
-            
+
             //ValidateDatabehandlerCertificateAndThrowIfInvalid(databehandler, klientkonfigurasjon.Miljø);
 
             Databehandler = databehandler;
@@ -90,9 +91,10 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         {
             StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(forsendelse);
 
-            return await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke, forsendelse.MetadataDocument);
+            return await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke,
+                forsendelse.MetadataDocument);
         }
-        
+
         /// <summary>
         ///     Forespør <see cref="Kvittering" /> for <see cref="Forsendelse">Forsendelser</see>.
         ///     <see cref="Kvittering">Kvitteringer</see> blir tilgjengeliggjort etterhvert som de er klare i
@@ -101,22 +103,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
-        /// <remarks>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en ny forespørsel gjøres:
-        ///             </description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>normal</term><description>Minimum 10 minutter</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
         public Kvittering HentKvittering(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             return HentKvitteringOgBekreftForrige(kvitteringsforespørsel, null);
@@ -130,22 +116,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </summary>
         /// <param name="kvitteringsforespørsel"></param>
         /// <returns></returns>
-        /// <remarks>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en ny forespørsel gjøres:
-        ///             </description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>normal</term><description>Minimum 10 minutter</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
         public async Task<Kvittering> HentKvitteringAsync(Kvitteringsforespørsel kvitteringsforespørsel)
         {
             return await HentKvitteringOgBekreftForrigeAsync(kvitteringsforespørsel, null).ConfigureAwait(false);
@@ -161,22 +131,6 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
         /// <returns></returns>
-        /// <remarks>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en ny forespørsel gjøres:
-        ///             </description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>normal</term><description>Minimum 10 minutter</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
         public Kvittering HentKvitteringOgBekreftForrige(Kvitteringsforespørsel kvitteringsforespørsel,
             Forretningskvittering forrigeKvittering)
         {
@@ -193,23 +147,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// <param name="kvitteringsforespørsel"></param>
         /// <param name="forrigeKvittering"></param>
         /// <returns></returns>
-        /// <remarks>
-        ///     <list type="table">
-        ///         <listheader>
-        ///             <description>
-        ///                 Dersom det ikke er tilgjengelige <see cref="Kvittering">Kvitteringer</see> skal det ventes følgende
-        ///                 tidsintervaller før en ny forespørsel gjøres:
-        ///             </description>
-        ///         </listheader>
-        ///         <item>
-        ///             <term>normal</term><description>Minimum 10 minutter</description>
-        ///         </item>
-        ///         <item>
-        ///             <term>prioritert</term><description>Minimum 1 minutt</description>
-        ///         </item>
-        ///     </list>
-        /// </remarks>
-        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel, Forretningskvittering forrigeKvittering)
+        public async Task<Kvittering> HentKvitteringOgBekreftForrigeAsync(Kvitteringsforespørsel kvitteringsforespørsel,
+            Forretningskvittering forrigeKvittering)
         {
             if (forrigeKvittering != null)
             {
@@ -221,9 +160,8 @@ namespace Difi.SikkerDigitalPost.Klient.Api
             _logger.LogDebug($"Utgående kvitteringsforespørsel, messageId '{guidUtility.MessageId}'.");
 
 
-            Kvittering kvittering = null;
-
-            while (kvittering == null)
+            int GUARD = 100;
+            for (int i = 0; i < GUARD; i++)
             {
                 IntegrasjonspunktKvittering ipKvittering = await RequestHelper.GetReceipt();
 
@@ -231,42 +169,24 @@ namespace Difi.SikkerDigitalPost.Klient.Api
                 {
                     return new TomKøKvittering();
                 }
-                
-                kvittering = KvitteringFactory.GetKvittering(ipKvittering);
 
-                if (kvittering == null)
+                var shouldFetchKvitteringAgain =
+                    ipKvittering.status == IntegrasjonspunktKvitteringType.SENDT ||
+                    ipKvittering.status == IntegrasjonspunktKvitteringType.OPPRETTET;
+
+                if (shouldFetchKvitteringAgain)
                 {
                     await RequestHelper.ConfirmReceipt(ipKvittering.id);
                 }
+                else
+                {
+                    return KvitteringFactory.GetKvittering(ipKvittering);
+                }
             }
-            
-            return kvittering;
-            
-//            var envelopeSettings = new EnvelopeSettings(kvitteringsforespørsel, Databehandler, guidUtility);
-//            var kvitteringsforespørselEnvelope = new KvitteringsforespørselEnvelope(envelopeSettings);
-//
-//            ValidateEnvelopeAndThrowIfInvalid(kvitteringsforespørselEnvelope, kvitteringsforespørselEnvelope.GetType().Name);
-//
-//            var receipt = await RequestHelper.GetReceipt(kvitteringsforespørselEnvelope).ConfigureAwait(false);
-//            var transportReceiptXml = receipt.Xml;
-//
-//            if (receipt is TomKøKvittering)
-//            {
-//                _logger.LogDebug($"{receipt}");
-//                SecurityValidationOfEmptyQueueReceipt(transportReceiptXml, kvitteringsforespørselEnvelope.Xml());
-//            }
-//            else if (receipt is Forretningskvittering)
-//            {
-//                _logger.LogDebug($"{receipt}");
-//                SecurityValidationOfMessageReceipt(transportReceiptXml, kvitteringsforespørselEnvelope);
-//            }
-//
-//            else if (receipt is Transportkvittering)
-//            {
-//                _logger.LogDebug($"{receipt}");
-//            }
 
-            //return receipt;
+            _logger.LogWarning(
+                $"Antall forsøk på å hente kvittering overskredet. Det kan komme av det er mange {IntegrasjonspunktKvitteringType.SENDT}- og {IntegrasjonspunktKvitteringType.OPPRETTET}-kvitteringer på integrasjonspunktkøen. Prøv igjen.");
+            return null;
         }
 
         /// <summary>

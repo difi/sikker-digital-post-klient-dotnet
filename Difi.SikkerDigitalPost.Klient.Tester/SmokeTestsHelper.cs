@@ -43,6 +43,14 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
             _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer()), config, serviceProvider.GetService<ILoggerFactory>());
         }
+        
+        public SmokeTestsHelper Assert_Empty_Queue()
+        {
+            var hentKvittering = _klient.HentKvittering(new Kvitteringsforespørsel());
+            Assert.True(hentKvittering is TomKøKvittering);
+
+            return this;
+        }
 
         public SmokeTestsHelper CreateDigitalForsendelseWithEHF()
         {
@@ -106,7 +114,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper Fetch_Receipt()
         {
-            //Assert_state(_transportkvittering);
+            Assert_state(_transportkvittering);
 
             const int maxTries = 10;
             var kvitteringReceived = false;
@@ -141,7 +149,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTestsHelper ConfirmReceipt()
         {
-            //Assert_state(_forretningskvittering);
+            Assert_state(_forretningskvittering);
 
             _klient.Bekreft(_forretningskvittering);
 
@@ -156,7 +164,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         {
             Thread.Sleep(3000);
 
-            var kvitteringsforespørsel = new Kvitteringsforespørsel(_forsendelse.Prioritet, _forsendelse.MpcId);
+            var kvitteringsforespørsel = new Kvitteringsforespørsel();
             var kvittering = _klient.HentKvittering(kvitteringsforespørsel);
             return kvittering;
         }

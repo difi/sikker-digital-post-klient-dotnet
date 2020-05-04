@@ -26,7 +26,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.Equal(epostadresse, epostVarsel.Epostadresse);
                 Assert.Equal(varsel, epostVarsel.Varslingstekst);
-                Assert.Equal(forventedeVarslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
             [Fact]
@@ -45,7 +44,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.Equal(epostadresse, epostVarsel.Epostadresse);
                 Assert.Equal(varsel, epostVarsel.Varslingstekst);
-                Assert.Equal(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
 
             [Fact]
@@ -64,7 +62,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var epostVarsel = postInfo.EpostVarsel;
                 Assert.Equal(epostadresse, epostVarsel.Epostadresse);
                 Assert.Equal(varsel, epostVarsel.Varslingstekst);
-                Assert.Equal(varslingerEtterDager, (ICollection) epostVarsel.VarselEtterDager);
             }
         }
     }

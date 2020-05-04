@@ -18,7 +18,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var mobilnummer = "12345678";
                 var varsel = "Et lite varsel pr SMS.";
                 postInfo.SmsVarsel = new SmsVarsel(mobilnummer, varsel);
-                var forventedeVarslingerEtterDager = new List<int> {0};
 
                 //Act
 
@@ -26,7 +25,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var smsVarsel = postInfo.SmsVarsel;
                 Assert.Equal(mobilnummer, smsVarsel.Mobilnummer);
                 Assert.Equal(varsel, smsVarsel.Varslingstekst);
-                Assert.Equal(forventedeVarslingerEtterDager, (ICollection) smsVarsel.VarselEtterDager);
             }
 
             [Fact]
@@ -45,7 +43,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var smsVarsel = postInfo.SmsVarsel;
                 Assert.Equal(mobilnummer, smsVarsel.Mobilnummer);
                 Assert.Equal(varsel, smsVarsel.Varslingstekst);
-                Assert.Equal(varslingerEtterDager, (ICollection) smsVarsel.VarselEtterDager);
             }
 
             [Fact]
@@ -64,7 +61,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Enhetstester
                 var smsVarsel = postInfo.SmsVarsel;
                 Assert.Equal(mobilnummer, smsVarsel.Mobilnummer);
                 Assert.Equal(varsel, smsVarsel.Varslingstekst);
-                Assert.Equal(forventedeVarslingerEtterDager, (ICollection) smsVarsel.VarselEtterDager);
             }
         }
     }
