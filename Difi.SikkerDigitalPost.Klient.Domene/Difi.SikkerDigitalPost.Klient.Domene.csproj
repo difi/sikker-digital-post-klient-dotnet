@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Difi.SikkerDigitalPost.Klient.Domene</RootNamespace>
         <AssemblyName>Difi.SikkerDigitalPost.Klient.Domene</AssemblyName>
         <ProjectGuid>{C231BA31-5C58-4D8A-9040-DC604B6755E4}</ProjectGuid>
