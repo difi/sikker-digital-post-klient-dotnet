@@ -89,7 +89,7 @@
     
     <ItemGroup>
         <PackageReference Include="BouncyCastle" Version="1.8.5" />
-        <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
+        <PackageReference Include="Difi.Felles.Utility" Version="4.0.0" />
         <PackageReference Include="Digipost.Api.Client.Shared" Version="6.0.0" />
         <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
@@ -97,7 +97,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.5.2" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="4.5.2" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="4.7.0" />
     </ItemGroup>
     
     <ItemGroup>
