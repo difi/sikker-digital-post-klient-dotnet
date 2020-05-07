@@ -45,7 +45,7 @@
     <ItemGroup>
       <PackageReference Include="BouncyCastle" Version="1.8.5" />
       <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
-      <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
+      <PackageReference Include="Digipost.Api.Client.Shared" Version="6.0.0" />
       <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0" />
     </ItemGroup>
     
