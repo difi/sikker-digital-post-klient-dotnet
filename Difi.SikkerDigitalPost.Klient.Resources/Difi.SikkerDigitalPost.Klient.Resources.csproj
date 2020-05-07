@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Difi.SikkerDigitalPost.Klient.Resources</RootNamespace>
         <AssemblyName>Difi.SikkerDigitalPost.Klient.Resources</AssemblyName>
         <ProjectGuid>{1B519AE0-E22F-4691-9399-33D9D04526E6}</ProjectGuid>
@@ -58,8 +58,8 @@
 
     <ItemGroup>
       <PackageReference Include="BouncyCastle" Version="1.8.5" />
-      <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
-      <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
+      <PackageReference Include="Difi.Felles.Utility" Version="4.0.0" />
+      <PackageReference Include="Digipost.Api.Client.Shared" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

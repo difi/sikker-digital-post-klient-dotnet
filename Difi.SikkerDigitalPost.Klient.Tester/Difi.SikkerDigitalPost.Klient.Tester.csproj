@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Difi.SikkerDigitalPost.Klient.Tester</RootNamespace>
         <AssemblyName>Difi.SikkerDigitalPost.Klient.Tester</AssemblyName>
         <ProjectGuid>{CBBA18B2-B8AA-4EDC-831C-B908BBF9CEC0}</ProjectGuid>
@@ -39,8 +39,8 @@
     <ItemGroup>
         <PackageReference Include="BouncyCastle" Version="1.8.5" />
         <PackageReference Include="CompareNETObjects" Version="4.62.0" />
-        <PackageReference Include="Difi.Felles.Utility" Version="3.0.2" />
-        <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
+        <PackageReference Include="Difi.Felles.Utility" Version="4.0.0" />
+        <PackageReference Include="Digipost.Api.Client.Shared" Version="6.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
         <PackageReference Include="xunit.assert" Version="2.4.1" />
         <PackageReference Include="xunit.core" Version="2.4.1" />
