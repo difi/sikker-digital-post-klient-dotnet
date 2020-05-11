@@ -2,7 +2,6 @@
 using System.Text;
 using System.Xml;
 using Difi.SikkerDigitalPost.Klient.Utilities;
-using Digipost.Api.Client.Shared.Resources.Resource;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 {

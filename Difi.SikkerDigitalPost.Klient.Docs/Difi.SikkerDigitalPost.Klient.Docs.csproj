@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Difi.SikkerDigitalPost.Klient.Docs</RootNamespace>
         <AssemblyName>Difi.SikkerDigitalPost.Klient.Docs</AssemblyName>
         <ProjectGuid>{880298B2-689E-4202-B73E-BF8BD07096F2}</ProjectGuid>

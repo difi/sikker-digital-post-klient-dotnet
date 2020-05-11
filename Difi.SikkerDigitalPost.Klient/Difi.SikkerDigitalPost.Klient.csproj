@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Difi.SikkerDigitalPost.Klient</RootNamespace>
         <AssemblyName>Difi.SikkerDigitalPost.Klient</AssemblyName>
         <ProjectGuid>{A55CAB23-63C7-4E1D-951E-24936601180D}</ProjectGuid>
@@ -88,7 +88,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="Digipost.Api.Client.Shared" Version="5.0.0" />
         <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="Macross.Json.Extensions" Version="1.4.1" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />

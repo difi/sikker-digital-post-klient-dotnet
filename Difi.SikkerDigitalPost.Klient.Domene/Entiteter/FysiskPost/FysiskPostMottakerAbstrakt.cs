@@ -20,7 +20,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         ///     Identifikator (organisasjonsnummer) til virksomheten som er sluttmottaker i
         ///     meldingsprosessen.
         /// </param>
-        [Obsolete]
+        [Obsolete(message:"Instead use FysiskPostMottakerAbstrakt(string navn, Adresse adresse)")]
         protected FysiskPostMottakerAbstrakt(string navn, Adresse adresse, X509Certificate2 utskriftstjenesteSertifikat, Organisasjonsnummer organisasjonsnummer)
             : base(utskriftstjenesteSertifikat, organisasjonsnummer)
         {

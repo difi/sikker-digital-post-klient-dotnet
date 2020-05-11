@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using Digipost.Api.Client.Shared.Certificate;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
 {
@@ -28,7 +27,6 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         [Obsolete]
         public Databehandler(Organisasjonsnummer organisasjonsnummer, string sertifikatThumbprint) : this(organisasjonsnummer)
         {
-            Sertifikat = CertificateUtility.SenderCertificate(sertifikatThumbprint);
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører
         /// <summary>
         ///     Avsenders sertifikat: Virksomhetssertifikat.
         /// </summary>
-        [Obsolete]
+        [Obsolete(message: "Not in user longer, as this is specified in Integrasjonspunlt", error: true)]
         public X509Certificate2 Sertifikat { get; }
     }
 }
