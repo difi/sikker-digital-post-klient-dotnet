@@ -57,9 +57,9 @@
 
 
     <ItemGroup>
-      <PackageReference Include="BouncyCastle" Version="1.8.5" />
-      <PackageReference Include="Difi.Felles.Utility" Version="4.0.0" />
-      <PackageReference Include="Digipost.Api.Client.Shared" Version="6.0.0" />
+      <PackageReference Include="Portable.BouncyCastle" Version="1.8.6.7" />
+      <PackageReference Include="Difi.Felles.Utility" Version="5.0.0" />
+      <PackageReference Include="Digipost.Api.Client.Shared" Version="7.0.0" />
     </ItemGroup>
 
 </Project>
