@@ -6,11 +6,11 @@ namespace Difi.SikkerDigitalPost.Klient.XmlValidering
     {
         public Miljø(Uri url)
         {
-            Url = url;
+            var urlWithoutTrailingSlash = new Uri(url.ToString().TrimEnd('/'));
+            Url = urlWithoutTrailingSlash;
         }
 
         public Uri Url { get; set; }
 
-        public static Miljø IntegrasjonsPunktLocalHostMiljø => new Miljø(new Uri("http://127.0.0.1:9093/api/"));
     }
 }

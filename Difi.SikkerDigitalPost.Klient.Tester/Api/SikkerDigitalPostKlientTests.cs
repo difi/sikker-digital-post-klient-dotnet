@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
 {
     public class SikkerDigitalPostKlientTests
     {
+        public static Miljø IntegrasjonsPunktLocalHostMiljø => new Miljø(new Uri("http://127.0.0.1:9093"));
         public class ConstructorMethod : SikkerDigitalPostKlientTests
         {
             [Fact]
@@ -27,7 +29,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             {
                 //Arrange
                 var databehandler = new Databehandler(DomainUtility.PostenOrganisasjonsnummer());
-                var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
+                var klientkonfigurasjon = new Klientkonfigurasjon(IntegrasjonsPunktLocalHostMiljø);
 
                 //Act
                 var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();

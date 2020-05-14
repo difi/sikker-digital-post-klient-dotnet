@@ -24,10 +24,11 @@ namespace Difi.SikkerDigitalPost.Klient.Utilities
                 .WithRelatedToMessageId(konversasjonsId)
                 .WithCreationDateAndTime(DateTime.Now.ToLocalTime())
                 .Build();
-            
-            StandardBusinessDocument sbd = new StandardBusinessDocument();
-            sbd.standardBusinessDocumentHeader = sbdHeader;
-            sbd.any = forretningsMelding;
+
+            StandardBusinessDocument sbd = new StandardBusinessDocument
+            {
+                standardBusinessDocumentHeader = sbdHeader, any = forretningsMelding
+            };
 
             return sbd;
         }

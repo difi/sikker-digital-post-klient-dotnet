@@ -56,7 +56,8 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         public async Task<Transportkvittering> SendMessage(StandardBusinessDocument standardBusinessDocument,
             Dokumentpakke dokumentpakke, MetadataDocument metadataDocument)
         {
-            var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, $"messages/out/");
+            
+            var openRequestUri = new Uri(ClientConfiguration.Miljø.Url, "/api/messages/out/");
             var putRequestUri = new Uri(openRequestUri, $"{standardBusinessDocument.GetConversationId()}");
 
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
@@ -179,7 +180,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
 
         public async Task<IntegrasjonspunktKvittering> GetReceipt()
         {
-            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/peek");
+            var uri = new Uri(ClientConfiguration.Miljø.Url, "/api/statuses/peek");
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
                 _logger.LogDebug($"Sjekker kvitteringskøen til integrasjonspunkt.");
@@ -200,7 +201,7 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
         
         public async Task ConfirmReceipt(long id)
         {
-            var uri = new Uri(ClientConfiguration.Miljø.Url, $"statuses/{id}");
+            var uri = new Uri(ClientConfiguration.Miljø.Url, $"/api/statuses/{id}");
             if (ClientConfiguration.LoggForespørselOgRespons)
             {
                 _logger.LogDebug($"Bekrefter id \"{id}\" fra integrasjonspunkt.");

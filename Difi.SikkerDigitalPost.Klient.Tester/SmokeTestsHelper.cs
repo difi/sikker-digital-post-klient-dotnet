@@ -62,7 +62,11 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
         {
             _forsendelse = DomainUtility.GetForsendelseForDataType();
             
-            var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">Dette er en lenke utvidelse</beskrivelse></lenke>";
+            var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                      "<lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\">" +
+                      "<url>https://www..no</url>" +
+                      "<beskrivelse lang=\"nb\">Dette er en lenke utvidelse</beskrivelse>" +
+                      "</lenke>";
 
             MetadataDocument metadataDocument = new MetadataDocument("lenke.xml", "application/vnd.difi.dpi.lenke+xml", raw);
 

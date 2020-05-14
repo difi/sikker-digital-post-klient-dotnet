@@ -133,7 +133,8 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
 
         public void OpprettKlientOgSendPost()
         {
-            var klientKonfig = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
+            var integrasjonsPunktLocalHostMiljø = new Miljø(new Uri("http://127.0.0.1:9093"));
+            var klientKonfig = new Klientkonfigurasjon(integrasjonsPunktLocalHostMiljø);
 
             Databehandler databehandler = null; //Som initiert tidligere
             Forsendelse forsendelse = null;     //Som initiert tidligere

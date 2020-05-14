@@ -1,5 +1,5 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
+using Difi.SikkerDigitalPost.Klient.Tester.Api;
 using Xunit;
 
 namespace Difi.SikkerDigitalPost.Klient.Tester
@@ -10,7 +10,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 
         public SmokeTests()
         {
-            var miljø = Miljø.IntegrasjonsPunktLocalHostMiljø;
+            var miljø = SikkerDigitalPostKlientTests.IntegrasjonsPunktLocalHostMiljø;
 
             _t = new SmokeTestsHelper(miljø);
         }

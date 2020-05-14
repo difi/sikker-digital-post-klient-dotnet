@@ -1,4 +1,5 @@
 ﻿using Difi.SikkerDigitalPost.Klient.Internal;
+using Difi.SikkerDigitalPost.Klient.Tester.Api;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -13,7 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Internal
             public void Initializes_fields()
             {
                 //Arrange
-                var clientConfiguration = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
+                var clientConfiguration = new Klientkonfigurasjon(SikkerDigitalPostKlientTests.IntegrasjonsPunktLocalHostMiljø);
 
                 //Act
                 var requestHelper = new RequestHelper(clientConfiguration, new NullLoggerFactory());

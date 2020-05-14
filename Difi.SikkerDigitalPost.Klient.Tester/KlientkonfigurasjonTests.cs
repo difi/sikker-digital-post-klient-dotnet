@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Difi.SikkerDigitalPost.Klient.Tester.Api;
 using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Xunit;
 
@@ -14,7 +15,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             public void InitializesProperties()
             {
                 //Arrange
-                var environment = Miljø.IntegrasjonsPunktLocalHostMiljø;
+                var environment = SikkerDigitalPostKlientTests.IntegrasjonsPunktLocalHostMiljø;
                 const string organizationNumberPosten = "984661185";
                 object proxyhost = null;
                 const string proxyScheme = "https";

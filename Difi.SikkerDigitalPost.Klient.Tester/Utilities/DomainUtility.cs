@@ -10,8 +10,8 @@ using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer.Forretning;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Varsel;
 using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+using Difi.SikkerDigitalPost.Klient.Tester.Api;
 using Difi.SikkerDigitalPost.Klient.Utilities;
-using Difi.SikkerDigitalPost.Klient.XmlValidering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -183,7 +183,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
         internal static SikkerDigitalPostKlient GetSikkerDigitalPostKlientIPLocalHost()
         {
             var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
-            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø), serviceProvider.GetService<ILoggerFactory>());
+            return new SikkerDigitalPostKlient(GetDatabehandler(), new Klientkonfigurasjon(SikkerDigitalPostKlientTests.IntegrasjonsPunktLocalHostMiljø), serviceProvider.GetService<ILoggerFactory>());
         }
 
         internal static Leveringskvittering GetLeveringskvittering()
@@ -248,7 +248,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         public static Klientkonfigurasjon GetKlientkonfigurasjon()
         {
-            return new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
+            return new Klientkonfigurasjon(SikkerDigitalPostKlientTests.IntegrasjonsPunktLocalHostMiljø);
         }
     }
 }
