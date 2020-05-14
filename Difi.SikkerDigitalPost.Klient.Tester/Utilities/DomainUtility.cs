@@ -145,7 +145,8 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static FysiskPostInfo GetFysiskPostInfoSimple()
         {
-            return new FysiskPostInfo(GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
+            var fysiskPostMottakerPersonnummer = "27127000293";
+            return new FysiskPostInfo(fysiskPostMottakerPersonnummer, GetFysiskPostMottaker(), Posttype.A, Utskriftsfarge.Farge,
                 Posthåndtering.DirekteRetur, GetFysiskPostReturMottaker());
         }
 
@@ -166,7 +167,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Forsendelse GetFysiskPostSimple()
         {
-            return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString(), mottakerPersonIdentifikator: "27127000293");
+            return new Forsendelse(GetAvsender(), GetFysiskPostInfoSimple(), GetDokumentpakkeWithoutAttachments(), Prioritet.Normal, Guid.NewGuid().ToString());
         }
 
         internal static Forsendelse GetDigitalDigitalPostWithNotificationMultipleDocumentsAndHigherSecurity(int antallVedlegg = 5)

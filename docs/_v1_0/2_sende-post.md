@@ -16,14 +16,8 @@ Først, lag en motaker av type `DigitalPostMottaker`:
 
 ``` csharp
 var personnummer = "01013300002";
-var postkasseadresse = "ola.nordmann#2233";
-var mottakersertifikat = new X509Certificate2(); //sertifikat hentet fra Oppslagstjenesten
-var orgnummerPostkasse = new Organisasjonsnummer("123456789");
 var mottaker = new DigitalPostMottaker(
-        personnummer, 
-        postkasseadresse, 
-        mottakersertifikat, 
-        orgnummerPostkasse
+        personnummer 
 );
 
 var ikkeSensitivTittel = "En tittel som ikke er sensitiv";
@@ -40,9 +34,7 @@ Skal du sende fysisk post må du først lage en `FysiskPostMottaker`, en `Fysisk
 ``` csharp
 var navn = "Ola Nordmann";
 var adresse = new NorskAdresse("0001", "Oslo");
-var mottakersertifikat = new X509Certificate2(); // sertifikat hentet fra Oppslagstjenesten
-var orgnummerPostkasse = new Organisasjonsnummer("123456789");
-var mottaker = new FysiskPostMottaker(navn, adresse, mottakersertifikat, orgnummerPostkasse);
+var mottaker = new FysiskPostMottaker(navn, adresse);
 
 var returMottaker = new FysiskPostReturmottaker(
     "John Doe", 
@@ -51,7 +43,9 @@ var returMottaker = new FysiskPostReturmottaker(
         Adresselinje1 = "Returgata 22"
     });
 
+var fysiskPostMottakerPersonnummer = "27127000293"
 var postInfo = new FysiskPostInfo(
+            fysiskPostMottakerPersonnummer,
             mottaker, 
             Posttype.A, 
             Utskriftsfarge.SortHvitt, 
@@ -73,8 +67,7 @@ var orgnummerAvsender = new Organisasjonsnummer("123456789");
 var avsender = new Avsender(orgnummerAvsender);
 
 var orgnummerDatabehandler = new Organisasjonsnummer("987654321");
-var avsendersertifikat = new X509Certificate2();
-var databehandler = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
+var databehandler = new Databehandler(orgnummerDatabehandler);
 ```
 
 Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fått unike avsenderidentifikatorer, og kan settes på følgende måte:

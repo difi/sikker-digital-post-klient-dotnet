@@ -12,11 +12,13 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
     /// </summary>
     public class FysiskPostInfo : PostInfo
     {
+        public string Personidentifikator { get; } 
         private readonly List<Printinstruksjon> _printinstruksjoner;
 
-        public FysiskPostInfo(FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker, List<Printinstruksjon> printinstruksjoner = null)
+        public FysiskPostInfo(string personidentifikator, FysiskPostMottaker mottaker, Posttype posttype, Utskriftsfarge utskriftsfarge, Posthåndtering posthåndtering, FysiskPostReturmottaker returmottaker, List<Printinstruksjon> printinstruksjoner = null)
             : base(mottaker, "urn:no:difi:digitalpost:xsd:fysisk::print")
         {
+            Personidentifikator = personidentifikator;
             Posttype = posttype;
             Utskriftsfarge = utskriftsfarge;
             Posthåndtering = posthåndtering;

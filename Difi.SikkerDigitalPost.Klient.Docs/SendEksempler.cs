@@ -1,6 +1,5 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using Difi.SikkerDigitalPost.Klient.Api;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter;
 using Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Aktører;
@@ -50,7 +49,9 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
                     Adresselinje1 = "Returgata 22"
                 });
 
+            var fysiskPostMottakerPersonnummer = "27127000293";
             var postInfo = new FysiskPostInfo(
+                fysiskPostMottakerPersonnummer,
                 mottaker, 
                 Posttype.A, 
                 Utskriftsfarge.SortHvitt, 

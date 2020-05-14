@@ -23,8 +23,8 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         ///     Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort
         ///     med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".
         /// </param>
-        public Forsendelse(Avsender avsender, PostInfo postInfo, Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO", string mottakerPersonIdentifikator = null)
-            : this(avsender, postInfo, dokumentpakke, Guid.NewGuid(), prioritet, mpcId, språkkode, mottakerPersonIdentifikator)
+        public Forsendelse(Avsender avsender, PostInfo postInfo, Dokumentpakke dokumentpakke, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
+            : this(avsender, postInfo, dokumentpakke, Guid.NewGuid(), prioritet, mpcId, språkkode)
         {
             SetLanguageIfNotSetOnContainingDocuments();
         }
@@ -48,7 +48,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
         ///     Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender. En forsendelse gjort
         ///     med en MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id. Standardverdi er "".
         /// </param>
-        public Forsendelse(Avsender avsender, PostInfo postInfo, Dokumentpakke dokumentpakke, Guid konversasjonsId, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO", string mottakerPersonIdentifikator = null)
+        public Forsendelse(Avsender avsender, PostInfo postInfo, Dokumentpakke dokumentpakke, Guid konversasjonsId, Prioritet prioritet = Prioritet.Normal, string mpcId = "", string språkkode = "NO")
         {
             Avsender = avsender;
             PostInfo = postInfo;
@@ -58,12 +58,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Post
             MpcId = mpcId;
             KonversasjonsId = konversasjonsId;
             
-            if (postInfo is FysiskPostInfo && mottakerPersonIdentifikator == null)
-            {
-                throw new ArgumentException("MotakkerPersonIdentifikator må være satt for fysiske forsendelser.");
-            }
-            
-            MottakerPersonIdentifikator = mottakerPersonIdentifikator != null ? mottakerPersonIdentifikator : (PostInfo.Mottaker as DigitalPostMottaker).Personidentifikator;
+            MottakerPersonIdentifikator = postInfo is FysiskPostInfo fysiskPostInfo ? fysiskPostInfo.Personidentifikator : (PostInfo.Mottaker as DigitalPostMottaker).Personidentifikator;
         }
 
         /// <summary>

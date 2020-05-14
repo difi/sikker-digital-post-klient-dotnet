@@ -61,27 +61,22 @@ private static IServiceProvider CreateServiceProviderAndSetUpLogging()
 
     services.AddSingleton<ILoggerFactory, LoggerFactory>();
     services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-    services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Trace));
+    services.AddLogging((builder) =>
+    {
+        builder.SetMinimumLevel(LogLevel.Trace);
+        builder.AddNLog(new NLogProviderOptions
+            {CaptureMessageTemplates = true, CaptureMessageProperties = true});
+        NLog.LogManager.LoadConfiguration("./nlog.config");
+    });
 
-    var serviceProvider = services.BuildServiceProvider();
-    SetUpLoggingForTesting(serviceProvider);
-
-    return serviceProvider;
-}
-
-private static void SetUpLoggingForTesting(IServiceProvider serviceProvider)
-{
-    var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-
-    loggerFactory.AddNLog(new NLogProviderOptions {CaptureMessageTemplates = true, CaptureMessageProperties = true});
-    NLog.LogManager.LoadConfiguration("./nlog.config");
+    return services.BuildServiceProvider();
 }
 
 static void Main(string[] args)
 {
     //Oppsett beskrevet tidligere:
     Klientkonfigurasjon klientKonfig = null;
-    DataBehandler dataBehandler = null;
+    Databehandler dataBehandler = null;
     
     var serviceProvider = CreateServiceProviderAndSetUpLogging();
     var client = new SikkerDigitalPostKlient(dataBehandler, klientKonfig, serviceProvider.GetService<ILoggerFactory>());

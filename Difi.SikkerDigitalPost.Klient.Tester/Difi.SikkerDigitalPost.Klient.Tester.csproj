@@ -59,10 +59,6 @@
             <Project>{A55CAB23-63C7-4E1D-951E-24936601180D}</Project>
             <Name>Difi.SikkerDigitalPost.Klient</Name>
         </ProjectReference>
-        <ProjectReference Include="..\Difi.SikkerDigitalPost.Klient.Resources\Difi.SikkerDigitalPost.Klient.Resources.csproj">
-            <Project>{1B519AE0-E22F-4691-9399-33D9D04526E6}</Project>
-            <Name>Difi.SikkerDigitalPost.Klient.Resources</Name>
-        </ProjectReference>
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
