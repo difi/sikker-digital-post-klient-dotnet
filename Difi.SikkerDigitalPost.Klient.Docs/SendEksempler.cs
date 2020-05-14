@@ -20,13 +20,8 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
         {
             var personnummer = "01013300002";
             var postkasseadresse = "ola.nordmann#2233";
-            var mottakersertifikat = new X509Certificate2(); //sertifikat hentet fra Oppslagstjenesten
-            var orgnummerPostkasse = new Organisasjonsnummer("123456789");
             var mottaker = new DigitalPostMottaker(
-                personnummer, 
-                postkasseadresse, 
-                mottakersertifikat, 
-                orgnummerPostkasse
+                personnummer 
             );
 
             var ikkeSensitivTittel = "En tittel som ikke er sensitiv";
@@ -38,9 +33,7 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
         {
             var navn = "Ola Nordmann";
             var adresse = new NorskAdresse("0001", "Oslo");
-            var mottakersertifikat = new X509Certificate2(); // sertifikat hentet fra Oppslagstjenesten
-            var orgnummerPostkasse = new Organisasjonsnummer("123456789");
-            var mottaker = new FysiskPostMottaker(navn, adresse, mottakersertifikat, orgnummerPostkasse);
+            var mottaker = new FysiskPostMottaker(navn, adresse);
 
             var returMottaker = new FysiskPostReturmottaker(
                 "John Doe", 
@@ -66,8 +59,7 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
             var avsender = new Avsender(orgnummerAvsender);
 
             var orgnummerDatabehandler = new Organisasjonsnummer("987654321");
-            var avsendersertifikat = new X509Certificate2();
-            var databehandler = new Databehandler(orgnummerDatabehandler, avsendersertifikat);
+            var databehandler = new Databehandler(orgnummerDatabehandler);
             
             //Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fått unike avsenderidentifikatorer, og kan settes på følgende måte:
             avsender.Avsenderidentifikator = "Avsenderidentifikator.I.Organisasjon";
@@ -102,32 +94,13 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
         
         public void OpprettForsendelseMedUtvidelse()
         {
-            var hoveddokument = new Dokument(
-                tittel: "Dokumenttittel", 
-                dokumentsti: "/Dokumenter/Hoveddokument.pdf", 
-                mimeType: "application/pdf", 
-                språkkode: "NO", 
-                filnavn: "filnavn"
-            );
-
-            var dokumentpakke = new Dokumentpakke(hoveddokument);
-
-            var vedleggssti = "/Dokumenter/Vedlegg.pdf";
-            var vedlegg = new Dokument(
-                tittel: "tittel", 
-                dokumentsti: vedleggssti, 
-                mimeType: "application/pdf", 
-                språkkode: "NO", 
-                filnavn: "filnavn");
-
-            dokumentpakke.LeggTilVedlegg(vedlegg);
-
             var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">This was raw string</beskrivelse></lenke>";
             
             MetadataDocument metadataDocument = new MetadataDocument("lenke.xml", "application/vnd.difi.dpi.lenke", raw);
             
             Avsender avsender = null; //Som initiert tidligere
             PostInfo postInfo = null; //Som initiert tidligere
+            Dokumentpakke dokumentpakke = null; //Som initiert tidligere
             var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke) { MetadataDocument = metadataDocument };
         }
 
@@ -144,7 +117,7 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
 
             if (transportkvittering is TransportOkKvittering)
             {
-                //Når alt går fint	
+                //Når sending til integrasjonspunkt har gått fint.	
             }
             else if(transportkvittering is TransportFeiletKvittering)
             {
@@ -152,15 +125,14 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
             }
             
             //Hent kvitteringer
-            var køId = "MpcId";
-            var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, køId);
-            Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
+            var kvitteringsForespørsel = new Kvitteringsforespørsel();
+            Console.WriteLine(" > Henter kvittering på kø...");
 
             Kvittering kvittering = sdpKlient.HentKvittering(kvitteringsForespørsel);
 
             if (kvittering is TomKøKvittering)
             {
-                Console.WriteLine("  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
+                Console.WriteLine("  - Kø er tom. Stopper å hente meldinger. ");
             }
 
             if (kvittering is TransportFeiletKvittering)
@@ -176,7 +148,7 @@ namespace Difi.SikkerDigitalPost.Klient.Docs
 
             if (kvittering is Åpningskvittering)
             {
-                Console.WriteLine("  - Har du sett. Noen har åpnet et brev. Moro.");
+                Console.WriteLine("  - Noen har åpnet et brev.");
             }
 
             if (kvittering is Returpostkvittering)

@@ -12,7 +12,7 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.FysiskPost
         /// <param name="navn">Fullt navn på mottaker av fysisk post.</param>
         /// <param name="adresse">Adresse for mottaker av fysisk post.</param>
         public FysiskPostReturmottaker(string navn, Adresse adresse)
-            : base(navn, adresse, new X509Certificate2(), new Organisasjonsnummer("000000000"))
+            : base(navn, adresse)
         {
         }
     }

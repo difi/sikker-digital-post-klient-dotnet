@@ -89,7 +89,7 @@ Til integrasjon og debugging formål så kan det være nyttig å logge direkte r
 
 Sett denne property `Klientkonfigurasjon.LoggForespørselOgRespons = true`.
 
-> <span style="color:red">Advarsel: Man skal aldri skru på request logging i ett produksjonsmiljø. Det vil ha en sterk negativ virkning på ytelse.</span>
+> Merk at logging av forespørsel og respons kan gi betraktlig dårligere ytelse.
 
 
 #### Prosessere dokumentpakke som sendes

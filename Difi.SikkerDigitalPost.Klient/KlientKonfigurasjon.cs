@@ -14,6 +14,7 @@ namespace Difi.SikkerDigitalPost.Klient
             Miljø = miljø;
         }
 
+        [Obsolete]
         public Organisasjonsnummer MeldingsformidlerOrganisasjon { get; set; } = new Organisasjonsnummer("984661185");
 
         public Miljø Miljø { get; set; }
