@@ -19,7 +19,6 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
 {
     internal class SmokeTestsHelper
     {
-        private static readonly Organisasjonsnummer DifiOrganisasjonsnummer = new Organisasjonsnummer("991825827");
         private readonly SikkerDigitalPostKlient _klient;
 
         private Forsendelse _forsendelse;
@@ -41,7 +40,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester
             }
 
             var serviceProvider = LoggingUtility.CreateServiceProviderAndSetUpLogging();
-            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.Organisasjonsnummer()), config, serviceProvider.GetService<ILoggerFactory>());
+            _klient = new SikkerDigitalPostKlient(new Databehandler(DomainUtility.PostenOrganisasjonsnummer()), config, serviceProvider.GetService<ILoggerFactory>());
         }
         
         public SmokeTestsHelper Assert_Empty_Queue()

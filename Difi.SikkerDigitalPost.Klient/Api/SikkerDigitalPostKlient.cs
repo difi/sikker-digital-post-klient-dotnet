@@ -89,7 +89,7 @@ namespace Difi.SikkerDigitalPost.Klient.Api
         /// </param>
         public async Task<Transportkvittering> SendAsync(Forsendelse forsendelse)
         {
-            StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(forsendelse);
+            StandardBusinessDocument standardBusinessDocument = SBDForsendelseBuilder.BuildSBD(Databehandler, forsendelse);
 
             return await RequestHelper.SendMessage(standardBusinessDocument, forsendelse.Dokumentpakke,
                 forsendelse.MetadataDocument);

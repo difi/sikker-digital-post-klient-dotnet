@@ -89,14 +89,19 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Utilities
 
         internal static Avsender GetAvsender()
         {
-            return new Avsender(Organisasjonsnummer());
+            return new Avsender(BringOrganisasjonsnummer());
         }
 
-        internal static Organisasjonsnummer Organisasjonsnummer()
+        internal static Organisasjonsnummer PostenOrganisasjonsnummer()
         {
-            var bring = "988015814";
             var posten = "984661185";
             return new Organisasjonsnummer(posten);
+        }
+        
+        internal static Organisasjonsnummer BringOrganisasjonsnummer()
+        {
+            var bring = "988015814";
+            return new Organisasjonsnummer(bring);
         }
 
         internal static string GetPersonnummerMottaker()

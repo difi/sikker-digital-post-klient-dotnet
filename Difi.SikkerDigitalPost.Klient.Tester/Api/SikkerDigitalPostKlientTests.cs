@@ -26,7 +26,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
             public void Initializes_fields()
             {
                 //Arrange
-                var databehandler = new Databehandler(DomainUtility.Organisasjonsnummer());
+                var databehandler = new Databehandler(DomainUtility.PostenOrganisasjonsnummer());
                 var klientkonfigurasjon = new Klientkonfigurasjon(Miljø.IntegrasjonsPunktLocalHostMiljø);
 
                 //Act
