@@ -1,9 +1,11 @@
-﻿using Difi.SikkerDigitalPost.Klient.Domene.Enums;
+﻿using System;
+using Difi.SikkerDigitalPost.Klient.Domene.Enums;
 
 namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
 {
     public class Kvitteringsforespørsel
     {
+        [Obsolete(message:"Prioritet settes av integrasjonspunkt")]
         public readonly Prioritet Prioritet;
 
         /// <param name="prioritet">
@@ -25,8 +27,10 @@ namespace Difi.SikkerDigitalPost.Klient.Domene.Entiteter.Kvitteringer
         ///     Brukes til å skille mellom ulike kvitteringskøer for samme tekniske avsender.
         ///     En forsendelse gjort med  MPC Id vil kun dukke opp i kvitteringskøen med samme MPC Id.
         /// </summary>
+        [Obsolete(message:"MpcId settes av integrasjonspunkt")]
         public string MpcId { get; }
 
+        [Obsolete(message:"MpcId settes av integrasjonspunkt")]
         public string Mpc => MpcId == string.Empty
             ? $"urn:{Prioritet.ToString().ToLower()}"
             : $"urn:{Prioritet.ToString().ToLower()}:{MpcId}";

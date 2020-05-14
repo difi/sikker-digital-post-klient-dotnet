@@ -8,11 +8,9 @@ isHome: false
 
 > Det anbefales å bruke dokumentasjon i klassene for mer detaljert beskrivelse av inputparametere.
 
-### PostInfo for digital post
+### Opprette digital post
 
 Først, lag en motaker av type `DigitalPostMottaker`:
-
-> Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se [begrep.difi.no](http://begrep.difi.no/Felles/ikkeSensitivTittel) for detaljer om denne forskjellen. 
 
 ``` csharp
 var personnummer = "01013300002";
@@ -25,11 +23,10 @@ var sikkerhetsnivå = Sikkerhetsnivå.Nivå3;
 var postInfo = new DigitalPostInfo(mottaker, ikkeSensitivTittel, sikkerhetsnivå);
 ```
 
-> Husk at `OrgnummerPostkasse` er organisasjonsnummer til leverandør av postkassetjenesten. Organisasjonsnummeret leveres fra oppslagstjenesten sammen med postkasseadressen og sertifikatet til innbygger.
+> Postkassetjenesteleverandørene har ulik behandling av ikke-sensitiv tittel. Se [https://difi.github.io/felleslosninger/ikkesensitivtittel.html](https://difi.github.io/felleslosninger/ikkesensitivtittel.html) for detaljer om denne forskjellen.
 
-### PostInfo for fysisk post
 
-Skal du sende fysisk post må du først lage en `FysiskPostMottaker`, en `FysiskPostReturMottaker` og sette informasjon om farge og makulering:
+### Opprett fysisk post
 
 ``` csharp
 var navn = "Ola Nordmann";
@@ -54,9 +51,9 @@ var postInfo = new FysiskPostInfo(
 );
 ```
 
-Her er adressen av type `NorskAdresse` eller `UtenlandskAdresse`.
+Adressen kan også være av typen `UtenlandskAdresse`.
 
-Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til `Posthåndtering.MakuleringMedMelding`. Oppretting av en FysiskPostInfo vil da se slik ut:
+Ved sending av fysisk post må man oppgi en returadresse, uavhengig av om brevet er satt til `Posthåndtering.MakuleringMedMelding`.
 
 ### Oppsett før sending
 
@@ -70,16 +67,14 @@ var orgnummerDatabehandler = new Organisasjonsnummer("987654321");
 var databehandler = new Databehandler(orgnummerDatabehandler);
 ```
 
-Hvis man har flere avdelinger innenfor samme organisasjonsnummer, har disse fått unike avsenderidentifikatorer, og kan settes på følgende måte:
+Avsenderidentifikator benyttes for å identifisere en ansvarlig enhet innenfor en virksomhet. 
+Identifikatoren tildeles ved tilkobling til tjenesten. 
 
 ``` csharp
 avsender.Avsenderidentifikator = "Avsenderidentifikator.I.Organisasjon";
 ```
 
 ### Opprette forsendelse
-
-Deretterer kan du opprette forsendelse. Forsendelsen inneholder de dokumentene
- som skal til mottakeren:
 
 ``` csharp
 var hoveddokument = new Dokument(
@@ -107,38 +102,23 @@ PostInfo postInfo = null; //Som initiert tidligere
 var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke);
 ```
 
-### Opprette forsendelse med Utvidelser
+
+### Opprette forsendelse med utvidelse
 
 Difi har egne dokumenttyper, eller utvidelser, som kan sendes som metadata til hoveddokumenter. Disse utvidelsene er strukturerte xml-dokumenter med egne mime-typer.  
 Disse utvidelsene benyttes av postkasseleverandørene til å gi en øket brukeropplevelse for innbyggere.   
 Les mer om utvidelser på: https://difi.github.io/felleslosninger/sdp_utvidelser_index.html  
 
 ``` csharp
-var hoveddokument = new Dokument(
-    tittel: "Dokumenttittel", 
-    dokumentsti: "/Dokumenter/Hoveddokument.pdf", 
-    mimeType: "application/pdf", 
-    språkkode: "NO", 
-    filnavn: "filnavn"
-);
-
-var dokumentpakke = new Dokumentpakke(hoveddokument);
-
-var vedleggssti = "/Dokumenter/Vedlegg.pdf";
-var vedlegg = new Dokument(
-    tittel: "tittel", 
-    dokumentsti: vedleggssti, 
-    mimeType: "application/pdf", 
-    språkkode: "NO", 
-    filnavn: "filnavn"
-);
-
-dokumentpakke.LeggTilVedlegg(vedlegg);
-
-var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\"><url>https://www.test.no</url><beskrivelse lang=\"nb\">This was raw string</beskrivelse></lenke>";
+var raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                      "<lenke xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://begrep.difi.no/sdp/utvidelser/lenke\">" +
+                      "<url>https://difi.github.io/felleslosninger/sdp_lenke.html</url>" +
+                      "<beskrivelse lang=\"nb\">Les mer om lenkeutvidelse</beskrivelse>" +
+                      "</lenke>";
 
 MetadataDocument metadataDocument = new MetadataDocument("lenke.xml", "application/vnd.difi.dpi.lenke", raw);
 
+Dokumentpakke dokumentpakke = null; //Som initiert tidligere
 Avsender avsender = null; //Som initiert tidligere
 PostInfo postInfo = null; //Som initiert tidligere
 var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke) { MetadataDocument = metadataDocument };
@@ -146,10 +126,10 @@ var forsendelse = new Forsendelse(avsender, postInfo, dokumentpakke) { MetadataD
 
 ### Opprette klient og sende post
 
-Siste steg er å opprette en `SikkerDigitalPostKlient`:
 
 ``` csharp
-var klientKonfig = new Klientkonfigurasjon(Miljø.FunksjoneltTestmiljø);
+var integrasjonspunktLocalhost = new Miljø(new Uri("http://localhost:9093"));
+var klientKonfig = new Klientkonfigurasjon(integrasjonspunktLocalhost);
 
 Databehandler databehandler = null; //Som initiert tidligere
 Forsendelse forsendelse = null;     //Som initiert tidligere
@@ -159,7 +139,7 @@ var transportkvittering = sdpKlient.Send(forsendelse);
 
 if (transportkvittering is TransportOkKvittering)
 {
-    //Når alt går fint	
+    //Når sending til integrasjonspunktet gikk bra.		
 }
 else if(transportkvittering is TransportFeiletKvittering)
 {
@@ -167,29 +147,25 @@ else if(transportkvittering is TransportFeiletKvittering)
 }
 ```
 
-Transportkvitteringen får du tilbake umiddelbart; den trenger du ikke å polle for å få. 
-
-
 ### Hente kvitteringer
 
-For å hente kvitteringer må du sende en kvitteringsforespørsel:
+For å hente kvitteringer fra integrasjonspunktet må du sende en kvitteringsforespørsel:
 
 ``` csharp
-var køId = "MpcId";
-var kvitteringsForespørsel = new Kvitteringsforespørsel(Prioritet.Prioritert, køId);
-Console.WriteLine(" > Henter kvittering på kø '{0}'...", kvitteringsForespørsel.Mpc);
+SikkerDigitalPostKlient sdpKlient = null; //Som initiert tidligere
 
+var kvitteringsForespørsel = new Kvitteringsforespørsel();
 Kvittering kvittering = sdpKlient.HentKvittering(kvitteringsForespørsel);
 
 if (kvittering is TomKøKvittering)
 {
-    Console.WriteLine("  - Kø '{0}' er tom. Stopper å hente meldinger. ", kvitteringsForespørsel.Mpc);
+    Console.WriteLine("  - Kø er tom. Stopper å hente kvitteringer.");
 }
 
 if (kvittering is TransportFeiletKvittering)
 {
     var feil = ((TransportFeiletKvittering) kvittering).Beskrivelse;
-    Console.WriteLine("En feil skjedde under transport.");
+    Console.WriteLine("En feil skjedde under sending til integrasjonspunktet.");
 }
 
 if (kvittering is Leveringskvittering)
@@ -199,7 +175,7 @@ if (kvittering is Leveringskvittering)
 
 if (kvittering is Åpningskvittering)
 {
-    Console.WriteLine("  - Har du sett. Noen har åpnet et brev. Moro.");
+    Console.WriteLine("  - Noen har åpnet et brev. ");
 }
 
 if (kvittering is Returpostkvittering)
@@ -226,7 +202,6 @@ if (kvittering is Feilmelding)
 sdpKlient.Bekreft((Forretningskvittering)kvittering);
 ```
 
-Kvitteringer du mottar når du gjør en kvitteringsforespørsel kan være av følgende typer: `Leveringskvittering`,`Åpningskvittering`, `Returpostkvittering`, `Mottakskvittering` eller `Feilmelding`. Kvittering kan også være av typen`TransportFeiletKvittering`. Dette kan skje når selve kvitteringsforespørselen er feilformatert.
-
-> Husk at hvis du får `TomKøKvittering` så er køen tom. Du henter bare kvitteringer fra kø gitt av `MpcId` og `Prioritet`. Hvis ikke dette blir satt spesifikt vil det hentes fra kø hvor `MpcId = ""` og `Prioritet = Prioritet.Normal`.
+Det er ikke mulig å hente nye kvitteringer før du har bekreftet mottak av liggende kvittering på køen.
+For mer informasjon om de ulike kvitteringene henviser vi til Digitaliseringsdirektoratet: https://difi.github.io/felleslosninger/sdp_index.html
 
