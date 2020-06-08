@@ -51,8 +51,7 @@ namespace Difi.SikkerDigitalPost.Klient.Tester.Api
                 var sikkerDigitalPostKlient = DomainUtility.GetSikkerDigitalPostKlientIPLocalHost();
                 var fakeHttpClientHandlerResponse = new FakeResponseHandler()
                 {
-                    //TODO: Fix test
-                    HttpContent = new StringContent(""),
+                    HttpContent = new StringContent("Ikke gyldig json eller resopnse fra integrasjonspunkt medfører TransportFeiletKvittering"),
                     StatusCode =  HttpStatusCode.BadRequest
                 };
                 sikkerDigitalPostKlient.RequestHelper.HttpClient = new HttpClient(fakeHttpClientHandlerResponse);

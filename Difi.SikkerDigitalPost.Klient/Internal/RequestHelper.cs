@@ -207,7 +207,6 @@ namespace Difi.SikkerDigitalPost.Klient.Internal
                 _logger.LogDebug($"Bekrefter id \"{id}\" fra integrasjonspunkt.");
             }
 
-            //TODO: Check error handling here
             await HttpClient.DeleteAsync(uri).ConfigureAwait(false);
         }
 
