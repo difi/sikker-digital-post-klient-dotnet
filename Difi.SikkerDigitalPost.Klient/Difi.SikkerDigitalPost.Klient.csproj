@@ -89,8 +89,8 @@
     
     <ItemGroup>
         <PackageReference Include="Portable.BouncyCastle" Version="1.8.6.7" />
-        <PackageReference Include="Difi.Felles.Utility" Version="5.0.0" />
-        <PackageReference Include="Digipost.Api.Client.Shared" Version="7.0.0" />
+        <PackageReference Include="Difi.Felles.Utility" Version="5.0.1" />
+        <PackageReference Include="Digipost.Api.Client.Shared" Version="7.0.1" />
         <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
